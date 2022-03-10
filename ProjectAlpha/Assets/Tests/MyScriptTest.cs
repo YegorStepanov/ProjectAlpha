@@ -1,4 +1,7 @@
+using System.Collections;
 using Code;
+using FluentAssertions;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Tests
@@ -8,7 +11,16 @@ namespace Tests
         [Test]
         public void MyTest()
         {
-            Assert.AreEqual(3, MyScript.Field);
+            _ = Substitute.For<IEnumerable>();
+            MyScript.Field.Should().Be(3);
         }
+
+        [Test]
+        public void MyTest1() =>
+            MyScript.UnitTaskName.Should().Be("UniTask");
+
+        [Test]
+        public void MyTest2() =>
+            MyScript.UnitTaskName.Should().Be("UniTask1");
     }
 }
