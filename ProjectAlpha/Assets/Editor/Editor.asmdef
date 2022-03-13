@@ -1,20 +1,20 @@
 {
-    "name": "Code",
+    "name": "Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:7a43331ee5a6cfd4b83feb78518e6933"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "System.Runtime.CompilerServices.Unsafe.dll",
-        "UniTask.dll",
-        "Zenject-usage.dll",
-        "DOTween.dll",
         "Sirenix.OdinInspector.Attributes.dll",
+        "Sirenix.OdinInspector.Editor.dll",
+        "Sirenix.Serialization.Config.dll",
         "Sirenix.Serialization.dll",
         "Sirenix.Utilities.dll",
-        "Sirenix.Serialization.Config.dll"
+        "Sirenix.Utilities.Editor.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
