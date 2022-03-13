@@ -12,7 +12,6 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "nunit.framework.dll",
-        "UniTask.dll",
         "Zenject-usage.dll",
         "DOTween.dll",
         "Castle.Core.dll",

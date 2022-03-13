@@ -7,8 +7,6 @@
     "allowUnsafeCode": true,
     "overrideReferences": true,
     "precompiledReferences": [
-        "System.Runtime.CompilerServices.Unsafe.dll",
-        "UniTask.dll",
         "Zenject-usage.dll",
         "DOTween.dll",
         "Sirenix.OdinInspector.Attributes.dll",
