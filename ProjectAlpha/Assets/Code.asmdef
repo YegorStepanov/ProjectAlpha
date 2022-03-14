@@ -3,6 +3,7 @@
     "rootNamespace": "",
     "references": [
         "Sirenix.OdinInspector.Modules.UnityMathematics",
+        "Tayx.Graphy",
         "UniTask",
         "UniTask.Addressables",
         "UniTask.DOTween",
