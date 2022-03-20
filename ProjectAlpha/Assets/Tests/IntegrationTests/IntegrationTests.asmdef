@@ -28,7 +28,6 @@
         "Unity.Timeline",
         "UnityEngine.UI",
         "Zenject",
-        "Zenject-IntegrationTests",
         "Zenject-TestFramework"
     ],
     "includePlatforms": [],
@@ -41,6 +40,9 @@
         "Castle.Core.dll",
         "FluentAssertions.dll",
         "NSubstitute.dll",
+        "Sirenix.Serialization.Config.dll",
+        "Sirenix.Serialization.dll",
+        "Sirenix.Utilities.dll",
         "System.Diagnostics.DiagnosticSource.dll",
         "System.Reflection.TypeExtensions.dll",
         "System.Security.Cryptography.OpenSsl.dll",
