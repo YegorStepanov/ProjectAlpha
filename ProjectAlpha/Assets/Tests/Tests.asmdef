@@ -43,7 +43,8 @@
         "NSubstitute.dll",
         "System.Diagnostics.DiagnosticSource.dll",
         "System.Reflection.TypeExtensions.dll",
-        "System.Security.Cryptography.OpenSsl.dll"
+        "System.Security.Cryptography.OpenSsl.dll",
+        "Zenject-usage.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [
