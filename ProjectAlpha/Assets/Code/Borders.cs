@@ -1,0 +1,1 @@
+﻿public sealed record Borders(float Top, float Bottom, float Left, float Right);
