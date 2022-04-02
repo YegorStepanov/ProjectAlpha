@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using DG.Tweening;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -39,6 +40,8 @@ namespace Code.Project
         
         private static Scene[] GetAllScenes()
         {
+            //DOTween.To()
+
             var scenes = new Scene[SceneManager.sceneCountInBuildSettings];
             Debug.Log(SceneManager.sceneCount);
             for (int i = 0; i < scenes.Length; i++)
