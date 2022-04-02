@@ -1,10 +1,8 @@
-using DG.Tweening;
-using FluentAssertions;
+using Code.Game;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Assertions;
 
-namespace Code
+namespace Code.Game1
 {
     public sealed class PlatformFactory : SerializedMonoBehaviour
     {
@@ -14,7 +12,6 @@ namespace Code
         private PlatformWidthGenerator platformWidthGenerator;
 
         private CameraService cameraService;
-        private PlatformFactory1 platformFactory;
 
         [SerializeField] private SpriteRenderer SpriteRendererPrefab;
 
@@ -22,29 +19,22 @@ namespace Code
 
         private void Awake()
         {
-            DOTween.Init();
-
-            Camera main = Camera.main;
+            return;
 
             platformWidthGenerator.Reset();
 
-            cameraService = new CameraService(main, gameSettings);
-            cameraService.Init();
-            platformFactory = new PlatformFactory1(cameraService, platformWidthGenerator, SpriteRendererPrefab,
-                gameSettings);
+            //cameraService = new CameraService(main, gameSettings);
+            // cameraService.Init();
+            // platformFactory = new PlatformFactory1(cameraService, platformWidthGenerator, SpriteRendererPrefab,
+            //     gameSettings);
         }
 
-        [Button]
-        public void PlayAnimation()
-        {
-            cameraService.Move();
-        }
+        // [Button]
+        // public void PlayAnimation()
+        // {
+        //     cameraService.Move();
+        // }
 
-        void Start()
-        {
-            platformFactory.creator.CreateMenuPlatform();
-            platformFactory.creator.CreatePlatform();
-        }
     }
 }
 

@@ -1,5 +1,5 @@
 using System.Collections;
-using Code;
+using Code.Game;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;

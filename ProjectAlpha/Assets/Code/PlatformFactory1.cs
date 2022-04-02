@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using Code.Extensions;
+using Code.Game;
+using UnityEngine;
 
-namespace Code
+namespace Code.Game1
 {
     public sealed class PlatformCreator
     {
@@ -84,25 +86,25 @@ namespace Code
         // }
     }
 
-    public sealed class PlatformFactory1
-    {
-        private readonly CameraService cameraService;
-        private readonly PlatformWidthGenerator platformWidthGenerator;
-        private readonly GameSettings settings;
-
-        public readonly PlatformCreator creator;
-
-        public PlatformFactory1(
-            CameraService cameraService,
-            PlatformWidthGenerator platformWidthGenerator,
-            SpriteRenderer spriteRendererPrefab,
-            GameSettings settings)
-        {
-            this.cameraService = cameraService;
-            this.platformWidthGenerator = platformWidthGenerator;
-            this.settings = settings;
-
-            creator = new PlatformCreator(spriteRendererPrefab, cameraService, platformWidthGenerator, settings);
-        }
-    }
+    // public sealed class PlatformFactory1
+    // {
+    //     private readonly CameraService cameraService;
+    //     private readonly PlatformWidthGenerator platformWidthGenerator;
+    //     private readonly GameSettings settings;
+    //
+    //     public readonly PlatformCreator creator;
+    //
+    //     public PlatformFactory1(
+    //         CameraService cameraService,
+    //         PlatformWidthGenerator platformWidthGenerator,
+    //         SpriteRenderer spriteRendererPrefab,
+    //         GameSettings settings)
+    //     {
+    //         this.cameraService = cameraService;
+    //         this.platformWidthGenerator = platformWidthGenerator;
+    //         this.settings = settings;
+    //
+    //         creator = new PlatformCreator(spriteRendererPrefab, cameraService, platformWidthGenerator, settings);
+    //     }
+    // }
 }

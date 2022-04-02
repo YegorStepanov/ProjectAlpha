@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code
+namespace Code.Common
 {
     public static class SpriteHelper
     {

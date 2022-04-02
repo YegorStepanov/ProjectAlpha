@@ -1,6 +1,4 @@
-// using Cysharp.Threading.Tasks;
-
-namespace Code
+namespace Code.Game
 {
     public static class MyScript
     {

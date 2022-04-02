@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code
+namespace Code.Game
 {
     [CreateAssetMenu(menuName = "SO/Game Settings")]
     public sealed class GameSettings : ScriptableObject

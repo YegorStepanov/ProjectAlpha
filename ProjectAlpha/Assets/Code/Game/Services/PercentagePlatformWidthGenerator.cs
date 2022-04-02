@@ -1,8 +1,8 @@
-﻿using Sirenix.OdinInspector;
+﻿using Code.Common;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Code
+namespace Code.Game
 {
     [CreateAssetMenu(menuName = "SO/Platform Width Generator")]
     public class PercentagePlatformWidthGenerator : PlatformWidthGenerator
@@ -54,16 +54,6 @@ namespace Code
             ratio.Min < MinThreshold ? MinThreshold : ratio.Min,
             ratio.Max < MaxThreshold ? MaxThreshold : ratio.Max);
 
-        private readonly struct Ratio
-        {
-            public readonly float Min;
-            public readonly float Max;
-
-            public Ratio(float min, float max) =>
-                (Min, Max) = (min, max);
-
-            public static Ratio operator *(Ratio ratio, float value) =>
-                new(ratio.Min * value, ratio.Max * value);
-        }
+        
     }
 }

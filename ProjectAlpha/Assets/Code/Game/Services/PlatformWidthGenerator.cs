@@ -1,6 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 
-namespace Code
+namespace Code.Game
 {
     public abstract class PlatformWidthGenerator : SerializedScriptableObject
     {
