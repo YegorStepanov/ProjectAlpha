@@ -25,7 +25,8 @@
         "Unity.TextMeshPro",
         "Unity.Timeline",
         "UnityEngine.UI",
-        "Zenject"
+        "Zenject",
+        "UnitySceneReference"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

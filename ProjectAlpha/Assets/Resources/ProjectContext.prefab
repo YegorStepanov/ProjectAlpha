@@ -76,4 +76,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 4837772697287054860, guid: 7592d5cb0eaa83d4a85c118776fae846,
     type: 3}
-  scenes: {fileID: 11400000, guid: 801386ccd184f1c4f9efae1d997f12c4, type: 2}
+  sceneReferences: {fileID: 11400000, guid: 801386ccd184f1c4f9efae1d997f12c4, type: 2}

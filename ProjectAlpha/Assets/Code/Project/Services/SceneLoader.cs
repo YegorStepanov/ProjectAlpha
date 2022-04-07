@@ -1,45 +1,58 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
+using Code.Common;
 using Cysharp.Threading.Tasks;
-using FluentAssertions;
-using Sirenix.OdinInspector;
-using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace Code.Project
 {
-    public sealed class SceneLoader : IInitializable
+    public sealed class SceneLoader
     {
         private readonly ZenjectSceneLoader sceneLoader;
-        private readonly Scenes scenes;
+        private readonly SceneReferences sceneReferences;
 
-        private List<Scene> loadedScenes;
-
-        public SceneLoader(ZenjectSceneLoader sceneLoader, Scenes scenes)
+        public SceneLoader(ZenjectSceneLoader sceneLoader, SceneReferences sceneReferences)
         {
             this.sceneLoader = sceneLoader;
-            this.scenes = scenes;
+            this.sceneReferences = sceneReferences;
         }
 
-        // public void Initialize() =>
-        //     InitSceneList();
+        public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
+        {
+            SceneReference reference = Reference<TScene>();
+            return LoadAsync(reference.ScenePath, token);
+        }
 
+        public UniTask UnloadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
+        {
+            SceneReference reference = Reference<TScene>();
+            return UnloadAsync(reference.ScenePath, token);
+        }
 
-        public UniTask LoadMenuAsync(Action onLoaded = null) =>
-            LoadSceneAdditiveAsync(scenes.MenuScene.name);
+        private async UniTask LoadAsync(string sceneName, CancellationToken token) =>
+            await sceneLoader.LoadSceneAsync(sceneName, LoadSceneMode.Additive).WithCancellation(token);
 
-        public UniTask LoadGameAsync(Action onLoaded = null) =>
-            LoadSceneAdditiveAsync(scenes.GameScene.name);
+        private static async UniTask UnloadAsync(string sceneName, CancellationToken token) =>
+            await SceneManager.UnloadSceneAsync(sceneName).WithCancellation(token);
 
-        public UniTask LoadMiniGameAsync(Action onLoaded = null) =>
-            LoadSceneAdditiveAsync(scenes.MiniGameScene.name);
-
-        private UniTask LoadSceneAdditiveAsync(string sceneName) =>
-            sceneLoader.LoadSceneAsync(sceneName, LoadSceneMode.Additive).ToUniTask();
-
-        public void Initialize() { }
+        private SceneReference Reference<TScene>() where TScene : struct, IScene => typeof(TScene) switch
+        {
+            Type t when t == typeof(BootstrapScene) => sceneReferences.BootstrapScene,
+            Type t when t == typeof(MenuScene) => sceneReferences.MenuScene,
+            Type t when t == typeof(GameScene) => sceneReferences.GameScene,
+            Type t when t == typeof(MiniGameScene) => sceneReferences.MiniGameScene,
+            _ => throw new ArgumentOutOfRangeException(typeof(TScene).FullName)
+        };
     }
+
+    public interface IScene { }
+
+    public struct BootstrapScene : IScene { }
+
+    public struct MenuScene : IScene { }
+
+    public struct GameScene : IScene { }
+
+    public struct MiniGameScene : IScene { }
 }

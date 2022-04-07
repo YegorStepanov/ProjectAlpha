@@ -3,8 +3,8 @@
 namespace Code.Game.States
 {
     [SuppressMessage("ReSharper", "TypeParameterCanBeVariant", Justification = "Due to performance reasons")]
-    public interface IStateWithParameter<TParameter> : IExitState
+    public interface IArgState<TArg> : IExitState
     {
-        void Enter(TParameter payload);
+        void Enter(TArg payload);
     }
 }

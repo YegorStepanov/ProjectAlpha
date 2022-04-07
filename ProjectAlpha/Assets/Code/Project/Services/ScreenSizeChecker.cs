@@ -16,8 +16,8 @@ namespace Code.Project
             if (ScreenSize.Width == Screen.width) return;
             if (ScreenSize.Height == Screen.height) return;
 
-            Debug.Log("Update ScreenSize");
-            
+            Debug.Log("Update ScreenSize" + ": " + Time.frameCount);
+
             ScreenSize = new Size(Screen.width, Screen.height);
             OnScreenResized?.Invoke(ScreenSize);
         }

@@ -9,9 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 36c96562263c446ba14e1e438fc07067, type: 3}
   m_Name: Scenes
   m_EditorClassIdentifier: Code:Code.Project:Scenes
-  MenuSceneName: Menu
-  GameSceneName: Game1
-  MiniGameSceneName: MiniGame
+  BootstrapScene:
+    sceneAsset: {fileID: 102900000, guid: ccc1a0cda314f694da5441df81797a92, type: 3}
+    scenePath: Assets/Scenes/Bootstrap.unity
+  MenuScene:
+    sceneAsset: {fileID: 102900000, guid: 7454df173ccdc58418366d58d323ec15, type: 3}
+    scenePath: Assets/Scenes/Menu.unity
+  GameScene:
+    sceneAsset: {fileID: 102900000, guid: 72a6e95e56b73fb458076886f6f1cd1a, type: 3}
+    scenePath: Assets/Scenes/Game.unity
+  MiniGameScene:
+    sceneAsset: {fileID: 0}
+    scenePath: 

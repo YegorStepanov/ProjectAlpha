@@ -1,6 +1,7 @@
 ﻿using System;
 using Code.Common;
 using Code.Project;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using Zenject;
@@ -23,20 +24,27 @@ namespace Code.Game
             this.camera = camera;
             this.gameSettings = gameSettings;
             this.screenSizeChecker = screenSizeChecker;
-            
+
             screenSizeChecker.OnScreenResized += UpdateBorders;
             Debug.Log("CameraService.Ctor");
         }
 
         void IInitializable.Initialize()
         {
-            Debug.Log("CameraService.Initialize");
+            Debug.Log("CameraService.Initialize" + ": " + Time.frameCount);
             UpdateBorders(screenSizeChecker.ScreenSize);
         }
 
-        void IDisposable.Dispose() => 
+        void IDisposable.Dispose() =>
             screenSizeChecker.OnScreenResized -= UpdateBorders;
 
+        public async UniTask MoveToAsync(Vector2 destination)
+        {
+            await UniTask.Yield();
+
+            await camera.transform.DOMove(destination, 0.3f);
+        }
+        
         public void Move() //Transition from the Menu to the Game state
         {
             float offsetX = OffsetToLeftCameraBorder() + MenuPlatformOffsetToLeftBorder();
@@ -49,7 +57,7 @@ namespace Code.Game
 
         private void UpdateBorders(Size screenSize)
         {
-            Debug.Log("CameraService.UpdateBorders");
+            Debug.Log("CameraService.UpdateBorders" + ": " + Time.frameCount);
 
             Vector2 topRightCorner = camera.ViewportToWorldPoint(Vector2.one);
             Vector2 bottomLeftCorner = camera.ViewportToWorldPoint(Vector2.zero);
@@ -81,10 +89,10 @@ namespace Code.Game
         private float OffsetToLeftCameraBorder() =>
             -ViewportToWorldPosition(Vector2.zero).x;
 
-        private float MenuPlatformOffsetToLeftBorder() =>
-            -gameSettings.MenuPlatformWidth / 2f;
+        private float MenuPlatformOffsetToLeftBorder() => 0f;
+        // -gameSettings.MenuPlatformWidth / 2f;
 
-        private float MenuToGamePlatformOffsetY() =>
-            gameSettings.GamePlatformPositionY - gameSettings.MenuPlatformPositionY;
+        private float MenuToGamePlatformOffsetY() => 0f;
+        // gameSettings.GamePlatformPositionY - gameSettings.MenuPlatformPositionY;
     }
 }

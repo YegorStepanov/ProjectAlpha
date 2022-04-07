@@ -14,7 +14,7 @@ namespace Code.Menu
 
         public override void InstallBindings()
         {
-            Debug.Log("MenuInstaller.InstallBindings");
+            Debug.Log("MenuInstaller.InstallBindings" + ": " + Time.frameCount);
             Container.BindInterfacesTo<MenuInitializer>().AsSingle();
         }
     }

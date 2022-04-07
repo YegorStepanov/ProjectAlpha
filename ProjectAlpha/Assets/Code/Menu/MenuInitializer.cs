@@ -15,9 +15,8 @@ namespace Code.Menu
 
         public void Initialize()
         {
-            Debug.Log("MenuInitializer.Initialize");
-
-            sceneLoader.LoadGameAsync();
+            Debug.Log("MenuInitializer.Initialize" + ": " + Time.frameCount);
+            // sceneLoader.LoadGameAsync();
         }
     }
 }

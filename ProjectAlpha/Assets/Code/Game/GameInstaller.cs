@@ -1,4 +1,5 @@
-﻿using Code.Game1;
+﻿using Code.Annotations;
+using Code.Game.States;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -17,11 +18,10 @@ namespace Code.Game
         [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(GameSettings))]
         private GameSettings gameSettings;
 
-        private void Awake()
-        {
-            foreach (GameObject go in GameObject.FindGameObjectsWithTag("EditorOnly"))
-                Destroy(go);
-        }
+        public HeroController hero;
+        
+        [AssetsOnly]
+        public PlatformController platform;
 
         public override void InstallBindings()
         {
@@ -33,17 +33,32 @@ namespace Code.Game
             Container.BindInstance(SpriteRendererPrefab); //it's bad, ye? move it to own type OR move to settings
             Container.BindInstance(gameSettings);
 
-            Container.Bind<PlatformCreator>().AsSingle();
             // .FromSubContainerResolve().ByInstaller().AsSingle();
 
+            Container.Bind<GameStateMachine>().AsSingle();
             Container.BindInterfacesTo<GameInitializer>().AsSingle();
+
+            Container.Bind<IHeroController>()
+                .FromComponentInNewPrefab(hero)
+                .AsSingle();
+
+            Container.BindMemoryPool<PlatformController, PlatformController.Pool>()
+                .WithInitialSize(5)
+                .FromComponentInNewPrefab(platform)
+                .UnderTransformGroup("Platforms");
+
+            
+            // Container.BindMemoryPool<IPlatformController, PlatformController.Pool>()
+            //     .WithInitialSize(10)
+            //     .To<PlatformController>()
+            //     .FromComponentInNewPrefab(platform);
+
+            Container.Bind<PlatformSpawner>().AsSingle();
         }
 
         [Button]
-        public void PlayAnimation()
-        {
-            var cameraService = Container.Resolve<CameraService>();
-            cameraService.Move();
-        }
+        public void PlayAnimation() { } 
+        //=> 
+        // Container.Resolve<GameStateMachine>().Enter<GameStartState>();
     }
 }

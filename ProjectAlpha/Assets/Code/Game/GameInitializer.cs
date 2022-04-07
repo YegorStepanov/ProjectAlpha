@@ -13,7 +13,7 @@ namespace Code.Game
 
         public void Initialize()
         {
-            Debug.Log("GameInitializer.Initialize");
+            Debug.Log("GameInitializer.Initialize" + ": " + Time.frameCount);
      
             gameStateMachine.Enter<BootstrapState>();
         }

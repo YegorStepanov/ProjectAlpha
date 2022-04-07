@@ -1,32 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Game.States;
+using JetBrains.Annotations;
+using UnityEngine;
 using Zenject;
 
 namespace Code.Game
 {
-    public class GameStateMachine
+    public sealed class GameStateMachine
     {
-        private readonly Dictionary<Type, IExitState> states;
+        private Dictionary<Type, IExitState> states;
         private IExitState activeState;
 
-        public GameStateMachine(
-            BootstrapState.Factory boostrapStateFactory,
-            PendingStartState.Factory pendingStartStateFactory)
+        [Inject]
+        public void Construct(DiContainer container) => states = new Dictionary<Type, IExitState>
         {
-            states = new Dictionary<Type, IExitState>()
-            {
-                [typeof(BootstrapState)] = boostrapStateFactory.Create(),
-                [typeof(PendingStartState)] = pendingStartStateFactory.Create()
-            };
-        }
+            [typeof(BootstrapState)] = container.Instantiate<BootstrapState>(),
+            [typeof(GameStartState)] = container.Instantiate<GameStartState>()
+        };
 
         public void Enter<TState>() where TState : class, IState =>
             ChangeState<TState>().Enter();
 
-        public void Enter<TState, TParameter>(TParameter parameter)
-            where TState : class, IStateWithParameter<TParameter> =>
-            ChangeState<TState>().Enter(parameter);
+        public void Enter<TState, TArg>(TArg argument) where TState : class, IArgState<TArg> =>
+            ChangeState<TState>().Enter(argument);
 
         private TState ChangeState<TState>() where TState : class, IExitState
         {
