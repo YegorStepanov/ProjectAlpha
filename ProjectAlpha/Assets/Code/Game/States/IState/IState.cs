@@ -1,7 +1,9 @@
-﻿namespace Code.Game.States
+﻿using Cysharp.Threading.Tasks;
+
+namespace Code.Game.States
 {
     public interface IState : IExitState
     {
-        void Enter();
+        UniTaskVoid EnterAsync();
     }
 }

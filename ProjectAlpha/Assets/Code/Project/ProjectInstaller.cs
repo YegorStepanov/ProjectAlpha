@@ -1,10 +1,7 @@
 ﻿using Code.Common;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.LowLevel;
-using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Zenject;
 
@@ -37,7 +34,13 @@ namespace Code.Project
             Debug.Log("ProjectInstaller.InstallBindings" + ": " + Time.frameCount);
             //how many frames it takes to load a GAME scene
 
-            RegisterCamera();
+            // RegisterCamera();
+            
+            Container.Bind<Camera>()
+                .FromComponentInNewPrefab(mainCamera)
+                .WithGameObjectName("Camera")
+                .AsSingle();
+            
             Container.BindInstance(sceneReferences);
             
             Container.Bind<SceneLoader>().AsSingle();
@@ -47,9 +50,13 @@ namespace Code.Project
 
         private void RegisterCamera()
         {
-            Camera cam = Instantiate(mainCamera);
-            DontDestroyOnLoad(cam); //exception on editor zenject validation 
-            Container.BindInstance(cam);
+            Container.Bind<Camera>()
+                .FromComponentInNewPrefab(mainCamera)
+                .WithGameObjectName("Camera");
+            //
+            //                 Camera cam = Instantiate(mainCamera);
+            // DontDestroyOnLoad(cam); //exception on editor zenject validation 
+            // Container.BindInstance(cam);
         }
     }
 }

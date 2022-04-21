@@ -1,44 +1,91 @@
-﻿using DG.Tweening;
+﻿using Code.Common;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
+using Random = UnityEngine.Random;
 
 namespace Code.Game.States
 {
     public sealed class GameStartState : IArgState<GameStartState.Arguments>
     {
-        public sealed record Arguments(IPlatformController MenuPlatform, IPlatformController GamePlatform);
+        public sealed record Arguments(IPlatformController CurrentPlatform);
 
+        private readonly GameStateMachine stateMachine;
         private readonly CameraService cameraService;
         private readonly IHeroController hero;
         private readonly PlatformSpawner platformSpawner;
+        private readonly StickSpawner stickSpawner;
+        private readonly WidthGenerator widthGenerator;
 
-        public GameStartState(CameraService cameraService, IHeroController hero, PlatformSpawner platformSpawner)
+        public GameStartState(
+            GameStateMachine stateMachine,
+            CameraService cameraService,
+            IHeroController hero,
+            PlatformSpawner platformSpawner,
+            StickSpawner stickSpawner,
+            WidthGenerator widthGenerator)
         {
+            this.stateMachine = stateMachine;
             this.cameraService = cameraService;
             this.hero = hero;
             this.platformSpawner = platformSpawner;
+            this.stickSpawner = stickSpawner;
+            this.widthGenerator = widthGenerator;
         }
-        
-        public void Enter(Arguments args)
+
+        public async UniTaskVoid EnterAsync(Arguments args)
         {
-            var r = args.MenuPlatform.Borders.Left;
+            await MoveHeroAsync(args.CurrentPlatform);
 
-            float left = cameraService.MenuBorders.Left;
+            UniTask moveCameraTask = MoveCameraAsync(args.CurrentPlatform);
 
-            var deltaY = args.GamePlatform.Borders.Top - args.MenuPlatform.Borders.Top;
+            IPlatformController nextPlatform = CreateNextPlatform(args.CurrentPlatform);
+            UniTask movePlatformTask = MoveNextPlatformToRandomPoint(args.CurrentPlatform, nextPlatform);
 
-            var delta = new Vector2(left, deltaY);
-            
-            hero.MoveToAsync(delta).Forget();
+            await (moveCameraTask, movePlatformTask);
 
-            // Transform menuPlatform;
-            // heroController.MoveTo(menuPlatform.position);
-            //create platform
-            //move it randomly
+            stateMachine.Enter<StickControlState, StickControlState.Arguments>(
+                new StickControlState.Arguments(args.CurrentPlatform, nextPlatform));
         }
-        public void Exit() { }
 
-        // public class Factory : PlaceholderFactory<GameStartState> { }
+        private async UniTask MoveCameraAsync(IPlatformController currentPlatform)
+        {
+            Vector2 destination = new(currentPlatform.Borders.Left, currentPlatform.Borders.Bottom);
+            await cameraService.MoveAsync(destination, Relative.LeftBottom);
+        }
+
+        private async UniTask MoveHeroAsync(IPlatformController currentPlatform)
+        {
+            float destX = currentPlatform.Borders.Right;
+            destX -= stickSpawner.StickWidth / 2f;
+            destX -= hero.HandOffset;
+            await hero.MoveAsync(destX);
+        }
+
+        private IPlatformController CreateNextPlatform(IPlatformController currentPlatform)
+        {
+            float leftCameraBorderToPlatformDistance = currentPlatform.Borders.Left - cameraService.Borders.Left;
+            Vector2 position = new(
+                cameraService.Borders.Right + leftCameraBorderToPlatformDistance,
+                currentPlatform.Borders.Top);
+
+            return platformSpawner.CreatePlatform(position, widthGenerator.NextWidth(), Relative.Left);
+        }
+
+        private static async UniTask MoveNextPlatformToRandomPoint(
+            IPlatformController currentPlatform,
+            IPlatformController nextPlatform)
+        {
+            float halfWidth = nextPlatform.Borders.Width / 2f;
+            const float minDistance = 0.5f; //minOffset
+            float posX = Random.Range(currentPlatform.Borders.Right + halfWidth + minDistance, nextPlatform.Borders.Left - halfWidth);
+
+            int randDelay = Random.Range(0,300); //ms
+            await UniTask.Delay(randDelay);
+            
+            await nextPlatform.MoveAsync(posX);
+        }
+
+        public void Exit() { }
     }
 
     public sealed class StickBuildingState

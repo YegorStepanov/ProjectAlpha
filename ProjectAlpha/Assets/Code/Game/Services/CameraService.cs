@@ -1,5 +1,6 @@
 ﻿using System;
 using Code.Common;
+using Code.Extensions;
 using Code.Project;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -14,10 +15,9 @@ namespace Code.Game
         private readonly GameSettings gameSettings;
         private readonly ScreenSizeChecker screenSizeChecker;
 
-        public Borders MenuBorders { get; private set; }
-        public Borders GameBorders { get; private set; }
+        public Borders Borders => UpdateBorders();
 
-        public Vector2 ViewportGameCameraOffset = new(0f, -0.2f);
+        public Vector3 CameraPosition => camera.transform.position;
 
         public CameraService(Camera camera, GameSettings gameSettings, ScreenSizeChecker screenSizeChecker)
         {
@@ -25,28 +25,47 @@ namespace Code.Game
             this.gameSettings = gameSettings;
             this.screenSizeChecker = screenSizeChecker;
 
-            screenSizeChecker.OnScreenResized += UpdateBorders;
+            // screenSizeChecker.OnScreenResized += UpdateBorders;
             Debug.Log("CameraService.Ctor");
         }
 
         void IInitializable.Initialize()
         {
             Debug.Log("CameraService.Initialize" + ": " + Time.frameCount);
-            UpdateBorders(screenSizeChecker.ScreenSize);
+            // UpdateBorders(screenSizeChecker.ScreenSize);
         }
 
-        void IDisposable.Dispose() =>
-            screenSizeChecker.OnScreenResized -= UpdateBorders;
-
-        public async UniTask MoveToAsync(Vector2 destination)
+        void IDisposable.Dispose()
         {
-            await UniTask.Yield();
+            // screenSizeChecker.OnScreenResized -= UpdateBorders;
+        }
 
-            await camera.transform.DOMove(destination, 0.3f);
+        public async UniTask ShiftAsync(Vector2 offset) =>
+            await MoveAsync(CameraPosition.ShiftXY(-offset));
+
+
+        public async UniTask MoveAsync(float destinationX, Relative relative = Relative.Center)
+        {
+            float finalX = Borders.TransformPointX(destinationX, relative);
+            await MoveAsync(CameraPosition.WithX(finalX));
+        }
+
+        public async UniTask MoveAsync(Vector2 destination, Relative relative = Relative.Center)
+        {
+            Vector2 finalDestination = GetRelativePosition(destination, relative);
+            await MoveAsync(CameraPosition.WithXY(finalDestination));
         }
         
-        public void Move() //Transition from the Menu to the Game state
+        public Vector2 GetRelativePosition(Vector2 position, Relative relative) => 
+            Borders.TransformPoint(position, relative);
+
+        private async UniTask MoveAsync(Vector3 destination) =>
+            await camera.transform.DOMove(destination, 0.3f);
+
+
+        private void Move(float cameraDestX) //Transition from the Menu to the Game state
         {
+            throw new NotImplementedException();
             float offsetX = OffsetToLeftCameraBorder() + MenuPlatformOffsetToLeftBorder();
             float offsetY = MenuToGamePlatformOffsetY();
 
@@ -55,36 +74,29 @@ namespace Code.Game
             camera.transform.DOMove(offset, gameSettings.MenuToGameCameraAnimationDuration);
         }
 
-        private void UpdateBorders(Size screenSize)
+        private Borders UpdateBorders()
         {
             Debug.Log("CameraService.UpdateBorders" + ": " + Time.frameCount);
 
             Vector2 topRightCorner = camera.ViewportToWorldPoint(Vector2.one);
             Vector2 bottomLeftCorner = camera.ViewportToWorldPoint(Vector2.zero);
 
-            MenuBorders = new Borders(
+            return new Borders(
                 Top: topRightCorner.y,
                 Right: topRightCorner.x,
                 Bottom: bottomLeftCorner.y,
                 Left: bottomLeftCorner.x
-            );
-
-            GameBorders = new Borders(
-                Top: MenuBorders.Top,
-                Right: MenuBorders.Right,
-                Bottom: MenuBorders.Bottom,
-                Left: MenuBorders.Left
             );
         }
 
         public Vector2 ViewportToWorldPosition(Vector2 viewportPosition) =>
             camera.ViewportToWorldPoint(viewportPosition);
 
-        public float WorldHeight() =>
-            camera.orthographicSize * 2;
-
-        public float WorldWidth() =>
-            camera.orthographicSize * camera.aspect * 2;
+        // public float WorldHeight() =>
+        //     camera.orthographicSize * 2;
+        //
+        // public float WorldWidth() =>
+        //     camera.orthographicSize * camera.aspect * 2;
 
         private float OffsetToLeftCameraBorder() =>
             -ViewportToWorldPosition(Vector2.zero).x;

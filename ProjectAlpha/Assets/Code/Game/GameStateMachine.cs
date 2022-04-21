@@ -1,12 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Game.States;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
 namespace Code.Game
 {
+    // public sealed class GameStateMachineInitializer : MonoBehaviour
+    // {
+    //     private readonly GameStateMachine gameStateMachine;
+    //
+    //     private async UniTaskVoid Awake()
+    //     {
+    //         // gameStateMachine.Enter<BootstrapState>();
+    //     }
+    // }
+
+
     public sealed class GameStateMachine
     {
         private Dictionary<Type, IExitState> states;
@@ -16,14 +28,16 @@ namespace Code.Game
         public void Construct(DiContainer container) => states = new Dictionary<Type, IExitState>
         {
             [typeof(BootstrapState)] = container.Instantiate<BootstrapState>(),
-            [typeof(GameStartState)] = container.Instantiate<GameStartState>()
+            [typeof(GameStartState)] = container.Instantiate<GameStartState>(),
+            [typeof(StickControlState)] = container.Instantiate<StickControlState>(),
+            [typeof(MoveHeroToNextPlatformState)] = container.Instantiate<MoveHeroToNextPlatformState>(),
         };
 
         public void Enter<TState>() where TState : class, IState =>
-            ChangeState<TState>().Enter();
+            ChangeState<TState>().EnterAsync().Forget();
 
-        public void Enter<TState, TArg>(TArg argument) where TState : class, IArgState<TArg> =>
-            ChangeState<TState>().Enter(argument);
+        public void Enter<TState, TArg>(TArg argument) where TState : class, IArgState<TArg> => //hmm
+            ChangeState<TState>().EnterAsync(argument).Forget();
 
         private TState ChangeState<TState>() where TState : class, IExitState
         {

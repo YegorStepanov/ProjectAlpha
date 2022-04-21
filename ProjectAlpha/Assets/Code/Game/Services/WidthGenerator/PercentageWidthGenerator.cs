@@ -4,8 +4,8 @@ using Random = UnityEngine.Random;
 
 namespace Code.Game
 {
-    [CreateAssetMenu(menuName = "SO/Platform Width Generator")]
-    public class PercentagePlatformWidthGenerator : PlatformWidthGenerator
+    [CreateAssetMenu(menuName = "SO/Percentage Width Generator")]
+    public sealed class PercentageWidthGenerator : WidthGenerator
     {
         // [SerializeField, MinMaxSlider(0, 1), LabelText("Range of the platform")]
         // private Vector2 platformViewportRange = new(0.1f, 0.5f);

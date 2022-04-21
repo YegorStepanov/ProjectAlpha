@@ -1,7 +1,6 @@
 ﻿using Code.Common;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Zenject;
 
 namespace Code.Game.States
 {
@@ -9,43 +8,49 @@ namespace Code.Game.States
     {
         private readonly GameStateMachine stateMachine;
         private readonly PlatformSpawner platformSpawner;
-        private readonly PlatformWidthGenerator platformWidthGenerator;
+        private readonly WidthGenerator widthGenerator;
         private readonly IHeroController hero;
         private readonly CameraService cameraService;
 
         public BootstrapState(
             GameStateMachine stateMachine,
             PlatformSpawner platformSpawner,
-            PlatformWidthGenerator platformWidthGenerator,
+            WidthGenerator widthGenerator,
             IHeroController hero,
             CameraService cameraService)
         {
             this.stateMachine = stateMachine;
             this.platformSpawner = platformSpawner;
-            this.platformWidthGenerator = platformWidthGenerator;
+            this.widthGenerator = widthGenerator;
             this.hero = hero;
             this.cameraService = cameraService;
         }
 
-        public void Enter()
+        public class Settings
+        {
+            public float MenuPlatformWidth = 2f;
+
+            public float MenuPlatformViewportPosX = 0.5f; //= new(0.5f, 0.2f);
+            // public float GamePlatformViewportPosX = 1f; //= new(1f, 0.3f); //y should be synced with camera
+
+            public float MenuViewportPosY = 0.2f;
+            public float GameViewportPosY = 0.3f;
+        }
+
+        public async UniTaskVoid EnterAsync()
         {
             Debug.Log("BootstrapState.Enter" + ": " + Time.frameCount);
-            platformWidthGenerator.Reset();
+            widthGenerator.Reset();
 
-            IPlatformController menuPlatform = platformSpawner.CreateMenuPlatform();
-            IPlatformController gamePlatform = platformSpawner.CreatePlatform();
+            Vector2 platformPosition = cameraService.ViewportToWorldPosition(new Vector2(0.5f, 0.2f)); 
+            IPlatformController menuPlatform = platformSpawner.CreatePlatform(platformPosition, 2f, Relative.Center);
+            
+            hero.TeleportTo(menuPlatform.Position, Relative.Left);
 
-            hero.TeleportTo(menuPlatform.Position, HeroPivot.BottomCenter);
+            await UniTask.Delay(2000);
 
-
-            NewFunction().Forget();
-
-            async UniTaskVoid NewFunction()
-            {
-                await UniTask.Delay(4000);
-                stateMachine.Enter<GameStartState, GameStartState.Arguments>(
-                    new GameStartState.Arguments(menuPlatform, gamePlatform));
-            }
+            stateMachine.Enter<GameStartState, GameStartState.Arguments>(
+                new GameStartState.Arguments(menuPlatform));
 
             //set background randomly
             //set idle animation
@@ -58,17 +63,18 @@ namespace Code.Game.States
             // hero.position = pos;
         }
 
-        public void Exit()
+        private async UniTaskVoid ExitAsync()
         {
             //hide ui
             //close ui scene
             //show game ui
 
+            await UniTask.CompletedTask;
 
             //Show your finder 
             //after next platform destination start fade in it 
         }
 
-        // public class Factory : PlaceholderFactory<BootstrapState> { }
+        public void Exit() { }
     }
 }

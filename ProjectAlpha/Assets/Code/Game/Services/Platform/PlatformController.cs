@@ -1,6 +1,7 @@
 using Code.Common;
-using Code.Game;
+using Code.Extensions;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
@@ -14,6 +15,8 @@ namespace Code.Game
         Vector2 Position { get; }
         
         Borders Borders { get; }
+        UniTask MoveAsync(float destinationX);
+        Vector2 GetRelativePosition(Vector2 position, Relative relative);
     }
     
     public sealed class PlatformController : MonoBehaviour, IPlatformController
@@ -24,14 +27,7 @@ namespace Code.Game
 
         public Vector2 Position => transform.position;
 
-        public Borders Borders
-        {
-            get
-            {
-                Bounds bounds = spriteRenderer.bounds;
-                return new Borders(bounds.max.y, bounds.min.y, bounds.min.x, bounds.max.x);
-            }
-        }
+        public Borders Borders => spriteRenderer.bounds.AsBorders();
 
         [Inject]
         public void Construct(CameraService _cameraService)
@@ -48,11 +44,15 @@ namespace Code.Game
         {
             Vector2 spriteSize = spriteRenderer.bounds.size;
             transform.localScale = scale / spriteSize;
-            Debug.Log(spriteRenderer.bounds.min);
-            Debug.Log(spriteRenderer.bounds.max);
-            Debug.Log(transform.position + spriteRenderer.sprite.bounds.min);
-            Debug.Log(transform.position + spriteRenderer.sprite.bounds.max);
         }
+        
+        public async UniTask MoveAsync(float destinationX) =>
+            await transform.DOMoveX(destinationX, 10)
+                .SetEase(Ease.OutQuad)
+                .SetSpeedBased(true);
+
+        public Vector2 GetRelativePosition(Vector2 position, Relative relative) =>
+            Borders.TransformPoint(position, relative);
         
         public class Pool : MonoMemoryPool<PlatformController> { }
     }

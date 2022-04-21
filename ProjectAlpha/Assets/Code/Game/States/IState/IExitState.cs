@@ -1,4 +1,6 @@
-﻿namespace Code.Game.States
+﻿using Cysharp.Threading.Tasks;
+
+namespace Code.Game.States
 {
     public interface IExitState
     {
