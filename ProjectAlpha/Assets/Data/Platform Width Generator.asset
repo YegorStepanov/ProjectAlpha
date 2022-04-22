@@ -12,12 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f17d1e316874a8f8984fd7077185710, type: 3}
   m_Name: Platform Width Generator
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
+  MinWidth: 1.5
+  MaxWidth: 1.5
+  ReductionRatioPerStep: 0.1
+  MinThreshold: 0.25
+  MaxThreshold: 2

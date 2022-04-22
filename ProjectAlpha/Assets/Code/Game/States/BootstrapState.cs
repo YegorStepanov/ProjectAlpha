@@ -1,4 +1,5 @@
 ﻿using Code.Common;
+using Code.Project;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -11,19 +12,21 @@ namespace Code.Game.States
         private readonly WidthGenerator widthGenerator;
         private readonly IHeroController hero;
         private readonly CameraService cameraService;
+        private readonly GameTriggers gameTriggers;
 
         public BootstrapState(
             GameStateMachine stateMachine,
             PlatformSpawner platformSpawner,
             WidthGenerator widthGenerator,
             IHeroController hero,
-            CameraService cameraService)
+            CameraService cameraService, GameTriggers gameTriggers)
         {
             this.stateMachine = stateMachine;
             this.platformSpawner = platformSpawner;
             this.widthGenerator = widthGenerator;
             this.hero = hero;
             this.cameraService = cameraService;
+            this.gameTriggers = gameTriggers;
         }
 
         public class Settings
@@ -42,12 +45,14 @@ namespace Code.Game.States
             Debug.Log("BootstrapState.Enter" + ": " + Time.frameCount);
             widthGenerator.Reset();
 
-            Vector2 platformPosition = cameraService.ViewportToWorldPosition(new Vector2(0.5f, 0.2f)); 
+            Vector2 platformPosition = cameraService.ViewportToWorldPosition(new Vector2(0.5f, 0.2f));
             IPlatformController menuPlatform = platformSpawner.CreatePlatform(platformPosition, 2f, Relative.Center);
-            
-            hero.TeleportTo(menuPlatform.Position, Relative.Left);
 
+            hero.TeleportTo(menuPlatform.Position, Relative.Left);
             await UniTask.Delay(2000);
+
+            // if(gameTriggers.StartGameButtonTrigger.ExistTrigger)
+            await gameTriggers.StartGameButtonTrigger.OnClickAsync();
 
             stateMachine.Enter<GameStartState, GameStartState.Arguments>(
                 new GameStartState.Arguments(menuPlatform));

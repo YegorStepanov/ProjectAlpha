@@ -8,13 +8,12 @@ namespace Code.Game
     {
         private readonly GameStateMachine gameStateMachine;
 
-        public GameInitializer(GameStateMachine gameStateMachine) => 
+        public GameInitializer(GameStateMachine gameStateMachine) =>
             this.gameStateMachine = gameStateMachine;
 
         public void Initialize()
         {
             Debug.Log("GameInitializer.Initialize" + ": " + Time.frameCount);
-     
             gameStateMachine.Enter<BootstrapState>();
         }
     }

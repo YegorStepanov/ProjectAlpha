@@ -30,10 +30,10 @@ namespace Code.Project
             return UnloadAsync(reference.ScenePath, token);
         }
 
-        private async UniTask LoadAsync(string sceneName, CancellationToken token) =>
-            await sceneLoader.LoadSceneAsync(sceneName, LoadSceneMode.Additive).WithCancellation(token);
+        public async UniTask LoadAsync(string sceneName, CancellationToken token) =>
+            await sceneLoader.LoadSceneAsync(sceneName, LoadSceneMode.Additive, containerMode: LoadSceneRelationship.Child).WithCancellation(token);
 
-        private static async UniTask UnloadAsync(string sceneName, CancellationToken token) =>
+        public async UniTask UnloadAsync(string sceneName, CancellationToken token) =>
             await SceneManager.UnloadSceneAsync(sceneName).WithCancellation(token);
 
         private SceneReference Reference<TScene>() where TScene : struct, IScene => typeof(TScene) switch

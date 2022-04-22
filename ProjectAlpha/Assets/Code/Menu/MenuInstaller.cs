@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Code.Menu
 {
     public sealed class MenuInstaller : MonoInstaller
     {
+        [SerializeField] private MenuMediator menu;
         private void Awake()
         {
             return;
-            foreach (GameObject go in GameObject.FindGameObjectsWithTag("EditorOnly")) 
+            foreach (GameObject go in GameObject.FindGameObjectsWithTag("EditorOnly"))
                 Destroy(go);
         }
 
@@ -16,6 +18,11 @@ namespace Code.Menu
         {
             Debug.Log("MenuInstaller.InstallBindings" + ": " + Time.frameCount);
             Container.BindInterfacesTo<MenuInitializer>().AsSingle();
+            
+            Container.Bind<HideMenu>().AsSingle();
+            Container.Bind<StartGameTrigger>().AsSingle();
+
+            Container.Bind<MenuMediator>().FromComponentInNewPrefab(menu).AsSingle().NonLazy();
         }
     }
 }

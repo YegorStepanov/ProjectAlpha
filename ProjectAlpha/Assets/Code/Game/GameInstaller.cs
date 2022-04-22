@@ -20,7 +20,7 @@ namespace Code.Game
         public HeroController hero;
 
         public StickController stick;
-        
+
         [AssetsOnly]
         public PlatformController platform;
 
@@ -29,7 +29,7 @@ namespace Code.Game
             Debug.Log("GameInstaller.InstallBindings");
 
             Container.BindInstance(this.GetCancellationTokenOnDestroy());
-            
+
             Container.BindInterfacesAndSelfTo<CameraService>().AsSingle();
 
             Container.BindInstance(widthGenerator);
@@ -74,14 +74,12 @@ namespace Code.Game
             //     .FromComponentInNewPrefab(platform);
 
             Container.Bind<StickSpawner>().AsSingle();
-            
-            Container.Bind<InputManager>().AsSingle();
 
-            
+            Container.Bind<InputManager>().AsSingle();
         }
 
         [Button]
-        public void PlayAnimation() { } 
+        public void PlayAnimation() { }
         //=> 
         // Container.Resolve<GameStateMachine>().Enter<GameStartState>();
     }
