@@ -4,11 +4,11 @@ using Zenject;
 
 namespace Code.Menu
 {
-    public sealed class HideMenu : MonoBehaviour, IPointerClickHandler
+    public sealed class ShowHeroSelectorPanel : MonoBehaviour, IPointerClickHandler
     {
         [Inject] private MenuMediator menu;
-
+    
         public void OnPointerClick(PointerEventData eventData) =>
-            menu.HideMenuAsync().Forget();
+            menu.ShowHeroSelectorPanel();
     }
 }

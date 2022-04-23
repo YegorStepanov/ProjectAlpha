@@ -19,8 +19,9 @@ namespace Code.Menu
             Debug.Log("MenuInstaller.InstallBindings" + ": " + Time.frameCount);
             Container.BindInterfacesTo<MenuInitializer>().AsSingle();
             
-            Container.Bind<HideMenu>().AsSingle();
             Container.Bind<StartGameTrigger>().AsSingle();
+
+            Container.Bind<UIManager>().AsSingle();
 
             Container.Bind<MenuMediator>().FromComponentInNewPrefab(menu).AsSingle().NonLazy();
         }

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 667185706340173612}
   - component: {fileID: 667185706340173615}
   - component: {fileID: 5781250026880686731}
-  - component: {fileID: 5781250026880686730}
   m_Layer: 5
   m_Name: CloseArea
   m_TagString: Untagged
@@ -122,16 +121,3 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5781250026880686730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 667185706340173609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 415f386cff201344f8f1c1648f19782a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  go: {fileID: 0}

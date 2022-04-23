@@ -8,7 +8,6 @@ namespace Code.Menu
     {
         [Inject] private MenuMediator menu;
 
-        public void OnPointerClick(PointerEventData eventData) =>
-            menu.HideShopPanelAsync().Forget();
+        public void OnPointerClick(PointerEventData eventData) => menu.HideShopPanel();
     }
 }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 
 namespace Code.Menu
@@ -9,6 +11,6 @@ namespace Code.Menu
         [Inject] private MenuMediator menu;
 
         public void OnPointerClick(PointerEventData eventData) =>
-            menu.ShowShopPanelAsync().Forget();
+            menu.ShowShopPanel();
     }
 }
