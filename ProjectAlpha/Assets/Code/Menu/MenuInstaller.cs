@@ -23,7 +23,9 @@ namespace Code.Menu
 
             Container.Bind<UIManager>().AsSingle();
 
-            Container.Bind<MenuMediator>().FromComponentInNewPrefab(menu).AsSingle().NonLazy();
+            Container.BindInstance(menu);
+            
+            Container.Bind<AddressableFactory>().AsSingle().WithArguments(transform);
         }
     }
 }

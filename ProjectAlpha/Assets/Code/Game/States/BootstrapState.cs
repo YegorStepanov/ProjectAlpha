@@ -49,10 +49,9 @@ namespace Code.Game.States
             IPlatformController menuPlatform = platformSpawner.CreatePlatform(platformPosition, 2f, Relative.Center);
 
             hero.TeleportTo(menuPlatform.Position, Relative.Left);
-            await UniTask.Delay(2000);
 
-            // if(gameTriggers.StartGameButtonTrigger.ExistTrigger)
-            await gameTriggers.StartGameButtonTrigger.OnClickAsync();
+            if(gameTriggers.StartGameButtonTrigger.IsTriggerExist)
+               await gameTriggers.StartGameButtonTrigger.OnClickAsync();
 
             stateMachine.Enter<GameStartState, GameStartState.Arguments>(
                 new GameStartState.Arguments(menuPlatform));

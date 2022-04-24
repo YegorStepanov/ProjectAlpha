@@ -5,6 +5,7 @@ using Zenject;
 
 namespace Code.Project
 {
+    //TODO: unused
     public sealed class ScreenSizeChecker : ITickable
     {
         public event Action<Size> OnScreenResized;

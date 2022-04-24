@@ -12,7 +12,6 @@ namespace Code.Game.States
         UniTask MoveAsync(float destinationX);
         void TeleportTo(Vector2 destination, Relative relative);
         UniTask FellAsync();
-        UniTask MoveWithoutStoppingAsync(float destinationX);
     }
 
     public sealed class HeroController : MonoBehaviour, IHeroController
@@ -22,17 +21,14 @@ namespace Code.Game.States
 
         public float HandOffset => 0.25f;
 
+        public Borders Borders => spriteRenderer.bounds.AsBorders();
+
         public async UniTask MoveAsync(float destinationX) =>
-            await transform.DOMoveX(destinationX, 2).SetEase(Ease.InOutQuart).SetSpeedBased(true);
-        
-        public async UniTask MoveWithoutStoppingAsync(float destinationX) =>
-            await transform.DOMoveX(destinationX, 2).SetEase(Ease.InQuart).SetSpeedBased(true); 
+            await transform.DOMoveX(destinationX, 4).SetEase(Ease.Linear).SetSpeedBased(true);
         
         public async UniTask FellAsync() =>
             await transform.DOMoveY(-10, -9.8f).SetSpeedBased(true);
-
-        public Borders Borders => spriteRenderer.bounds.AsBorders();
-
+        
         public void TeleportTo(Vector2 destination, Relative relative) =>
             transform.position = Borders.TransformPoint(destination, relative);
 

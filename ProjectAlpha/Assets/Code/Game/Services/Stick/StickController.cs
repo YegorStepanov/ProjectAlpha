@@ -49,7 +49,7 @@ namespace Code.Game
             stick.localScale = stick.localScale.WithY(0f);
 
         public void StartIncreasing() =>
-            increasingTweener = stick.DOScaleY(float.MaxValue, 20f)
+            increasingTweener = stick.DOScaleY(float.MaxValue, 25f)
                 .SetSpeedBased();
 
         public void StopIncreasing() =>
@@ -57,7 +57,8 @@ namespace Code.Game
 
         public async UniTask RotateAsync() =>
             await stick.DORotate(new Vector3(0, 0, -90), 0.4f)
-                .SetEase(Ease.InQuart)
+                .SetEase(Ease.InQuad)
+                .SetDelay(0.3f)
                 .WithCancellation(this.GetCancellationTokenOnDestroy()); // .SetSpeedBased()
 
         public class Pool : MonoMemoryPool<StickController> { }

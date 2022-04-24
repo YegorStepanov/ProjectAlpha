@@ -1,17 +1,19 @@
 ﻿using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Triggers;
-using JetBrains.Annotations;
 
 namespace Code.Project
 {
-    public sealed class StartGameButtonTrigger : AwaitableEvent
+    public sealed class StartGameButtonTrigger
     {
         private AsyncPointerClickTrigger trigger;
-        public bool ExistTrigger => trigger != null;
+        
+        public bool IsTriggerExist => trigger != null;
 
-        public void SetTrigger(AsyncPointerClickTrigger _trigger) =>
-            trigger = _trigger;
+        public void SetTrigger(AsyncPointerClickTrigger trigger) =>
+            this.trigger = trigger;
 
-        public UniTask OnClickAsync() => trigger.OnPointerClickAsync();
+        public UniTask OnClickAsync() => trigger != null 
+            ? trigger.OnPointerClickAsync() 
+            : UniTask.CompletedTask;
     }
 }

@@ -16,7 +16,6 @@ namespace Code.Menu
         public void Construct(GameTriggers gameTriggers)
         {
             this.gameTriggers = gameTriggers;
-            //check if we can закрыть trigger
             gameTriggers.StartGameButtonTrigger.SetTrigger(this.GetAsyncPointerClickTrigger());
         }
 

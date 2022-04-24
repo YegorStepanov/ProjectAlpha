@@ -29,20 +29,10 @@ namespace Code.Game.States
             {
                 stateMachine.Enter<GameStartState, GameStartState.Arguments>(
                     new GameStartState.Arguments(args.NextPlatform));
-                
-                
-                // await hero.MoveAsync(args.NextPlatform.Borders.Right);
-                //
-                // await cameraService.MoveAsync(args.NextPlatform.Borders.Left, Relative.Left);
-                //
-                // var newPlatform = platformSpawner.CreateGamePlatform();
-                //
-                // stateMachine.Enter<StickControlState, StickControlState.Arguments>(
-                //     new StickControlState.Arguments(args.NextPlatform, newPlatform));
             }
             else
             {
-                await hero.MoveWithoutStoppingAsync(args.Stick.Borders.Right);
+                await hero.MoveAsync(args.Stick.Borders.Right);
                 await hero.FellAsync();
                 
                 //earthshake screen

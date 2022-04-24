@@ -493,7 +493,6 @@ GameObject:
   - component: {fileID: 7820628208357248074}
   - component: {fileID: 6547398486252144434}
   - component: {fileID: 1764562595203909718}
-  - component: {fileID: 7691213835940612907}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -585,18 +584,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 55
---- !u!114 &7691213835940612907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2790353205905689376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3378f23cb989403c8fbffa3861804e2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3301088476550389678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,6 +1140,7 @@ GameObject:
   - component: {fileID: 3349499961397403223}
   - component: {fileID: 6235258958220147471}
   - component: {fileID: 1568204810412821342}
+  - component: {fileID: 9002166057230270962}
   m_Layer: 5
   m_Name: Play_button
   m_TagString: Untagged
@@ -1276,7 +1264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 2579908631394706737}
-  hoveringRange: 20
+  hoveringRange: 100
   duration: 3
 --- !u!114 &1568204810412821342
 MonoBehaviour:
@@ -1288,6 +1276,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b167e2581d214beeae21fbff8249a172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9002166057230270962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092765655573784852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fce39ffa6404edea9f24f5fc0e432e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6863684392662036571

@@ -36,6 +36,7 @@ namespace Code.Game.States
         {
             await MoveHeroAsync(args.CurrentPlatform);
 
+            await UniTask.Delay(100);
             UniTask moveCameraTask = MoveCameraAsync(args.CurrentPlatform);
 
             IPlatformController nextPlatform = CreateNextPlatform(args.CurrentPlatform);
@@ -58,6 +59,7 @@ namespace Code.Game.States
             float destX = currentPlatform.Borders.Right;
             destX -= stickSpawner.StickWidth / 2f;
             destX -= hero.HandOffset;
+            await UniTask.Delay(200);
             await hero.MoveAsync(destX);
         }
 

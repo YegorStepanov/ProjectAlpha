@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using Code.Project;
+using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Zenject;
 
 namespace Code.Menu
@@ -7,16 +11,28 @@ namespace Code.Menu
     {
         [Inject] private UIManager uiManager;
 
-        public void ShowShopPanel() =>
-            uiManager.ShowShopPanel().Forget();
+        public void Open<TPanel>() where TPanel : struct, IPanel =>
+            uiManager.Show<TPanel>().Forget();
 
-        public void HideShopPanel() =>
-            uiManager.HideShopPanel();
+        public void Close<TPanel>() where TPanel : struct, IPanel =>
+            uiManager.Hide<TPanel>();
 
-        public void ShowHeroSelectorPanel() =>
-            uiManager.ShowHeroSelectorPanel().Forget();
+        public void CloseMainMenu() => uiManager.Unload<MainMenu>();
+        
+        
+        [BoxGroup("Main Menu")] 
+        [HorizontalGroup("Main Menu/b")] [Button("Show")] private void ShowMainMenu() => uiManager.Show<MainMenu>().Forget();
+        [HorizontalGroup("Main Menu/b")] [Button("Hide")] private void HideMainMenu() => uiManager.Hide<MainMenu>();
+        [HorizontalGroup("Main Menu/b")] [Button("Unload")] private void UnloadMainMenu() => uiManager.Unload<MainMenu>();
+        
+        [BoxGroup("Shop Panel")]
+        [HorizontalGroup("Shop Panel/b")] [Button("Show")] private void ShowShopPanel() => uiManager.Show<ShopPanel>().Forget();
+        [HorizontalGroup("Shop Panel/b")] [Button("Hide")] private void HideShopPanel() => uiManager.Hide<ShopPanel>();
+        [HorizontalGroup("Shop Panel/b")] [Button("Unload")] private void UnloadShopPanel() => uiManager.Unload<ShopPanel>();
 
-        public void HideHeroSelectorPanel() =>
-            uiManager.HideHeroSelectorPanel();
+        [BoxGroup("Hero Selector Panel")]
+        [HorizontalGroup("Hero Selector Panel/b")] [Button("Show")] private void ShowHeroSelectorPanel() => uiManager.Show<HeroSelectorPanel>().Forget();
+        [HorizontalGroup("Hero Selector Panel/b")] [Button("Hide")] private void HideHeroSelectorPanel() => uiManager.Hide<HeroSelectorPanel>();
+        [HorizontalGroup("Hero Selector Panel/b")] [Button("Unload")] private void UnloadHeroSelectorPanel() => uiManager.Unload<HeroSelectorPanel>();
     }
 }

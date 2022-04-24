@@ -74,6 +74,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41ac431ae58403d80294ac5885b8b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 4837772697287054860, guid: 7592d5cb0eaa83d4a85c118776fae846,
+  cameraPrefab: {fileID: 4837772697287054860, guid: 7592d5cb0eaa83d4a85c118776fae846,
     type: 3}
-  sceneReferences: {fileID: 11400000, guid: 801386ccd184f1c4f9efae1d997f12c4, type: 2}

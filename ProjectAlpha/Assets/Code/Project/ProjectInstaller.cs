@@ -1,23 +1,16 @@
-﻿using Code.Common;
-using Code.Menu;
+﻿using Code.Menu;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace Code.Project
 {
     public sealed class ProjectInstaller : MonoInstaller
     {
-        [FormerlySerializedAs("camera")]
-        [Required, SerializeField]
-        private Camera mainCamera;
-
-        [Required, SerializeField]
-        private SceneReferences sceneReferences;
-
+        [Required, AssetsOnly, SerializeField]
+        private Camera cameraPrefab;
+        
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         public static void InitUniTaskLoop()
         {
@@ -26,41 +19,42 @@ namespace Code.Project
             //PlayerLoopHelper.Initialize(ref loop, InjectPlayerLoopTimings.Minimum);
         }
 
-        private void Awake()
-        {
+        private void Awake() =>
             DOTween.Init();
-        }
 
         public override void InstallBindings()
         {
-            Debug.Log("ProjectInstaller.InstallBindings" + ": " + Time.frameCount);
-            //how many frames it takes to load a GAME scene
+            RegisterCamera();
 
-            // RegisterCamera();
+            RegisterSceneLoader();
 
-            Container.Bind<Camera>()
-                .FromComponentInNewPrefab(mainCamera)
-                .WithGameObjectName("Camera")
-                .AsSingle();
+            // RegisterScreenSizeChecker();
 
-            Container.BindInstance(sceneReferences);
+            RegisterGameTriggers();
 
-            Container.Bind<SceneLoader>().AsSingle();
-
-            Container.BindInterfacesAndSelfTo<ScreenSizeChecker>().AsSingle();
-
-            Container.Bind<GameTriggers>().AsSingle();
+            RegisterAddressableFactory();
         }
 
-        private void RegisterCamera()
-        {
+        private void RegisterCamera() =>
             Container.Bind<Camera>()
-                .FromComponentInNewPrefab(mainCamera)
-                .WithGameObjectName("Camera");
-            //
-            //                 Camera cam = Instantiate(mainCamera);
-            // DontDestroyOnLoad(cam); //exception on editor zenject validation 
-            // Container.BindInstance(cam);
+                .FromComponentInNewPrefab(cameraPrefab)
+                .WithGameObjectName("Camera")
+                .AsSingle()
+                .NonLazy();
+
+        private void RegisterSceneLoader() =>
+            Container.Bind<SceneLoader>().AsSingle();
+
+        private void RegisterScreenSizeChecker() =>
+            Container.BindInterfacesAndSelfTo<ScreenSizeChecker>().AsSingle();
+
+        private void RegisterGameTriggers() =>
+            Container.Bind<GameTriggers>().AsSingle();
+
+        private void RegisterAddressableFactory()
+        {
+            Transform transformInThisScene = transform;
+            Container.Bind<AddressableFactory>().AsSingle().WithArguments(transformInThisScene);
         }
     }
 }

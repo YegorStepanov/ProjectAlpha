@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using Zenject;
 
 namespace Code.Project
@@ -35,7 +36,6 @@ namespace Code.Project
             await (menuLoading, gameLoading);
 
             await loadingScreen.HideAsync();
-            
             await sceneLoader.UnloadAsync<BootstrapScene>(token);
         }
     }

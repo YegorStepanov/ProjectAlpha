@@ -1,50 +1,71 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Code.Common;
 using Cysharp.Threading.Tasks;
+using Sirenix.Utilities;
+using UnityEditor.SearchService;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using Zenject;
+using Scene = UnityEngine.SceneManagement.Scene;
 
 namespace Code.Project
 {
     public sealed class SceneLoader
     {
-        private readonly ZenjectSceneLoader sceneLoader;
-        private readonly SceneReferences sceneReferences;
+        private readonly AddressableZenjectSceneLoader sceneLoader;
 
-        public SceneLoader(ZenjectSceneLoader sceneLoader, SceneReferences sceneReferences)
+        private readonly Dictionary<Address, SceneInstance> scenes = new();
+
+        private readonly string startupSceneName;
+
+        public SceneLoader([InjectOptional] SceneContext sceneRoot)
         {
-            this.sceneLoader = sceneLoader;
-            this.sceneReferences = sceneReferences;
+            sceneLoader = new AddressableZenjectSceneLoader(sceneRoot);
+            startupSceneName = SceneManager.GetActiveScene().name;
         }
 
-        public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
+        public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene =>
+            LoadAsync(GetAddress<TScene>(), token);
+
+        public UniTask UnloadAsync<TScene>(CancellationToken token) where TScene : struct, IScene =>
+            UnloadAsync(GetAddress<TScene>(), token);
+
+        private async UniTask LoadAsync(Address sceneAddress, CancellationToken token)
         {
-            SceneReference reference = Reference<TScene>();
-            return LoadAsync(reference.ScenePath, token);
+            SceneInstance scene = await sceneLoader.LoadSceneAdditiveAsync(sceneAddress.Key).WithCancellation(token);
+            scenes.Add(sceneAddress, scene);
         }
 
-        public UniTask UnloadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
+        private async UniTask UnloadAsync(Address sceneAddress, CancellationToken token)
         {
-            SceneReference reference = Reference<TScene>();
-            return UnloadAsync(reference.ScenePath, token);
+            if (scenes.TryGetValue(sceneAddress, out SceneInstance scene))
+            {
+                scenes.Remove(sceneAddress);
+                await Addressables.UnloadSceneAsync(scene).WithCancellation(token);
+            }
+            else
+            {
+                //todo: find a better solution
+                SceneManager.UnloadSceneAsync(startupSceneName);
+            }
         }
 
-        public async UniTask LoadAsync(string sceneName, CancellationToken token) =>
-            await sceneLoader.LoadSceneAsync(sceneName, LoadSceneMode.Additive, containerMode: LoadSceneRelationship.Child).WithCancellation(token);
-
-        public async UniTask UnloadAsync(string sceneName, CancellationToken token) =>
-            await SceneManager.UnloadSceneAsync(sceneName).WithCancellation(token);
-
-        private SceneReference Reference<TScene>() where TScene : struct, IScene => typeof(TScene) switch
+        private static Address GetAddress<TScene>() where TScene : struct, IScene => typeof(TScene) switch
         {
-            Type t when t == typeof(BootstrapScene) => sceneReferences.BootstrapScene,
-            Type t when t == typeof(MenuScene) => sceneReferences.MenuScene,
-            Type t when t == typeof(GameScene) => sceneReferences.GameScene,
-            Type t when t == typeof(MiniGameScene) => sceneReferences.MiniGameScene,
+            Type t when t == typeof(BootstrapScene) => SceneAddress.Bootstrap,
+            Type t when t == typeof(MenuScene) => SceneAddress.Menu,
+            Type t when t == typeof(GameScene) => SceneAddress.Game,
+            Type t when t == typeof(MiniGameScene) => SceneAddress.MiniGame,
             _ => throw new ArgumentOutOfRangeException(typeof(TScene).FullName)
         };
     }
+
 
     public interface IScene { }
 

@@ -10,24 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Scenes
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Scenes
   m_Data:
     m_SerializedData: []
-  m_GUID: 57425a48cdf3d6143bf7e3a7bf225b50
+  m_GUID: 2b44b717365a139408601806e1e1cecf
   m_SerializeEntries:
-  - m_GUID: b246c956afb460648870811b484710f5
-    m_Address: Main Menu
+  - m_GUID: 7454df173ccdc58418366d58d323ec15
+    m_Address: Menu
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 7592d5cb0eaa83d4a85c118776fae846
-    m_Address: Assets/Prefabs/Zen/Main Camera.prefab
+  - m_GUID: 72a6e95e56b73fb458076886f6f1cd1a
+    m_Address: Game
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ccc1a0cda314f694da5441df81797a92
+    m_Address: Bootstrap
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0f4399c1e47a2f541b59e585801a7440, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: ee87f6c42b2137c4ebce1a6728cc2d9c, type: 2}
-    - {fileID: 11400000, guid: 89decae011d8d9b4087501c1aa96344b, type: 2}
+    - {fileID: 11400000, guid: 479a83df5e66456438c114a9f0bc1005, type: 2}
+    - {fileID: 11400000, guid: c224387f5fa83384890096b289c7a61e, type: 2}
