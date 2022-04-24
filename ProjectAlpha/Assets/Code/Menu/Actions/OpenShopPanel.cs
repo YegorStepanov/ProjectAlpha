@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 
 namespace Code.Menu

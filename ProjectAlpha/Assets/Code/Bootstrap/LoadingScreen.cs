@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-using Code.Game.States;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Triggers;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
-using Debug = UnityEngine.Debug;
 
 namespace Code.Project
 {

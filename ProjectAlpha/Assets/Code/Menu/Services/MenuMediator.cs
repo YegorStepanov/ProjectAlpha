@@ -1,8 +1,5 @@
-﻿using Code.Project;
-using Cysharp.Threading.Tasks;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using Zenject;
 
 namespace Code.Menu

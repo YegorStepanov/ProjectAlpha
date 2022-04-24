@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Game.States;
-using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
-using UnityEngine;
 using Zenject;
 
 namespace Code.Game
