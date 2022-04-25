@@ -1,13 +1,11 @@
 ﻿using System.ComponentModel;
-using Code.Common;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Code.Extensions
+namespace Code
 {
     public static class BordersExtensions
     {
-        
         public static float TransformPointX(this Borders borders, float pointX, Relative relative) =>
             borders.TransformPoint(new Vector2(pointX, 0), relative).x;
 
@@ -22,7 +20,7 @@ namespace Code.Extensions
         {
             float halfHeight = borders.Height / 2f;
             float halfWidth = borders.Width / 2f;
-            
+
             return relative switch
             {
                 Relative.Center => point,

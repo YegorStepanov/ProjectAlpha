@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Extensions
+namespace Code
 {
     public static class VectorExtensions
     {

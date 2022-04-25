@@ -1,7 +1,6 @@
-﻿using Code.Common;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Code.Extensions
+namespace Code
 {
     public static class BoundsExtensions
     {

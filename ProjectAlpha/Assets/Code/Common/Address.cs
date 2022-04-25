@@ -1,12 +1,14 @@
 ﻿using System;
 
-namespace Code.Project
+namespace Code
 {
-    public readonly struct Address: IComparable<Address>, IEquatable<Address>
+    //Key?
+    public readonly struct Address : IComparable<Address>, IEquatable<Address>
     {
         public readonly string Key;
 
-        private Address(string key) => Key = key;
+        private Address(string key) =>
+            Key = key;
 
         public int CompareTo(Address other) =>
             string.Compare(Key, other.Key, StringComparison.Ordinal);
@@ -20,12 +22,6 @@ namespace Code.Project
         public override int GetHashCode() =>
             Key.GetHashCode();
 
-        // public static bool operator ==(Address left, Address right) =>
-        //     left.Equals(right);
-        //
-        // public static bool operator !=(Address left, Address right) =>
-        //     !left.Equals(right);
-        
         public static implicit operator Address(string key) => new(key);
     }
 }

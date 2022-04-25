@@ -1,4 +1,4 @@
-namespace Code.Common
+namespace Code
 {
     public readonly struct Ratio
     {
