@@ -5,11 +5,10 @@ namespace Code.States
 {
     public sealed class StickControlState : IArgState<StickControlState.Arguments>
     {
-        public sealed record Arguments(IPlatformController CurrentPlatform, IPlatformController NextPlatform);
+        private readonly InputManager inputManager;
 
         private readonly GameStateMachine stateMachine;
         private readonly StickSpawner stickSpawner;
-        private readonly InputManager inputManager;
 
         public StickControlState(GameStateMachine stateMachine, StickSpawner stickSpawner, InputManager inputManager)
         {
@@ -36,5 +35,17 @@ namespace Code.States
         }
 
         public void Exit() { }
+
+        public sealed class Arguments
+        {
+            public Arguments(IPlatformController currentPlatform, IPlatformController nextPlatform)
+            {
+                CurrentPlatform = currentPlatform;
+                NextPlatform = nextPlatform;
+            }
+
+            public IPlatformController CurrentPlatform { get; }
+            public IPlatformController NextPlatform { get; }
+        }
     }
 }

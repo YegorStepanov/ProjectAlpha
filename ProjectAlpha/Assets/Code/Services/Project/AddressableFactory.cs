@@ -10,20 +10,28 @@ using Zenject;
 
 namespace Code.Services
 {
-    public class AddressableFactory: IDisposable
+    public class AddressableFactory : IDisposable
     {
+        //rename
+        private readonly Dictionary<object, object> assetToHandle = new Dictionary<object, object>();
         private readonly DiContainer container;
         private readonly Transform installerTransform;
 
-        //rename
-        private readonly Dictionary<object, object> assetToHandle = new();
-        
-        
+
         public AddressableFactory(DiContainer container, Transform installerTransform)
         {
             this.container = container;
             this.installerTransform = installerTransform;
             // todo: Addressables.InitializeAsync() somewhere
+        }
+
+        public void Dispose()
+        {
+            //replace to .Values
+            foreach (object handle in assetToHandle.Values)
+                Addressables.Release(handle);
+
+            assetToHandle.Clear();
         }
 
         public async UniTask<GameObject> InstantiateAsync(Address address)
@@ -52,19 +60,10 @@ namespace Code.Services
         public void ReleaseAsset<T>(T asset) where T : class
         {
             if (asset == null) return;
-            
+
             var handle = (AsyncOperationHandle<T>)assetToHandle[asset];
             assetToHandle.Remove(asset);
             Addressables.Release(handle);
-        }
-
-        public void Dispose()
-        {
-            //replace to .Values
-            foreach (object handle in assetToHandle.Values) 
-                Addressables.Release(handle);
-            
-            assetToHandle.Clear();
         }
     }
 }

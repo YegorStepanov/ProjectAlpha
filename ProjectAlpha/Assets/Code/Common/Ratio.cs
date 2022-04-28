@@ -9,6 +9,6 @@ namespace Code
             (Min, Max) = (min, max);
 
         public static Ratio operator *(Ratio ratio, float value) =>
-            new(ratio.Min * value, ratio.Max * value);
+            new Ratio(ratio.Min * value, ratio.Max * value);
     }
 }

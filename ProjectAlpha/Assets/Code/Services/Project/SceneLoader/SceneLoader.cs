@@ -13,7 +13,7 @@ namespace Code.Services
     {
         private readonly AddressableZenjectSceneLoader sceneLoader;
 
-        private readonly Dictionary<Address, SceneInstance> scenes = new();
+        private readonly Dictionary<Address, SceneInstance> scenes = new Dictionary<Address, SceneInstance>();
 
         private readonly string startupSceneName;
 

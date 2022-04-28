@@ -22,6 +22,6 @@ namespace Code
         public override int GetHashCode() =>
             Key.GetHashCode();
 
-        public static implicit operator Address(string key) => new(key);
+        public static implicit operator Address(string key) => new Address(key);
     }
 }

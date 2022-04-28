@@ -1,0 +1,6 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Publish Tests" type="DotNetFolderPublish" factoryName="Publish to folder">
+    <riderPublish configuration="Release" platform="Any CPU" runtime="Portable" target_folder="$PROJECT_DIR$/publish/netstandard2.0/Tests" target_framework="netstandard2.0" uuid_high="-6515293779376257252" uuid_low="-4757638547169298277" />
+    <method v="2" />
+  </configuration>
+</component>

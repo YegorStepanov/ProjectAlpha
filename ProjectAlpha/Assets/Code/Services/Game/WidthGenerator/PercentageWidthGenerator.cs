@@ -49,7 +49,7 @@ namespace Code.Services
         private Ratio NextRatio(Ratio ratio) =>
             ratio * (1f - ReductionRatioPerStep);
 
-        private Ratio LimitByThreshold(Ratio ratio) => new(
+        private Ratio LimitByThreshold(Ratio ratio) => new Ratio(
             ratio.Min < MinThreshold ? MinThreshold : ratio.Min,
             ratio.Max < MaxThreshold ? MaxThreshold : ratio.Max);
     }

@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 using UnityEngine;
 using Zenject;
 
-public class MyUnitTest : ZenjectUnitTestFixture
+public sealed class MyUnitTest : ZenjectUnitTestFixture
 {
     [Test]
-    void Test1() { }
+    public void Test1()
+    {
+        1.Should().Be(1);
+    }
 }

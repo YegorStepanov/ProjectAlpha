@@ -4,8 +4,8 @@ namespace Code.Services
 {
     public sealed class PlatformSpawner
     {
-        private readonly PlatformController.Pool pool;
         private readonly CameraController cameraController;
+        private readonly PlatformController.Pool pool;
 
         public PlatformSpawner(PlatformController.Pool pool, CameraController cameraController)
         {
@@ -19,7 +19,7 @@ namespace Code.Services
 
             float height = cameraController.Borders.TransformPointY(position.y, Relative.Bottom);
 
-            Vector2 size = new(width, height);
+            Vector2 size = new Vector2(width, height);
             platform.SetSize(size);
 
             position = platform.Borders.TransformPoint(position, relative);

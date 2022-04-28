@@ -4,6 +4,6 @@ namespace Code.Services
 {
     public sealed class GameTriggers
     {
-        public StartGameTrigger StartGameTrigger { get; } = new();
+        public StartGameTrigger StartGameTrigger { get; } = new StartGameTrigger();
     }
 }

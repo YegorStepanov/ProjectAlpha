@@ -17,17 +17,17 @@ namespace Code.Services
 
         private BackgroundChanger backgroundChanger;
 
-        
+
         public Borders Borders => UpdateBorders();
 
         public Vector3 CameraPosition => baseCamera.transform.position;
 
+        public void Dispose() =>
+            backgroundChanger?.Dispose();
+
         [Inject]
         public void Construct(AddressableFactory factory) =>
             backgroundChanger = new BackgroundChanger(factory, backgroundImage);
-
-        public void Dispose() =>
-            backgroundChanger?.Dispose();
 
         public UniTask ChangeBackgroundAsync() =>
             backgroundChanger.ChangeToRandomBackgroundAsync();
@@ -70,10 +70,10 @@ namespace Code.Services
             Vector2 bottomLeftCorner = baseCamera.ViewportToWorldPoint(Vector2.zero);
 
             return new Borders(
-                Top: topRightCorner.y,
-                Right: topRightCorner.x,
-                Bottom: bottomLeftCorner.y,
-                Left: bottomLeftCorner.x
+                top: topRightCorner.y,
+                right: topRightCorner.x,
+                bottom: bottomLeftCorner.y,
+                left: bottomLeftCorner.x
             );
         }
 

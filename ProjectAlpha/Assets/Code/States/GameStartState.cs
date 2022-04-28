@@ -7,12 +7,11 @@ namespace Code.States
 {
     public sealed class GameStartState : IArgState<GameStartState.Arguments>
     {
-        public sealed record Arguments(IPlatformController CurrentPlatform);
-
-        private readonly GameStateMachine stateMachine;
         private readonly CameraController cameraController;
         private readonly IHeroController hero;
         private readonly PlatformSpawner platformSpawner;
+
+        private readonly GameStateMachine stateMachine;
         private readonly StickSpawner stickSpawner;
         private readonly WidthGenerator widthGenerator;
 
@@ -48,9 +47,11 @@ namespace Code.States
                 new StickControlState.Arguments(args.CurrentPlatform, nextPlatform));
         }
 
+        public void Exit() { }
+
         private async UniTask MoveCameraAsync(IPlatformController currentPlatform)
         {
-            Vector2 destination = new(currentPlatform.Borders.Left, currentPlatform.Borders.Bottom);
+            Vector2 destination = new Vector2(currentPlatform.Borders.Left, currentPlatform.Borders.Bottom);
             await cameraController.MoveAsync(destination, Relative.LeftBottom);
         }
 
@@ -66,7 +67,7 @@ namespace Code.States
         private IPlatformController CreateNextPlatform(IPlatformController currentPlatform)
         {
             float leftCameraBorderToPlatformDistance = currentPlatform.Borders.Left - cameraController.Borders.Left;
-            Vector2 position = new(
+            Vector2 position = new Vector2(
                 cameraController.Borders.Right + leftCameraBorderToPlatformDistance,
                 currentPlatform.Borders.Top);
 
@@ -88,7 +89,13 @@ namespace Code.States
             await nextPlatform.MoveAsync(posX);
         }
 
-        public void Exit() { }
+        public sealed class Arguments
+        {
+            public Arguments(IPlatformController currentPlatform) =>
+                CurrentPlatform = currentPlatform;
+
+            public IPlatformController CurrentPlatform { get; }
+        }
     }
 
     public sealed class StickBuildingState
