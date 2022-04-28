@@ -2,42 +2,49 @@
 using Code.Game;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Code.Services
 {
-    public sealed class CameraService : IInitializable, IDisposable
+    [RequireComponent(typeof(Camera))]
+    public sealed class CameraController : MonoBehaviour, IDisposable
     {
-        private readonly Camera camera;
-        private readonly GameSettings gameSettings;
-        // private readonly ScreenSizeChecker screenSizeChecker;
+        [Required, SerializeField] private Camera baseCamera;
+        [Required, SerializeField] private Image backgroundImage;
 
+        private BackgroundChanger backgroundChanger;
+
+        
         public Borders Borders => UpdateBorders();
 
-        public Vector3 CameraPosition => camera.transform.position;
+        public Vector3 CameraPosition => baseCamera.transform.position;
 
-        public CameraService(Camera camera, GameSettings gameSettings)
-        {
-            this.camera = camera;
-            this.gameSettings = gameSettings;
-            
-            // screenSizeChecker.OnScreenResized += UpdateBorders;
-        }
+        [Inject]
+        public void Construct(AddressableFactory factory) =>
+            backgroundChanger = new BackgroundChanger(factory, backgroundImage);
 
-        void IInitializable.Initialize()
-        {
-            // UpdateBorders(screenSizeChecker.ScreenSize);
-        }
+        public void Dispose() =>
+            backgroundChanger?.Dispose();
 
-        void IDisposable.Dispose()
-        {
-            // screenSizeChecker.OnScreenResized -= UpdateBorders;
-        }
+        public UniTask ChangeBackgroundAsync() =>
+            backgroundChanger.ChangeToRandomBackgroundAsync();
+
+        //
+        // void IInitializable.Initialize()
+        // {
+        //     // UpdateBorders(screenSizeChecker.ScreenSize);
+        // }
+        //
+        // void IDisposable.Dispose()
+        // {
+        //     // screenSizeChecker.OnScreenResized -= UpdateBorders;
+        // }
 
         public async UniTask ShiftAsync(Vector2 offset) =>
             await MoveAsync(CameraPosition.ShiftXY(-offset));
-
 
         public async UniTask MoveAsync(float destinationX, Relative relative = Relative.Center)
         {
@@ -55,12 +62,12 @@ namespace Code.Services
             Borders.TransformPoint(position, relative);
 
         private async UniTask MoveAsync(Vector3 destination) =>
-            await camera.transform.DOMove(destination, 0.3f);
+            await baseCamera.transform.DOMove(destination, 0.3f);
 
         private Borders UpdateBorders()
         {
-            Vector2 topRightCorner = camera.ViewportToWorldPoint(Vector2.one);
-            Vector2 bottomLeftCorner = camera.ViewportToWorldPoint(Vector2.zero);
+            Vector2 topRightCorner = baseCamera.ViewportToWorldPoint(Vector2.one);
+            Vector2 bottomLeftCorner = baseCamera.ViewportToWorldPoint(Vector2.zero);
 
             return new Borders(
                 Top: topRightCorner.y,
@@ -71,21 +78,29 @@ namespace Code.Services
         }
 
         public Vector2 ViewportToWorldPosition(Vector2 viewportPosition) =>
-            camera.ViewportToWorldPoint(viewportPosition);
+            baseCamera.ViewportToWorldPoint(viewportPosition);
 
         // public float WorldHeight() =>
+
         //     camera.orthographicSize * 2;
+
         //
+
         // public float WorldWidth() =>
+
         //     camera.orthographicSize * camera.aspect * 2;
+
 
         private float OffsetToLeftCameraBorder() =>
             -ViewportToWorldPosition(Vector2.zero).x;
 
         private float MenuPlatformOffsetToLeftBorder() => 0f;
+
         // -gameSettings.MenuPlatformWidth / 2f;
 
+
         private float MenuToGamePlatformOffsetY() => 0f;
+
         // gameSettings.GamePlatformPositionY - gameSettings.MenuPlatformPositionY;
     }
 }

@@ -17,12 +17,20 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 0f12c1fb9794af04c8bab24522570ead
   m_SerializeEntries:
-  - m_GUID: dae4a1de4656c824aaf94d92d69ea3fd
+  - m_GUID: 16cda54b91d6bc445b7e07f5703b77fe
     m_Address: Shop Panel
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 703c86cca18f2aa4fa0679d57334e2b6
+  - m_GUID: 798635d1f1d26434782c93c1fed31bf1
     m_Address: Hero Selector Panel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 204094d8c8689d14dbecd9570afef851
+    m_Address: Loading Screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2884972968652d44ab58a653f57aba4d
+    m_Address: Main Menu
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

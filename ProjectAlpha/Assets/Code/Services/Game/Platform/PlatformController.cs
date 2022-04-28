@@ -7,7 +7,6 @@ namespace Code.Services
 {
     public interface IPlatformController
     {
-        void Construct(CameraService cameraService);
         void SetPosition(Vector2 position);
         void SetSize(Vector2 scale);
         Vector2 Position { get; }
@@ -21,17 +20,9 @@ namespace Code.Services
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
 
-        private CameraService cameraService;
-
         public Vector2 Position => transform.position;
 
         public Borders Borders => spriteRenderer.bounds.AsBorders();
-
-        [Inject]
-        public void Construct(CameraService _cameraService)
-        {
-            cameraService = _cameraService;
-        }
 
         public void SetPosition(Vector2 position)
         {

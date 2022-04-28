@@ -6,15 +6,16 @@ namespace Code.Triggers
     public sealed class StartGameTrigger
     {
         private AsyncPointerClickTrigger trigger;
-        
+
         public bool IsTriggerExist => trigger != null;
 
         public void SetTrigger(AsyncPointerClickTrigger trigger) =>
             this.trigger = trigger;
 
-        public UniTask OnClickAsync()
+        public async UniTask OnClickAsync()
         {
-            return trigger.OnPointerClickAsync();
+            await UniTask.WaitWhile(() => trigger == null);
+            await trigger.OnPointerClickAsync();
         }
     }
 }

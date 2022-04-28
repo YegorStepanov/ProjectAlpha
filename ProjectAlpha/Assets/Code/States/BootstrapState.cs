@@ -10,26 +10,26 @@ namespace Code.States
         private readonly PlatformSpawner platformSpawner;
         private readonly WidthGenerator widthGenerator;
         private readonly IHeroController hero;
-        private readonly CameraService cameraService;
+        private readonly CameraController cameraController;
         private readonly GameTriggers gameTriggers;
-        private readonly EditorStartSceneInformer editorStartSceneInformer;
+        private readonly StartSceneInformer startSceneInformer;
 
         public BootstrapState(
             GameStateMachine stateMachine,
             PlatformSpawner platformSpawner,
             WidthGenerator widthGenerator,
             IHeroController hero,
-            CameraService cameraService, 
+            CameraController cameraController, 
             GameTriggers gameTriggers,
-            EditorStartSceneInformer editorStartSceneInformer)
+            StartSceneInformer startSceneInformer)
         {
             this.stateMachine = stateMachine;
             this.platformSpawner = platformSpawner;
             this.widthGenerator = widthGenerator;
             this.hero = hero;
-            this.cameraService = cameraService;
+            this.cameraController = cameraController;
             this.gameTriggers = gameTriggers;
-            this.editorStartSceneInformer = editorStartSceneInformer;
+            this.startSceneInformer = startSceneInformer;
         }
 
         public class Settings
@@ -48,14 +48,18 @@ namespace Code.States
             Debug.Log("BootstrapState.Enter" + ": " + Time.frameCount);
             widthGenerator.Reset();
 
-            Vector2 platformPosition = cameraService.ViewportToWorldPosition(new Vector2(0.5f, 0.2f));
+            UniTask loadBackgroundTask = cameraController.ChangeBackgroundAsync();
+
+            Vector2 platformPosition = cameraController.ViewportToWorldPosition(new Vector2(0.5f, 0.2f));
             IPlatformController menuPlatform = platformSpawner.CreatePlatform(platformPosition, 2f, Relative.Center);
 
             hero.TeleportTo(menuPlatform.Position, Relative.Left);
 
-            if(!editorStartSceneInformer.IsGameStartScene)
+            if(!startSceneInformer.IsGameStartScene)
                 await gameTriggers.StartGameTrigger.OnClickAsync();
 
+            await loadBackgroundTask;
+            
             stateMachine.Enter<GameStartState, GameStartState.Arguments>(
                 new GameStartState.Arguments(menuPlatform));
 

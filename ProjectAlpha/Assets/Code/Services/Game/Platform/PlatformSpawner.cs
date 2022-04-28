@@ -5,19 +5,19 @@ namespace Code.Services
     public sealed class PlatformSpawner
     {
         private readonly PlatformController.Pool pool;
-        private readonly CameraService cameraService;
+        private readonly CameraController cameraController;
 
-        public PlatformSpawner(PlatformController.Pool pool, CameraService cameraService)
+        public PlatformSpawner(PlatformController.Pool pool, CameraController cameraController)
         {
             this.pool = pool;
-            this.cameraService = cameraService;
+            this.cameraController = cameraController;
         }
 
         public IPlatformController CreatePlatform(Vector2 position, float width, Relative relative)
         {
             PlatformController platform = pool.Spawn();
 
-            float height = cameraService.Borders.TransformPointY(position.y, Relative.Bottom);
+            float height = cameraController.Borders.TransformPointY(position.y, Relative.Bottom);
 
             Vector2 size = new(width, height);
             platform.SetSize(size);

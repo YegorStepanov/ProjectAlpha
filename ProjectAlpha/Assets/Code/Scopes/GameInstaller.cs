@@ -28,7 +28,6 @@ namespace Code.Scopes
             base.InstallBindings();
             
             
-            RegisterCameraService();
 
             RegisterWidthGenerator();
 
@@ -99,7 +98,5 @@ namespace Code.Scopes
         private void RegisterWidthGenerator() =>
             Container.BindInstance(widthGenerator);
 
-        private void RegisterCameraService() =>
-            Container.BindInterfacesAndSelfTo<CameraService>().AsSingle();
     }
 }

@@ -8,7 +8,7 @@ namespace Code.Scopes
     public sealed class ProjectInstaller : BaseInstaller<ProjectInitializer>
     {
         [Required, AssetsOnly, SerializeField]
-        private Camera cameraPrefab;
+        private CameraController CameraController;
         
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         public static void InitUniTaskLoop()
@@ -25,22 +25,21 @@ namespace Code.Scopes
         {
             base.InstallBindings();
             
-            RegisterCamera();
-
             RegisterSceneLoader();
 
+            RegisterCamera();
             // RegisterScreenSizeChecker();
 
             RegisterGameTriggers();
 
             RegisterInputManager();
 
-            Container.Bind<EditorStartSceneInformer>().AsSingle().NonLazy();
+            Container.Bind<StartSceneInformer>().AsSingle().NonLazy();
         }
         
-        private void RegisterCamera() => //todo: it should be private
-            Container.Bind<Camera>()
-                .FromComponentInNewPrefab(cameraPrefab)
+        private void RegisterCamera() =>
+            Container.Bind<CameraController>()
+                .FromComponentInNewPrefab(CameraController)
                 .WithGameObjectName("Camera")
                 .AsSingle()
                 .NonLazy();

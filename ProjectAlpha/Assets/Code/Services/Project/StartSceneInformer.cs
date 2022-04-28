@@ -2,12 +2,10 @@
 
 namespace Code.Services
 {
-    public sealed class EditorStartSceneInformer
+    public sealed class StartSceneInformer
     {
-        public bool IsGameStartScene { get; }
-
-        public EditorStartSceneInformer() =>
-            IsGameStartScene = GetIsGameStartScene();
+        //without ctor it evaluate property lazy? Why?
+        public bool IsGameStartScene { get; } = GetIsGameStartScene();
 
         private static bool GetIsGameStartScene()
         {

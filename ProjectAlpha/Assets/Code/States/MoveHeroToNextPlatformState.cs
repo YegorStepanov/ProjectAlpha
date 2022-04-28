@@ -7,7 +7,6 @@ namespace Code.States
     {
         private readonly GameStateMachine stateMachine;
         private readonly IHeroController hero;
-        private readonly CameraService cameraService;
         private readonly PlatformSpawner platformSpawner;
 
         public sealed record Arguments(IPlatformController CurrentPlatform, IPlatformController NextPlatform,
@@ -16,12 +15,10 @@ namespace Code.States
         public MoveHeroToNextPlatformState(
             GameStateMachine stateMachine,
             IHeroController hero,
-            CameraService cameraService,
             PlatformSpawner platformSpawner)
         {
             this.stateMachine = stateMachine;
             this.hero = hero;
-            this.cameraService = cameraService;
             this.platformSpawner = platformSpawner;
         }
 

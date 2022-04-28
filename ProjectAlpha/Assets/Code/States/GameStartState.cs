@@ -10,7 +10,7 @@ namespace Code.States
         public sealed record Arguments(IPlatformController CurrentPlatform);
 
         private readonly GameStateMachine stateMachine;
-        private readonly CameraService cameraService;
+        private readonly CameraController cameraController;
         private readonly IHeroController hero;
         private readonly PlatformSpawner platformSpawner;
         private readonly StickSpawner stickSpawner;
@@ -18,14 +18,14 @@ namespace Code.States
 
         public GameStartState(
             GameStateMachine stateMachine,
-            CameraService cameraService,
+            CameraController cameraController,
             IHeroController hero,
             PlatformSpawner platformSpawner,
             StickSpawner stickSpawner,
             WidthGenerator widthGenerator)
         {
             this.stateMachine = stateMachine;
-            this.cameraService = cameraService;
+            this.cameraController = cameraController;
             this.hero = hero;
             this.platformSpawner = platformSpawner;
             this.stickSpawner = stickSpawner;
@@ -51,7 +51,7 @@ namespace Code.States
         private async UniTask MoveCameraAsync(IPlatformController currentPlatform)
         {
             Vector2 destination = new(currentPlatform.Borders.Left, currentPlatform.Borders.Bottom);
-            await cameraService.MoveAsync(destination, Relative.LeftBottom);
+            await cameraController.MoveAsync(destination, Relative.LeftBottom);
         }
 
         private async UniTask MoveHeroAsync(IPlatformController currentPlatform)
@@ -65,9 +65,9 @@ namespace Code.States
 
         private IPlatformController CreateNextPlatform(IPlatformController currentPlatform)
         {
-            float leftCameraBorderToPlatformDistance = currentPlatform.Borders.Left - cameraService.Borders.Left;
+            float leftCameraBorderToPlatformDistance = currentPlatform.Borders.Left - cameraController.Borders.Left;
             Vector2 position = new(
-                cameraService.Borders.Right + leftCameraBorderToPlatformDistance,
+                cameraController.Borders.Right + leftCameraBorderToPlatformDistance,
                 currentPlatform.Borders.Top);
 
             return platformSpawner.CreatePlatform(position, widthGenerator.NextWidth(), Relative.Left);
