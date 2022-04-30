@@ -6,5 +6,6 @@ public static class MenuAddress
     public static readonly Address MainMenu = "Main Menu";
     public static readonly Address ShopPanel = "Shop Panel";
     public static readonly Address HeroSelectorPanel = "Hero Selector Panel";
-    public static readonly Address BackgroundPanel = "Background Panel"; //remove
+
+    //Loading Screen?
 }
