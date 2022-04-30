@@ -24,14 +24,15 @@ namespace Code.UI.Animations
         }
 
         private UniTask MoveToAnimationStartAsync(CancellationToken token) =>
-            rectTransform.DOAnchorPosY(-HalfRange, duration / 2)
-                .SetRelative()
-                .WithCancellation(token);
+            default;
+        //rectTransform.DOAnchorPosY(-HalfRange, duration / 2)
+        //    .SetRelative()
+        //    .WithCancellation(token);
 
-        private void StartCyclicAnimationAsync(CancellationToken token) =>
-            rectTransform.DOAnchorPosY(2 * HalfRange, duration)
-                .SetRelative()
-                .SetLoops(-1, LoopType.Yoyo)
-                .SetEase(Ease.InOutQuad).WithCancellation(token);
+        private void StartCyclicAnimationAsync(CancellationToken token) { }
+        //    rectTransform.DOAnchorPosY(2 * HalfRange, duration)
+        //        .SetRelative()
+        //        .SetLoops(-1, LoopType.Yoyo)
+        //        .SetEase(Ease.InOutQuad).WithCancellation(token);
     }
 }

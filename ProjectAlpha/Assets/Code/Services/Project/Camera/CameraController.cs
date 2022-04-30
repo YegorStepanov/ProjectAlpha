@@ -12,6 +12,8 @@ namespace Code.Services
     [RequireComponent(typeof(Camera))]
     public sealed class CameraController : MonoBehaviour, IDisposable
     {
+        //public record struct LLL;
+
         [Required, SerializeField] private Camera baseCamera;
         [Required, SerializeField] private Image backgroundImage;
 

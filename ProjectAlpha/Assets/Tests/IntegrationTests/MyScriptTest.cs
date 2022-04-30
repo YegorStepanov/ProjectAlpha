@@ -16,11 +16,11 @@ namespace Tests
         }
 
         [Test]
-        public void MyTest1() {}
-            // MyScript.UnitTaskName.Should().Be("UniTask");
+        public void MyTest1() { }
+        // MyScript.UnitTaskName.Should().Be("UniTask");
 
         [Test]
-        public void MyTest2() {}
-            // MyScript.UnitTaskName.Should().Be("UniTask1");
+        public void MyTest2() { }
+        // MyScript.UnitTaskName.Should().Be("UniTask1");
     }
 }

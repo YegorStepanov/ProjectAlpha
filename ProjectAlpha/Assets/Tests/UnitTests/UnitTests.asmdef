@@ -56,10 +56,10 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll",
-        "DOTween.dll",
-        "DOTweenEditor.dll",
-        "FluentAssertions.dll",
+      "nunit.framework.dll",
+      "DOTween.dll",
+      "DOTweenEditor.dll",
+      "FluentAssertions.dll",
       "NSubstitute.dll",
       "Sirenix.OdinInspector.Attributes.dll",
       "Sirenix.OdinInspector.Editor.dll",
@@ -81,7 +81,10 @@
       "System.Linq.Expressions.dll",
       "System.Text.RegularExpressions.dll",
       "System.Xml.ReaderWriter.dll",
-      "System.Xml.XmlDocument.dll"
+      "System.Xml.XmlDocument.dll",
+      "System.Memory.dll",
+      "System.Buffers.dll",
+      "System.Numerics.Vectors.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [
