@@ -27,7 +27,7 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
     public async UniTask MoveAsync(float destinationX) =>
         await transform.DOMoveX(destinationX, 10)
             .SetEase(Ease.OutQuad)
-            .SetSpeedBased(true);
+            .SetSpeedBased();
 
     public Vector2 GetRelativePosition(Vector2 position, Relative relative) =>
         Borders.TransformPoint(position, relative);

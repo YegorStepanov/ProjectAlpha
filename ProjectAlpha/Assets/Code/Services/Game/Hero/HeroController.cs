@@ -14,10 +14,10 @@ public sealed class HeroController : MonoBehaviour, IHeroController
     public float HandOffset => 0.25f;
 
     public async UniTask MoveAsync(float destinationX) =>
-        await transform.DOMoveX(destinationX, 4).SetEase(Ease.Linear).SetSpeedBased(true);
+        await transform.DOMoveX(destinationX, 4).SetEase(Ease.Linear).SetSpeedBased();
 
     public async UniTask FellAsync() =>
-        await transform.DOMoveY(-10, -9.8f).SetSpeedBased(true);
+        await transform.DOMoveY(-10, -9.8f).SetSpeedBased();
 
     public void TeleportTo(Vector2 destination, Relative relative) =>
         transform.position = Borders.TransformPoint(destination, relative);

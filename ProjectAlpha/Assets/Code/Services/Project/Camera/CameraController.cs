@@ -64,7 +64,7 @@ public sealed class CameraController : MonoBehaviour, IDisposable
         Borders.TransformPoint(position, relative);
 
     private async UniTask MoveAsync(Vector3 destination) =>
-        await baseCamera.transform.DOMove(destination, 0.3f);
+        await baseCamera.transform.DOMove(destination, 7f).SetSpeedBased();
 
     private Borders UpdateBorders()
     {
