@@ -28,6 +28,7 @@ MonoBehaviour:
     m_Name: package.openupm.com
     m_Url: https://package.openupm.com
     m_Scopes:
+    - com.coffee.csharp-compiler-settings
     - com.cysharp.unitask
     - com.johannesmp.unityscenereference
     - com.openupm
@@ -43,6 +44,7 @@ MonoBehaviour:
       m_Name: package.openupm.com
       m_Url: https://package.openupm.com
       m_Scopes:
+      - com.coffee.csharp-compiler-settings
       - com.cysharp.unitask
       - com.johannesmp.unityscenereference
       - com.openupm
@@ -53,6 +55,7 @@ MonoBehaviour:
     m_Name: package.openupm.com
     m_Url: https://package.openupm.com
     m_Scopes:
+    - com.coffee.csharp-compiler-settings
     - com.cysharp.unitask
     - com.johannesmp.unityscenereference
     - com.openupm
