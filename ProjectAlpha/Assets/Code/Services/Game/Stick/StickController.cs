@@ -7,16 +7,6 @@ using Zenject;
 
 namespace Code.Services;
 
-public interface IStickController
-{
-    Borders Borders { get; }
-
-    public void StartIncreasing();
-    public void StopIncreasing();
-
-    UniTask RotateAsync();
-}
-
 public sealed class StickController : MonoBehaviour, IStickController
 {
     [SerializeField] private Transform stick;
