@@ -26,7 +26,8 @@
     "Unity.Timeline",
     "UnityEngine.UI",
     "Zenject",
-    "UnitySceneReference"
+    "UnitySceneReference",
+    "DOTween.Modules"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

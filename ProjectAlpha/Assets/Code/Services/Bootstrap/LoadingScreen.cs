@@ -21,7 +21,7 @@ namespace Code.Services
             loadingScreen.alpha = 1;
         }
 
-        public async UniTask HideAsync() { }
-        // await loadingScreen.DOFade(0, duration).WithCancellation(token);
+        public UniTask HideAsync() =>
+            loadingScreen.DOFade(0, duration).WithCancellation(token);
     }
 }
