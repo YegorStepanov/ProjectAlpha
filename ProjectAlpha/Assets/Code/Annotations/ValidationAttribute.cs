@@ -1,10 +1,9 @@
 ﻿using System.Reflection;
 
-namespace Code.Annotations
+namespace Code.Annotations;
+
+public abstract class ValidationAttribute : OneByOneAttribute
 {
-    public abstract class ValidationAttribute : OneByOneAttribute
-    {
-        public abstract bool Validate(FieldInfo field, UnityEngine.Object instance);
-        public abstract string ErrorMessage { get; }
-    }
+    public abstract string ErrorMessage { get; }
+    public abstract bool Validate(FieldInfo field, UnityEngine.Object instance);
 }

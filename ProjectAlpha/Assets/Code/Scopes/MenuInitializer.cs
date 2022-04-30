@@ -1,16 +1,15 @@
 ﻿using Code.Services;
 using Zenject;
 
-namespace Code.Scopes
+namespace Code.Scopes;
+
+public sealed class MenuInitializer : IInitializable
 {
-    public sealed class MenuInitializer : IInitializable
-    {
-        private readonly MenuMediator mediator;
+    private readonly MenuMediator mediator;
 
-        public MenuInitializer(MenuMediator mediator) =>
-            this.mediator = mediator;
+    public MenuInitializer(MenuMediator mediator) =>
+        this.mediator = mediator;
 
-        public void Initialize() =>
-            mediator.Open<MainMenu>();
-    }
+    public void Initialize() =>
+        mediator.Open<MainMenu>();
 }

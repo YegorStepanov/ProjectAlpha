@@ -2,20 +2,19 @@
 using Cysharp.Threading.Tasks;
 using Zenject;
 
-namespace Code.Scopes
+namespace Code.Scopes;
+
+public sealed class BootstrapInstaller : BaseInstaller<BootstrapInitializer>
 {
-    public sealed class BootstrapInstaller : BaseInstaller<BootstrapInitializer>
+    public LoadingScreen loadingScreen;
+
+    public override void InstallBindings()
     {
-        public LoadingScreen loadingScreen;
+        base.InstallBindings();
 
-        public override void InstallBindings()
-        {
-            base.InstallBindings();
-
-            RegisterLoadingScreen();
-        }
-
-        private void RegisterLoadingScreen() =>
-            Container.BindInstance(loadingScreen);
+        RegisterLoadingScreen();
     }
+
+    private void RegisterLoadingScreen() =>
+        Container.BindInstance(loadingScreen);
 }

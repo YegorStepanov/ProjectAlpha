@@ -1,9 +1,8 @@
 ﻿using Code.Triggers;
 
-namespace Code.Services
+namespace Code.Services;
+
+public sealed class GameTriggers
 {
-    public sealed class GameTriggers
-    {
-        public StartGameTrigger StartGameTrigger { get; } = new StartGameTrigger();
-    }
+    public StartGameTrigger StartGameTrigger { get; } = new StartGameTrigger();
 }

@@ -3,13 +3,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-namespace Code.UI.Actions
-{
-    public sealed class CloseMenu : MonoBehaviour, IPointerClickHandler
-    {
-        [Inject] private MenuMediator menu;
+namespace Code.UI.Actions;
 
-        public void OnPointerClick(PointerEventData eventData) =>
-            menu.CloseMainMenu();
-    }
+public sealed class CloseMenu : MonoBehaviour, IPointerClickHandler
+{
+    [Inject] private MenuMediator menu;
+
+    public void OnPointerClick(PointerEventData eventData) =>
+        menu.CloseMainMenu();
 }

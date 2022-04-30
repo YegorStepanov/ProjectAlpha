@@ -1,7 +1,6 @@
-﻿namespace Code.States
+﻿namespace Code.States;
+
+public interface IExitState
 {
-    public interface IExitState
-    {
-        void Exit();
-    }
+    void Exit();
 }

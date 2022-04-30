@@ -1,31 +1,30 @@
 ﻿using UnityEngine;
 
-namespace Code.Services
+namespace Code.Services;
+
+public sealed class PlatformSpawner
 {
-    public sealed class PlatformSpawner
+    private readonly CameraController cameraController;
+    private readonly PlatformController.Pool pool;
+
+    public PlatformSpawner(PlatformController.Pool pool, CameraController cameraController)
     {
-        private readonly CameraController cameraController;
-        private readonly PlatformController.Pool pool;
+        this.pool = pool;
+        this.cameraController = cameraController;
+    }
 
-        public PlatformSpawner(PlatformController.Pool pool, CameraController cameraController)
-        {
-            this.pool = pool;
-            this.cameraController = cameraController;
-        }
+    public IPlatformController CreatePlatform(Vector2 position, float width, Relative relative)
+    {
+        PlatformController platform = pool.Spawn();
 
-        public IPlatformController CreatePlatform(Vector2 position, float width, Relative relative)
-        {
-            PlatformController platform = pool.Spawn();
+        float height = cameraController.Borders.TransformPointY(position.y, Relative.Bottom);
 
-            float height = cameraController.Borders.TransformPointY(position.y, Relative.Bottom);
+        Vector2 size = new Vector2(width, height);
+        platform.SetSize(size);
 
-            Vector2 size = new Vector2(width, height);
-            platform.SetSize(size);
+        position = platform.Borders.TransformPoint(position, relative);
+        platform.SetPosition(position);
 
-            position = platform.Borders.TransformPoint(position, relative);
-            platform.SetPosition(position);
-
-            return platform;
-        }
+        return platform;
     }
 }

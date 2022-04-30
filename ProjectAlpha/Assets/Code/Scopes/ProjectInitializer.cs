@@ -1,9 +1,8 @@
 ﻿using Zenject;
 
-namespace Code.Scopes
+namespace Code.Scopes;
+
+public sealed class ProjectInitializer : IInitializable
 {
-    public sealed class ProjectInitializer : IInitializable
-    {
-        public void Initialize() { }
-    }
+    public void Initialize() { }
 }

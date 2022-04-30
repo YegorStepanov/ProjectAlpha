@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Code.Services
+namespace Code.Services;
+
+public abstract class WidthGenerator : ScriptableObject
 {
-    public abstract class WidthGenerator : ScriptableObject
-    {
-        public abstract void Reset();
-        public abstract float NextWidth();
-    }
+    public abstract void Reset();
+    public abstract float NextWidth();
 }

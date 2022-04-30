@@ -1,9 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Code.States
+namespace Code.States;
+
+public interface IState : IExitState
 {
-    public interface IState : IExitState
-    {
-        UniTaskVoid EnterAsync();
-    }
+    UniTaskVoid EnterAsync();
 }
