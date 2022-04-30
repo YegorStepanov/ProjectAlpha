@@ -72,10 +72,10 @@ public sealed class CameraController : MonoBehaviour, IDisposable
         Vector2 bottomLeftCorner = baseCamera.ViewportToWorldPoint(Vector2.zero);
 
         return new Borders(
-            top: topRightCorner.y,
-            right: topRightCorner.x,
-            bottom: bottomLeftCorner.y,
-            left: bottomLeftCorner.x
+            Top: topRightCorner.y,
+            Right: topRightCorner.x,
+            Bottom: bottomLeftCorner.y,
+            Left: bottomLeftCorner.x
         );
     }
 
