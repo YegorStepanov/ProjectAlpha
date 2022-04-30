@@ -13,7 +13,7 @@ public sealed class SceneLoader
 {
     private readonly AddressableZenjectSceneLoader sceneLoader;
 
-    private readonly Dictionary<Address, SceneInstance> scenes = new Dictionary<Address, SceneInstance>();
+    private readonly Dictionary<Address, SceneInstance> scenes = new();
 
     private readonly string startupSceneName;
 

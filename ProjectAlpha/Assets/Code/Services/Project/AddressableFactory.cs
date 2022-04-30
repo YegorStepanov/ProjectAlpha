@@ -13,7 +13,7 @@ namespace Code.Services;
 public class AddressableFactory : IDisposable
 {
     //rename
-    private readonly Dictionary<object, object> assetToHandle = new Dictionary<object, object>();
+    private readonly Dictionary<object, object> assetToHandle = new();
     private readonly DiContainer container;
     private readonly Transform installerTransform;
 
