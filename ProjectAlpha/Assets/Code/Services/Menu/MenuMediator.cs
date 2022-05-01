@@ -16,6 +16,8 @@ public sealed class MenuMediator : MonoBehaviour
 
     public void CloseMainMenu() => uiManager.Unload<MainMenu>();
 
+    //Odin doesn't recognize generic methods, so resolve them manually
+    
     [BoxGroup("Main Menu")]
     [HorizontalGroup("Main Menu/b")] [Button("Show")]
     private void ShowMainMenu() => uiManager.Show<MainMenu>();
