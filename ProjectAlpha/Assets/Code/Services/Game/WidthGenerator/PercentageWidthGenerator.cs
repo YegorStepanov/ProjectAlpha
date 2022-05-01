@@ -16,40 +16,40 @@ public sealed class PercentageWidthGenerator : WidthGenerator //todo: split to 2
     // private Vector2 minMaxViewportThreshold = new(0.1f, 0.2f);
 
     [SerializeField]
-    private float MinWidth = 0.25f;
+    private float _minWidth = 0.25f;
 
     [SerializeField]
-    private float MaxWidth = 2f;
+    private float _maxWidth = 2f;
 
     [SerializeField, Range(0, 1)]
-    private float ReductionRatioPerStep = 0.1f;
+    private float _reductionRatioPerStep = 0.1f;
 
     [SerializeField]
-    private float MinThreshold = 0.25f;
+    private float _minThreshold = 0.25f;
 
     [SerializeField]
-    private float MaxThreshold = 2f;
+    private float _maxThreshold = 2f;
 
-    private Ratio currentRatio;
+    private Ratio _currentRatio;
 
     public override void Reset() =>
-        currentRatio = new Ratio(1f, 1f);
+        _currentRatio = new Ratio(1f, 1f);
 
     public override float NextWidth()
     {
-        float width = NextWidth(currentRatio);
-        currentRatio = NextRatio(currentRatio);
-        currentRatio = LimitByThreshold(currentRatio);
+        float width = NextWidth(_currentRatio);
+        _currentRatio = NextRatio(_currentRatio);
+        _currentRatio = LimitByThreshold(_currentRatio);
         return width;
     }
 
     private float NextWidth(Ratio ratio) =>
-        Random.Range(MinWidth * ratio.Min, MaxWidth * ratio.Max);
+        Random.Range(_minWidth * ratio.Min, _maxWidth * ratio.Max);
 
     private Ratio NextRatio(Ratio ratio) =>
-        ratio * (1f - ReductionRatioPerStep);
+        ratio * (1f - _reductionRatioPerStep);
 
     private Ratio LimitByThreshold(Ratio ratio) => new Ratio(
-        ratio.Min < MinThreshold ? MinThreshold : ratio.Min,
-        ratio.Max < MaxThreshold ? MaxThreshold : ratio.Max);
+        ratio.Min < _minThreshold ? _minThreshold : ratio.Min,
+        ratio.Max < _maxThreshold ? _maxThreshold : ratio.Max);
 }

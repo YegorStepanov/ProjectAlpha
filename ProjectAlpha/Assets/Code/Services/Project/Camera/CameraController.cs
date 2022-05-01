@@ -11,25 +11,25 @@ namespace Code.Services;
 [RequireComponent(typeof(Camera))]
 public sealed class CameraController : MonoBehaviour, IDisposable
 {
-    [Required, SerializeField] private Camera baseCamera;
-    [Required, SerializeField] private Image backgroundImage;
+    [Required, SerializeField] private Camera _baseCamera;
+    [Required, SerializeField] private Image _backgroundImage;
 
-    private BackgroundChanger backgroundChanger;
+    private BackgroundChanger _backgroundChanger;
 
 
     public Borders Borders => UpdateBorders();
 
-    public Vector3 CameraPosition => baseCamera.transform.position;
+    public Vector3 CameraPosition => _baseCamera.transform.position;
 
     public void Dispose() =>
-        backgroundChanger?.Dispose();
+        _backgroundChanger?.Dispose();
 
     [Inject]
     public void Construct(AddressableFactory factory) =>
-        backgroundChanger = new BackgroundChanger(factory, backgroundImage);
+        _backgroundChanger = new BackgroundChanger(factory, _backgroundImage);
 
     public UniTask ChangeBackgroundAsync() =>
-        backgroundChanger.ChangeToRandomBackgroundAsync();
+        _backgroundChanger.ChangeToRandomBackgroundAsync();
 
     //
     // void IInitializable.Initialize()
@@ -61,12 +61,12 @@ public sealed class CameraController : MonoBehaviour, IDisposable
         Borders.TransformPoint(position, relative);
 
     private async UniTask MoveAsync(Vector3 destination) =>
-        await baseCamera.transform.DOMove(destination, 7f).SetSpeedBased();
+        await _baseCamera.transform.DOMove(destination, 7f).SetSpeedBased();
 
     private Borders UpdateBorders()
     {
-        Vector2 topRightCorner = baseCamera.ViewportToWorldPoint(Vector2.one);
-        Vector2 bottomLeftCorner = baseCamera.ViewportToWorldPoint(Vector2.zero);
+        Vector2 topRightCorner = _baseCamera.ViewportToWorldPoint(Vector2.one);
+        Vector2 bottomLeftCorner = _baseCamera.ViewportToWorldPoint(Vector2.zero);
 
         return new Borders(
             Top: topRightCorner.y,
@@ -77,5 +77,5 @@ public sealed class CameraController : MonoBehaviour, IDisposable
     }
 
     public Vector2 ViewportToWorldPosition(Vector2 viewportPosition) =>
-        baseCamera.ViewportToWorldPoint(viewportPosition);
+        _baseCamera.ViewportToWorldPoint(viewportPosition);
 }

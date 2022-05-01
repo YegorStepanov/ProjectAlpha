@@ -7,8 +7,8 @@ namespace Code.UI.Actions;
 
 public sealed class CloseShopPanel : MonoBehaviour, IPointerClickHandler
 {
-    [Inject] private MenuMediator menu;
+    [Inject] private MenuMediator _menu;
 
     public void OnPointerClick(PointerEventData eventData) =>
-        menu.Close<ShopPanel>();
+        _menu.Close<ShopPanel>();
 }

@@ -8,15 +8,15 @@ namespace Code.UI;
 
 public sealed class StartGameTrigger : MonoBehaviour, IDisposable
 {
-    private GameTriggers gameTriggers;
+    private GameTriggers _gameTriggers;
 
     public void Dispose() =>
-        gameTriggers.StartGameTrigger.SetTrigger(null);
+        _gameTriggers.StartGameTrigger.SetTrigger(null);
 
     [Inject]
     public void Construct(GameTriggers gameTriggers)
     {
-        this.gameTriggers = gameTriggers;
+        _gameTriggers = gameTriggers;
         gameTriggers.StartGameTrigger.SetTrigger(this.GetAsyncPointerClickTrigger());
     }
 }

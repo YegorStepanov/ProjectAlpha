@@ -8,7 +8,7 @@ namespace Code.Scopes;
 public sealed class ProjectInstaller : BaseInstaller<ProjectInitializer>
 {
     [Required, AssetsOnly, SerializeField]
-    private CameraController CameraController;
+    private CameraController _cameraController;
 
     private void Awake() =>
         DOTween.Init();
@@ -39,7 +39,7 @@ public sealed class ProjectInstaller : BaseInstaller<ProjectInitializer>
 
     private void RegisterCamera() =>
         Container.Bind<CameraController>()
-            .FromComponentInNewPrefab(CameraController)
+            .FromComponentInNewPrefab(_cameraController)
             .WithGameObjectName("Camera")
             .AsSingle()
             .NonLazy();

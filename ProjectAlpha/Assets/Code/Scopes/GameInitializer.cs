@@ -6,13 +6,13 @@ namespace Code.Scopes;
 
 public sealed class GameInitializer : IInitializable
 {
-    private readonly GameStateMachine gameStateMachine;
+    private readonly GameStateMachine _gameStateMachine;
 
     public GameInitializer(GameStateMachine gameStateMachine) =>
-        this.gameStateMachine = gameStateMachine;
+        _gameStateMachine = gameStateMachine;
 
     public void Initialize()
     {
-        gameStateMachine.Enter<BootstrapState>();
+        _gameStateMachine.Enter<BootstrapState>();
     }
 }

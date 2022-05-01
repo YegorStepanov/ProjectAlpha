@@ -7,13 +7,13 @@ namespace Code.UI.Animations;
 
 public sealed class FloatContinually : MonoBehaviour
 {
-    [SerializeField] private RectTransform rectTransform;
+    [SerializeField] private RectTransform _rectTransform;
 
-    [SerializeField] private float hoveringRange;
+    [SerializeField] private float _hoveringRange;
 
-    [SerializeField] private float duration;
+    [SerializeField] private float _duration;
 
-    private float HalfRange => hoveringRange / 2;
+    private float HalfRange => _hoveringRange / 2;
 
     private async UniTaskVoid Awake()
     {
@@ -24,12 +24,12 @@ public sealed class FloatContinually : MonoBehaviour
     }
 
     private UniTask MoveToAnimationStartAsync(CancellationToken token) =>
-        rectTransform.DOAnchorPosY(-HalfRange, duration / 2)
+        _rectTransform.DOAnchorPosY(-HalfRange, _duration / 2)
             .SetRelative()
             .WithCancellation(token);
 
     private void StartCyclicAnimationAsync(CancellationToken token) =>
-        rectTransform.DOAnchorPosY(2 * HalfRange, duration)
+        _rectTransform.DOAnchorPosY(2 * HalfRange, _duration)
             .SetRelative()
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutQuad).WithCancellation(token);

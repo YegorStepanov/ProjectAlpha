@@ -11,16 +11,16 @@ namespace Code.Services;
 
 public sealed class SceneLoader
 {
-    private readonly AddressableZenjectSceneLoader sceneLoader;
+    private readonly AddressableZenjectSceneLoader _sceneLoader;
 
-    private readonly Dictionary<Address, SceneInstance> scenes = new();
+    private readonly Dictionary<Address, SceneInstance> _scenes = new();
 
-    private readonly string startupSceneName;
+    private readonly string _startupSceneName;
 
     public SceneLoader([InjectOptional] SceneContext sceneRoot)
     {
-        sceneLoader = new AddressableZenjectSceneLoader(sceneRoot);
-        startupSceneName = SceneManager.GetActiveScene().name;
+        _sceneLoader = new AddressableZenjectSceneLoader(sceneRoot);
+        _startupSceneName = SceneManager.GetActiveScene().name;
     }
 
     public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene =>
@@ -31,21 +31,21 @@ public sealed class SceneLoader
 
     private async UniTask LoadAsync(Address sceneAddress, CancellationToken token)
     {
-        SceneInstance scene = await sceneLoader.LoadSceneAdditiveAsync(sceneAddress.Key).WithCancellation(token);
-        scenes.Add(sceneAddress, scene);
+        SceneInstance scene = await _sceneLoader.LoadSceneAdditiveAsync(sceneAddress.Key).WithCancellation(token);
+        _scenes.Add(sceneAddress, scene);
     }
 
     private async UniTask UnloadAsync(Address sceneAddress, CancellationToken token)
     {
-        if (scenes.TryGetValue(sceneAddress, out SceneInstance scene))
+        if (_scenes.TryGetValue(sceneAddress, out SceneInstance scene))
         {
-            scenes.Remove(sceneAddress);
+            _scenes.Remove(sceneAddress);
             await Addressables.UnloadSceneAsync(scene).WithCancellation(token);
         }
         else
         {
             //todo: find a better solution
-            await SceneManager.UnloadSceneAsync(startupSceneName);
+            await SceneManager.UnloadSceneAsync(_startupSceneName);
         }
     }
 

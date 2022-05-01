@@ -5,7 +5,7 @@ namespace Code.Scopes;
 
 public sealed class MenuInstaller : BaseInstaller<MenuInitializer>
 {
-    [SerializeField] private MenuMediator menu;
+    [SerializeField] private MenuMediator _menu;
 
     public override void InstallBindings()
     {
@@ -19,7 +19,7 @@ public sealed class MenuInstaller : BaseInstaller<MenuInitializer>
     }
 
     private void RegisterMenuMediator() =>
-        Container.BindInstance(menu);
+        Container.BindInstance(_menu);
 
     private void RegisterUIManager() =>
         Container.Bind<UIManager>().AsSingle();

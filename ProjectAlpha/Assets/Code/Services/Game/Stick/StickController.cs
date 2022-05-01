@@ -10,48 +10,48 @@ namespace Code.Services;
 
 public sealed class StickController : MonoBehaviour, IStickController
 {
-    [SerializeField] private Transform stick;
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Transform _stick;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
 
-    private Settings settings;
-    private TweenerCore<Vector3, Vector3, VectorOptions> increasingTweener;
+    private Settings _settings;
+    private TweenerCore<Vector3, Vector3, VectorOptions> _increaseTweener;
 
     public float Width
     {
-        get => stick.localScale.x * Borders.Width;
-        set => stick.localScale = stick.localScale.WithX(value) / Borders.Width;
+        get => _stick.localScale.x * Borders.Width;
+        set => _stick.localScale = _stick.localScale.WithX(value) / Borders.Width;
     }
 
     public Vector2 Position
     {
-        get => stick.position;
-        set => stick.position = value;
+        get => _stick.position;
+        set => _stick.position = value;
     }
 
     [Inject]
     public void Construct(Settings settings) =>
-        this.settings = settings;
+        _settings = settings;
 
     private void Awake() =>
         ResetHeight();
 
-    public Borders Borders => spriteRenderer.bounds.AsBorders();
+    public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
     public void StartIncreasing() =>
-        increasingTweener = stick.DOScaleY(float.MaxValue, settings.IncreaseSpeed)
+        _increaseTweener = _stick.DOScaleY(float.MaxValue, _settings.IncreaseSpeed)
             .SetSpeedBased();
 
     public void StopIncreasing() =>
-        increasingTweener?.Kill();
+        _increaseTweener?.Kill();
 
     public async UniTask RotateAsync() =>
-        await stick.DORotate(settings.RotationDestination, settings.RotationTime)
+        await _stick.DORotate(_settings.RotationDestination, _settings.RotationTime)
             .SetEase(Ease.InQuad)
-            .SetDelay(settings.RotationDelay)
+            .SetDelay(_settings.RotationDelay)
             .WithCancellation(this.GetCancellationTokenOnDestroy());
 
     private void ResetHeight() =>
-        stick.localScale = stick.localScale.WithY(0f);
+        _stick.localScale = _stick.localScale.WithY(0f);
 
     [Serializable]
     public class Settings

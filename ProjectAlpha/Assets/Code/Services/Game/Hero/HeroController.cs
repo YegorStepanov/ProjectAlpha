@@ -8,26 +8,26 @@ namespace Code.Services;
 
 public sealed class HeroController : MonoBehaviour, IHeroController
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Transform bottomRightPivot;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private Transform _bottomRightPivot;
     
-    private Settings settings;
+    private Settings _settings;
 
-    public Borders Borders => spriteRenderer.bounds.AsBorders();
+    public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
-    public float HandOffset => settings.HandOffset; //remove it
+    public float HandOffset => _settings.HandOffset; //remove it
 
     [Inject]
     public void Construct(Settings settings) => 
-        this.settings = settings;
+        _settings = settings;
 
     public async UniTask MoveAsync(float destinationX) =>
-        await transform.DOMoveX(destinationX, settings.MovementSpeed)
+        await transform.DOMoveX(destinationX, _settings.MovementSpeed)
             .SetEase(Ease.Linear)
             .SetSpeedBased();
 
     public async UniTask FellAsync() =>
-        await transform.DOMoveY(settings.FallingDestination, -settings.FallingSpeed)
+        await transform.DOMoveY(_settings.FallingDestination, -_settings.FallingSpeed)
             .SetSpeedBased();
 
     public void TeleportTo(Vector2 destination, Relative relative) =>

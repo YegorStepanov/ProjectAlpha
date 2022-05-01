@@ -12,33 +12,33 @@ namespace Code.Services;
 public class AddressableFactory : IDisposable
 {
     //rename
-    private readonly Dictionary<object, object> assetToHandle = new();
-    private readonly DiContainer container;
-    private readonly Transform installerTransform;
+    private readonly Dictionary<object, object> _assetToHandle = new();
+    private readonly DiContainer _container;
+    private readonly Transform _installerTransform;
 
 
     public AddressableFactory(DiContainer container, Transform installerTransform)
     {
-        this.container = container;
-        this.installerTransform = installerTransform;
+        _container = container;
+        _installerTransform = installerTransform;
         // todo: Addressables.InitializeAsync() somewhere
     }
 
     public void Dispose()
     {
         //replace to .Values
-        foreach (object handle in assetToHandle.Values)
+        foreach (object handle in _assetToHandle.Values)
             Addressables.Release(handle);
 
-        assetToHandle.Clear();
+        _assetToHandle.Clear();
     }
 
     public async UniTask<GameObject> InstantiateAsync(Address address)
     {
-        GameObject go = await Addressables.InstantiateAsync(address.Key, installerTransform);
+        GameObject go = await Addressables.InstantiateAsync(address.Key, _installerTransform);
         go.transform.SetParent(null);
         go.name = address.Key;
-        container.InjectGameObject(go);
+        _container.InjectGameObject(go);
         return go; //.GetComponent()
     }
 
@@ -48,7 +48,7 @@ public class AddressableFactory : IDisposable
     {
         AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address.Key);
         T asset = await handle;
-        assetToHandle.Add(asset, handle);
+        _assetToHandle.Add(asset, handle);
         return asset;
     }
 
@@ -60,8 +60,8 @@ public class AddressableFactory : IDisposable
     {
         if (asset == null) return;
 
-        var handle = (AsyncOperationHandle<T>)assetToHandle[asset];
-        assetToHandle.Remove(asset);
+        var handle = (AsyncOperationHandle<T>)_assetToHandle[asset];
+        _assetToHandle.Remove(asset);
         Addressables.Release(handle);
     }
 }

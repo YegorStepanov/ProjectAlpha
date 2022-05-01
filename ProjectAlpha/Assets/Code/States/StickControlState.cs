@@ -8,32 +8,32 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
 {
     public readonly record struct Arguments(IPlatformController CurrentPlatform, IPlatformController NextPlatform);
 
-    private readonly InputManager inputManager;
+    private readonly InputManager _inputManager;
 
-    private readonly GameStateMachine stateMachine;
-    private readonly StickSpawner stickSpawner;
+    private readonly GameStateMachine _stateMachine;
+    private readonly StickSpawner _stickSpawner;
 
     public StickControlState(GameStateMachine stateMachine, StickSpawner stickSpawner, InputManager inputManager)
     {
-        this.stateMachine = stateMachine;
-        this.stickSpawner = stickSpawner;
-        this.inputManager = inputManager;
+        _stateMachine = stateMachine;
+        _stickSpawner = stickSpawner;
+        _inputManager = inputManager;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args)
     {
         float positionX = args.CurrentPlatform.Borders.Right;
-        IStickController stick = stickSpawner.Spawn(positionX);
+        IStickController stick = _stickSpawner.Spawn(positionX);
 
-        await inputManager.NextMouseClick();
+        await _inputManager.NextMouseClick();
         stick.StartIncreasing();
 
-        await inputManager.NextMouseRelease();
+        await _inputManager.NextMouseRelease();
         stick.StopIncreasing();
 
         await stick.RotateAsync();
 
-        stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
+        _stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
             new MoveHeroToNextPlatformState.Arguments(args.CurrentPlatform, args.NextPlatform, stick));
     }
 

@@ -8,18 +8,18 @@ namespace Code.Services;
 
 public sealed class BackgroundChanger : IDisposable
 {
-    private readonly Address[] addresses;
-    private readonly Image backgroundImage;
-    private readonly AddressableFactory factory;
+    private readonly Address[] _addresses;
+    private readonly Image _backgroundImage;
+    private readonly AddressableFactory _factory;
 
-    private Sprite spriteAsset;
+    private Sprite _spriteAsset;
 
     public BackgroundChanger(AddressableFactory factory, Image backgroundImage)
     {
-        this.factory = factory;
-        this.backgroundImage = backgroundImage;
+        _factory = factory;
+        _backgroundImage = backgroundImage;
 
-        addresses = new[]
+        _addresses = new[]
         {
             BackgroundAddress.Background1,
             BackgroundAddress.Background2,
@@ -36,17 +36,17 @@ public sealed class BackgroundChanger : IDisposable
     {
         Address newAddress = GetRandomBackground();
 
-        var sprite = await factory.LoadAssetAsync<Sprite>(newAddress);
-        backgroundImage.sprite = sprite;
-        spriteAsset = sprite;
+        var sprite = await _factory.LoadAssetAsync<Sprite>(newAddress);
+        _backgroundImage.sprite = sprite;
+        _spriteAsset = sprite;
     }
 
     private Address GetRandomBackground()
     {
-        int index = Random.Range(0, addresses.Length);
-        return addresses[index];
+        int index = Random.Range(0, _addresses.Length);
+        return _addresses[index];
     }
 
     private void UnloadSpriteImage() =>
-        factory.ReleaseAsset(spriteAsset);
+        _factory.ReleaseAsset(_spriteAsset);
 }

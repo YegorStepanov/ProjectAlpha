@@ -8,17 +8,17 @@ namespace Code.Services;
 
 public sealed class PlatformController : MonoBehaviour, IPlatformController
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
 
-    private Settings settings;
+    private Settings _settings;
 
     public Vector2 Position => transform.position;
 
-    public Borders Borders => spriteRenderer.bounds.AsBorders();
+    public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
     [Inject]
     public void Construct(Settings settings) =>
-        this.settings = settings;
+        _settings = settings;
 
     public void SetPosition(Vector2 position)
     {
@@ -27,12 +27,12 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
 
     public void SetSize(Vector2 scale)
     {
-        Vector2 spriteSize = spriteRenderer.bounds.size;
+        Vector2 spriteSize = _spriteRenderer.bounds.size;
         transform.localScale = scale / spriteSize;
     }
 
     public async UniTask MoveAsync(float destinationX) =>
-        await transform.DOMoveX(destinationX, settings.MovementSpeed)
+        await transform.DOMoveX(destinationX, _settings.MovementSpeed)
             .SetEase(Ease.OutQuad)
             .SetSpeedBased();
 

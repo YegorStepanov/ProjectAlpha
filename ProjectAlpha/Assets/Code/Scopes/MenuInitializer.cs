@@ -5,11 +5,11 @@ namespace Code.Scopes;
 
 public sealed class MenuInitializer : IInitializable
 {
-    private readonly MenuMediator mediator;
+    private readonly MenuMediator _mediator;
 
     public MenuInitializer(MenuMediator mediator) =>
-        this.mediator = mediator;
+        _mediator = mediator;
 
     public void Initialize() =>
-        mediator.Open<MainMenu>();
+        _mediator.Open<MainMenu>();
 }

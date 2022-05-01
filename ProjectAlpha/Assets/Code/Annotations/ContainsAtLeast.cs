@@ -7,15 +7,15 @@ namespace Code.Annotations;
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
 public class ContainsAtLeast : ValidationAttribute
 {
-    private int Count;
-    private string error = string.Empty;
+    private readonly int _count;
+    private string _error = string.Empty;
 
     public ContainsAtLeast(int minimumItemCount)
     {
-        Count = minimumItemCount;
+        _count = minimumItemCount;
     }
 
-    public override string ErrorMessage => error;
+    public override string ErrorMessage => _error;
 
     public override bool Validate(System.Reflection.FieldInfo field, UnityEngine.Object instance)
     {
@@ -24,12 +24,12 @@ public class ContainsAtLeast : ValidationAttribute
         var isValid = false;
         try
         {
-            error = $"Object: {field.Name}\non GameObject: {mb.name}\nMust contain AT LEAST ({Count}) item(s)";
+            _error = $"Object: {field.Name}\non GameObject: {mb.name}\nMust contain AT LEAST ({_count}) item(s)";
             int i = 0;
             foreach (var o in (value as IEnumerable))
             {
                 i++;
-                if (i >= Count)
+                if (i >= _count)
                 {
                     isValid = true;
                     break;
@@ -40,9 +40,9 @@ public class ContainsAtLeast : ValidationAttribute
         {
             isValid = false;
             if (typeof(IEnumerable).IsAssignableFrom(field.FieldType))
-                error = $"Object: {field.Name}\non GameObject: {mb.name}\nMust contain AT LEAST ({Count}) item(s)";
+                _error = $"Object: {field.Name}\non GameObject: {mb.name}\nMust contain AT LEAST ({_count}) item(s)";
             else
-                error =
+                _error =
                     $"Item: {field.Name}\non GameObject: {mb.name}\nMust be Array, List, or String to use attribute properly";
         }
 

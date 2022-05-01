@@ -10,31 +10,31 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
         IPlatformController NextPlatform,
         IStickController Stick);
 
-    private readonly IHeroController hero;
-    private readonly PlatformSpawner platformSpawner;
-    private readonly GameStateMachine stateMachine;
+    private readonly IHeroController _hero;
+    private readonly PlatformSpawner _platformSpawner;
+    private readonly GameStateMachine _stateMachine;
 
     public MoveHeroToNextPlatformState(
         GameStateMachine stateMachine,
         IHeroController hero,
         PlatformSpawner platformSpawner)
     {
-        this.stateMachine = stateMachine;
-        this.hero = hero;
-        this.platformSpawner = platformSpawner;
+        _stateMachine = stateMachine;
+        _hero = hero;
+        _platformSpawner = platformSpawner;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args)
     {
         if (IsStickOnPlatform(args.Stick, args.NextPlatform))
         {
-            stateMachine.Enter<GameStartState, GameStartState.Arguments>(
+            _stateMachine.Enter<GameStartState, GameStartState.Arguments>(
                 new GameStartState.Arguments(args.NextPlatform));
         }
         else
         {
-            await hero.MoveAsync(args.Stick.Borders.Right);
-            await hero.FellAsync();
+            await _hero.MoveAsync(args.Stick.Borders.Right);
+            await _hero.FellAsync();
 
             //earthshake screen
         }

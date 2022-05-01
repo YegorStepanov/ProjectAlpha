@@ -7,20 +7,20 @@ namespace Code.Services;
 
 public sealed class LoadingScreen : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup loadingScreen;
-    [SerializeField] private float duration = 0.3f;
+    [SerializeField] private CanvasGroup _loadingScreen;
+    [SerializeField] private float _duration = 0.3f;
 
-    private CancellationToken token;
+    private CancellationToken _token;
 
     private void Awake() =>
-        token = this.GetCancellationTokenOnDestroy();
+        _token = this.GetCancellationTokenOnDestroy();
 
     public void Show()
     {
         gameObject.SetActive(true);
-        loadingScreen.alpha = 1;
+        _loadingScreen.alpha = 1f;
     }
 
     public UniTask HideAsync() =>
-        loadingScreen.DOFade(0, duration).WithCancellation(token);
+        _loadingScreen.DOFade(0f, _duration).WithCancellation(_token);
 }

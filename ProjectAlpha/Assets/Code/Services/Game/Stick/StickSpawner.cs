@@ -4,22 +4,22 @@ namespace Code.Services;
 
 public sealed class StickSpawner
 {
-    private readonly StickController.Pool pool;
-    private readonly Settings settings;
+    private readonly StickController.Pool _pool;
+    private readonly Settings _settings;
 
     public StickSpawner(StickController.Pool pool, Settings settings)
     {
-        this.pool = pool;
-        this.settings = settings;
+        _pool = pool;
+        _settings = settings;
     }
 
-    public float StickWidth => settings.StickWidth;
+    public float StickWidth => _settings.StickWidth;
 
     public IStickController Spawn(float positionX)
     {
-        StickController stick = pool.Spawn();
+        StickController stick = _pool.Spawn();
         stick.Position = stick.Position.WithX(positionX);
-        stick.Width = settings.StickWidth;
+        stick.Width = _settings.StickWidth;
         return stick;
     }
 

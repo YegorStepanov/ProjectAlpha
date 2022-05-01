@@ -7,8 +7,8 @@ namespace Code.UI.Actions;
 
 public sealed class CloseMenu : MonoBehaviour, IPointerClickHandler
 {
-    [Inject] private MenuMediator menu;
+    [Inject] private MenuMediator _menu;
 
     public void OnPointerClick(PointerEventData eventData) =>
-        menu.CloseMainMenu();
+        _menu.CloseMainMenu();
 }

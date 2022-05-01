@@ -7,11 +7,11 @@ namespace Code.Services;
 
 public sealed class GameStateMachine
 {
-    private IExitState activeState;
-    private Dictionary<Type, IExitState> states;
+    private IExitState _activeState;
+    private Dictionary<Type, IExitState> _states;
 
     [Inject]
-    public void Construct(DiContainer container) => states = new Dictionary<Type, IExitState>
+    public void Construct(DiContainer container) => _states = new Dictionary<Type, IExitState>
     {
         [typeof(BootstrapState)] = container.Instantiate<BootstrapState>(),
         [typeof(GameStartState)] = container.Instantiate<GameStartState>(),
@@ -27,14 +27,14 @@ public sealed class GameStateMachine
 
     private TState ChangeState<TState>() where TState : class, IExitState
     {
-        activeState?.Exit();
+        _activeState?.Exit();
 
         var state = GetState<TState>();
-        activeState = state;
+        _activeState = state;
 
         return state;
     }
 
     private TState GetState<TState>() where TState : class, IExitState =>
-        states[typeof(TState)] as TState;
+        _states[typeof(TState)] as TState;
 }

@@ -7,15 +7,15 @@ namespace Code.Scopes;
 
 public sealed class BootstrapInitializer : IInitializable
 {
-    private readonly LoadingScreen loadingScreen;
-    private readonly SceneLoader sceneLoader;
-    private readonly CancellationToken token;
+    private readonly LoadingScreen _loadingScreen;
+    private readonly SceneLoader _sceneLoader;
+    private readonly CancellationToken _token;
 
     public BootstrapInitializer(SceneLoader sceneLoader, LoadingScreen loadingScreen, CancellationToken token)
     {
-        this.sceneLoader = sceneLoader;
-        this.loadingScreen = loadingScreen;
-        this.token = token;
+        _sceneLoader = sceneLoader;
+        _loadingScreen = loadingScreen;
+        _token = token;
     }
 
     public void Initialize() =>
@@ -23,14 +23,14 @@ public sealed class BootstrapInitializer : IInitializable
 
     private async UniTaskVoid InitializeAsync()
     {
-        loadingScreen.Show();
+        _loadingScreen.Show();
 
-        UniTask menuLoading = sceneLoader.LoadAsync<MenuScene>(token);
-        UniTask gameLoading = sceneLoader.LoadAsync<GameScene>(token);
+        UniTask menuLoading = _sceneLoader.LoadAsync<MenuScene>(_token);
+        UniTask gameLoading = _sceneLoader.LoadAsync<GameScene>(_token);
 
         await (menuLoading, gameLoading);
 
-        await loadingScreen.HideAsync();
-        await sceneLoader.UnloadAsync<BootstrapScene>(token);
+        await _loadingScreen.HideAsync();
+        await _sceneLoader.UnloadAsync<BootstrapScene>(_token);
     }
 }

@@ -8,20 +8,20 @@ namespace Code.Scopes;
 public sealed class GameInstaller : BaseInstaller<GameInitializer>
 {
     [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(WidthGenerator))]
-    private WidthGenerator widthGenerator; //split to settings and own generator?
+    private WidthGenerator _widthGenerator; //split to settings and own generator?
 
     [SerializeField]
-    private SpriteRenderer SpriteRendererPrefab;
+    private SpriteRenderer _spriteRendererPrefab;
 
     [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(GameSettings))]
-    private GameSettings gameSettings;
+    private GameSettings _gameSettings;
 
-    public HeroController hero;
+    public HeroController _hero;
 
-    public StickController stick;
+    public StickController _stick;
 
     [AssetsOnly]
-    public PlatformController platform;
+    public PlatformController _platform;
 
     public override void InstallBindings()
     {
@@ -54,7 +54,7 @@ public sealed class GameInstaller : BaseInstaller<GameInitializer>
     private void RegisterStickControllerPool() =>
         Container.BindMemoryPool<StickController, StickController.Pool>()
             .WithInitialSize(2)
-            .FromComponentInNewPrefab(stick)
+            .FromComponentInNewPrefab(_stick)
             .WithGameObjectName("Stick")
             .UnderTransformGroup("Sticks");
 
@@ -64,7 +64,7 @@ public sealed class GameInstaller : BaseInstaller<GameInitializer>
     private void RegisterStickController()
     {
         Container.Bind<IStickController>()
-            .FromComponentInNewPrefab(stick)
+            .FromComponentInNewPrefab(_stick)
             .WithGameObjectName("Stick")
             .AsSingle();
     }
@@ -73,14 +73,14 @@ public sealed class GameInstaller : BaseInstaller<GameInitializer>
     {
         Container.BindMemoryPool<PlatformController, PlatformController.Pool>()
             .WithInitialSize(5)
-            .FromComponentInNewPrefab(platform)
+            .FromComponentInNewPrefab(_platform)
             .WithGameObjectName("Platform")
             .UnderTransformGroup("Platforms");
     }
 
     private void RegisterHeroController() =>
         Container.Bind<IHeroController>()
-            .FromComponentInNewPrefab(hero)
+            .FromComponentInNewPrefab(_hero)
             .WithGameObjectName("Hero")
             .AsSingle();
 
@@ -88,12 +88,12 @@ public sealed class GameInstaller : BaseInstaller<GameInitializer>
         Container.Bind<GameStateMachine>().AsSingle();
 
     private void RegisterGameSettings() =>
-        gameSettings.BindAllSettings(Container);
+        _gameSettings.BindAllSettings(Container);
 
 
     private void RegisterSpriteRenderer() => //wtf? it's bad, ye? move it to own type OR move to settings
-        Container.BindInstance(SpriteRendererPrefab);
+        Container.BindInstance(_spriteRendererPrefab);
 
     private void RegisterWidthGenerator() =>
-        Container.BindInstance(widthGenerator);
+        Container.BindInstance(_widthGenerator);
 }

@@ -6,14 +6,14 @@ namespace Code.Services;
 
 public sealed class UIManager
 {
-    private readonly AddressableFactory factory;
-    private GameObject heroSelectorPanel;
+    private readonly AddressableFactory _factory;
+    private GameObject _heroSelectorPanel;
 
-    private GameObject mainMenu;
-    private GameObject shopPanel;
+    private GameObject _mainMenu;
+    private GameObject _shopPanel;
 
     public UIManager(AddressableFactory factory) =>
-        this.factory = factory;
+        _factory = factory;
 
     public void Show<TPanel>() where TPanel : struct, IPanel
     {
@@ -36,13 +36,13 @@ public sealed class UIManager
     public void Unload<TPanel>() where TPanel : struct, IPanel
     {
         GameObject panel = GetPanel<TPanel>();
-        factory.ReleaseInstance(panel);
+        _factory.ReleaseInstance(panel);
     }
 
     private async UniTask<GameObject> GetOrCreateEnabledPanelAsync(GameObject panel, Address address)
     {
         if (panel == null)
-            panel = await factory.InstantiateAsync(address);
+            panel = await _factory.InstantiateAsync(address);
 
         panel.SetActive(true);
         return panel;
@@ -53,13 +53,13 @@ public sealed class UIManager
         switch (typeof(TPanel))
         {
             case Type t when t == typeof(MainMenu):
-                mainMenu = panel;
+                _mainMenu = panel;
                 break;
             case Type t when t == typeof(ShopPanel):
-                shopPanel = panel;
+                _shopPanel = panel;
                 break;
             case Type t when t == typeof(HeroSelectorPanel):
-                heroSelectorPanel = panel;
+                _heroSelectorPanel = panel;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(typeof(TPanel).FullName);
@@ -68,9 +68,9 @@ public sealed class UIManager
 
     private GameObject GetPanel<TPanel>() where TPanel : struct, IPanel => typeof(TPanel) switch
     {
-        Type t when t == typeof(MainMenu) => mainMenu,
-        Type t when t == typeof(ShopPanel) => shopPanel,
-        Type t when t == typeof(HeroSelectorPanel) => heroSelectorPanel,
+        Type t when t == typeof(MainMenu) => _mainMenu,
+        Type t when t == typeof(ShopPanel) => _shopPanel,
+        Type t when t == typeof(HeroSelectorPanel) => _heroSelectorPanel,
         _ => throw new ArgumentOutOfRangeException(typeof(TPanel).FullName)
     };
 

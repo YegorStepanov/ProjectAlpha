@@ -4,7 +4,7 @@ namespace Code.Scopes;
 
 public sealed class BootstrapInstaller : BaseInstaller<BootstrapInitializer>
 {
-    public LoadingScreen loadingScreen;
+    public LoadingScreen _loadingScreen;
 
     public override void InstallBindings()
     {
@@ -14,5 +14,5 @@ public sealed class BootstrapInstaller : BaseInstaller<BootstrapInitializer>
     }
 
     private void RegisterLoadingScreen() =>
-        Container.BindInstance(loadingScreen);
+        Container.BindInstance(_loadingScreen);
 }
