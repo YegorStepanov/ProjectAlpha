@@ -7,6 +7,8 @@ namespace Code.States;
 
 public sealed class GameStartState : IArgState<GameStartState.Arguments>
 {
+    public readonly record struct Arguments(IPlatformController CurrentPlatform);
+
     private readonly CameraController cameraController;
     private readonly IHeroController hero;
     private readonly PlatformSpawner platformSpawner;
@@ -87,14 +89,6 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         await UniTask.Delay(randDelay);
 
         await nextPlatform.MoveAsync(posX);
-    }
-
-    public sealed class Arguments
-    {
-        public Arguments(IPlatformController currentPlatform) =>
-            CurrentPlatform = currentPlatform;
-
-        public IPlatformController CurrentPlatform { get; }
     }
 }
 

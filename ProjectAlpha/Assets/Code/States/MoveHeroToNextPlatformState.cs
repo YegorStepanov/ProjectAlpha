@@ -5,6 +5,11 @@ namespace Code.States;
 
 public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatformState.Arguments>
 {
+    public readonly record struct Arguments(
+        IPlatformController CurrentPlatform, 
+        IPlatformController NextPlatform,
+        IStickController Stick);
+
     private readonly IHeroController hero;
     private readonly PlatformSpawner platformSpawner;
     private readonly GameStateMachine stateMachine;
@@ -48,20 +53,5 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
             return false;
 
         return true;
-    }
-
-    public sealed class Arguments
-    {
-        public Arguments(IPlatformController currentPlatform, IPlatformController nextPlatform,
-            IStickController stick)
-        {
-            CurrentPlatform = currentPlatform;
-            NextPlatform = nextPlatform;
-            Stick = stick;
-        }
-
-        public IPlatformController CurrentPlatform { get; }
-        public IPlatformController NextPlatform { get; }
-        public IStickController Stick { get; }
     }
 }
