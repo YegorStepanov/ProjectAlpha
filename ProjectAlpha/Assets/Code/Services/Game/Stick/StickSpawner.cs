@@ -7,10 +7,10 @@ public sealed class StickSpawner
     private readonly StickController.Pool pool;
     private readonly Settings settings;
 
-    public StickSpawner(StickController.Pool pool)
+    public StickSpawner(StickController.Pool pool, Settings settings)
     {
         this.pool = pool;
-        settings = new Settings();
+        this.settings = settings;
     }
 
     public float StickWidth => settings.StickWidth;

@@ -1,22 +1,22 @@
-﻿using UnityEngine;
+﻿using Code.Services;
+using UnityEngine;
+using Zenject;
 
 namespace Code.Game;
 
 [CreateAssetMenu(menuName = "SO/Game Settings")]
 public sealed class GameSettings : ScriptableObject
 {
-    // [field: SerializeField]
-    // public float MenuPlatformWidth { get; } = 2f;
-
-    // [field: SerializeField]
-    // public float MenuPlatformViewportPosition { get; } = 0.5f;
-
-    // [field: SerializeField]
-    // public float MenuPlatformPositionY { get; } = 0.2f;
-    //
-    // [field: SerializeField]
-    // public float GamePlatformPositionY { get; } = 0.3f;
-    //
-    [field: SerializeField]
-    public float MenuToGameCameraAnimationDuration { get; } = 1f;
+    [SerializeField] private HeroController.Settings hero;
+    [SerializeField] private PlatformController.Settings platform;
+    [SerializeField] private StickController.Settings stick;
+    [SerializeField] private StickSpawner.Settings stickSpawner;
+    
+    public void BindAllSettings(DiContainer container)
+    {
+        container.BindInstance(hero);
+        container.BindInstance(platform);
+        container.BindInstance(stick);
+        container.BindInstance(stickSpawner);
+    }
 }

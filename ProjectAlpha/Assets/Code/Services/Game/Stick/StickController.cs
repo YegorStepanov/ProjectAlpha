@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -12,6 +13,7 @@ public sealed class StickController : MonoBehaviour, IStickController
     [SerializeField] private Transform stick;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    private Settings settings;
     private TweenerCore<Vector3, Vector3, VectorOptions> increasingTweener;
 
     public float Width
@@ -26,35 +28,39 @@ public sealed class StickController : MonoBehaviour, IStickController
         set => stick.position = value;
     }
 
-    private void Awake() =>
-        stick.localScale = stick.localScale.WithY(0f);
+    [Inject]
+    public void Construct(Settings settings) =>
+        this.settings = settings;
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(new Vector2(Borders.Left, Borders.Top), 0.02f);
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(new Vector2(Borders.Right, Borders.Top), 0.02f);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(new Vector2(Borders.Left, Borders.Bottom), 0.02f);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(new Vector2(Borders.Right, Borders.Bottom), 0.02f);
-    }
+    private void Awake() =>
+        ResetHeight();
 
     public Borders Borders => spriteRenderer.bounds.AsBorders();
 
     public void StartIncreasing() =>
-        increasingTweener = stick.DOScaleY(float.MaxValue, 25f)
+        increasingTweener = stick.DOScaleY(float.MaxValue, settings.IncreaseSpeed)
             .SetSpeedBased();
 
     public void StopIncreasing() =>
         increasingTweener?.Kill();
 
     public async UniTask RotateAsync() =>
-        await stick.DORotate(new Vector3(0, 0, -90), 0.4f)
+        await stick.DORotate(settings.RotationDestination, settings.RotationTime)
             .SetEase(Ease.InQuad)
-            .SetDelay(0.3f)
-            .WithCancellation(this.GetCancellationTokenOnDestroy()); // .SetSpeedBased()
+            .SetDelay(settings.RotationDelay)
+            .WithCancellation(this.GetCancellationTokenOnDestroy());
+
+    private void ResetHeight() =>
+        stick.localScale = stick.localScale.WithY(0f);
+
+    [Serializable]
+    public class Settings
+    {
+        public float IncreaseSpeed = 25f;
+        public Vector3 RotationDestination = new(0, 0, -90);
+        public float RotationTime = 0.4f;
+        public float RotationDelay = 0.3f;
+    }
 
     public class Pool : MonoMemoryPool<StickController> { }
 }

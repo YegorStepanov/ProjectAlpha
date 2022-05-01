@@ -88,7 +88,7 @@ public sealed class GameInstaller : BaseInstaller<GameInitializer>
         Container.Bind<GameStateMachine>().AsSingle();
 
     private void RegisterGameSettings() =>
-        Container.BindInstance(gameSettings);
+        gameSettings.BindAllSettings(Container);
 
 
     private void RegisterSpriteRenderer() => //wtf? it's bad, ye? move it to own type OR move to settings
