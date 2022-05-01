@@ -11,8 +11,6 @@ public sealed class MenuInstaller : BaseInstaller<MenuInitializer>
     {
         base.InstallBindings();
 
-        // Container.Bind<StartGameTrigger>().AsSingle(); ??
-
         RegisterMenuMediator();
 
         RegisterUIManager();

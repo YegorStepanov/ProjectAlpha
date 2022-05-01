@@ -1,4 +1,6 @@
-﻿using Code.Services;
+﻿using Code.Game;
+using Code.Services;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -9,6 +11,9 @@ public sealed class ProjectInstaller : BaseInstaller<ProjectInitializer>
 {
     [Required, AssetsOnly, SerializeField]
     private CameraController _cameraController;
+
+    [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(GameSettings))]
+    private GameSettings _gameSettings;
 
     private void Awake() =>
         DOTween.Init();
@@ -25,10 +30,11 @@ public sealed class ProjectInstaller : BaseInstaller<ProjectInitializer>
     {
         base.InstallBindings();
 
+        RegisterGameSettings();
+
         RegisterSceneLoader();
 
         RegisterCamera();
-        // RegisterScreenSizeChecker();
 
         RegisterGameTriggers();
 
@@ -36,6 +42,10 @@ public sealed class ProjectInstaller : BaseInstaller<ProjectInitializer>
 
         Container.Bind<StartSceneInformer>().AsSingle().NonLazy();
     }
+
+    private void RegisterGameSettings() =>
+        _gameSettings.BindAllSettings(Container);
+
 
     private void RegisterCamera() =>
         Container.Bind<CameraController>()
@@ -46,9 +56,6 @@ public sealed class ProjectInstaller : BaseInstaller<ProjectInitializer>
 
     private void RegisterSceneLoader() =>
         Container.Bind<SceneLoader>().AsSingle();
-
-    private void RegisterScreenSizeChecker() =>
-        Container.BindInterfacesAndSelfTo<ScreenSizeChecker>().AsSingle();
 
     private void RegisterGameTriggers() =>
         Container.Bind<GameTriggers>().AsSingle();

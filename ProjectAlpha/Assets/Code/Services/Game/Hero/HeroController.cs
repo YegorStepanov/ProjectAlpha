@@ -9,8 +9,7 @@ namespace Code.Services;
 public sealed class HeroController : MonoBehaviour, IHeroController
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private Transform _bottomRightPivot;
-    
+
     private Settings _settings;
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
@@ -18,7 +17,7 @@ public sealed class HeroController : MonoBehaviour, IHeroController
     public float HandOffset => _settings.HandOffset; //remove it
 
     [Inject]
-    public void Construct(Settings settings) => 
+    public void Construct(Settings settings) =>
         _settings = settings;
 
     public async UniTask MoveAsync(float destinationX) =>

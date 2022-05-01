@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Code.UI;
 
-public sealed class StartGameTrigger : MonoBehaviour, IDisposable
+public sealed class StartGameTrigger : MonoBehaviour //, IDisposable
 {
     private GameTriggers _gameTriggers;
 

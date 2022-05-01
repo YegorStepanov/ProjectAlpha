@@ -6,7 +6,7 @@ namespace Code.States;
 public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatformState.Arguments>
 {
     public readonly record struct Arguments(
-        IPlatformController CurrentPlatform, 
+        IPlatformController CurrentPlatform,
         IPlatformController NextPlatform,
         IStickController Stick);
 
@@ -44,7 +44,7 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
 
     private static bool IsStickOnPlatform(IStickController stick, IPlatformController platform)
     {
-        var stickPosX = stick.Borders.Right;
+        float stickPosX = stick.Borders.Right;
 
         if (stickPosX < platform.Borders.Left)
             return false;

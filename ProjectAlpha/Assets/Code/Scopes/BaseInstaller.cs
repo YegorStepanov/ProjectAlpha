@@ -4,7 +4,8 @@ using Zenject;
 
 namespace Code.Scopes;
 
-public class BaseInstaller<TInitializer> : MonoInstaller where TInitializer : class, IInitializable
+public class BaseInstaller<TInitializer> : MonoInstaller
+    where TInitializer : class, IInitializable
 {
     public override void InstallBindings()
     {
