@@ -28,7 +28,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,5 +73,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41ac431ae58403d80294ac5885b8b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraController: {fileID: 3622642699467653958, guid: 7592d5cb0eaa83d4a85c118776fae846,
+  _cameraController: {fileID: 3622642699467653958, guid: 7592d5cb0eaa83d4a85c118776fae846,
     type: 3}

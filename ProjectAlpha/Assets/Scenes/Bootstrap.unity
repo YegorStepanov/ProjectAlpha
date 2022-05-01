@@ -183,7 +183,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -200,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db08f23bb9a47afa61733e403352dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingScreen: {fileID: 964826919}
+  _loadingScreen: {fileID: 964826919}
 --- !u!114 &964826919 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1881490407437569725, guid: ac99d8c09b9a33c4584133ca13e16c1f,
@@ -213,6 +212,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7d0aa04b3146ec95fa97211a11c417, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &1268735375 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 5496645623748761992, guid: ac99d8c09b9a33c4584133ca13e16c1f,
+    type: 3}
+  m_PrefabInstance: {fileID: 3412616729595702212}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3412616729595702212
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -225,6 +230,11 @@ PrefabInstance:
       propertyPath: duration
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 1881490407437569725, guid: ac99d8c09b9a33c4584133ca13e16c1f,
+        type: 3}
+      propertyPath: _loadingScreen
+      value: 
+      objectReference: {fileID: 1268735375}
     - target: {fileID: 3412616728949652706, guid: ac99d8c09b9a33c4584133ca13e16c1f,
         type: 3}
       propertyPath: m_Pivot.x

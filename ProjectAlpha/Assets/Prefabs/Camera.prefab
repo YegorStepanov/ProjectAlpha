@@ -135,8 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e84be4512264c17858b35770efd67eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseCamera: {fileID: 4837772697287054860}
-  backgroundImage: {fileID: 4832375554498539331}
+  _baseCamera: {fileID: 4837772697287054860}
+  _backgroundImage: {fileID: 4832375554498539331}
 --- !u!1 &8229459211502059848
 GameObject:
   m_ObjectHideFlags: 0

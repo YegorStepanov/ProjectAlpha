@@ -12,3 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1200d8c47f8945258beb05f68d1ea192, type: 3}
   m_Name: Game Settings
   m_EditorClassIdentifier: 
+  _hero:
+    HandOffset: 0.25
+    MovementSpeed: 4
+    FallingSpeed: 9.8
+    FallingDestination: -10
+  _platform:
+    MovementSpeed: 10
+  _stick:
+    IncreaseSpeed: 25
+    RotationDestination: {x: 0, y: 0, z: -90}
+    RotationTime: 0.4
+    RotationDelay: 0.3
+  _stickSpawner:
+    StickWidth: 0.04

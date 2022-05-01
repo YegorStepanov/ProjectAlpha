@@ -35,7 +35,7 @@ public sealed class BootstrapState : IState
     public async UniTaskVoid EnterAsync()
     {
         Debug.Log("BootstrapState.Enter" + ": " + Time.frameCount);
-        _widthGenerator.Reset();
+        //_widthGenerator.Reset();
 
         UniTask loadBackgroundTask = _cameraController.ChangeBackgroundAsync();
 
