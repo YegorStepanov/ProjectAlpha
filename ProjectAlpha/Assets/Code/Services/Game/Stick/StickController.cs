@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -14,6 +15,7 @@ public sealed class StickController : MonoBehaviour, IStickController
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private Settings _settings;
+    private CancellationToken _token;
     private TweenerCore<Vector3, Vector3, VectorOptions> _increaseTweener;
 
     public float Width
@@ -31,9 +33,12 @@ public sealed class StickController : MonoBehaviour, IStickController
     [Inject]
     public void Construct(Settings settings) =>
         _settings = settings;
-
-    private void Awake() =>
+    
+    private void Awake()
+    {
+        _token = this.GetCancellationTokenOnDestroy();
         ResetHeight();
+    }
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
@@ -48,7 +53,7 @@ public sealed class StickController : MonoBehaviour, IStickController
         await _stick.DORotate(_settings.RotationDestination, _settings.RotationTime)
             .SetEase(Ease.InQuad)
             .SetDelay(_settings.RotationDelay)
-            .WithCancellation(this.GetCancellationTokenOnDestroy());
+            .WithCancellation(_token);
 
     private void ResetHeight() =>
         _stick.localScale = _stick.localScale.WithY(0f);

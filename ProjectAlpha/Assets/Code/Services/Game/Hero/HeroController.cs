@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -11,6 +12,7 @@ public sealed class HeroController : MonoBehaviour, IHeroController
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private Settings _settings;
+    private CancellationToken _token;
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
@@ -20,14 +22,19 @@ public sealed class HeroController : MonoBehaviour, IHeroController
     public void Construct(Settings settings) =>
         _settings = settings;
 
+    private void Awake() =>
+        _token = this.GetCancellationTokenOnDestroy();
+
     public async UniTask MoveAsync(float destinationX) =>
         await transform.DOMoveX(destinationX, _settings.MovementSpeed)
             .SetEase(Ease.Linear)
-            .SetSpeedBased();
+            .SetSpeedBased()
+            .WithCancellation(_token);
 
     public async UniTask FellAsync() =>
         await transform.DOMoveY(_settings.FallingDestination, -_settings.FallingSpeed)
-            .SetSpeedBased();
+            .SetSpeedBased()
+            .WithCancellation(_token);
 
     public void TeleportTo(Vector2 destination, Relative relative) =>
         transform.position = Borders.TransformPoint(destination, relative);
