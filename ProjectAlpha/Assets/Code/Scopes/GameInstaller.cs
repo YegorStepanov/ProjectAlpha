@@ -10,9 +10,6 @@ public sealed class GameInstaller : BaseInstaller<GameInitializer>
     [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(WidthGenerator))]
     private WidthGenerator _widthGenerator; //split to settings and own generator?
 
-    [SerializeField]
-    private SpriteRenderer _spriteRendererPrefab;
-
     [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(GameSettings))]
     private GameSettings _gameSettings;
 
@@ -30,7 +27,6 @@ public sealed class GameInstaller : BaseInstaller<GameInitializer>
 
         RegisterWidthGenerator();
 
-        RegisterSpriteRenderer();
         RegisterGameSettings();
 
         RegisterGameStateMachine();
@@ -90,10 +86,9 @@ public sealed class GameInstaller : BaseInstaller<GameInitializer>
     private void RegisterGameSettings() =>
         _gameSettings.BindAllSettings(Container);
 
-
-    private void RegisterSpriteRenderer() => //wtf? it's bad, ye? move it to own type OR move to settings
-        Container.BindInstance(_spriteRendererPrefab);
-
     private void RegisterWidthGenerator() =>
-        Container.BindInstance(_widthGenerator);
+        Container.Bind<WidthGenerator>()
+            .To<PercentageWidthGenerator>()
+            .FromNewScriptableObject(_widthGenerator)
+            .AsSingle();
 }

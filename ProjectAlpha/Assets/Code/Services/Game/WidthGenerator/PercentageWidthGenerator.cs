@@ -6,16 +6,7 @@ namespace Code.Services;
 [CreateAssetMenu(menuName = "SO/Percentage Width Generator")]
 public sealed class PercentageWidthGenerator : WidthGenerator //todo: split to 2 classes
 {
-    // [SerializeField, MinMaxSlider(0, 1), LabelText("Range of the platform")]
-    // private Vector2 platformViewportRange = new(0.1f, 0.5f);
-    //
-    // [SerializeField, ProgressBar(0, 100), LabelText("Reduction per step (%)")]
-    // private float PercentageReductionPerStep = 10f;
-    //
-    // [SerializeField, MinMaxSlider(0, 1), LabelText("Min/Max threshold")]
-    // private Vector2 minMaxViewportThreshold = new(0.1f, 0.2f);
-
-    [SerializeField]
+    [SerializeField, Min(0f)]
     private float _minWidth = 0.25f;
 
     [SerializeField]
@@ -24,13 +15,17 @@ public sealed class PercentageWidthGenerator : WidthGenerator //todo: split to 2
     [SerializeField, Range(0, 1)]
     private float _reductionRatioPerStep = 0.1f;
 
-    [SerializeField]
+    [SerializeField, Min(0f)]
     private float _minThreshold = 0.25f;
 
-    [SerializeField]
+    [SerializeField, Min(0f)]
     private float _maxThreshold = 2f;
 
     private Ratio _currentRatio;
+
+    //Don't forget: when Domain Reload is disabled, SO events are not called and these instances are not reset 
+    private void Awake() =>
+        Reset();
 
     public override void Reset() =>
         _currentRatio = new Ratio(1f, 1f);
@@ -49,7 +44,7 @@ public sealed class PercentageWidthGenerator : WidthGenerator //todo: split to 2
     private Ratio NextRatio(Ratio ratio) =>
         ratio * (1f - _reductionRatioPerStep);
 
-    private Ratio LimitByThreshold(Ratio ratio) => new Ratio(
+    private Ratio LimitByThreshold(Ratio ratio) => new(
         ratio.Min < _minThreshold ? _minThreshold : ratio.Min,
         ratio.Max < _maxThreshold ? _maxThreshold : ratio.Max);
 }
