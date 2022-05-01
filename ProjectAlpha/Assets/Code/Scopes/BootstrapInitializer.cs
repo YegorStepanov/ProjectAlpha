@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Code.Services;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using Zenject;
 
 namespace Code.Scopes;

@@ -1,6 +1,4 @@
 ﻿using Code.Services;
-using Cysharp.Threading.Tasks;
-using Zenject;
 
 namespace Code.Scopes;
 

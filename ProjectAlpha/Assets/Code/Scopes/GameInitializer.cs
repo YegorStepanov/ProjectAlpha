@@ -1,8 +1,5 @@
 ﻿using Code.Services;
 using Code.States;
-using UnityEditor.SceneManagement;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Code.Scopes;

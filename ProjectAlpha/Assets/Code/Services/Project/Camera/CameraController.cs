@@ -1,5 +1,4 @@
 ﻿using System;
-using Code.Game;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -81,27 +80,4 @@ public sealed class CameraController : MonoBehaviour, IDisposable
 
     public Vector2 ViewportToWorldPosition(Vector2 viewportPosition) =>
         baseCamera.ViewportToWorldPoint(viewportPosition);
-
-    // public float WorldHeight() =>
-
-    //     camera.orthographicSize * 2;
-
-    //
-
-    // public float WorldWidth() =>
-
-    //     camera.orthographicSize * camera.aspect * 2;
-
-
-    private float OffsetToLeftCameraBorder() =>
-        -ViewportToWorldPosition(Vector2.zero).x;
-
-    private float MenuPlatformOffsetToLeftBorder() => 0f;
-
-    // -gameSettings.MenuPlatformWidth / 2f;
-
-
-    private float MenuToGamePlatformOffsetY() => 0f;
-
-    // gameSettings.GamePlatformPositionY - gameSettings.MenuPlatformPositionY;
 }

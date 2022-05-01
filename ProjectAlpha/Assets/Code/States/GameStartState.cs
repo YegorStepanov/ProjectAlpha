@@ -51,7 +51,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
 
     private async UniTask MoveCameraAsync(IPlatformController currentPlatform)
     {
-        Vector2 destination = new Vector2(currentPlatform.Borders.Left, currentPlatform.Borders.Bottom);
+        Vector2 destination = new(currentPlatform.Borders.Left, currentPlatform.Borders.Bottom);
         await cameraController.MoveAsync(destination, Relative.LeftBottom);
     }
 
@@ -67,7 +67,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
     private IPlatformController CreateNextPlatform(IPlatformController currentPlatform)
     {
         float leftCameraBorderToPlatformDistance = currentPlatform.Borders.Left - cameraController.Borders.Left;
-        Vector2 position = new Vector2(
+        Vector2 position = new(
             cameraController.Borders.Right + leftCameraBorderToPlatformDistance,
             currentPlatform.Borders.Top);
 
