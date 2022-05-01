@@ -64,28 +64,4 @@ public sealed class BootstrapState : IState
     }
 
     public void Exit() { }
-
-    private async UniTaskVoid ExitAsync()
-    {
-        //hide ui
-        //close ui scene
-        //show game ui
-
-        await UniTask.CompletedTask;
-
-        //Show your finder 
-        //after next platform destination start fade in it 
-    }
-
-    public class Settings
-    {
-        public float GameViewportPosY = 0.3f;
-
-        public float MenuPlatformViewportPosX = 0.5f; //= new(0.5f, 0.2f);
-
-        public float MenuPlatformWidth = 2f;
-        // public float GamePlatformViewportPosX = 1f; //= new(1f, 0.3f); //y should be synced with camera
-
-        public float MenuViewportPosY = 0.2f;
-    }
 }

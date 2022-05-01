@@ -19,7 +19,7 @@ public sealed class PlatformSpawner
 
         float height = cameraController.Borders.TransformPointY(position.y, Relative.Bottom);
 
-        Vector2 size = new Vector2(width, height);
+        Vector2 size = new(width, height);
         platform.SetSize(size);
 
         position = platform.Borders.TransformPoint(position, relative);

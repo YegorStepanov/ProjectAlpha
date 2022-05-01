@@ -1,9 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services
-{
-    
+namespace Code.Services;
 
 public interface IPlatformController
 {
@@ -14,4 +12,4 @@ public interface IPlatformController
     void SetSize(Vector2 scale);
     UniTask MoveAsync(float destinationX);
     Vector2 GetRelativePosition(Vector2 position, Relative relative);
-}}
+}
