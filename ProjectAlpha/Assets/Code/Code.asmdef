@@ -26,6 +26,7 @@
     "Unity.Timeline",
     "UnityEngine.UI",
     "Zenject",
+    "Extenject-Async",
     "UnitySceneReference",
     "DOTween.Modules"
   ],

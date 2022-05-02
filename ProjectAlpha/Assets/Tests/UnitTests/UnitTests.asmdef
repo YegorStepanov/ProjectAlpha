@@ -48,6 +48,7 @@
         "Zenject",
         "Zenject-Editor",
         "Zenject-TestFramework",
+        "Extenject-Async",
         "DOTween.Modules"
     ],
     "includePlatforms": [
