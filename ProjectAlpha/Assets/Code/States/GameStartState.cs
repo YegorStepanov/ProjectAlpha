@@ -7,10 +7,9 @@ namespace Code.States;
 
 public sealed class GameStartState : IArgState<GameStartState.Arguments>
 {
-    public readonly record struct Arguments(IPlatformController CurrentPlatform);
+    public readonly record struct Arguments(IPlatformController CurrentPlatform, IHeroController Hero);
 
     private readonly CameraController _cameraController;
-    private readonly IHeroController _hero;
     private readonly PlatformSpawner _platformSpawner;
 
     private readonly GameStateMachine _stateMachine;
@@ -20,14 +19,12 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
     public GameStartState(
         GameStateMachine stateMachine,
         CameraController cameraController,
-        IHeroController hero,
         PlatformSpawner platformSpawner,
         StickSpawner stickSpawner,
         WidthGenerator widthGenerator)
     {
         _stateMachine = stateMachine;
         _cameraController = cameraController;
-        _hero = hero;
         _platformSpawner = platformSpawner;
         _stickSpawner = stickSpawner;
         _widthGenerator = widthGenerator;
@@ -35,7 +32,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
 
     public async UniTaskVoid EnterAsync(Arguments args)
     {
-        await MoveHeroAsync(args.CurrentPlatform);
+        await MoveHeroAsync(args.CurrentPlatform, args.Hero);
 
         await UniTask.Delay(100);
         UniTask moveCameraTask = MoveCameraAsync(args.CurrentPlatform);
@@ -46,7 +43,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         await (moveCameraTask, movePlatformTask);
 
         _stateMachine.Enter<StickControlState, StickControlState.Arguments>(
-            new StickControlState.Arguments(args.CurrentPlatform, nextPlatform));
+            new StickControlState.Arguments(args.CurrentPlatform, nextPlatform, args.Hero));
     }
 
     public void Exit() { }
@@ -57,13 +54,13 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         await _cameraController.MoveAsync(destination, Relative.LeftBottom);
     }
 
-    private async UniTask MoveHeroAsync(IPlatformController currentPlatform)
+    private async UniTask MoveHeroAsync(IPlatformController currentPlatform, IHeroController hero)
     {
         float destX = currentPlatform.Borders.Right;
         destX -= _stickSpawner.StickWidth / 2f;
-        destX -= _hero.HandOffset;
+        destX -= hero.HandOffset;
         await UniTask.Delay(200);
-        await _hero.MoveAsync(destX);
+        await hero.MoveAsync(destX);
     }
 
     private IPlatformController CreateNextPlatform(IPlatformController currentPlatform)

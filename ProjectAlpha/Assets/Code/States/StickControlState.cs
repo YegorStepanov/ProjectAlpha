@@ -1,12 +1,12 @@
 ﻿using Code.Services;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace Code.States;
 
 public sealed class StickControlState : IArgState<StickControlState.Arguments>
 {
-    public readonly record struct Arguments(IPlatformController CurrentPlatform, IPlatformController NextPlatform);
+    public readonly record struct Arguments(IPlatformController CurrentPlatform, IPlatformController NextPlatform,
+        IHeroController Hero);
 
     private readonly InputManager _inputManager;
 
@@ -34,7 +34,7 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
         await stick.RotateAsync();
 
         _stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
-            new MoveHeroToNextPlatformState.Arguments(args.CurrentPlatform, args.NextPlatform, stick));
+            new MoveHeroToNextPlatformState.Arguments(args.CurrentPlatform, args.NextPlatform, stick, args.Hero));
     }
 
     public void Exit() { }

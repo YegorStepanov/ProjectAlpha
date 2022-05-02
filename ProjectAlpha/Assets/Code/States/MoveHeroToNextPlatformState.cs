@@ -5,22 +5,16 @@ namespace Code.States;
 
 public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatformState.Arguments>
 {
-    public readonly record struct Arguments(
-        IPlatformController CurrentPlatform,
+    public readonly record struct Arguments(IPlatformController CurrentPlatform,
         IPlatformController NextPlatform,
-        IStickController Stick);
+        IStickController Stick, IHeroController Hero);
 
-    private readonly IHeroController _hero;
     private readonly PlatformSpawner _platformSpawner;
     private readonly GameStateMachine _stateMachine;
 
-    public MoveHeroToNextPlatformState(
-        GameStateMachine stateMachine,
-        IHeroController hero,
-        PlatformSpawner platformSpawner)
+    public MoveHeroToNextPlatformState(GameStateMachine stateMachine, PlatformSpawner platformSpawner)
     {
         _stateMachine = stateMachine;
-        _hero = hero;
         _platformSpawner = platformSpawner;
     }
 
@@ -29,12 +23,12 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
         if (IsStickOnPlatform(args.Stick, args.NextPlatform))
         {
             _stateMachine.Enter<GameStartState, GameStartState.Arguments>(
-                new GameStartState.Arguments(args.NextPlatform));
+                new GameStartState.Arguments(args.NextPlatform, args.Hero));
         }
         else
         {
-            await _hero.MoveAsync(args.Stick.Borders.Right);
-            await _hero.FellAsync();
+            await args.Hero.MoveAsync(args.Stick.Borders.Right);
+            await args.Hero.FellAsync();
 
             //earthshake screen
         }

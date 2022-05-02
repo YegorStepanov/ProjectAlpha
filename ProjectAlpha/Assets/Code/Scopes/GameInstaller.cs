@@ -35,13 +35,27 @@ public sealed class GameInstaller : BaseInstaller<GameInitializer>
     private void RegisterGameStateMachine() =>
         Container.Bind<GameStateMachine>().AsSingle();
 
-    private void RegisterHeroController() =>
-        Container.Bind<IHeroController>()
-            .FromComponentInNewPrefab(_hero)
-            .WithGameObjectName("Hero")
-            .AsSingle();
+    private static void RegisterHeroController(DiContainer container)
+    {
+        //todo: convert to local function, it's faster?
+        //check it in sharplab
+        container.BindAsync<IHeroController>().FromMethod(async () =>
+        {
+            var factory = container.Resolve<AddressableFactory>();
+            await Task.Delay(100);
 
+            GameObject hero = await factory.InstantiateAsync("Hero");
+            container.InjectGameObject(hero);
+            hero.name = "MyHero";
+            return hero.GetComponent<HeroController>();
+        }).AsSingle();
 
+        //container.Bind<IHeroController>()
+        //    .FromComponentInNewPrefab(hero)
+        //    .WithGameObjectName("Hero")
+        //    .AsSingle();
+    }
+    
     private void RegisterStickSpawner()
     {
         Container.BindMemoryPool<StickController, StickController.Pool>()
