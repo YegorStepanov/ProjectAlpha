@@ -28,6 +28,13 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.kink3d.pooling": {
+      "version": "https://github.com/Kink3d/kPooling.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "3e94f4e2e9146b6b61cc9deec5e8b3a21c55bce7"
+    },
     "com.svermeulen.extenject": {
       "version": "https://github.com/Mathijs-Bakker/Extenject.git?path=/UnityProject/Assets/Plugins/Zenject#9.3.0",
       "depth": 0,
