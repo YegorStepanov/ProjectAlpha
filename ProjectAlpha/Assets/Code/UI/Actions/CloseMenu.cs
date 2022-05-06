@@ -1,7 +1,7 @@
 ﻿using Code.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
+using VContainer;
 
 namespace Code.UI.Actions;
 

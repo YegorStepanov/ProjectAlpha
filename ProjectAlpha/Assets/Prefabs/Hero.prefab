@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 4234370765948307199}
-  _bottomRightPivot: {fileID: 0}
 --- !u!212 &4234370765948307199
 SpriteRenderer:
   m_ObjectHideFlags: 0

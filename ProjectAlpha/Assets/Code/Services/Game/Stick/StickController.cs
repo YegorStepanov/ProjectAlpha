@@ -5,7 +5,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace Code.Services;
 
@@ -66,6 +66,4 @@ public sealed class StickController : MonoBehaviour, IStickController
         public float RotationTime = 0.4f;
         public float RotationDelay = 0.3f;
     }
-
-    public class Pool : MonoMemoryPool<StickController> { }
 }

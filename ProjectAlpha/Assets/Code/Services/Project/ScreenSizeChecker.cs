@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using Zenject;
+using VContainer.Unity;
 
 namespace Code.Services;
 

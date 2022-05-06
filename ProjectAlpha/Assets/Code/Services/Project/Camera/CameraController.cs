@@ -4,7 +4,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 namespace Code.Services;
 
@@ -25,8 +25,11 @@ public sealed class CameraController : MonoBehaviour, IDisposable
         _backgroundChanger?.Dispose();
 
     [Inject]
-    public void Construct(AddressableFactory factory) =>
+    public void Construct(AddressableFactory factory)
+    {
         _backgroundChanger = new BackgroundChanger(factory, _backgroundImage);
+        DontDestroyOnLoad(this);
+    }
 
     public UniTask ChangeBackgroundAsync() =>
         _backgroundChanger.ChangeToRandomBackgroundAsync();

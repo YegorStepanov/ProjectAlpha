@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &718664778
+--- !u!1 &1483030241
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,76 +131,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 718664781}
-  - component: {fileID: 718664780}
-  - component: {fileID: 718664779}
+  - component: {fileID: 1483030243}
+  - component: {fileID: 1483030242}
   m_Layer: 0
-  m_Name: SceneContext
+  m_Name: Scope (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &718664779
+--- !u!114 &1483030242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 718664778}
+  m_GameObject: {fileID: 1483030241}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e32743ffdd0e4275a2a21bd42311e468, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f2d12df5eb1431b877afe0f3008d2fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects: []
   _widthGenerator: {fileID: 11400000, guid: 9d4d0dd7c4daad44ca5c36edbf526db1, type: 2}
-  _spriteRendererPrefab: {fileID: 0}
-  _gameSettings: {fileID: 11400000, guid: b23838d16aa5f5741859bfeed0b40a4a, type: 2}
   _hero: {fileID: 3113338190558095809, guid: 5fa24f25a64961841b12b4a0d76e006b, type: 3}
   _stick: {fileID: 3111241014157088334, guid: b80f0c540a3902d45af719ecd6365d12, type: 3}
   _platform: {fileID: 7807385615080650310, guid: 3ea69cc0d2aed544ba54096713982892,
     type: 3}
---- !u!114 &718664780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 718664778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers:
-  - {fileID: 718664779}
-  _installerPrefabs: []
-  _autoRun: 1
-  OnPreInstall:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPostInstall:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPreResolve:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPostResolve:
-    m_PersistentCalls:
-      m_Calls: []
-  _parentNewObjectsUnderSceneContext: 0
-  _contractNames: []
-  _parentContractNames: []
---- !u!4 &718664781
+--- !u!4 &1483030243
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 718664778}
+  m_GameObject: {fileID: 1483030241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

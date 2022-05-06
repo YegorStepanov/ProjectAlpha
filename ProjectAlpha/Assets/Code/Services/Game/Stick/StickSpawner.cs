@@ -1,15 +1,22 @@
 ﻿using System;
+using UnityEngine;
+using VContainer;
+using VContainer.Unity;
 
 namespace Code.Services;
 
 public sealed class StickSpawner
 {
-    private readonly StickController.Pool _pool;
+    private readonly Transform _scopeTransform;
+    private readonly IObjectResolver _resolver;
+    private readonly StickController _stickPrefab;
     private readonly Settings _settings;
 
-    public StickSpawner(StickController.Pool pool, Settings settings)
+    public StickSpawner(LifetimeScope scope, IObjectResolver resolver, StickController stickPrefab, Settings settings)
     {
-        _pool = pool;
+        _scopeTransform = scope.transform;
+        _resolver = resolver;
+        _stickPrefab = stickPrefab;
         _settings = settings;
     }
 
@@ -17,7 +24,9 @@ public sealed class StickSpawner
 
     public IStickController Spawn(float positionX)
     {
-        StickController stick = _pool.Spawn();
+        StickController stick = _resolver.Instantiate(_stickPrefab, _scopeTransform, true); //correct form!
+        stick.transform.SetParent(null);
+        
         stick.Position = stick.Position.WithX(positionX);
         stick.Width = _settings.StickWidth;
         return stick;

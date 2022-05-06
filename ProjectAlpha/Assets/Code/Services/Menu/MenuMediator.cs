@@ -1,6 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace Code.Services;
 

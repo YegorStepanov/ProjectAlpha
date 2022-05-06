@@ -3,7 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace Code.Services;
 

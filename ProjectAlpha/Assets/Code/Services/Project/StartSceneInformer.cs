@@ -4,15 +4,17 @@ namespace Code.Services;
 
 public sealed class StartSceneInformer
 {
-    //without ctor it evaluate property lazy? Why?
-    public bool IsGameStartScene { get; } = GetIsGameStartScene();
+    public bool IsGameStartScene { get; }
+    public bool IsBootstrapStartScene { get; }
 
-    private static bool GetIsGameStartScene()
+    public StartSceneInformer()
     {
 #if UNITY_EDITOR
-        return SceneManager.GetActiveScene().name == SceneAddress.Game.Key;
+        IsGameStartScene = SceneManager.GetActiveScene().name == SceneAddress.Game.Key;
+        IsBootstrapStartScene = SceneManager.GetActiveScene().name == SceneAddress.Bootstrap.Key;
 #else
-            return false;
+        IsGameStartScene = false;
+        IsBootstrapStartScene = true;
 #endif
     }
 }

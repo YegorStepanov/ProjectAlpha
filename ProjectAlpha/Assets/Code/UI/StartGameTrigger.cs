@@ -1,7 +1,7 @@
 ﻿using Code.Services;
 using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace Code.UI;
 

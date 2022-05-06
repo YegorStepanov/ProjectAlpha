@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.States;
-using Zenject;
+using VContainer;
 
 namespace Code.Services;
 
 public sealed class GameStateMachine
 {
+    private readonly Dictionary<Type, IExitState> _states;
+
     private IExitState _activeState;
-    private Dictionary<Type, IExitState> _states;
 
     [Inject]
-    public void Construct(DiContainer container) => _states = new Dictionary<Type, IExitState>
+    public GameStateMachine(IObjectResolver resolver) => _states = new Dictionary<Type, IExitState>
     {
-        [typeof(BootstrapState)] = container.Instantiate<BootstrapState>(),
-        [typeof(GameStartState)] = container.Instantiate<GameStartState>(),
-        [typeof(StickControlState)] = container.Instantiate<StickControlState>(),
-        [typeof(MoveHeroToNextPlatformState)] = container.Instantiate<MoveHeroToNextPlatformState>(),
+        [typeof(BootstrapState)] = resolver.ResolveInstance<BootstrapState, GameStateMachine>(this),
+        [typeof(GameStartState)] = resolver.ResolveInstance<GameStartState, GameStateMachine>(this),
+        [typeof(StickControlState)] = resolver.ResolveInstance<StickControlState, GameStateMachine>(this),
+        [typeof(MoveHeroToNextPlatformState)] =
+            resolver.ResolveInstance<MoveHeroToNextPlatformState, GameStateMachine>(this),
     };
 
     public void Enter<TState>() where TState : class, IState =>

@@ -7,19 +7,19 @@ namespace Code.Services;
 public sealed class UIManager
 {
     private readonly AddressableFactory _factory;
-    private GameObject _heroSelectorPanel;
 
     private GameObject _mainMenu;
     private GameObject _shopPanel;
+    private GameObject _heroSelectorPanel;
 
     public UIManager(AddressableFactory factory) =>
         _factory = factory;
 
     public void Show<TPanel>() where TPanel : struct, IPanel
     {
-        Core().Forget();
+        ShowAsync().Forget();
 
-        async UniTaskVoid Core()
+        async UniTaskVoid ShowAsync()
         {
             GameObject panel = GetPanel<TPanel>();
             Address address = GetAddress<TPanel>();

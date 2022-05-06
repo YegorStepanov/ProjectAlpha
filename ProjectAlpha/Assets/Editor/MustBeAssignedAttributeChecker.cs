@@ -55,7 +55,7 @@ namespace Code.Editor
     [SuppressMessage("ReSharper", "CoVariantArrayConversion")]
     public class MustBeAssignedAttributeChecker
     {
-        private static readonly string[] excludedTypes = new[]
+        private static readonly string[] excludedTypes =
         {
             "TMPro.TMP_FontAsset",
             "TMPro.TMP_Settings",
@@ -64,6 +64,11 @@ namespace Code.Editor
             "UnityEngine.EventSystems.EventSystem",
             "UnityEngine.GUISkin",
             "UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset"
+        };
+
+        private static readonly (string, string)[] excludedPropertyInType =
+        {
+            ("UnityEngine.UI.Image", "m_Material")
         };
 
         static MustBeAssignedAttributeChecker()
@@ -81,7 +86,23 @@ namespace Code.Editor
                 if (excludedType == name) return true;
             }
 
-            Debug.Log(name);
+            return false;
+        }
+
+        private static bool IsFieldExcludedByProperty(FieldInfo field, Object obj)
+        {
+            //im not sure what I wrote
+            string typeName = obj.GetType().FullName;
+            string fieldName = field.Name;
+            
+            foreach ((string excludedType, string excludedProperty) in excludedPropertyInType)
+            {
+                if (fieldName == excludedProperty && excludedType == typeName)
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
 
@@ -153,7 +174,8 @@ namespace Code.Editor
                                              Activator.CreateInstance(field.FieldType).Equals(fieldValue);
             if (valueTypeWithDefaultValue)
             {
-                Debug.LogError($"{targetType.Name} caused: {field.Name} is Value Type with default value",
+                Debug.LogError(
+                    $"{targetType.Name} caused: {field.Name} is Value Type with default value. Class: {targetObject.GetType().FullName}",
                     targetObject);
                 return;
             }
@@ -162,7 +184,9 @@ namespace Code.Editor
             bool nullReferenceType = fieldValue == null || fieldValue.Equals(null);
             if (nullReferenceType)
             {
-                Debug.LogError($"{targetType.Name} caused: {field.Name} is not assigned (null value)", targetObject);
+                Debug.LogError(
+                    $"{targetType.Name} caused: {field.Name} is not assigned (null value). Class: {targetObject.GetType().FullName}",
+                    targetObject);
                 return;
             }
 
@@ -170,7 +194,9 @@ namespace Code.Editor
             bool emptyString = field.FieldType == typeof(string) && (string)fieldValue == string.Empty;
             if (emptyString)
             {
-                Debug.LogError($"{targetType.Name} caused: {field.Name} is not assigned (empty string)", targetObject);
+                Debug.LogError(
+                    $"{targetType.Name} caused: {field.Name} is not assigned (empty string). Class: {targetObject.GetType().FullName}",
+                    targetObject);
                 return;
             }
 
@@ -178,13 +204,17 @@ namespace Code.Editor
             bool emptyArray = fieldValue is Array arr && arr.Length == 0;
             if (emptyArray)
             {
-                Debug.LogError($"{targetType.Name} caused: {field.Name} is not assigned (empty array)", targetObject);
+                Debug.LogError(
+                    $"{targetType.Name} caused: {field.Name} is not assigned (empty array). Class: {targetObject.GetType().FullName}",
+                    targetObject);
             }
         }
 
         private static bool IsFieldExcluded(FieldInfo field, Object obj)
         {
-            return IsFieldExcludedByType(obj);
+            if (IsFieldExcludedByType(obj)) return true;
+            if (IsFieldExcludedByProperty(field, obj)) return true;
+            return false;
         }
     }
 }

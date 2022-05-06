@@ -8,7 +8,7 @@ public sealed class BootstrapState : IState
 {
     private readonly CameraController _cameraController;
     private readonly GameTriggers _gameTriggers;
-    private readonly AsyncInject<IHeroController> _hero;
+    private readonly IHeroController _hero;
     private readonly PlatformSpawner _platformSpawner;
     private readonly StartSceneInformer _startSceneInformer;
     private readonly GameStateMachine _stateMachine;
@@ -18,7 +18,7 @@ public sealed class BootstrapState : IState
         GameStateMachine stateMachine,
         PlatformSpawner platformSpawner,
         WidthGenerator widthGenerator,
-        AsyncInject<IHeroController> hero,
+        IHeroController hero,
         CameraController cameraController,
         GameTriggers gameTriggers,
         StartSceneInformer startSceneInformer)
@@ -34,8 +34,8 @@ public sealed class BootstrapState : IState
 
     public async UniTaskVoid EnterAsync()
     {
-        IHeroController hero = await _hero; //hm, interesting mb add another service that start game after ALL are loaded
-        Debug.Log("BootstrapState.Enter" + ": " + Time.frameCount);
+        // IHeroController hero = await _hero; //hm, interesting mb add another service that start game after ALL are loaded
+        
         //_widthGenerator.Reset();
 
         UniTask loadBackgroundTask = _cameraController.ChangeBackgroundAsync();
@@ -43,7 +43,7 @@ public sealed class BootstrapState : IState
         Vector2 platformPosition = _cameraController.ViewportToWorldPosition(new Vector2(0.5f, 0.2f));
         IPlatformController menuPlatform = _platformSpawner.CreatePlatform(platformPosition, 2f, Relative.Center);
 
-        hero.TeleportTo(menuPlatform.Position, Relative.Left);
+        _hero.TeleportTo(menuPlatform.Position, Relative.Left);
 
         if (!_startSceneInformer.IsGameStartScene)
             await _gameTriggers.StartGameTrigger.OnClickAsync();
@@ -51,7 +51,7 @@ public sealed class BootstrapState : IState
         await loadBackgroundTask;
 
         _stateMachine.Enter<GameStartState, GameStartState.Arguments>(
-            new GameStartState.Arguments(menuPlatform, hero));
+            new GameStartState.Arguments(menuPlatform, _hero));
 
         //set background randomly
         //set idle animation

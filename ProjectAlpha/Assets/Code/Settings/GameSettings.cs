@@ -1,6 +1,6 @@
 ﻿using Code.Services;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 namespace Code.Game;
 
@@ -11,12 +11,12 @@ public sealed class GameSettings : ScriptableObject
     [SerializeField] private PlatformController.Settings _platform;
     [SerializeField] private StickController.Settings _stick;
     [SerializeField] private StickSpawner.Settings _stickSpawner;
-    
-    public void BindAllSettings(DiContainer container)
+
+    public void RegisterAllSettings(IContainerBuilder builder)
     {
-        container.BindInstance(_hero);
-        container.BindInstance(_platform);
-        container.BindInstance(_stick);
-        container.BindInstance(_stickSpawner);
+        builder.RegisterInstance(_hero);
+        builder.RegisterInstance(_platform);
+        builder.RegisterInstance(_stick);
+        builder.RegisterInstance(_stickSpawner);
     }
 }
