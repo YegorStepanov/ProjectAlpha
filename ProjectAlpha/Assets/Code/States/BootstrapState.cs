@@ -11,11 +11,9 @@ public sealed class BootstrapState : IState
     private readonly IHeroController _hero;
     private readonly PlatformSpawner _platformSpawner;
     private readonly StartSceneInformer _startSceneInformer;
-    private readonly GameStateMachine _stateMachine;
     private readonly WidthGenerator _widthGenerator;
 
     public BootstrapState(
-        GameStateMachine stateMachine,
         PlatformSpawner platformSpawner,
         WidthGenerator widthGenerator,
         IHeroController hero,
@@ -23,7 +21,6 @@ public sealed class BootstrapState : IState
         GameTriggers gameTriggers,
         StartSceneInformer startSceneInformer)
     {
-        _stateMachine = stateMachine;
         _platformSpawner = platformSpawner;
         _widthGenerator = widthGenerator;
         _hero = hero;
@@ -32,7 +29,7 @@ public sealed class BootstrapState : IState
         _startSceneInformer = startSceneInformer;
     }
 
-    public async UniTaskVoid EnterAsync()
+    public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
         // IHeroController hero = await _hero; //hm, interesting mb add another service that start game after ALL are loaded
         
@@ -50,7 +47,7 @@ public sealed class BootstrapState : IState
 
         await loadBackgroundTask;
 
-        _stateMachine.Enter<GameStartState, GameStartState.Arguments>(
+        stateMachine.Enter<GameStartState, GameStartState.Arguments>(
             new GameStartState.Arguments(menuPlatform, _hero));
 
         //set background randomly

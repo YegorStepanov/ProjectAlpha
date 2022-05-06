@@ -10,17 +10,15 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
 
     private readonly InputManager _inputManager;
 
-    private readonly GameStateMachine _stateMachine;
     private readonly StickSpawner _stickSpawner;
 
-    public StickControlState(GameStateMachine stateMachine, StickSpawner stickSpawner, InputManager inputManager)
+    public StickControlState(StickSpawner stickSpawner, InputManager inputManager)
     {
-        _stateMachine = stateMachine;
         _stickSpawner = stickSpawner;
         _inputManager = inputManager;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args)
+    public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
         float positionX = args.CurrentPlatform.Borders.Right;
         IStickController stick = _stickSpawner.Spawn(positionX);
@@ -33,7 +31,7 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
 
         await stick.RotateAsync();
 
-        _stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
+        stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
             new MoveHeroToNextPlatformState.Arguments(args.CurrentPlatform, args.NextPlatform, stick, args.Hero));
     }
 

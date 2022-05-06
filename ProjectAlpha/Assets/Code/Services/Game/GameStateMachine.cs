@@ -5,7 +5,7 @@ using VContainer;
 
 namespace Code.Services;
 
-public sealed class GameStateMachine
+public sealed class GameStateMachine : IStateMachine
 {
     private readonly Dictionary<Type, IExitState> _states;
 
@@ -14,18 +14,17 @@ public sealed class GameStateMachine
     [Inject]
     public GameStateMachine(IObjectResolver resolver) => _states = new Dictionary<Type, IExitState>
     {
-        [typeof(BootstrapState)] = resolver.ResolveInstance<BootstrapState, GameStateMachine>(this),
-        [typeof(GameStartState)] = resolver.ResolveInstance<GameStartState, GameStateMachine>(this),
-        [typeof(StickControlState)] = resolver.ResolveInstance<StickControlState, GameStateMachine>(this),
-        [typeof(MoveHeroToNextPlatformState)] =
-            resolver.ResolveInstance<MoveHeroToNextPlatformState, GameStateMachine>(this),
+        [typeof(BootstrapState)] = resolver.ResolveInstance<BootstrapState>(),
+        [typeof(GameStartState)] = resolver.ResolveInstance<GameStartState>(),
+        [typeof(StickControlState)] = resolver.ResolveInstance<StickControlState>(),
+        [typeof(MoveHeroToNextPlatformState)] = resolver.ResolveInstance<MoveHeroToNextPlatformState>(),
     };
 
     public void Enter<TState>() where TState : class, IState =>
-        ChangeState<TState>().EnterAsync().Forget();
+        ChangeState<TState>().EnterAsync(this).Forget();
 
     public void Enter<TState, TArg>(TArg argument) where TState : class, IArgState<TArg> =>
-        ChangeState<TState>().EnterAsync(argument).Forget();
+        ChangeState<TState>().EnterAsync(argument, this).Forget();
 
     private TState ChangeState<TState>() where TState : class, IExitState
     {

@@ -10,19 +10,17 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
         IStickController Stick, IHeroController Hero);
 
     private readonly PlatformSpawner _platformSpawner;
-    private readonly GameStateMachine _stateMachine;
 
-    public MoveHeroToNextPlatformState(GameStateMachine stateMachine, PlatformSpawner platformSpawner)
+    public MoveHeroToNextPlatformState(PlatformSpawner platformSpawner)
     {
-        _stateMachine = stateMachine;
         _platformSpawner = platformSpawner;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args)
+    public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
         if (IsStickOnPlatform(args.Stick, args.NextPlatform))
         {
-            _stateMachine.Enter<GameStartState, GameStartState.Arguments>(
+            stateMachine.Enter<GameStartState, GameStartState.Arguments>(
                 new GameStartState.Arguments(args.NextPlatform, args.Hero));
         }
         else

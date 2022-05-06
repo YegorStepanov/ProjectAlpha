@@ -12,25 +12,22 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
     private readonly CameraController _cameraController;
     private readonly PlatformSpawner _platformSpawner;
 
-    private readonly GameStateMachine _stateMachine;
     private readonly StickSpawner _stickSpawner;
     private readonly WidthGenerator _widthGenerator;
 
     public GameStartState(
-        GameStateMachine stateMachine,
         CameraController cameraController,
         PlatformSpawner platformSpawner,
         StickSpawner stickSpawner,
         WidthGenerator widthGenerator)
     {
-        _stateMachine = stateMachine;
         _cameraController = cameraController;
         _platformSpawner = platformSpawner;
         _stickSpawner = stickSpawner;
         _widthGenerator = widthGenerator;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args)
+    public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
         await MoveHeroAsync(args.CurrentPlatform, args.Hero);
 
@@ -42,7 +39,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
 
         await (moveCameraTask, movePlatformTask);
 
-        _stateMachine.Enter<StickControlState, StickControlState.Arguments>(
+        stateMachine.Enter<StickControlState, StickControlState.Arguments>(
             new StickControlState.Arguments(args.CurrentPlatform, nextPlatform, args.Hero));
     }
 
