@@ -127,6 +127,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.nuget.mono-cecil": {
+      "version": "1.10.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.render-pipelines.core": {
       "version": "10.8.1",
       "depth": 1,
@@ -213,6 +220,15 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
+    },
+    "jp.hadashikick.vcontainer": {
+      "version": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.11.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.mono-cecil": "1.10.1"
+      },
+      "hash": "b026d2d8c60fb329f4303c9ad05cf0ee2d26ba3f"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
