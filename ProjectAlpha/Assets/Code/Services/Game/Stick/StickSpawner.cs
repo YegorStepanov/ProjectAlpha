@@ -1,33 +1,41 @@
 ﻿using System;
+using System.Collections.Generic;
+using Code.VContainer;
 using UnityEngine;
-using VContainer;
-using VContainer.Unity;
 
 namespace Code.Services;
 
 public sealed class StickSpawner
 {
-    private readonly Transform _scopeTransform;
-    private readonly IObjectResolver _resolver;
-    private readonly StickController _stickPrefab;
+    private readonly MonoBehaviourPool<StickController> _pool;
     private readonly Settings _settings;
 
-    public StickSpawner(LifetimeScope scope, IObjectResolver resolver, StickController stickPrefab, Settings settings)
+    private readonly List<StickController> _sticks;
+
+    private int _stickIndex;
+
+    public StickSpawner(MonoBehaviourPool<StickController> pool, Settings settings)
     {
-        _scopeTransform = scope.transform;
-        _resolver = resolver;
-        _stickPrefab = stickPrefab;
+        _pool = pool;
         _settings = settings;
+        _sticks = new List<StickController>(_pool.Count);
+        _stickIndex = 0;
     }
 
     public float StickWidth => _settings.StickWidth;
 
-    public IStickController Spawn(float positionX)
+    public IStickController CreateStick(Vector2 position)
     {
-        StickController stick = _resolver.Instantiate(_stickPrefab, _scopeTransform, true); //correct form!
-        stick.transform.SetParent(null);
-        
-        stick.Position = stick.Position.WithX(positionX);
+        if (_pool.TrySpawn(out StickController stick))
+            _sticks.Add(stick);
+        else
+        {
+            stick = _sticks[_stickIndex];
+            _stickIndex = (_stickIndex + 1) % _sticks.Count;
+            stick.ResetStick();
+        }
+
+        stick.Position = position;
         stick.Width = _settings.StickWidth;
         return stick;
     }

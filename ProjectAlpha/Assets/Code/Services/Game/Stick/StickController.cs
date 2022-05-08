@@ -9,7 +9,7 @@ using VContainer;
 
 namespace Code.Services;
 
- //Bug: stick speed depends on PPU of sprite `rectangle`  
+//Bug: stick speed depends on PPU of sprite `rectangle`  
 public sealed class StickController : MonoBehaviour, IStickController
 {
     [SerializeField] private Transform _stick;
@@ -22,7 +22,7 @@ public sealed class StickController : MonoBehaviour, IStickController
     public float Width
     {
         get => _stick.localScale.x * Borders.Width;
-        set => _stick.localScale = _stick.localScale.WithX(value) / Borders.Width;
+        set => _stick.localScale = _stick.localScale.WithX(value / Borders.Width);
     }
 
     public Vector2 Position
@@ -31,17 +31,23 @@ public sealed class StickController : MonoBehaviour, IStickController
         set => _stick.position = value;
     }
 
+    public Borders Borders => _spriteRenderer.bounds.AsBorders();
+
     [Inject]
     public void Construct(Settings settings) =>
         _settings = settings;
-    
+
     private void Awake()
     {
         _token = this.GetCancellationTokenOnDestroy();
-        ResetHeight();
+        ResetStick();
     }
 
-    public Borders Borders => _spriteRenderer.bounds.AsBorders();
+    public void ResetStick()
+    {
+        _stick.rotation = Quaternion.identity;
+        _stick.localScale = _stick.localScale.WithY(0f);
+    }
 
     public void StartIncreasing() =>
         _increaseTweener = _stick.DOScaleY(float.MaxValue, _settings.IncreaseSpeed)
@@ -55,9 +61,6 @@ public sealed class StickController : MonoBehaviour, IStickController
             .SetEase(Ease.InQuad)
             .SetDelay(_settings.RotationDelay)
             .WithCancellation(_token);
-
-    private void ResetHeight() =>
-        _stick.localScale = _stick.localScale.WithY(0f);
 
     [Serializable]
     public class Settings

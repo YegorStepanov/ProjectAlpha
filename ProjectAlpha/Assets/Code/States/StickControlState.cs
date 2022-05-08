@@ -1,5 +1,6 @@
 ﻿using Code.Services;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Code.States;
 
@@ -20,8 +21,8 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-        float positionX = args.CurrentPlatform.Borders.Right;
-        IStickController stick = _stickSpawner.Spawn(positionX);
+        Vector2 stickPosition = new(args.CurrentPlatform.Borders.Right, args.CurrentPlatform.Borders.Top);
+        IStickController stick = _stickSpawner.CreateStick(stickPosition);
 
         await _inputManager.NextMouseClick();
         stick.StartIncreasing();

@@ -32,11 +32,6 @@ public sealed class GameScope : LifetimeScope
         builder.RegisterComponentInNewPrefab(_hero, Lifetime.Singleton)
             .As<IHeroController>();
 
-        ////pool, 2 instance, under STICKS go
-        builder.RegisterComponentInNewPrefab(_stick, Lifetime.Singleton)
-            .As<IStickController>()
-            .AsSelf();
-
         builder.RegisterComponent(Instantiate(_widthGenerator));
 
         builder.RegisterEntryPoint<GameStart>();
