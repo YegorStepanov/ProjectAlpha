@@ -35,6 +35,7 @@ public sealed class HeroController : MonoBehaviour, IHeroController
     public async UniTask FellAsync() =>
         await transform.DOMoveY(_settings.FallingDestination, _settings.FallingSpeed)
             .SetSpeedBased()
+            .SetEase(Ease.Linear)
             .WithCancellation(_token);
 
     public void TeleportTo(Vector2 destination, Relative relative) =>
