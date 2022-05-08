@@ -32,8 +32,10 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
 
     public void SetSize(Vector2 scale)
     {
-        Vector2 spriteSize = _spriteRenderer.bounds.size;
-        transform.localScale = scale / spriteSize;
+        Transform t = transform;
+        Vector3 scaledAABB = _spriteRenderer.bounds.size;
+        Vector2 spriteSize = scaledAABB / (Vector2)t.localScale;
+        t.localScale = scale / spriteSize;
     }
 
     public async UniTask MoveAsync(float destinationX) =>
