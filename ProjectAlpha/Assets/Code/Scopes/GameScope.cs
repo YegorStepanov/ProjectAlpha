@@ -36,10 +36,6 @@ public sealed class GameScope : LifetimeScope
             .As<IStickController>()
             .AsSelf();
 
-        builder.RegisterComponentInNewPrefab(_platform, Lifetime.Singleton)
-            .As<IPlatformController>()
-            .AsSelf();
-
         builder.RegisterComponent(Instantiate(_widthGenerator));
 
         builder.RegisterEntryPoint<GameStart>();
