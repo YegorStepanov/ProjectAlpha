@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Code.Services;
 
@@ -33,8 +32,8 @@ public sealed class PercentageWidthGenerator : WidthGenerator //todo: split to 2
     public override float NextWidth()
     {
         float width = NextWidth(_currentRatio);
+        width = LimitByThreshold(width);
         _currentRatio = NextRatio(_currentRatio);
-        _currentRatio = LimitByThreshold(_currentRatio);
         return width;
     }
 
@@ -44,7 +43,10 @@ public sealed class PercentageWidthGenerator : WidthGenerator //todo: split to 2
     private Ratio NextRatio(Ratio ratio) =>
         ratio * (1f - _reductionRatioPerStep);
 
-    private Ratio LimitByThreshold(Ratio ratio) => new(
-        ratio.Min < _minThreshold ? _minThreshold : ratio.Min,
-        ratio.Max < _maxThreshold ? _maxThreshold : ratio.Max);
+    private float LimitByThreshold(float width)
+    {
+        if (width < _minThreshold) return _minThreshold;
+        if (width > _maxThreshold) return _maxThreshold;
+        return width;
+    }
 }
