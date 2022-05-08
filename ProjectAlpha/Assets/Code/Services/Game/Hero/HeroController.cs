@@ -45,8 +45,8 @@ public sealed class HeroController : MonoBehaviour, IHeroController
     public class Settings
     {
         public float HandOffset = 0.25f;
-        public float MovementSpeed = 4f;
-        public float FallingSpeed = 9.8f;
+        public float MovementSpeed = 5f;
+        public float FallingSpeed = 30f;
         public float FallingDestination = -10f;
     }
 }
