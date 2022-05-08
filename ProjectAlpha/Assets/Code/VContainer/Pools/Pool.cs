@@ -78,7 +78,8 @@ public abstract class Pool<TValue> : IPool<TValue>
             OnDespawned(_pool[i]);
         }
 
-        OnSpawned(_pool[0]);
+        if(_initialSize != 0)
+            OnSpawned(_pool[0]);
     }
 
     private bool IsIndexCorrect() =>
