@@ -26,6 +26,7 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
         else
         {
             await args.Hero.MoveAsync(args.Stick.Borders.Right);
+            await UniTask.Delay(100);
             await args.Hero.FellAsync();
 
             //earthshake screen
