@@ -1,7 +1,6 @@
 ﻿using Code.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Code.States;
 

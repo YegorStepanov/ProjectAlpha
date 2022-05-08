@@ -21,29 +21,32 @@ public sealed class GameScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        //consider: .WithName("Platform").WithPrefabName().UnderContainer("Platforms").WithInitialSize(2)
+        builder.RegisterMonoBehaviourPool(_platform, "Platform", "Platforms", 2, 3, Lifetime.Singleton);
+
         builder.Register<AddressableFactory>(Lifetime.Singleton);
 
         builder.Register<GameStateMachine>(Lifetime.Singleton);
-        
+
         builder.RegisterComponentInNewPrefab(_hero, Lifetime.Singleton)
             .As<IHeroController>();
-                    
+
         ////pool, 2 instance, under STICKS go
         builder.RegisterComponentInNewPrefab(_stick, Lifetime.Singleton)
-            .As<IStickController>()     
+            .As<IStickController>()
             .AsSelf();
-        
+
         builder.RegisterComponentInNewPrefab(_platform, Lifetime.Singleton)
             .As<IPlatformController>()
             .AsSelf();
-        
+
         builder.RegisterComponent(Instantiate(_widthGenerator));
-        
+
         builder.RegisterEntryPoint<GameStart>();
-        
+
         builder.Register<StickSpawner>(Lifetime.Singleton);
         builder.Register<PlatformSpawner>(Lifetime.Singleton);
-        
+
         // builder.RegisterInstance(transform);
         ////
         //
