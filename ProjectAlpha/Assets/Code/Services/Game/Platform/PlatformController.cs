@@ -33,8 +33,8 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
     public void SetSize(Vector2 scale)
     {
         Transform t = transform;
-        Vector3 scaledAABB = _spriteRenderer.bounds.size;
-        Vector2 spriteSize = scaledAABB / (Vector2)t.localScale;
+        Vector2 scaledAABB = _spriteRenderer.bounds.size;
+        Vector2 spriteSize = scaledAABB / t.localScale;
         t.localScale = scale / spriteSize;
     }
 
