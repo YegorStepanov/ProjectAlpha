@@ -33,7 +33,7 @@ public sealed class HeroController : MonoBehaviour, IHeroController
             .WithCancellation(_token);
 
     public async UniTask FellAsync() =>
-        await transform.DOMoveY(_settings.FallingDestination, -_settings.FallingSpeed)
+        await transform.DOMoveY(_settings.FallingDestination, _settings.FallingSpeed)
             .SetSpeedBased()
             .WithCancellation(_token);
 
