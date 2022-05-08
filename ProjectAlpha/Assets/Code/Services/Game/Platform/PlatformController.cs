@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
@@ -18,7 +19,7 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
-    [Inject]
+    [Inject, UsedImplicitly]
     public void Construct(Settings settings) =>
         _settings = settings;
 

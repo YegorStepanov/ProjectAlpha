@@ -32,7 +32,7 @@ public sealed class BootstrapState : IState
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
         // IHeroController hero = await _hero; //hm, interesting mb add another service that start game after ALL are loaded
-        
+
         //_widthGenerator.Reset();
 
         UniTask loadBackgroundTask = _cameraController.ChangeBackgroundAsync();

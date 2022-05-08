@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using JetBrains.Annotations;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
 
@@ -6,7 +7,7 @@ namespace Code.Services;
 
 public sealed class MenuMediator : MonoBehaviour
 {
-    [Inject] private UIManager _uiManager;
+    [Inject, UsedImplicitly] private UIManager _uiManager;
 
     public void Open<TPanel>() where TPanel : struct, IPanel =>
         _uiManager.Show<TPanel>();
@@ -17,7 +18,7 @@ public sealed class MenuMediator : MonoBehaviour
     public void CloseMainMenu() => _uiManager.Unload<MainMenu>();
 
     //Odin doesn't recognize generic methods, so resolve them manually
-    
+
     [BoxGroup("Main Menu")]
     [HorizontalGroup("Main Menu/b")] [Button("Show")]
     private void ShowMainMenu() => _uiManager.Show<MainMenu>();

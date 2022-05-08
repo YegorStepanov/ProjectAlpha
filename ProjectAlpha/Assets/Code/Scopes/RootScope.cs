@@ -45,7 +45,7 @@ public sealed class RootScope : LifetimeScope
         builder.Register<SceneLoader>(Lifetime.Singleton);
         builder.Register<GameTriggers>(Lifetime.Singleton);
         builder.Register<InputManager>(Lifetime.Singleton);
-        
+
         builder.Register<StartSceneInformer>(Lifetime.Singleton).Build(); //non-lazy
 
         //// builder.RegisterInstance(transform);

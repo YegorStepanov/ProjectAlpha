@@ -28,15 +28,15 @@ public abstract class BehaviourPool<TValue> : Pool<TValue> where TValue : Object
 
         TValue instance = Object.Instantiate(_prefab, _parentInstance);
         instance.name = _name;
-        
+
         if (instance is GameObject go)
             _scope.Container.InjectGameObject(go);
         else
             _scope.Container.Inject(instance);
-        
+
         return instance;
     }
-    
+
     private void CreateParent()
     {
         var temp = new GameObject(_parentName);

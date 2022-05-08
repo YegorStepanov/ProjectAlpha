@@ -16,7 +16,7 @@ public abstract class Pool<TValue> : IPool<TValue>
         _activeCount = 0;
         Count = capacity.Value;
     }
-    
+
     public bool TrySpawn(out TValue value)
     {
         if (_pool == null)
@@ -31,10 +31,10 @@ public abstract class Pool<TValue> : IPool<TValue>
         // ReSharper disable once ConvertIfStatementToNullCoalescingAssignment
         if (_pool[_activeCount] == null)
             _pool[_activeCount] = Create();
-        
+
         value = _pool[_activeCount];
-        
-        
+
+
         _activeCount++;
 
         OnSpawned(value);
@@ -58,7 +58,7 @@ public abstract class Pool<TValue> : IPool<TValue>
         _pool[_activeCount] = instance;
 
         OnDespawned(instance);
-        
+
         return true;
     }
 
@@ -78,7 +78,7 @@ public abstract class Pool<TValue> : IPool<TValue>
             OnDespawned(_pool[i]);
         }
 
-        if(_initialSize != 0)
+        if (_initialSize != 0)
             OnSpawned(_pool[0]);
     }
 

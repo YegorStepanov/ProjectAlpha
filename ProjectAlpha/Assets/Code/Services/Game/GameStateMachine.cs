@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.States;
+using JetBrains.Annotations;
 using VContainer;
 
 namespace Code.Services;
@@ -11,7 +12,7 @@ public sealed class GameStateMachine : IStateMachine
 
     private IExitState _activeState;
 
-    [Inject]
+    [Inject, UsedImplicitly]
     public GameStateMachine(IObjectResolver resolver) => _states = new Dictionary<Type, IExitState>
     {
         [typeof(BootstrapState)] = resolver.ResolveInstance<BootstrapState>(),

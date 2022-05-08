@@ -1,5 +1,6 @@
 ﻿using Code.Services;
 using Cysharp.Threading.Tasks.Triggers;
+using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
@@ -9,7 +10,7 @@ public sealed class StartGameTrigger : MonoBehaviour
 {
     private GameTriggers _gameTriggers;
 
-    [Inject]
+    [Inject, UsedImplicitly]
     public void Construct(GameTriggers gameTriggers)
     {
         _gameTriggers = gameTriggers;

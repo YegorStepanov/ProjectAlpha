@@ -22,7 +22,7 @@ public class AddressableFactory : IDisposable
     {
         _scopeTransform = scope.transform;
         _resolver = resolver;
-        
+
         Debug.Log("Add Factory, scope parent: " + scope.transform.name);
         // todo: Addressables.InitializeAsync() somewhere
     }
@@ -39,17 +39,17 @@ public class AddressableFactory : IDisposable
     public async UniTask<GameObject> InstantiateAsync(Address address)
     {
         GameObject go = await Addressables.InstantiateAsync(address.Key, _scopeTransform);
-        
-        if(go == null)
+
+        if (go == null)
             Debug.Log("Wrong key: " + address.Key);
-        
+
         go.transform.SetParent(null);
         go.name = address.Key;
 
         _resolver.InjectGameObject(go);
         return go; //.GetComponent()
     }
-    
+
     //todo: add LoadAssetExplicitAsync?
     //it should works with GameObjects(by InstantiateAsync)?
     public async UniTask<T> LoadAssetAsync<T>(Address address) where T : class

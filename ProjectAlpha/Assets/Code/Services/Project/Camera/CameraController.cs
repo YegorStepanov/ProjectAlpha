@@ -1,6 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +25,7 @@ public sealed class CameraController : MonoBehaviour, IDisposable
     public void Dispose() =>
         _backgroundChanger?.Dispose();
 
-    [Inject]
+    [Inject, UsedImplicitly]
     public void Construct(AddressableFactory factory)
     {
         _backgroundChanger = new BackgroundChanger(factory, _backgroundImage);

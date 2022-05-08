@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
@@ -33,7 +34,7 @@ public sealed class StickController : MonoBehaviour, IStickController
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
-    [Inject]
+    [Inject, UsedImplicitly]
     public void Construct(Settings settings) =>
         _settings = settings;
 
