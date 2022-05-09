@@ -5,7 +5,8 @@ namespace Code.States;
 
 public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatformState.Arguments>
 {
-    public readonly record struct Arguments(IPlatformController CurrentPlatform,
+    public readonly record struct Arguments(
+        IPlatformController CurrentPlatform,
         IPlatformController NextPlatform,
         IStickController Stick, IHeroController Hero);
 

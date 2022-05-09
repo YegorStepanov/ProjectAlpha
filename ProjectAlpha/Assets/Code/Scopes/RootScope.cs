@@ -18,6 +18,9 @@ public sealed class RootScope : LifetimeScope
     [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(GameSettings))]
     private GameSettings _gameSettings;
 
+    [Required, SerializeField]
+    private GameObject _graphy;
+
     // todo:
     // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
     // public static void InitUniTaskLoop()
@@ -36,6 +39,9 @@ public sealed class RootScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        //refactor it
+        Instantiate(_graphy);
+        
         _gameSettings.RegisterAllSettings(builder);
 
         //        Container.Bind<AddressableFactory>().AsSingle().WithArguments(transform);
