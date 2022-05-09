@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using ModestTree;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEngine;

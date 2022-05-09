@@ -45,10 +45,6 @@
         "UnityEditor.CacheServer",
         "UnityEditor.UI",
         "UnityEngine.UI",
-        "Zenject",
-        "Zenject-Editor",
-        "Zenject-TestFramework",
-        "Extenject-Async",
         "DOTween.Modules"
     ],
     "includePlatforms": [

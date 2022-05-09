@@ -27,9 +27,6 @@
         "Unity.TextMeshPro",
         "Unity.Timeline",
         "UnityEngine.UI",
-        "Zenject",
-        "Zenject-TestFramework",
-        "Extenject-Async",
         "DOTween.Modules"
     ],
     "includePlatforms": [
