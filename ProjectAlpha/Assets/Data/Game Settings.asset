@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hero:
     HandOffset: 0.25
-    MovementSpeed: 4
-    FallingSpeed: 9.8
+    MovementSpeed: 5
+    FallingSpeed: 30
     FallingDestination: -10
   _platform:
     MovementSpeed: 10
