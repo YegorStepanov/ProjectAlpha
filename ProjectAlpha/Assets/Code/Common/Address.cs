@@ -1,6 +1,5 @@
-﻿namespace Code;
+﻿using UnityEngine;
 
-public readonly record struct Address(string Key)
-{
-    public static implicit operator Address(string key) => new(key);
-}
+namespace Code;
+
+public readonly record struct Address<T>(string Key) where T : Object;

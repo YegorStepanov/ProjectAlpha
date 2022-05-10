@@ -1,5 +1,4 @@
 ﻿using Code.Services;
-using Cysharp.Threading.Tasks;
 using VContainer;
 using VContainer.Unity;
 
@@ -14,5 +13,7 @@ public sealed class BootstrapScope : LifetimeScope
         builder.RegisterComponent(_loadingScreen);
 
         builder.RegisterEntryPoint<BootstrapStart>();
+        
+        builder.Register<AddressableFactory>(Lifetime.Singleton); //todo:
     }
 }

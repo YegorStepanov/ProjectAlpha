@@ -8,7 +8,7 @@ namespace Code.Services;
 
 public sealed class BackgroundChanger : IDisposable
 {
-    private readonly Address[] _addresses;
+    private readonly Address<Sprite>[] _addresses;
     private readonly Image _backgroundImage;
     private readonly AddressableFactory _factory;
 
@@ -34,19 +34,19 @@ public sealed class BackgroundChanger : IDisposable
 
     public async UniTask ChangeToRandomBackgroundAsync()
     {
-        Address newAddress = GetRandomBackground();
+        Address<Sprite> newAddress = GetRandomBackground();
 
-        var sprite = await _factory.LoadAssetAsync<Sprite>(newAddress);
+        Sprite sprite = await _factory.LoadAsync(newAddress);
         _backgroundImage.sprite = sprite;
         _spriteAsset = sprite;
     }
 
-    private Address GetRandomBackground()
+    private Address<Sprite> GetRandomBackground()
     {
         int index = Random.Range(0, _addresses.Length);
         return _addresses[index];
     }
 
     private void UnloadSpriteImage() =>
-        _factory.ReleaseAsset(_spriteAsset);
+        _factory.Release(_spriteAsset);
 }

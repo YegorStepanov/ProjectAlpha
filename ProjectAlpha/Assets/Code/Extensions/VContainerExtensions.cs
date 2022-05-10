@@ -2,11 +2,30 @@
 using Code.VContainer;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace Code;
 
 public static class VContainerExtensions
 {
+    public static GameObject InstantiateInScene(this LifetimeScope scope, GameObject prefab)
+    {
+        GameObject instance;
+        if (scope.IsRoot)
+        {
+            instance = Object.Instantiate(prefab);
+            Object.DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            instance = Object.Instantiate(prefab, scope.transform);
+            instance.transform.SetParent(null);
+        }
+        
+        scope.Container.InjectGameObject(instance);
+        return instance;
+    }
+    
     public static T ResolveInstance<T>(this IObjectResolver resolver)
     {
         var registrationBuilder = new RegistrationBuilder(typeof(T), Lifetime.Transient);

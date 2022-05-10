@@ -22,6 +22,9 @@ public sealed class GameScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         //consider: .WithName("Platform").WithPrefabName().UnderContainer("Platforms").WithInitialSize(2)
+
+        // Addressables.asset
+        
         builder.RegisterMonoBehaviourPool(_platform, "Platform", "Platforms", 0, 3, Lifetime.Singleton);
         builder.RegisterMonoBehaviourPool(_stick, "Stick", "Sticks", 0, 2, Lifetime.Singleton);
 

@@ -22,7 +22,7 @@ public sealed class UIManager
         async UniTaskVoid ShowAsync()
         {
             GameObject panel = GetPanel<TPanel>();
-            Address address = GetAddress<TPanel>();
+            Address<GameObject> address = GetAddress<TPanel>();
             SetPanel<TPanel>(await GetOrCreateEnabledPanelAsync(panel, address));
         }
     }
@@ -36,13 +36,13 @@ public sealed class UIManager
     public void Unload<TPanel>() where TPanel : struct, IPanel
     {
         GameObject panel = GetPanel<TPanel>();
-        _factory.ReleaseInstance(panel);
+        _factory.Release(panel);
     }
 
-    private async UniTask<GameObject> GetOrCreateEnabledPanelAsync(GameObject panel, Address address)
+    private async UniTask<GameObject> GetOrCreateEnabledPanelAsync(GameObject panel, Address<GameObject> address)
     {
         if (panel == null)
-            panel = await _factory.InstantiateAsync(address);
+            panel = await _factory.LoadAsync(address);
 
         panel.SetActive(true);
         return panel;
@@ -74,7 +74,7 @@ public sealed class UIManager
         _ => throw new ArgumentOutOfRangeException(typeof(TPanel).FullName)
     };
 
-    private static Address GetAddress<TPanel>() where TPanel : struct, IPanel => typeof(TPanel) switch
+    private static Address<GameObject> GetAddress<TPanel>() where TPanel : struct, IPanel => typeof(TPanel) switch
     {
         Type t when t == typeof(MainMenu) => MenuAddress.MainMenu,
         Type t when t == typeof(ShopPanel) => MenuAddress.ShopPanel,

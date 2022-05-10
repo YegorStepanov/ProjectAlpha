@@ -15,7 +15,7 @@ public sealed class SceneLoader
     private readonly IObjectResolver _resolver;
     private readonly AddressableFactory _factory;
 
-    private readonly Dictionary<Address, SceneInstance> _scenes = new();
+    private readonly Dictionary<Address<Scene>, SceneInstance> _scenes = new();
 
     private readonly string _startupSceneName;
 
@@ -31,17 +31,17 @@ public sealed class SceneLoader
     /// </summary>
     public async UniTask LoadAsync<TScene>(LifetimeScope parentScope, CancellationToken token) where TScene : struct, IScene
     {
-        Address address = GetAddress<TScene>();
+        Address<Scene> address = GetAddress<TScene>();
         await LoadAsync(address, parentScope, token);
     }
 
     public UniTask UnloadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
     {
-        Address address = GetAddress<TScene>();
+        Address<Scene> address = GetAddress<TScene>();
         return UnloadAsync(address, token);
     }
 
-    private async UniTask LoadAsync(Address sceneAddress, LifetimeScope parentScope, CancellationToken token)
+    private async UniTask LoadAsync(Address<Scene> sceneAddress, LifetimeScope parentScope, CancellationToken token)
     {
         if (parentScope != null)
         {
@@ -58,7 +58,7 @@ public sealed class SceneLoader
         }
     }
 
-    private async UniTask UnloadAsync(Address sceneAddress, CancellationToken token)
+    private async UniTask UnloadAsync(Address<Scene> sceneAddress, CancellationToken token)
     {
         if (_scenes.TryGetValue(sceneAddress, out SceneInstance scene))
         {
@@ -72,7 +72,7 @@ public sealed class SceneLoader
         }
     }
 
-    private static Address GetAddress<TScene>() where TScene : struct, IScene => typeof(TScene) switch
+    private static Address<Scene> GetAddress<TScene>() where TScene : struct, IScene => typeof(TScene) switch
     {
         Type t when t == typeof(BootstrapScene) => SceneAddress.Bootstrap,
         Type t when t == typeof(MenuScene) => SceneAddress.Menu,

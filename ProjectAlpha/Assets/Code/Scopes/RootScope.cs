@@ -37,11 +37,40 @@ public sealed class RootScope : LifetimeScope
     //     DOTween.Init();
     // }
 
-    protected override void Configure(IContainerBuilder builder)
+    protected override async void Configure(IContainerBuilder builder)
     {
+        // var q = await Addressables.LoadResourceLocationsAsync()
+
+        //Addressables.InstantiateAsync() == Addressables.ReleaseInstance
+        //Addressables.LoadAsset() == Addressables.Release()
+
+        //asset bundles:
+        //AssetBundle.LoadFromFileAsync - local
+        //UnityWebRequest.GetAssetBundle - remote
+
+        //when fail, erro contain usefull info:
+        //https://docs.unity3d.com/Packages/com.unity.addressables@1.20/manual/LoadingAssetBundles.html
+
+        //long size = await Addressables.GetDownloadSizeAsync(key);
+        //if size > 0 
+        //Addressables.DownloadDependenciesAsync(key);
+
+        //AsyncOperationHandle.PercentComplete
+        //AsyncOperationHandle.GetDownloadStatus
+        //Addressables.GetDownloadSizeAsync() == 0 if it cached
+
+        //if u don't need to access the result, set autoReleaseHandle to true:
+        //Addressables.DownloadDependenciesAsync("preload", true);
+
+        // Addressables.DownloadDependenciesAsync()
+
+        //how to check if it remote?
+
+        //to Event Viewer works correct, simply
+
         //refactor it
         Instantiate(_graphy);
-        
+
         _gameSettings.RegisterAllSettings(builder);
 
         //        Container.Bind<AddressableFactory>().AsSingle().WithArguments(transform);
