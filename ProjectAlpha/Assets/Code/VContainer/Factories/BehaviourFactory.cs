@@ -7,25 +7,24 @@ public abstract class BehaviourFactory<TValue> : IFactory<TValue> where TValue :
 {
     private readonly TValue _prefab;
     private readonly string _name;
-    private readonly string _parentName;
+    private readonly string _containerName;
     private readonly LifetimeScope _scope;
 
-    private Transform _parentInstance;
+    private Transform _container;
 
     protected BehaviourFactory(TValue prefab, InstanceName name, ParentName parentName, LifetimeScope scope)
     {
         _prefab = prefab;
         _name = name.Name;
-        _parentName = parentName.Name;
+        _containerName = parentName.Name;
         _scope = scope;
     }
 
     public TValue Create()
     {
-        if (_parentInstance == null)
-            CreateParent();
+        _container ??= _scope.CreateRootSceneContainer(_containerName);
 
-        TValue instance = Object.Instantiate(_prefab, _parentInstance);
+        TValue instance = Object.Instantiate(_prefab, _container);
         instance.name = _name;
 
         if (instance is GameObject go)
@@ -34,17 +33,5 @@ public abstract class BehaviourFactory<TValue> : IFactory<TValue> where TValue :
             _scope.Container.Inject(instance);
 
         return instance;
-    }
-
-    private void CreateParent()
-    {
-        var temp = new GameObject(_parentName);
-
-        //_scope.transform == null when the container is rooted
-        _parentInstance = Object.Instantiate(temp, _scope.transform).transform;
-        _parentInstance.SetParent(null);
-        _parentInstance.name = _parentName;
-
-        Object.Destroy(temp);
     }
 }

@@ -12,7 +12,8 @@ public abstract class BehaviourPool<TValue> : Pool<TValue> where TValue : Object
 
     private Transform _parentInstance;
 
-    protected BehaviourPool(TValue prefab, InstanceName name, ParentName parentName, InitialSize initialSize, Capacity capacity, LifetimeScope scope)
+    protected BehaviourPool(TValue prefab, InstanceName name, ParentName parentName, InitialSize initialSize,
+        Capacity capacity, LifetimeScope scope)
         : base(initialSize, capacity)
     {
         _prefab = prefab;

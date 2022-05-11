@@ -6,13 +6,13 @@ namespace Code.Services;
 
 public sealed class UIManager
 {
-    private readonly AddressableFactory _factory;
+    private readonly GlobalAddressableFactory _factory;
 
     private GameObject _mainMenu;
     private GameObject _shopPanel;
     private GameObject _heroSelectorPanel;
 
-    public UIManager(AddressableFactory factory) =>
+    public UIManager(GlobalAddressableFactory factory) =>
         _factory = factory;
 
     public void Show<TPanel>() where TPanel : struct, IPanel
@@ -23,7 +23,7 @@ public sealed class UIManager
         {
             GameObject panel = GetPanel<TPanel>();
             Address<GameObject> address = GetAddress<TPanel>();
-            SetPanel<TPanel>(await GetOrCreateEnabledPanelAsync(panel, address));
+            SetPanel<TPanel>(await GetOrCreatePanelAsync(panel, address));
         }
     }
 
@@ -39,10 +39,10 @@ public sealed class UIManager
         _factory.Release(panel);
     }
 
-    private async UniTask<GameObject> GetOrCreateEnabledPanelAsync(GameObject panel, Address<GameObject> address)
+    private async UniTask<GameObject> GetOrCreatePanelAsync(GameObject panel, Address<GameObject> address)
     {
         if (panel == null)
-            panel = await _factory.LoadAsync(address);
+            panel = await _factory.LoadAsync(address); //l
 
         panel.SetActive(true);
         return panel;

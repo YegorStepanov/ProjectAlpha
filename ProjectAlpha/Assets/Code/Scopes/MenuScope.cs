@@ -17,8 +17,6 @@ public sealed class MenuScope : LifetimeScope
 
         builder.RegisterEntryPoint<MenuStart>();
 
-        builder.Register<AddressableFactory>(Lifetime.Singleton);
-
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
     }
 }

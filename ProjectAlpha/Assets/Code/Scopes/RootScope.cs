@@ -34,7 +34,6 @@ public sealed class RootScope : LifetimeScope
     // {
     //     base.Awake();
     //     
-    //     DOTween.Init();
     // }
 
     protected override async void Configure(IContainerBuilder builder)
@@ -83,11 +82,14 @@ public sealed class RootScope : LifetimeScope
 
         builder.Register<StartSceneInformer>(Lifetime.Singleton).Build(); //non-lazy
 
-        //// builder.RegisterInstance(transform);
-        builder.Register<AddressableFactory>(Lifetime.Singleton);
+        builder.Register<ScopedAddressableFactory>(Lifetime.Scoped);
+        //to inject dependencies, it should be Scoped with static instances
+        builder.Register<GlobalAddressableFactory>(Lifetime.Scoped);
 
         var rootToken = new RootCancellationToken(this.GetCancellationTokenOnDestroy());
         builder.RegisterInstance(rootToken);
+        
+        builder.RegisterEntryPoint<RootStart>();
     }
 }
 

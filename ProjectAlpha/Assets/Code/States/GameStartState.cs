@@ -33,7 +33,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         await UniTask.Delay(100);
         UniTask moveCameraTask = MoveCameraAsync(args.CurrentPlatform);
 
-        IPlatformController nextPlatform = CreateNextPlatform(args.CurrentPlatform);
+        IPlatformController nextPlatform = await CreateNextPlatformAsync(args.CurrentPlatform);
         UniTask movePlatformTask = MoveNextPlatformToRandomPoint(args.CurrentPlatform, nextPlatform);
 
         await (moveCameraTask, movePlatformTask);
@@ -59,14 +59,14 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         await hero.MoveAsync(destX);
     }
 
-    private IPlatformController CreateNextPlatform(IPlatformController currentPlatform)
+    private UniTask<IPlatformController> CreateNextPlatformAsync(IPlatformController currentPlatform)
     {
         float leftCameraBorderToPlatformDistance = currentPlatform.Borders.Left - _cameraController.Borders.Left;
         Vector2 position = new(
             _cameraController.Borders.Right + leftCameraBorderToPlatformDistance,
             currentPlatform.Borders.Top);
 
-        return _platformSpawner.CreatePlatform(position, _widthGenerator.NextWidth(), Relative.Left);
+        return _platformSpawner.CreatePlatformAsync(position, _widthGenerator.NextWidth(), Relative.Left);
     }
 
     private static async UniTask MoveNextPlatformToRandomPoint(

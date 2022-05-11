@@ -10,11 +10,11 @@ public sealed class BackgroundChanger : IDisposable
 {
     private readonly Address<Sprite>[] _addresses;
     private readonly Image _backgroundImage;
-    private readonly AddressableFactory _factory;
+    private readonly ScopedAddressableFactory _factory;
 
     private Sprite _spriteAsset;
 
-    public BackgroundChanger(AddressableFactory factory, Image backgroundImage)
+    public BackgroundChanger(ScopedAddressableFactory factory, Image backgroundImage)
     {
         _factory = factory;
         _backgroundImage = backgroundImage;
@@ -48,5 +48,5 @@ public sealed class BackgroundChanger : IDisposable
     }
 
     private void UnloadSpriteImage() =>
-        _factory.Release(_spriteAsset);
+        _factory.Release(_spriteAsset); //
 }

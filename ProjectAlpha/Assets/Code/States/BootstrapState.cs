@@ -38,7 +38,7 @@ public sealed class BootstrapState : IState
         UniTask loadBackgroundTask = _cameraController.ChangeBackgroundAsync();
 
         Vector2 platformPosition = _cameraController.ViewportToWorldPosition(new Vector2(0.5f, 0.2f));
-        IPlatformController menuPlatform = _platformSpawner.CreatePlatform(platformPosition, 2f, Relative.Center);
+        IPlatformController menuPlatform = await _platformSpawner.CreatePlatformAsync(platformPosition, 2f, Relative.Center);
 
         _hero.TeleportTo(menuPlatform.Position, Relative.Left);
 

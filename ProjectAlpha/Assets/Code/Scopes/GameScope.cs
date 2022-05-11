@@ -24,11 +24,12 @@ public sealed class GameScope : LifetimeScope
         //consider: .WithName("Platform").WithPrefabName().UnderContainer("Platforms").WithInitialSize(2)
 
         // Addressables.asset
-        
-        builder.RegisterMonoBehaviourPool(_platform, "Platform", "Platforms", 0, 3, Lifetime.Singleton);
-        builder.RegisterMonoBehaviourPool(_stick, "Stick", "Sticks", 0, 2, Lifetime.Singleton);
 
-        builder.Register<AddressableFactory>(Lifetime.Singleton);
+        // builder.RegisterMonoBehaviourPool(_platform, "Platform", "Platforms", 0, 3, Lifetime.Singleton);
+        var platformPrefab = new Address<PlatformController>("Platform");
+        builder.RegisterAddressablePool(platformPrefab, "Platforms", 0, 3, Lifetime.Singleton);
+
+        builder.RegisterMonoBehaviourPool(_stick, "Stick", "Sticks", 0, 2, Lifetime.Singleton);
 
         builder.Register<GameStateMachine>(Lifetime.Singleton);
 

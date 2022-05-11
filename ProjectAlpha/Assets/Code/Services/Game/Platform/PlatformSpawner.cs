@@ -1,29 +1,32 @@
 ﻿using System.Collections.Generic;
 using Code.VContainer;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Code.Services;
 
 public sealed class PlatformSpawner
 {
-    private readonly MonoBehaviourPool<PlatformController> _pool;
+    private readonly AddressablePool<PlatformController> _pool;
     private readonly CameraController _cameraController;
 
     private readonly List<PlatformController> _platforms;
 
     private int _platformIndex;
 
-    public PlatformSpawner(MonoBehaviourPool<PlatformController> pool, CameraController cameraController)
+    public PlatformSpawner(AddressablePool<PlatformController> pool, CameraController cameraController)
     {
         _pool = pool;
         _cameraController = cameraController;
-        _platforms = new List<PlatformController>(_pool.Count);
+        _platforms = new List<PlatformController>(_pool.Capacity);
         _platformIndex = 0;
     }
 
-    public IPlatformController CreatePlatform(Vector2 position, float width, Relative relative)
+    public async UniTask<IPlatformController> CreatePlatformAsync(Vector2 position, float width, Relative relative)
     {
-        if (_pool.TrySpawn(out PlatformController platform))
+        (PlatformController platform, bool success) = await _pool.SpawnAsync();
+        
+        if(success)
             _platforms.Add(platform);
         else
         {
