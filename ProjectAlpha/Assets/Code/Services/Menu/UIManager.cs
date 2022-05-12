@@ -42,7 +42,7 @@ public sealed class UIManager
     private async UniTask<GameObject> GetOrCreatePanelAsync(GameObject panel, Address<GameObject> address)
     {
         if (panel == null)
-            panel = await _factory.LoadAsync(address); //l
+            panel = await _factory.LoadAsync(address);
 
         panel.SetActive(true);
         return panel;

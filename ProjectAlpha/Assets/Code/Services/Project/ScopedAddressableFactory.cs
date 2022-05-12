@@ -13,9 +13,11 @@ namespace Code.Services;
 
 public class ScopedAddressableFactory : IDisposable
 {
-    private readonly Dictionary<Object, AsyncOperationHandle> _assetToHandle;
+    protected record struct HandleData(AsyncOperationHandle Handle, int Count);
+
+    private readonly Dictionary<Object, HandleData> _assetToHandle;
     private readonly Dictionary<GameObject, GameObject> _instanceToPrefab;
-    private readonly Dictionary<AddressData, Object> _dataToPreloadedAsset;
+    private readonly Dictionary<AddressData, AsyncOperationHandle> _cachedAssetToHandle;
 
     private readonly LifetimeScope _scope;
 
@@ -27,54 +29,59 @@ public class ScopedAddressableFactory : IDisposable
 
     protected ScopedAddressableFactory(
         LifetimeScope scope,
-        Dictionary<Object, AsyncOperationHandle> assetsToHandle,
+        Dictionary<Object, HandleData> assetsToHandle,
         Dictionary<GameObject, GameObject> instanceToPrefab,
-        Dictionary<AddressData, Object> dataToPreloadedAsset)
+        Dictionary<AddressData, AsyncOperationHandle> cachedAssetToHandle)
     {
         _scope = scope;
         _assetToHandle = assetsToHandle;
         _instanceToPrefab = instanceToPrefab;
-        this._dataToPreloadedAsset = dataToPreloadedAsset;
+        _cachedAssetToHandle = cachedAssetToHandle;
     }
 
     public virtual void Dispose()
     {
-        foreach ((Object asset, AsyncOperationHandle handle) in _assetToHandle)
-            ReleaseUntyped(asset, handle);
-
-        _assetToHandle.Clear();
         _isDisposed = true;
 
-        // _dataToPreloadedAsset.Clear();
+        foreach ((Object asset, HandleData data) in _assetToHandle)
+        {
+            Type type = asset.GetType();
+            for (int i = 0; i < data.Count; i++)
+                ReleaseUntyped(type, data.Handle);
+        }
+
+        foreach ((AddressData data, AsyncOperationHandle handle) in _cachedAssetToHandle)
+            ReleaseUntyped(data.Type, handle);
+
+        _assetToHandle.Clear();
+        _instanceToPrefab.Clear();
+        _cachedAssetToHandle.Clear();
     }
 
     public async UniTask PreloadAsync<T>(Address<T> address) where T : Object
     {
-        AddressData data = new(address.Key, typeof(T));
+        // await Addressables.DownloadDependenciesAsync(address.Key, true);
 
-        if (_dataToPreloadedAsset.ContainsKey(data))
-        {
-            Debug.Log("Return; cache already exists");
+        if (_isDisposed)
             return;
-        }
 
-        Debug.Log("Adding cache");
-        T preloaded = await LoadAsync(address);
-        Debug.Log("Added cache");
-        _dataToPreloadedAsset[data] = preloaded;
+        AddressData data = address.AsData();
+        if (_cachedAssetToHandle.ContainsKey(data))
+            return;
+
+        AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address.Key);
+        _cachedAssetToHandle[data] = handle;
+        await handle;
     }
 
-    public async UniTask<T> LoadAsync<T>(Address<T> address, bool trackHandle = true) where T : Object
+    public async UniTask<T> LoadAsync<T>(Address<T> address) where T : Object
     {
         if (_isDisposed)
             return default;
 
-        if (TryGetPreloaded(address, out T preloaded)) 
-            return preloaded;
-
         if (typeof(T) == typeof(GameObject))
         {
-            GameObject prefab = await LoadAssetAsync(address.As<GameObject>(), trackHandle);
+            GameObject prefab = await LoadAssetAsync(address.As<GameObject>());
             GameObject instance = _scope.InstantiateInScene(prefab, address);
             _instanceToPrefab[instance] = prefab;
 
@@ -83,7 +90,7 @@ public class ScopedAddressableFactory : IDisposable
 
         if (IsComponent())
         {
-            GameObject prefab = await LoadAssetAsync(address.As<GameObject>(), trackHandle);
+            GameObject prefab = await LoadAssetAsync(address.As<GameObject>());
             GameObject instance = _scope.InstantiateInScene(prefab, address);
             _instanceToPrefab[instance] = prefab;
 
@@ -91,34 +98,18 @@ public class ScopedAddressableFactory : IDisposable
         }
 
         //Sprite, Texture2D, etc
-        return await LoadAssetAsync(address, trackHandle);
+        return await LoadAssetAsync(address);
 
         static bool IsComponent() =>
             typeof(Component).IsAssignableFrom(typeof(T));
     }
 
-    private bool TryGetPreloaded<T>(Address<T> address, out T preloaded) where T : Object
-    {
-        //mb we should try to take from global factory?
-        AddressData data = new(address.Key, typeof(T));
-        if (!_dataToPreloadedAsset.ContainsKey(data))
-        {
-            preloaded = default;
-            return false;
-        }
-
-        Debug.Log("Pop cache");
-        preloaded = _dataToPreloadedAsset.Pop(data) as T;
-        return true;
-    }
-
-    private async UniTask<T> LoadAssetAsync<T>(Address<T> address, bool trackHandle) where T : Object
+    private async UniTask<T> LoadAssetAsync<T>(Address<T> address) where T : Object
     {
         AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address.Key);
         T asset = await handle;
 
-        if (trackHandle)
-            _assetToHandle[asset] = handle;
+        PushHandle(asset, handle);
 
         return asset;
     }
@@ -137,10 +128,8 @@ public class ScopedAddressableFactory : IDisposable
         if (!_assetToHandle.ContainsKey(instance))
             return;
 
-        AsyncOperationHandle handle = _assetToHandle.Pop(instance);
-        AsyncOperationHandle<T> handleT = handle.Convert<T>();
-
-        Addressables.Release(handleT);
+        AsyncOperationHandle<T> handle = PopHandle(instance);
+        Addressables.Release(handle);
     }
 
     private void ReleaseGameObject(GameObject instance)
@@ -152,35 +141,43 @@ public class ScopedAddressableFactory : IDisposable
         }
 
         GameObject prefab = _instanceToPrefab.Pop(instance);
-        AsyncOperationHandle handle = _assetToHandle.Pop(prefab);
 
-        AsyncOperationHandle<GameObject> handleT = handle.Convert<GameObject>();
-
-        Addressables.Release(handleT);
+        AsyncOperationHandle<GameObject> handle = PopHandle(prefab);
+        Addressables.Release(handle);
         Object.Destroy(instance);
     }
 
+    private void PushHandle<T>(T asset, AsyncOperationHandle<T> handle) where T : Object
+    {
+        if (_assetToHandle.TryGetValue(asset, out HandleData data))
+            _assetToHandle[asset] = new HandleData(data.Handle, data.Count + 1);
+        else
+            _assetToHandle[asset] = new HandleData(handle, 1);
+    }
+
+    private AsyncOperationHandle<T> PopHandle<T>(T asset) where T : Object
+    {
+        HandleData handleData = _assetToHandle.Pop(asset);
+
+        if (handleData.Count > 1)
+            _assetToHandle[asset] = new HandleData(handleData.Handle, handleData.Count - 1);
+
+        return handleData.Handle.Convert<T>();
+    }
+    
     // `Addressables.Release()` does not work with untyped AsyncOperationHandle, it requires AsyncOperationHandle<T>
     // generic case can only be resolved by reflection
-    private static void ReleaseUntyped(Object asset, AsyncOperationHandle handle)
+    private static void ReleaseUntyped(Type type, AsyncOperationHandle handle)
     {
-        bool success = asset switch
-        {
-            GameObject => Release(handle.Convert<GameObject>()),
-            Sprite => Release(handle.Convert<Sprite>()),
-            Texture2D => Release(handle.Convert<Texture2D>()),
-            Texture3D => Release(handle.Convert<Texture3D>()),
-            Texture => Release(handle.Convert<Texture>()),
-            _ => false
-        };
+        if (type == typeof(GameObject)) Release(handle.Convert<GameObject>());
+        else if (type == typeof(Sprite)) Release(handle.Convert<Sprite>());
+        else if (type == typeof(Texture2D)) Release(handle.Convert<Texture2D>());
+        else if (type == typeof(Texture3D)) Release(handle.Convert<Texture3D>());
+        else if (type == typeof(Texture)) Release(handle.Convert<Texture>());
+        else
+            Debug.LogError("Unhandled disposing of type: " + type.Name);
 
-        if (!success)
-            Debug.LogError("Unhandled disposing of type: " + asset.GetType().Name);
-
-        bool Release<T1>(AsyncOperationHandle<T1> typedHandle)
-        {
+        void Release<T>(AsyncOperationHandle<T> typedHandle) =>
             Addressables.Release(typedHandle);
-            return true;
-        }
     }
 }
