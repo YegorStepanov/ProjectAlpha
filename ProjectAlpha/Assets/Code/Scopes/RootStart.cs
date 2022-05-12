@@ -9,16 +9,16 @@ namespace Code.Scopes;
 
 public class RootStart : IAsyncStartable
 {
-    private readonly GlobalAddressableFactory _factory;
+    private readonly GlobalAddressableLoader _loader;
 
-    public RootStart(GlobalAddressableFactory factory) =>
-        _factory = factory;
+    public RootStart(GlobalAddressableLoader loader) =>
+        _loader = loader;
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
         DOTween.Init();
         Addressables.InitializeAsync(true);
 
-        await _factory.PreloadAsync(MenuAddress.MainMenu);
+        await _loader.PreloadAsync(MenuAddress.MainMenu);
     }
 }

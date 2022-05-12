@@ -13,16 +13,16 @@ namespace Code.Services;
 public sealed class SceneLoader
 {
     private readonly IObjectResolver _resolver;
-    private readonly ScopedAddressableFactory _factory;
+    private readonly ScopedAddressableLoader _loader;
 
     private readonly Dictionary<Address<Scene>, SceneInstance> _scenes = new();
 
     private readonly string _startupSceneName;
 
-    public SceneLoader(IObjectResolver resolver, ScopedAddressableFactory factory)
+    public SceneLoader(IObjectResolver resolver, ScopedAddressableLoader loader)
     {
         _resolver = resolver;
-        _factory = factory;
+        _loader = loader;
         _startupSceneName = SceneManager.GetActiveScene().name;
     }
 

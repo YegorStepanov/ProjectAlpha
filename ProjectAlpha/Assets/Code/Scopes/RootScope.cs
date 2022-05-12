@@ -82,9 +82,9 @@ public sealed class RootScope : LifetimeScope
 
         builder.Register<StartSceneInformer>(Lifetime.Singleton).Build(); //non-lazy
 
-        builder.Register<ScopedAddressableFactory>(Lifetime.Scoped);
+        builder.Register<ScopedAddressableLoader>(Lifetime.Scoped);
         //to inject dependencies, it should be Scoped with static instances
-        builder.Register<GlobalAddressableFactory>(Lifetime.Scoped);
+        builder.Register<GlobalAddressableLoader>(Lifetime.Scoped);
 
         var rootToken = new RootCancellationToken(this.GetCancellationTokenOnDestroy());
         builder.RegisterInstance(rootToken);

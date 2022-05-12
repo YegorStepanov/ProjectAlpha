@@ -26,9 +26,9 @@ public sealed class CameraController : MonoBehaviour, IDisposable
         _backgroundChanger?.Dispose();
 
     [Inject, UsedImplicitly]
-    public void Construct(ScopedAddressableFactory factory)
+    public void Construct(ScopedAddressableLoader loader)
     {
-        _backgroundChanger = new BackgroundChanger(factory, _backgroundImage);
+        _backgroundChanger = new BackgroundChanger(loader, _backgroundImage);
         DontDestroyOnLoad(this);
     }
 

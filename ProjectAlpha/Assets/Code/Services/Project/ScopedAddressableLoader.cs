@@ -11,7 +11,7 @@ using Object = UnityEngine.Object;
 
 namespace Code.Services;
 
-public class ScopedAddressableFactory : IDisposable
+public class ScopedAddressableLoader : IDisposable
 {
     protected record struct HandleData(AsyncOperationHandle Handle, int Count);
 
@@ -24,10 +24,10 @@ public class ScopedAddressableFactory : IDisposable
     private bool _isDisposed;
 
     [Inject, UsedImplicitly]
-    public ScopedAddressableFactory(LifetimeScope scope, GlobalAddressableFactory globalFactory) :
+    public ScopedAddressableLoader(LifetimeScope scope, GlobalAddressableLoader globalLoader) :
         this(scope, new(), new(), new()) { }
 
-    protected ScopedAddressableFactory(
+    protected ScopedAddressableLoader(
         LifetimeScope scope,
         Dictionary<Object, HandleData> assetsToHandle,
         Dictionary<GameObject, GameObject> instanceToPrefab,

@@ -7,13 +7,13 @@ namespace Code.Services;
 
 //it cannot be used because there is one root dependencies
 //rename to Loader
-public sealed class GlobalAddressableFactory : ScopedAddressableFactory
+public sealed class GlobalAddressableLoader : ScopedAddressableLoader
 {
     private static readonly Dictionary<Object, HandleData> assetsToHandle = new();
     private static readonly Dictionary<GameObject, GameObject> instanceToPrefab = new();
     private static readonly Dictionary<AddressData, AsyncOperationHandle> rootedDataToPreloadedAsset = new();
     
-    public GlobalAddressableFactory(LifetimeScope scope) :
+    public GlobalAddressableLoader(LifetimeScope scope) :
         base(scope, assetsToHandle, instanceToPrefab, rootedDataToPreloadedAsset) { }
 
     public override void Dispose()

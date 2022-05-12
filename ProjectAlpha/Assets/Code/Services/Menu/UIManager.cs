@@ -6,14 +6,14 @@ namespace Code.Services;
 
 public sealed class UIManager
 {
-    private readonly GlobalAddressableFactory _factory;
+    private readonly GlobalAddressableLoader _loader;
 
     private GameObject _mainMenu;
     private GameObject _shopPanel;
     private GameObject _heroSelectorPanel;
 
-    public UIManager(GlobalAddressableFactory factory) =>
-        _factory = factory;
+    public UIManager(GlobalAddressableLoader loader) =>
+        _loader = loader;
 
     public void Show<TPanel>() where TPanel : struct, IPanel
     {
@@ -36,13 +36,13 @@ public sealed class UIManager
     public void Unload<TPanel>() where TPanel : struct, IPanel
     {
         GameObject panel = GetPanel<TPanel>();
-        _factory.Release(panel);
+        _loader.Release(panel);
     }
 
     private async UniTask<GameObject> GetOrCreatePanelAsync(GameObject panel, Address<GameObject> address)
     {
         if (panel == null)
-            panel = await _factory.LoadAsync(address);
+            panel = await _loader.LoadAsync(address);
 
         panel.SetActive(true);
         return panel;

@@ -9,19 +9,19 @@ public class AddressablePool<TComponent> : AsyncPool<TComponent> where TComponen
 {
     private readonly Address<TComponent> _address;
     private readonly string _containerName;
-    private readonly ScopedAddressableFactory _factory;
+    private readonly ScopedAddressableLoader _loader;
     private readonly LifetimeScope _scope;
 
     private Transform _container;
 
-    protected AddressablePool(Address<TComponent> address, PoolData data, ScopedAddressableFactory factory,
+    protected AddressablePool(Address<TComponent> address, PoolData data, ScopedAddressableLoader loader,
         LifetimeScope scope)
         : base(data.InitialSize, data.Capacity)
     {
         _address = address;
         _containerName = data.ContainerName;
         _scope = scope;
-        _factory = factory;
+        _loader = loader;
     }
 
     protected override async UniTask<TComponent> CreateAsync()
@@ -29,7 +29,7 @@ public class AddressablePool<TComponent> : AsyncPool<TComponent> where TComponen
         if (_container == null)
             _container = _scope.CreateRootSceneContainer(_containerName);
 
-        return await _factory.LoadAsync(_address);
+        return await _loader.LoadAsync(_address);
     }
 
     protected override void OnSpawned(TComponent instance) =>
