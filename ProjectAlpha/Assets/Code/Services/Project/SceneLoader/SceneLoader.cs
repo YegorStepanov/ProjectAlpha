@@ -1,35 +1,30 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
-using VContainer;
 using VContainer.Unity;
 
 namespace Code.Services;
 
 public sealed class SceneLoader
 {
-    private readonly IObjectResolver _resolver;
-    private readonly ScopedAddressableLoader _loader;
-
     private readonly Dictionary<Address<Scene>, SceneInstance> _scenes = new();
 
     private readonly string _startupSceneName;
 
-    public SceneLoader(IObjectResolver resolver, ScopedAddressableLoader loader)
-    {
-        _resolver = resolver;
-        _loader = loader;
+    public SceneLoader() =>
         _startupSceneName = SceneManager.GetActiveScene().name;
-    }
 
-    /// <summary>
-    /// Do not load scene concurrently
-    /// </summary>
-    public async UniTask LoadAsync<TScene>(LifetimeScope parentScope, CancellationToken token) where TScene : struct, IScene
+    public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene =>
+        LoadAsync<TScene>(null, token);
+
+    // Do not load scene concurrently
+    public async UniTask LoadAsync<TScene>(LifetimeScope parentScope, CancellationToken token)
+        where TScene : struct, IScene
     {
         Address<Scene> address = GetAddress<TScene>();
         await LoadAsync(address, parentScope, token);
@@ -43,17 +38,22 @@ public sealed class SceneLoader
 
     private async UniTask LoadAsync(Address<Scene> sceneAddress, LifetimeScope parentScope, CancellationToken token)
     {
-        if (parentScope != null)
+        if (parentScope == null)
         {
-            using (LifetimeScope.EnqueueParent(parentScope))
-            {
-                SceneInstance scene = await Addressables.LoadSceneAsync(sceneAddress.Key, LoadSceneMode.Additive);
-                _scenes.Add(sceneAddress, scene);
-            }
+            await LoadSceneCore();
+            return;
         }
-        else
+
+        using (LifetimeScope.EnqueueParent(parentScope))
         {
-            SceneInstance scene = await Addressables.LoadSceneAsync(sceneAddress.Key, LoadSceneMode.Additive);
+            await LoadSceneCore();
+        }
+
+        async Task LoadSceneCore()
+        {
+            SceneInstance scene = await Addressables.LoadSceneAsync(sceneAddress.Key, LoadSceneMode.Additive)
+                .WithCancellation(token);
+
             _scenes.Add(sceneAddress, scene);
         }
     }

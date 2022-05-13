@@ -10,7 +10,6 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
         IHeroController Hero);
 
     private readonly InputManager _inputManager;
-
     private readonly StickSpawner _stickSpawner;
 
     public StickControlState(StickSpawner stickSpawner, InputManager inputManager)

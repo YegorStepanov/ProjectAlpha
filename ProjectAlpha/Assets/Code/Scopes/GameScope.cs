@@ -43,49 +43,8 @@ public sealed class GameScope : LifetimeScope
         builder.Register<StickSpawner>(Lifetime.Singleton);
         builder.Register<PlatformSpawner>(Lifetime.Singleton);
 
-        // builder.RegisterInstance(transform);
-        ////
-        //
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
-
-        //builder.RegisterBuildCallback(resolver =>
-        //{
-        //    var stateMachine = resolver.Resolve<GameStateMachine>();
-        //    resolver.Inject(stateMachine);
-        //});
-
-        //////////////////
-
-
-        // builder.RegisterComponentInHierarchy<YourBehaviour>()
-        //     .UnderTransform();
-
-        // Container.
-        //     Debug.Log("Configure");
-        // builder.Register<HelloWorldService>(Lifetime.Singleton);
-
-
-        //We do not recommend excecuting Inject directly on MonoBehaviours;
-        //instead, use InjectGameObject on the owning GameObject.
-
-        //RegisterComponent is similar to RegisterInstance.
-        //The only difference is that MonoBehaviours registered with RegisterComponent
-        //will be injected even if not Resolved.
-
-        //use SCOPE instead baseclass for 
-
-
-        // builder.RegisterEntryPoint<GamePresenter>();
-
-        // builder.RegisterComponent(helloScreen); //go
-
-
-        //builder.UseEntryPoints(Lifetime.Singleton, entryPoints =>
-        //{
-        //    entryPoints.Add<GamePresenter>();
-        //    // entryPoints.Add<OtherSingletonEntryPointA>();
-        //    // entryPoints.Add<OtherSingletonEntryPointB>();
-        //    // entryPoints.Add<OtherSingletonEntryPointC>();
-        //})
+        
+        //RegisterComponent = RegisterInstance + Resolve NonLazy?
     }
 }

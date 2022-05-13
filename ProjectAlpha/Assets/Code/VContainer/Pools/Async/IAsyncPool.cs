@@ -2,9 +2,9 @@
 
 namespace Code.VContainer;
 
-public interface IAsyncPool<TValue>
+public interface IAsyncPool<T>
 {
     int Capacity { get; }
-    UniTask<(TValue, bool)> SpawnAsync();
-    void Despawn(TValue value);
+    UniTask<(T, bool)> SpawnAsync();
+    void Despawn(T value);
 }

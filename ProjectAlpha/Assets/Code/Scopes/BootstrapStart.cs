@@ -7,8 +7,8 @@ namespace Code.Scopes;
 
 public sealed class BootstrapStart : IAsyncStartable
 {
-    private readonly LoadingScreen _loadingScreen;
     private readonly SceneLoader _sceneLoader;
+    private readonly LoadingScreen _loadingScreen;
 
     public BootstrapStart(SceneLoader sceneLoader, LoadingScreen loadingScreen)
     {
@@ -20,8 +20,8 @@ public sealed class BootstrapStart : IAsyncStartable
     {
         _loadingScreen.Show();
 
-        await _sceneLoader.LoadAsync<GameScene>(null, token);
-        await _sceneLoader.LoadAsync<MenuScene>(null, token);
+        await _sceneLoader.LoadAsync<GameScene>(token);
+        await _sceneLoader.LoadAsync<MenuScene>(token);
 
         await _loadingScreen.HideAsync();
         await _sceneLoader.UnloadAsync<BootstrapScene>(token);

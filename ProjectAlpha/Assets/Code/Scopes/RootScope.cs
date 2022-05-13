@@ -80,7 +80,7 @@ public sealed class RootScope : LifetimeScope
         builder.Register<GameTriggers>(Lifetime.Singleton);
         builder.Register<InputManager>(Lifetime.Singleton);
 
-        builder.Register<StartSceneInformer>(Lifetime.Singleton).Build(); //non-lazy
+        builder.Register<StartSceneInformer>(Lifetime.Singleton);//.Build(); //non-lazy
 
         builder.Register<ScopedAddressableLoader>(Lifetime.Scoped);
         //to inject dependencies, it should be Scoped with static instances
