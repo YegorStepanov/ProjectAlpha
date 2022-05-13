@@ -8,7 +8,7 @@ public sealed class BootstrapState : IState
 {
     private readonly CameraController _cameraController;
     private readonly GameTriggers _gameTriggers;
-    private readonly IHeroController _hero;
+    private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
     private readonly StartSceneInformer _startSceneInformer;
     private readonly WidthGenerator _widthGenerator;
@@ -16,14 +16,14 @@ public sealed class BootstrapState : IState
     public BootstrapState(
         PlatformSpawner platformSpawner,
         WidthGenerator widthGenerator,
-        IHeroController hero,
+        HeroSpawner heroSpawner,
         CameraController cameraController,
         GameTriggers gameTriggers,
         StartSceneInformer startSceneInformer)
     {
         _platformSpawner = platformSpawner;
         _widthGenerator = widthGenerator;
-        _hero = hero;
+        _heroSpawner = heroSpawner;
         _cameraController = cameraController;
         _gameTriggers = gameTriggers;
         _startSceneInformer = startSceneInformer;
@@ -31,8 +31,6 @@ public sealed class BootstrapState : IState
 
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
-        // IHeroController hero = await _hero; //hm, interesting mb add another service that start game after ALL are loaded
-
         //_widthGenerator.Reset();
 
         UniTask loadBackgroundTask = _cameraController.ChangeBackgroundAsync();
@@ -40,7 +38,7 @@ public sealed class BootstrapState : IState
         Vector2 platformPosition = _cameraController.ViewportToWorldPosition(new Vector2(0.5f, 0.2f));
         IPlatformController menuPlatform = await _platformSpawner.CreatePlatformAsync(platformPosition, 2f, Relative.Center);
 
-        _hero.TeleportTo(menuPlatform.Position, Relative.Left);
+        IHeroController hero = await _heroSpawner.CreateHeroAsync(menuPlatform.Position, Relative.Left);
 
         if (!_startSceneInformer.IsGameStartScene)
             await _gameTriggers.StartGameTrigger.OnClickAsync();
@@ -48,7 +46,7 @@ public sealed class BootstrapState : IState
         await loadBackgroundTask;
 
         stateMachine.Enter<GameStartState, GameStartState.Arguments>(
-            new GameStartState.Arguments(menuPlatform, _hero));
+            new GameStartState.Arguments(menuPlatform, hero));
 
         //set background randomly
         //set idle animation
