@@ -1,4 +1,5 @@
 ﻿using Code.Services;
+using Code.VContainer;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -14,22 +15,13 @@ public sealed class GameScope : LifetimeScope
 
     public HeroController _hero;
 
-    public StickController _stick;
-
-    [AssetsOnly]
-    public PlatformController _platform;
+    private readonly Address<PlatformController> _platform = new("Platform");
+    private readonly Address<StickController> _stick = new("Stick");
 
     protected override void Configure(IContainerBuilder builder)
     {
-        //consider: .WithName("Platform").WithPrefabName().UnderContainer("Platforms").WithInitialSize(2)
-
-        // Addressables.asset
-
-        // builder.RegisterMonoBehaviourPool(_platform, "Platform", "Platforms", 0, 3, Lifetime.Singleton);
-        var platformPrefab = new Address<PlatformController>("Platform");
-        builder.RegisterAddressablePool(platformPrefab, "Platforms", 0, 3, Lifetime.Singleton);
-
-        builder.RegisterMonoBehaviourPool(_stick, "Stick", "Sticks", 0, 2, Lifetime.Singleton);
+        RegisterPlatformPool(builder);
+        RegisterStickPool(builder);
 
         builder.Register<GameStateMachine>(Lifetime.Singleton);
 
@@ -46,5 +38,25 @@ public sealed class GameScope : LifetimeScope
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
         
         //RegisterComponent = RegisterInstance + Resolve NonLazy?
+    }
+
+    private void RegisterPlatformPool(IContainerBuilder builder)
+    {
+        builder.RegisterAddressablePool(_platform, "Platforms", 0, 3, Lifetime.Singleton)
+            .AsImplementedInterfaces();
+
+        builder.Register
+            <IAsyncRecyclablePool<PlatformController>, RecyclablePool<PlatformController>>
+            (Lifetime.Singleton);
+    }
+
+    private void RegisterStickPool(IContainerBuilder builder)
+    {
+        builder.RegisterAddressablePool(_stick, "Sticks", 0, 2, Lifetime.Singleton)
+            .AsImplementedInterfaces();
+
+        builder.Register
+            <IAsyncRecyclablePool<StickController>, RecyclablePool<StickController>>
+            (Lifetime.Singleton);
     }
 }

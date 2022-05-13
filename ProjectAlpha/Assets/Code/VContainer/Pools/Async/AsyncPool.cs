@@ -12,6 +12,7 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
     private int _activeCount;
 
     public int Capacity { get; }
+    public bool CanBeSpawned => _pool is null || IsIndexCorrectForSpawn();
 
     protected AsyncPool(int initialSize, int capacity)
     {
@@ -19,17 +20,20 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
         Capacity = capacity;
     }
 
-    public async UniTask<(TValue, bool)> SpawnAsync()
+    public async UniTask<TValue> SpawnAsync()
     {
         _pool ??= await CreatePoolAsync();
-        
-        if (!IsIndexCorrectForSpawn()) 
-            return (default, false);
+
+        if (!CanBeSpawned)
+        {
+            Debug.LogWarning("Incorrect spawn index: " + _activeCount);
+            return default;
+        }
         
         TValue value = await Pop();
         OnSpawned(value);
 
-        return (value, true);
+        return value;
     }
 
     public void Despawn(TValue value)
@@ -42,7 +46,7 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
         
         if (!IsIndexCorrectForDespawn())
         {
-            Debug.LogWarning("Incorrect Index: " + _activeCount);
+            Debug.LogWarning("Incorrect despawn index: " + _activeCount);
             return;
         }
         

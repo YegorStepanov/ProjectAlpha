@@ -21,7 +21,7 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
         Vector2 stickPosition = new(args.CurrentPlatform.Borders.Right, args.CurrentPlatform.Borders.Top);
-        IStickController stick = _stickSpawner.CreateStick(stickPosition);
+        IStickController stick = await _stickSpawner.CreateStickAsync(stickPosition);
 
         await _inputManager.NextMouseClick();
         stick.StartIncreasing();
