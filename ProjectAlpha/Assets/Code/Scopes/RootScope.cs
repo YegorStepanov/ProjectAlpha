@@ -83,11 +83,10 @@ public sealed class RootScope : LifetimeScope
 
         builder.Register<StartSceneInformer>(Lifetime.Singleton);//.Build(); //non-lazy
 
-        builder.Register<AddressablesLoader>(Lifetime.Scoped).As<IScopedAddressablesLoader>();//is dispose called?
-        //to inject dependencies, it should be Scoped with static instances
-        builder.Register<GlobalAddressablesLoader>(Lifetime.Scoped).As<IGlobalAddressablesLoader>();//is dispose called?
-        // builder.Register<GlobalAddressablesLoader>(Lifetime.Scoped);
         builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
+        builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);
+        // to inject dependencies, it should be Scoped with static instances
+        builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);
 
         builder.RegisterEntryPoint<RootStart>();
     }
