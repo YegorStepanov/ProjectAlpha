@@ -27,11 +27,10 @@
         "Unity.TextMeshPro",
         "Unity.Timeline",
         "UnityEngine.UI",
-        "DOTween.Modules"
+        "DOTween.Modules",
+        "VContainer"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
