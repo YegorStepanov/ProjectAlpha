@@ -1,8 +1,6 @@
-﻿using System.Threading;
-using Code.AddressableAssets;
+﻿using Code.AddressableAssets;
 using Code.Game;
 using Code.Services;
-using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
@@ -77,11 +75,11 @@ public sealed class RootScope : LifetimeScope
 
         builder.RegisterComponentInNewPrefab(_cameraController, Lifetime.Singleton); //GOname? nonlazy?
 
-        builder.Register<SceneLoader>(Lifetime.Singleton);
+        builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
         builder.Register<GameTriggers>(Lifetime.Singleton);
         builder.Register<InputManager>(Lifetime.Singleton);
 
-        builder.Register<StartSceneInformer>(Lifetime.Singleton);//.Build(); //non-lazy
+        builder.Register<StartSceneInformer>(Lifetime.Singleton); //.Build(); //non-lazy
 
         builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
         builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);

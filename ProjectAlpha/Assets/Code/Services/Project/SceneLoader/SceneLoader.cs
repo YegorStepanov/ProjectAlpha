@@ -11,7 +11,7 @@ using VContainer.Unity;
 
 namespace Code.Services;
 
-public sealed class SceneLoader
+public sealed class SceneLoader : ISceneLoader
 {
     private readonly Dictionary<Address<Scene>, SceneInstance> _scenes = new();
 

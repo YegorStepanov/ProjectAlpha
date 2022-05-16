@@ -7,10 +7,10 @@ namespace Code.Scopes;
 
 public sealed class BootstrapStart : IAsyncStartable
 {
-    private readonly SceneLoader _sceneLoader;
+    private readonly ISceneLoader _sceneLoader;
     private readonly LoadingScreen _loadingScreen;
 
-    public BootstrapStart(SceneLoader sceneLoader, LoadingScreen loadingScreen)
+    public BootstrapStart(ISceneLoader sceneLoader, LoadingScreen loadingScreen)
     {
         _sceneLoader = sceneLoader;
         _loadingScreen = loadingScreen;
