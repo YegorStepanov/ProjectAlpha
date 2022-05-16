@@ -11,18 +11,15 @@ public sealed class BootstrapState : IState
     private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
     private readonly StartSceneInformer _startSceneInformer;
-    private readonly WidthGenerator _widthGenerator;
 
     public BootstrapState(
         PlatformSpawner platformSpawner,
-        WidthGenerator widthGenerator,
         HeroSpawner heroSpawner,
         CameraController cameraController,
         GameTriggers gameTriggers,
         StartSceneInformer startSceneInformer)
     {
         _platformSpawner = platformSpawner;
-        _widthGenerator = widthGenerator;
         _heroSpawner = heroSpawner;
         _cameraController = cameraController;
         _gameTriggers = gameTriggers;
@@ -31,8 +28,6 @@ public sealed class BootstrapState : IState
 
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
-        //_widthGenerator.Reset();
-
         UniTask loadBackgroundTask = _cameraController.ChangeBackgroundAsync();
 
         Vector2 platformPosition = _cameraController.ViewportToWorldPosition(new Vector2(0.5f, 0.2f));

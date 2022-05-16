@@ -1,4 +1,5 @@
 ﻿using System;
+using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +9,15 @@ namespace Code.Services;
 
 public sealed class BackgroundChanger : IDisposable
 {
-    private readonly Address<Sprite>[] _addresses;
+    //Types=UnityEngine.Texture2D, UnityEngine.Sprite
+    //test Sprite.Create()
+    private readonly Address<Sprite>[] _addresses; 
     private readonly Image _backgroundImage;
-    private readonly ScopedAddressableLoader _loader;
+    private readonly IScopedAddressablesLoader _loader;
 
     private Sprite _spriteAsset;
 
-    public BackgroundChanger(ScopedAddressableLoader loader, Image backgroundImage)
+    public BackgroundChanger(IScopedAddressablesLoader loader, Image backgroundImage)
     {
         _loader = loader;
         _backgroundImage = backgroundImage;
@@ -36,7 +39,7 @@ public sealed class BackgroundChanger : IDisposable
     {
         Address<Sprite> newAddress = GetRandomBackground();
 
-        Sprite sprite = await _loader.LoadAsync(newAddress);
+        Sprite sprite = await _loader.LoadAssetAsync(newAddress);
         _backgroundImage.sprite = sprite;
         _spriteAsset = sprite;
     }

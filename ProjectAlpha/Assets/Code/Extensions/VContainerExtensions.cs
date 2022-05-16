@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Code.AddressableAssets;
 using Code.VContainer;
 using UnityEngine;
 using VContainer;
@@ -8,17 +9,23 @@ namespace Code;
 
 public static class VContainerExtensions
 {
-    public static GameObject InstantiateInScene<T>(this LifetimeScope scope, GameObject prefab, Address<T> asset)
+    public static GameObject Instantiate<T>(this LifetimeScope scope, GameObject prefab, Address<T> asset,
+        Transform under = null)
         where T : Object
     {
-        return scope.InstantiateInScene(prefab, asset.Key);
+        return scope.Instantiate(prefab, asset.Key, under);
     }
 
     //Instantiate in the scope scene instead of the active scene
-    public static GameObject InstantiateInScene(this LifetimeScope scope, GameObject prefab, string name)
+    public static GameObject Instantiate(this LifetimeScope scope, GameObject prefab,
+        string name = null, Transform under = null)
     {
         GameObject instance;
-        if (scope.IsRoot)
+        if (under != null)
+        {
+            instance = Object.Instantiate(prefab, under);
+        }
+        else if (scope.IsRoot)
         {
             instance = Object.Instantiate(prefab);
             Object.DontDestroyOnLoad(instance);
@@ -29,7 +36,9 @@ public static class VContainerExtensions
             instance.transform.SetParent(null);
         }
 
-        instance.name = name;
+        if (name is not null)
+            instance.name = name;
+
         scope.Container.InjectGameObject(instance);
         return instance;
     }
@@ -136,23 +145,31 @@ public static class VContainerExtensions
         Lifetime lifetime)
         where T : Component
     {
-        var data = new PoolData(containerName, initialSize, capacity);
+        var data = new ComponentPoolData(containerName, initialSize, capacity);
         data.Validate();
 
-        return builder.Register<AddressablePool<T>>(lifetime)
+        return builder.Register<AddressableComponentPool<T>>(lifetime)
             .WithParameter(address)
             .WithParameter(data);
     }
 
-    //     => new(builder.Register<AddressablePool<T>>(lifetime)
-    // .WithParameter(address)
-    //     .WithParameter(isLazy)
-    //     .WithParameter(new InstanceName("Platform2"))
-    //     .WithParameter(new InstanceName(name))
-    //     .WithParameter(new ParentName(containerName))
-    //     .WithParameter(new InitialSize(initialSize))
-    //     .WithParameter(new Capacity(size)));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RegistrationBuilder RegisterAddressableAssetPool<T>(
+        this IContainerBuilder builder,
+        Address<T> address,
+        int initialSize,
+        int capacity,
+        Lifetime lifetime)
+        where T : Object
+    {
+        var data = new PoolData(initialSize, capacity);
+        data.Validate();
 
+        return builder.Register<AddressableAssetPool<T>>(lifetime)
+            .WithParameter(address)
+            .WithParameter(data);
+    }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RegistrationBuilder RegisterScriptableObjectPool<T>(
         this IContainerBuilder builder,
@@ -170,10 +187,7 @@ public static class VContainerExtensions
             .WithParameter(new Capacity(size));
 }
 
-public sealed record PoolData(
-    string ContainerName,
-    int InitialSize,
-    int Capacity)
+public record PoolData(int InitialSize, int Capacity)
 {
     public void Validate()
     {
@@ -184,3 +198,6 @@ public sealed record PoolData(
             Debug.LogError("Wrong capacity:" + Capacity);
     }
 }
+
+public sealed record ComponentPoolData(string ContainerName, int InitialSize, int Capacity) :
+    PoolData(InitialSize, Capacity);

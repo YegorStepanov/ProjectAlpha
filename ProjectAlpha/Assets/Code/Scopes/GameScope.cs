@@ -1,8 +1,7 @@
-﻿using Code.Services;
+﻿using Code.AddressableAssets;
+using Code.Services;
 using Code.VContainer;
 using Cysharp.Threading.Tasks;
-using Sirenix.OdinInspector;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -10,9 +9,6 @@ namespace Code.Scopes;
 
 public sealed class GameScope : LifetimeScope
 {
-    [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(WidthGenerator))]
-    private WidthGenerator _widthGenerator; //split to settings and own generator?
-
     protected override void Configure(IContainerBuilder builder)
     {
         RegisterPlatformSpawner(builder);
@@ -21,13 +17,29 @@ public sealed class GameScope : LifetimeScope
 
         builder.Register<GameStateMachine>(Lifetime.Singleton);
 
-        builder.RegisterComponent(Instantiate(_widthGenerator));
+        RegisterWidthGenerator(builder);
 
         builder.RegisterEntryPoint<GameStart>();
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
         
         //RegisterComponent = RegisterInstance + Resolve NonLazy?
+    }
+
+    private void RegisterWidthGenerator(IContainerBuilder builder)
+    {
+        Address<WidthGenerator> platformAddress = new("Width Generator");
+
+        builder.RegisterAddressableAssetPool(platformAddress, 0, 1, Lifetime.Singleton)            
+            .AsImplementedInterfaces();   
+        
+        // builder.RegisterComponent(Instantiate(_widthGenerator));
+        
+        builder.Register                                                                                        
+            <IAsyncRecyclablePool<WidthGenerator>, RecyclablePool<WidthGenerator>>                      
+            (Lifetime.Singleton);          
+
+        builder.Register<WidthGeneratorSpawner>(Lifetime.Singleton);
     }
 
     private static void RegisterHeroSpawner(IContainerBuilder builder)

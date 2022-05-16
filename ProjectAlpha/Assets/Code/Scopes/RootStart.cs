@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using Code.Services;
+using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine.AddressableAssets;
@@ -9,16 +9,16 @@ namespace Code.Scopes;
 
 public class RootStart : IAsyncStartable
 {
-    private readonly GlobalAddressableLoader _loader;
+    private readonly AddressablesCache _cache;
 
-    public RootStart(GlobalAddressableLoader loader) =>
-        _loader = loader;
+    public RootStart(AddressablesCache cache) =>
+        _cache = cache;
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
         DOTween.Init();
         Addressables.InitializeAsync(true);
 
-        await _loader.PreloadAsync(MenuAddress.MainMenu);
+        await _cache.CacheAssetAsync(MenuAddress.MainMenu);
     }
 }

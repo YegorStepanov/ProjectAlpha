@@ -1,4 +1,5 @@
 ﻿using System;
+using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
@@ -26,7 +27,7 @@ public sealed class CameraController : MonoBehaviour, IDisposable
         _backgroundChanger?.Dispose();
 
     [Inject, UsedImplicitly]
-    public void Construct(ScopedAddressableLoader loader)
+    public void Construct(IScopedAddressablesLoader loader)
     {
         _backgroundChanger = new BackgroundChanger(loader, _backgroundImage);
         DontDestroyOnLoad(this);

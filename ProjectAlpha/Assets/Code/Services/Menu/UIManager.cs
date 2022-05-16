@@ -1,4 +1,5 @@
 ﻿using System;
+using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -6,13 +7,13 @@ namespace Code.Services;
 
 public sealed class UIManager
 {
-    private readonly GlobalAddressableLoader _loader;
+    private readonly IGlobalAddressablesLoader _loader;
 
     private GameObject _mainMenu;
     private GameObject _shopPanel;
     private GameObject _heroSelectorPanel;
 
-    public UIManager(GlobalAddressableLoader loader) =>
+    public UIManager(IGlobalAddressablesLoader loader) =>
         _loader = loader;
 
     public void Show<TPanel>() where TPanel : struct, IPanel
@@ -42,7 +43,7 @@ public sealed class UIManager
     private async UniTask<GameObject> GetOrCreatePanelAsync(GameObject panel, Address<GameObject> address)
     {
         if (panel == null)
-            panel = await _loader.LoadAsync(address);
+            panel = await _loader.InstantiateAsync(address);
 
         panel.SetActive(true);
         return panel;

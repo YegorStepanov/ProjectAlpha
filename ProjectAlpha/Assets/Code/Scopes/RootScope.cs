@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Code.AddressableAssets;
 using Code.Game;
 using Code.Services;
 using Cysharp.Threading.Tasks;
@@ -82,9 +83,11 @@ public sealed class RootScope : LifetimeScope
 
         builder.Register<StartSceneInformer>(Lifetime.Singleton);//.Build(); //non-lazy
 
-        builder.Register<ScopedAddressableLoader>(Lifetime.Scoped);
+        builder.Register<AddressablesLoader>(Lifetime.Scoped).As<IScopedAddressablesLoader>();//is dispose called?
         //to inject dependencies, it should be Scoped with static instances
-        builder.Register<GlobalAddressableLoader>(Lifetime.Scoped);
+        builder.Register<GlobalAddressablesLoader>(Lifetime.Scoped).As<IGlobalAddressablesLoader>();//is dispose called?
+        // builder.Register<GlobalAddressablesLoader>(Lifetime.Scoped);
+        builder.Register<AddressablesCache>(Lifetime.Scoped);
 
         var rootToken = new RootCancellationToken(this.GetCancellationTokenOnDestroy());
         builder.RegisterInstance(rootToken);

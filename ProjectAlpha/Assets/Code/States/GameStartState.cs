@@ -12,18 +12,18 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
     private readonly PlatformSpawner _platformSpawner;
 
     private readonly StickSpawner _stickSpawner;
-    private readonly WidthGenerator _widthGenerator;
+    private readonly WidthGeneratorSpawner _widthGeneratorSpawner;
 
     public GameStartState(
         CameraController cameraController,
         PlatformSpawner platformSpawner,
         StickSpawner stickSpawner,
-        WidthGenerator widthGenerator)
+        WidthGeneratorSpawner widthGeneratorSpawner)
     {
         _cameraController = cameraController;
         _platformSpawner = platformSpawner;
         _stickSpawner = stickSpawner;
-        _widthGenerator = widthGenerator;
+        _widthGeneratorSpawner = widthGeneratorSpawner;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
@@ -59,14 +59,15 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         await hero.MoveAsync(destX);
     }
 
-    private UniTask<IPlatformController> CreateNextPlatformAsync(IPlatformController currentPlatform)
+    private async UniTask<IPlatformController> CreateNextPlatformAsync(IPlatformController currentPlatform)
     {
         float leftCameraBorderToPlatformDistance = currentPlatform.Borders.Left - _cameraController.Borders.Left;
         Vector2 position = new(
             _cameraController.Borders.Right + leftCameraBorderToPlatformDistance,
             currentPlatform.Borders.Top);
 
-        return _platformSpawner.CreatePlatformAsync(position, _widthGenerator.NextWidth(), Relative.Left);
+        WidthGenerator rrr = await _widthGeneratorSpawner.CreateAsync();
+        return await _platformSpawner.CreatePlatformAsync(position, rrr.NextWidth(), Relative.Left);
     }
 
     private static async UniTask MoveNextPlatformToRandomPoint(

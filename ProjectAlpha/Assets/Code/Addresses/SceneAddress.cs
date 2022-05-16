@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.AddressableAssets;
+using UnityEngine;
 
 namespace Code;
 
