@@ -92,5 +92,3 @@ public sealed class RootScope : LifetimeScope
         builder.RegisterEntryPoint<RootStart>();
     }
 }
-
-public record struct RootCancellationToken(CancellationToken Token);
