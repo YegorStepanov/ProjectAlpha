@@ -10,20 +10,17 @@ public sealed class BootstrapState : IState
     private readonly GameTriggers _gameTriggers;
     private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
-    private readonly StartSceneInformer _startSceneInformer;
 
     public BootstrapState(
         PlatformSpawner platformSpawner,
         HeroSpawner heroSpawner,
         CameraController cameraController,
-        GameTriggers gameTriggers,
-        StartSceneInformer startSceneInformer)
+        GameTriggers gameTriggers)
     {
         _platformSpawner = platformSpawner;
         _heroSpawner = heroSpawner;
         _cameraController = cameraController;
         _gameTriggers = gameTriggers;
-        _startSceneInformer = startSceneInformer;
     }
 
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
@@ -35,8 +32,7 @@ public sealed class BootstrapState : IState
 
         IHeroController hero = await _heroSpawner.CreateHeroAsync(menuPlatform.Position, Relative.Left);
 
-        if (!_startSceneInformer.IsGameStartScene)
-            await _gameTriggers.StartGameTrigger.OnClickAsync();
+        await _gameTriggers.StartGameClicked.OnClickAsync();
 
         await loadBackgroundTask;
 

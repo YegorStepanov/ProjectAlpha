@@ -14,7 +14,12 @@ public sealed class StartGameTrigger
 
     public async UniTask OnClickAsync()
     {
-        await UniTask.WaitWhile(() => _trigger == null);
+        if (StartupSceneInfo.IsStartedInGameStartScene)
+            return;
+        
+        if(_trigger == null)
+            await UniTask.WaitWhile(() => _trigger == null);
+      
         await _trigger.OnPointerClickAsync();
     }
 }

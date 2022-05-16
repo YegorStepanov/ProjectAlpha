@@ -1,7 +1,7 @@
 ﻿using System.Threading;
-using Code.Scopes;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Code.Services;
 
@@ -9,8 +9,8 @@ public sealed class InputManager
 {
     private readonly CancellationToken _token;
 
-    public InputManager(RootCancellationToken token) =>
-        _token = token.Token;
+    public InputManager(LifetimeScope scope) =>
+        _token = scope.transform.GetCancellationTokenOnDestroy();
 
     public async UniTask NextMouseClick() =>
         await UniTask.WaitUntil(() => Input.GetMouseButtonDown(0), cancellationToken: _token);
