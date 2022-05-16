@@ -87,11 +87,8 @@ public sealed class RootScope : LifetimeScope
         //to inject dependencies, it should be Scoped with static instances
         builder.Register<GlobalAddressablesLoader>(Lifetime.Scoped).As<IGlobalAddressablesLoader>();//is dispose called?
         // builder.Register<GlobalAddressablesLoader>(Lifetime.Scoped);
-        builder.Register<AddressablesCache>(Lifetime.Scoped);
+        builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
 
-        var rootToken = new RootCancellationToken(this.GetCancellationTokenOnDestroy());
-        builder.RegisterInstance(rootToken);
-        
         builder.RegisterEntryPoint<RootStart>();
     }
 }

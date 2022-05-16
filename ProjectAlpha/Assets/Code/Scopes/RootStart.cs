@@ -9,9 +9,9 @@ namespace Code.Scopes;
 
 public class RootStart : IAsyncStartable
 {
-    private readonly AddressablesCache _cache;
+    private readonly IAddressablesCache _cache;
 
-    public RootStart(AddressablesCache cache) =>
+    public RootStart(IAddressablesCache cache) =>
         _cache = cache;
 
     public async UniTask StartAsync(CancellationToken cancellation)
