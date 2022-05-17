@@ -14,8 +14,8 @@ public class AddressableAssetPool<T> : AsyncPool<T> where T : Object
         base(data.InitialSize, data.Capacity)
     {
         //IsAsignable ye?((
-        Assert.IsFalse(typeof(MonoBehaviour).IsAssignableFrom(typeof(T)), $"Use {nameof(AddressableComponentPool<Component>)} for GameObject");
-        Assert.IsFalse(typeof(Component).IsAssignableFrom(typeof(T)), $"Use {nameof(AddressableComponentPool<Component>)} for MonoBehaviour");
+        Assert.IsFalse(typeof(T).IsAssignableTo(typeof(MonoBehaviour)), $"Use {nameof(AddressableComponentPool<Component>)} for GameObject");
+        Assert.IsFalse(typeof(T).IsAssignableTo(typeof(Component)), $"Use {nameof(AddressableComponentPool<Component>)} for MonoBehaviour");
 
         _address = address;
         _loader = loader;

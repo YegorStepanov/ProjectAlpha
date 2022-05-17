@@ -1,9 +1,12 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using Code.AddressableAssets;
 using Code.VContainer;
 using UnityEngine;
+using UnityEngine.Assertions;
 using VContainer;
 using VContainer.Unity;
+using Object = UnityEngine.Object;
 
 namespace Code;
 
@@ -169,7 +172,7 @@ public static class VContainerExtensions
             .WithParameter(address)
             .WithParameter(data);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RegistrationBuilder RegisterScriptableObjectPool<T>(
         this IContainerBuilder builder,
@@ -185,6 +188,63 @@ public static class VContainerExtensions
             .WithParameter(new ParentName(containerName))
             .WithParameter(new InitialSize(initialSize))
             .WithParameter(new Capacity(size));
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RegistrationBuilder RegisterAsync<TImplement, T>(
+        this IContainerBuilder builder,
+        Address<T> address,
+        Lifetime lifetime)
+        where TImplement : class, IAsyncObject<T>
+        where T : Object
+    {
+        AssertAsyncTypeAndTypeParameter(typeof(TImplement), typeof(T));
+
+        return builder.Register<TImplement>(lifetime).WithParameter(address);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RegistrationBuilder RegisterAsync<TInterface, TImplement, T>(
+        this IContainerBuilder builder,
+        Address<T> address,
+        Lifetime lifetime)
+        where TInterface : class, IAsyncObject<T>
+        where TImplement : class, IAsyncObject<T>, TInterface
+        where T : Object
+    {
+        AssertAsyncTypeAndTypeParameter(typeof(TImplement), typeof(T));
+
+        return builder.Register<TInterface, TImplement>(lifetime).WithParameter(address);
+    }
+
+    private static void AssertAsyncTypeAndTypeParameter(Type asyncType, Type typeParameter)
+    {
+        bool isAsyncComponent = asyncType.IsAssignableToGenericType(typeof(AsyncComponent<>));
+        bool isAsyncAsset = asyncType.IsAssignableToGenericType(typeof(AsyncAsset<>));
+        bool isAsyncGameObject = asyncType.IsAssignableTo(typeof(AsyncGameObject));
+
+        bool isComponent = typeParameter.IsAssignableTo(typeof(Component));
+        bool isGameObject = typeParameter.IsAssignableTo(typeof(GameObject));
+
+        if (isAsyncComponent)
+        {
+            const string msg = "T must be a Component type to be used in AsyncComponent<T>";
+            Assert.IsTrue(isComponent, msg);
+            Assert.IsTrue(!isGameObject, msg);
+        }
+
+        if (isAsyncAsset)
+        {
+            Assert.IsTrue(!isComponent, "T cannot be a Component type to be used in AsyncAsset<T>");
+            Assert.IsTrue(!isGameObject, "T cannot be a GameObject type to be used in AsyncAsset<T>");
+        }
+
+        if (isAsyncGameObject)
+        {
+            const string msg = "T must be a GameObject type to be used in AsyncGameObject";
+            Assert.IsTrue(!isComponent, msg);
+            Assert.IsTrue(isGameObject, msg);
+        }
+    }
 }
 
 public record PoolData(int InitialSize, int Capacity)

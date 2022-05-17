@@ -22,35 +22,23 @@ public sealed class GameScope : LifetimeScope
         builder.RegisterEntryPoint<GameStart>();
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
-        
+
         //RegisterComponent = RegisterInstance + Resolve NonLazy?
     }
 
     private void RegisterWidthGenerator(IContainerBuilder builder)
     {
-        Address<WidthGenerator> platformAddress = new("Width Generator");
-
-        builder.RegisterAddressableAssetPool(platformAddress, 0, 1, Lifetime.Singleton)            
-            .AsImplementedInterfaces();   
-        
-        // builder.RegisterComponent(Instantiate(_widthGenerator));
-        
-        builder.Register                                                                                        
-            <IAsyncRecyclablePool<WidthGenerator>, RecyclablePool<WidthGenerator>>                      
-            (Lifetime.Singleton);          
+        builder.RegisterAsync<IAsyncObject<WidthGenerator>, AsyncAsset<WidthGenerator>, WidthGenerator>(
+            GameAddress.WidthGenerator, Lifetime.Singleton);
 
         builder.Register<WidthGeneratorSpawner>(Lifetime.Singleton);
     }
 
     private static void RegisterHeroSpawner(IContainerBuilder builder)
     {
-        builder.RegisterAddressablePool(GameAddress.Hero, "Heroes", 0, 1, Lifetime.Singleton)            
-            .AsImplementedInterfaces();                                                                         
-                                                                                                          
-        builder.Register                                                                                        
-            <IAsyncRecyclablePool<HeroController>, RecyclablePool<HeroController>>                      
-            (Lifetime.Singleton);                                                                               
-                                                                                                          
+        builder.RegisterAsync<IAsyncObject<HeroController>, AsyncComponent<HeroController>, HeroController>(
+            GameAddress.Hero, Lifetime.Singleton);
+
         builder.Register<HeroSpawner>(Lifetime.Singleton);
     }
 
@@ -62,7 +50,7 @@ public sealed class GameScope : LifetimeScope
         builder.Register
             <IAsyncRecyclablePool<PlatformController>, RecyclablePool<PlatformController>>
             (Lifetime.Singleton);
-        
+
         builder.Register<PlatformSpawner>(Lifetime.Singleton);
     }
 
@@ -74,7 +62,7 @@ public sealed class GameScope : LifetimeScope
         builder.Register
             <IAsyncRecyclablePool<StickController>, RecyclablePool<StickController>>
             (Lifetime.Singleton);
-        
+
         builder.Register<StickSpawner>(Lifetime.Singleton);
     }
 }
