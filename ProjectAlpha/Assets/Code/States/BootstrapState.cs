@@ -39,15 +39,7 @@ public sealed class BootstrapState : IState
         stateMachine.Enter<GameStartState, GameStartState.Arguments>(
             new GameStartState.Arguments(menuPlatform, hero));
 
-        //set background randomly
         //set idle animation
-
-        // hero = Object.Instantiate(heroPrefab, t1.position, Quaternion.identity);
-        // Vector2 worldSize = SpriteHelper.WorldSpriteSize(hero.GetChild(0).GetComponent<SpriteRenderer>().sprite, hero.lossyScale);
-        //
-        // Vector3 pos = hero.position;
-        // pos.x += worldSize.x / 2f;
-        // hero.position = pos;
     }
 
     public void Exit() { }
