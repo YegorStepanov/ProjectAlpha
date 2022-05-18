@@ -11,9 +11,12 @@ namespace Code.Services;
 public sealed class HeroController : MonoBehaviour, IHeroController
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private HeroAnimator _animator;
 
     private Settings _settings;
     private CancellationToken _token;
+
+    private IStickController _stick;
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
@@ -26,11 +29,17 @@ public sealed class HeroController : MonoBehaviour, IHeroController
     private void Awake() =>
         _token = this.GetCancellationTokenOnDestroy();
 
-    public async UniTask MoveAsync(float destinationX) =>
+    public async UniTask MoveAsync(float destinationX)
+    {
+        _animator.PlayMove();
+
         await transform.DOMoveX(destinationX, _settings.MovementSpeed)
             .SetEase(Ease.Linear)
             .SetSpeedBased()
             .WithCancellation(_token);
+
+        _animator.PlayStay();
+    }
 
     public async UniTask FellAsync() =>
         await transform.DOMoveY(_settings.FallingDestination, _settings.FallingSpeed)
@@ -40,6 +49,9 @@ public sealed class HeroController : MonoBehaviour, IHeroController
 
     public void TeleportTo(Vector2 destination, Relative relative) =>
         transform.position = Borders.TransformPoint(destination, relative);
+
+    public UniTask KickAsync() =>
+        _animator.PlayKickAsync();
 
     [Serializable]
     public class Settings

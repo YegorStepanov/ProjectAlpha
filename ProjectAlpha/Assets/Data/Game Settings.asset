@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Game Settings
   m_EditorClassIdentifier: 
   _hero:
-    HandOffset: 0.25
+    HandOffset: 0.05
     MovementSpeed: 5
     FallingSpeed: 30
     FallingDestination: -10
@@ -22,7 +22,7 @@ MonoBehaviour:
   _stick:
     IncreaseSpeed: 25
     RotationDestination: {x: 0, y: 0, z: -90}
-    RotationTime: 0.4
-    RotationDelay: 0.3
+    RotationTime: 0.3
+    RotationDelay: 0
   _stickSpawner:
     StickWidth: 0.04

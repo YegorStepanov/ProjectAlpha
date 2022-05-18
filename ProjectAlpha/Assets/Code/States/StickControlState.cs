@@ -29,6 +29,8 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
         await _inputManager.NextMouseRelease();
         stick.StopIncreasing();
 
+        await args.Hero.KickAsync();
+
         await stick.RotateAsync();
 
         stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
