@@ -22,7 +22,7 @@ MonoBehaviour:
   _stick:
     IncreaseSpeed: 25
     RotationDestination: {x: 0, y: 0, z: -90}
-    RotationTime: 0.4
+    RotationTime: 0.35
     RotationDelay: 0
   _stickSpawner:
     StickWidth: 0.04
