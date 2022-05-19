@@ -2,34 +2,16 @@
 
 namespace Code.Services;
 
-[CreateAssetMenu(menuName = "SO/Percentage Width Generator")]
-public sealed class PercentageWidthGenerator : WidthGenerator //todo: split to 2 classes
+public sealed class PercentageWidthGenerator : IWidthGenerator
 {
-    [SerializeField, Min(0f)]
-    private float _minWidth = 0.25f;
+    private readonly PercentageWidthGeneratorData _data;
 
-    [SerializeField]
-    private float _maxWidth = 2f;
+    private Ratio _currentRatio = new(1f, 1f);
 
-    [SerializeField, Range(0, 1)]
-    private float _reductionRatioPerStep = 0.1f;
+    public PercentageWidthGenerator(PercentageWidthGeneratorData data) =>
+        _data = data;
 
-    [SerializeField, Min(0f)]
-    private float _minThreshold = 0.25f;
-
-    [SerializeField, Min(0f)]
-    private float _maxThreshold = 2f;
-
-    private Ratio _currentRatio;
-
-    //Don't forget: when Domain Reload is disabled, SO events are not called and these instances are not reset 
-    private void Awake() =>
-        Reset();
-
-    public override void Reset() =>
-        _currentRatio = new Ratio(1f, 1f);
-
-    public override float NextWidth()
+    public float NextWidth()
     {
         float width = NextWidth(_currentRatio);
         width = LimitByThreshold(width);
@@ -38,15 +20,15 @@ public sealed class PercentageWidthGenerator : WidthGenerator //todo: split to 2
     }
 
     private float NextWidth(Ratio ratio) =>
-        Random.Range(_minWidth * ratio.Min, _maxWidth * ratio.Max);
+        Random.Range(_data.MinWidth * ratio.Min, _data.MaxWidth * ratio.Max);
 
     private Ratio NextRatio(Ratio ratio) =>
-        ratio * (1f - _reductionRatioPerStep);
+        ratio * (1f - _data.ReductionRatioPerStep);
 
     private float LimitByThreshold(float width)
     {
-        if (width < _minThreshold) return _minThreshold;
-        if (width > _maxThreshold) return _maxThreshold;
+        if (width < _data.MinThreshold) return _data.MinThreshold;
+        if (width > _data.MaxThreshold) return _data.MaxThreshold;
         return width;
     }
 }

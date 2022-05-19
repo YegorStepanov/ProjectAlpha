@@ -5,15 +5,14 @@ namespace Code.Services;
 
 public sealed class WidthGeneratorSpawner
 {
-    private readonly IAsyncObject<WidthGenerator> _widthGenerator;
+    private readonly IAsyncObject<WidthGeneratorData> _widthGenerator;
 
-    public WidthGeneratorSpawner(IAsyncObject<WidthGenerator> widthGenerator) =>
+    public WidthGeneratorSpawner(IAsyncObject<WidthGeneratorData> widthGenerator) =>
         _widthGenerator = widthGenerator;
 
-    public async UniTask<WidthGenerator> CreateAsync()
+    public async UniTask<IWidthGenerator> GetAsync()
     {
-        WidthGenerator stick = await _widthGenerator.GetAssetAsync();
-        stick.Reset();
-        return stick;
+        WidthGeneratorData stick = await _widthGenerator.GetAssetAsync();
+        return stick.Create(); //todo: cache it
     }
 }
