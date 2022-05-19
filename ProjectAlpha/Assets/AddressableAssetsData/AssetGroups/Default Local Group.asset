@@ -21,26 +21,32 @@ MonoBehaviour:
     m_Address: old_Shop Panel
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7592d5cb0eaa83d4a85c118776fae846
     m_Address: Assets/Prefabs/Zen/Main Camera.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 703c86cca18f2aa4fa0679d57334e2b6
     m_Address: old_Hero Selector Panel
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b246c956afb460648870811b484710f5
     m_Address: old_Main Menu
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b46ffd07204d6c64e9ca1c1187026450
     m_Address: Background Canvas
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9d4d0dd7c4daad44ca5c36edbf526db1
     m_Address: Width Generator
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0f4399c1e47a2f541b59e585801a7440, type: 2}
   m_SchemaSet:
