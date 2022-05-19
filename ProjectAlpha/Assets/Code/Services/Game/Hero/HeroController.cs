@@ -48,7 +48,7 @@ public sealed class HeroController : MonoBehaviour, IHeroController
             .WithCancellation(_token);
 
     public void TeleportTo(Vector2 destination, Relative relative) =>
-        transform.position = Borders.TransformPoint(destination, relative);
+        transform.position = Borders.GetRelativePoint(destination, relative);
 
     public UniTask KickAsync() =>
         _animator.PlayKickAsync();

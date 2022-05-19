@@ -19,12 +19,12 @@ public sealed class PlatformSpawner
     {
         PlatformController platform = await _pool.SpawnAsync();
         
-        float height = _cameraController.Borders.TransformPointY(position.y, Relative.Bottom);
+        float height = _cameraController.Borders.GetRelativePointY(position.y, Relative.Bottom);
 
         Vector2 size = new(width, height);
         platform.SetSize(size);
 
-        position = platform.Borders.TransformPoint(position, relative);
+        position = platform.Borders.GetRelativePoint(position, relative);
         platform.SetPosition(position);
 
         return platform;

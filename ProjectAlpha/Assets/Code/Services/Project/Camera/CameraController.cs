@@ -52,7 +52,7 @@ public sealed class CameraController : MonoBehaviour, IDisposable
 
     public async UniTask MoveAsync(float destinationX, Relative relative = Relative.Center)
     {
-        float finalX = Borders.TransformPointX(destinationX, relative);
+        float finalX = Borders.GetRelativePointX(destinationX, relative);
         await MoveAsync(CameraPosition.WithX(finalX));
     }
 
@@ -63,7 +63,7 @@ public sealed class CameraController : MonoBehaviour, IDisposable
     }
 
     public Vector2 GetRelativePosition(Vector2 position, Relative relative) =>
-        Borders.TransformPoint(position, relative);
+        Borders.GetRelativePoint(position, relative);
 
     private async UniTask MoveAsync(Vector3 destination) =>
         await _baseCamera.transform.DOMove(destination, 7f).SetSpeedBased();

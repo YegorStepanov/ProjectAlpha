@@ -46,7 +46,7 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
             .WithCancellation(_token);
 
     public Vector2 GetRelativePosition(Vector2 position, Relative relative) =>
-        Borders.TransformPoint(position, relative);
+        Borders.GetRelativePoint(position, relative);
 
     [Serializable]
     public class Settings
