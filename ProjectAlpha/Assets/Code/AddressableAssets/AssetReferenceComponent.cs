@@ -27,4 +27,7 @@ public class AssetReferenceComponent<T> : AssetReferenceGameObject where T : Com
             return false;
 #endif
     }
+    
+    public static implicit operator Address<T>(AssetReferenceComponent<T> reference) => 
+        new((string)reference.RuntimeKey);
 }
