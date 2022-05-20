@@ -2,5 +2,5 @@
 
 public interface IWidthGenerator
 {
-    public abstract float NextWidth();
+    float NextWidth();
 }

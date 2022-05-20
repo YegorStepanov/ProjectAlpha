@@ -33,10 +33,9 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         await UniTask.Delay(100);
         UniTask moveCameraTask = MoveCameraAsync(args.CurrentPlatform);
 
-        IPlatformController nextPlatform = await CreateNextPlatformAsync(args.CurrentPlatform);
-        UniTask movePlatformTask = MoveNextPlatformToRandomPoint(args.CurrentPlatform, nextPlatform);
+        IPlatformController nextPlatform = await _platformSpawner.CreateAndMoveNextPlatformAsync(args.CurrentPlatform);
 
-        await (moveCameraTask, movePlatformTask);
+        await moveCameraTask;
 
         stateMachine.Enter<StickControlState, StickControlState.Arguments>(
             new StickControlState.Arguments(args.CurrentPlatform, nextPlatform, args.Hero));
@@ -57,32 +56,6 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         destX -= hero.HandOffset;
         await UniTask.Delay(200);
         await hero.MoveAsync(destX);
-    }
-
-    private async UniTask<IPlatformController> CreateNextPlatformAsync(IPlatformController currentPlatform)
-    {
-        float leftCameraBorderToPlatformDistance = currentPlatform.Borders.Left - _cameraController.Borders.Left;
-        Vector2 position = new(
-            _cameraController.Borders.Right + leftCameraBorderToPlatformDistance,
-            currentPlatform.Borders.Top);
-
-        WidthGenerator rrr = await _widthGeneratorSpawner.CreateAsync();
-        return await _platformSpawner.CreatePlatformAsync(position, rrr.NextWidth(), Relative.Left);
-    }
-
-    private static async UniTask MoveNextPlatformToRandomPoint(
-        IPlatformController currentPlatform,
-        IPlatformController nextPlatform)
-    {
-        float halfWidth = nextPlatform.Borders.Width / 2f;
-        const float minDistance = 0.5f; //minOffset
-        float posX = Random.Range(currentPlatform.Borders.Right + halfWidth + minDistance,
-            nextPlatform.Borders.Left - halfWidth);
-
-        int randDelay = Random.Range(0, 300); //ms
-        await UniTask.Delay(randDelay);
-
-        await nextPlatform.MoveAsync(posX);
     }
 }
 

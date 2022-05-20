@@ -26,3 +26,6 @@ MonoBehaviour:
     RotationDelay: 0
   _stickSpawner:
     StickWidth: 0.04
+  _platformSpawner:
+    viewportMenuPlatformPosition: {x: 0.5, y: 0.2}
+    MenuPlatformWidth: 2

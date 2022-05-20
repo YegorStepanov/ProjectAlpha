@@ -1,6 +1,5 @@
 ﻿using Code.Services;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace Code.States;
 
@@ -27,8 +26,7 @@ public sealed class BootstrapState : IState
     {
         UniTask loadBackgroundTask = _cameraController.ChangeBackgroundAsync();
 
-        Vector2 platformPosition = _cameraController.ViewportToWorldPosition(new Vector2(0.5f, 0.2f));
-        IPlatformController menuPlatform = await _platformSpawner.CreatePlatformAsync(platformPosition, 2f, Relative.Center);
+        IPlatformController menuPlatform = await _platformSpawner.CreateMenuPlatformAsync();
 
         IHeroController hero = await _heroSpawner.CreateHeroAsync(menuPlatform.Position, Relative.Left);
 

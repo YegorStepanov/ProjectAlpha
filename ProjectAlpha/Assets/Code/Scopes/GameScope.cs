@@ -32,6 +32,11 @@ public sealed class GameScope : LifetimeScope
             DataAddress.WidthGenerator, Lifetime.Singleton);
 
         builder.Register<WidthGeneratorSpawner>(Lifetime.Singleton);
+        
+        builder.RegisterAsync<IAsyncObject<PositionGeneratorData>, AsyncAsset<PositionGeneratorData>, PositionGeneratorData>(
+            DataAddress.PositionGenerator, Lifetime.Singleton);
+
+        builder.Register<PositionGeneratorSpawner>(Lifetime.Singleton);
     }
 
     private static void RegisterHeroSpawner(IContainerBuilder builder)
