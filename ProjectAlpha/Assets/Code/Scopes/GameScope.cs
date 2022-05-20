@@ -29,7 +29,7 @@ public sealed class GameScope : LifetimeScope
     private void RegisterWidthGenerator(IContainerBuilder builder)
     {
         builder.RegisterAsync<IAsyncObject<WidthGeneratorData>, AsyncAsset<WidthGeneratorData>, WidthGeneratorData>(
-            GameAddress.WidthGenerator, Lifetime.Singleton);
+            DataAddress.WidthGenerator, Lifetime.Singleton);
 
         builder.Register<WidthGeneratorSpawner>(Lifetime.Singleton);
     }
