@@ -42,8 +42,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9d4d0dd7c4daad44ca5c36edbf526db1
+  - m_GUID: 69de5ab077db35d458c1786c5826fd40
+    m_Address: Width Generator (Game)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a38e6610dbc16a5439540d0618443f39
     m_Address: Width Generator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 09fb25e50def73b4f8866831b382bfde
+    m_Address: Position Generator
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
