@@ -26,9 +26,10 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
     private void Awake() =>
         _token = this.GetCancellationTokenOnDestroy();
 
-    public void SetPosition(Vector2 position)
+    public void SetPosition(Vector2 position, Relative relative = Relative.Center)
     {
-        transform.position = position;
+        Vector2 pos = Borders.GetRelativePoint(position, relative);
+        transform.position = pos;
     }
 
     public void SetSize(Vector2 scale)
