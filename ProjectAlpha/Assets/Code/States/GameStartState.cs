@@ -12,18 +12,18 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
     private readonly PlatformSpawner _platformSpawner;
 
     private readonly StickSpawner _stickSpawner;
-    private readonly WidthGeneratorSpawner _widthGeneratorSpawner;
+    private readonly IWidthGenerator _widthGenerator;
 
     public GameStartState(
         CameraController cameraController,
         PlatformSpawner platformSpawner,
         StickSpawner stickSpawner,
-        WidthGeneratorSpawner widthGeneratorSpawner)
+        IWidthGenerator widthGenerator)
     {
         _cameraController = cameraController;
         _platformSpawner = platformSpawner;
         _stickSpawner = stickSpawner;
-        _widthGeneratorSpawner = widthGeneratorSpawner;
+        _widthGenerator = widthGenerator;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)

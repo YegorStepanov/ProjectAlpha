@@ -1,5 +1,4 @@
-﻿using Code.AddressableAssets;
-using Code.Services;
+﻿using Code.Services;
 using Code.VContainer;
 using Cysharp.Threading.Tasks;
 using VContainer;
@@ -17,36 +16,21 @@ public sealed class GameScope : LifetimeScope
 
         builder.Register<GameStateMachine>(Lifetime.Singleton);
 
-        RegisterWidthGenerator(builder);
-
         builder.RegisterEntryPoint<GameStart>();
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
 
         //RegisterComponent = RegisterInstance + Resolve NonLazy?
     }
-
-    private void RegisterWidthGenerator(IContainerBuilder builder)
-    {
-        builder.RegisterAsync<IAsyncObject<WidthGeneratorData>, AsyncAsset<WidthGeneratorData>, WidthGeneratorData>(
-            DataAddress.WidthGenerator, Lifetime.Singleton);
-
-        builder.Register<WidthGeneratorSpawner>(Lifetime.Singleton);
-        
-        builder.RegisterAsync<IAsyncObject<PositionGeneratorData>, AsyncAsset<PositionGeneratorData>, PositionGeneratorData>(
-            DataAddress.PositionGenerator, Lifetime.Singleton);
-
-        builder.Register<PositionGeneratorSpawner>(Lifetime.Singleton);
-    }
-
+    
     private static void RegisterHeroSpawner(IContainerBuilder builder)
     {
-        builder.RegisterAsync<IAsyncObject<HeroController>, AsyncComponent<HeroController>, HeroController>(
-            GameAddress.Hero, Lifetime.Singleton);
+        // builder.RegisterAsync<IAsyncObject<HeroController>, AsyncComponent<HeroController>, HeroController>(
+        //     GameAddress.Hero, Lifetime.Singleton);
 
         builder.Register<HeroSpawner>(Lifetime.Singleton);
     }
-
+    
     private static void RegisterPlatformSpawner(IContainerBuilder builder)
     {
         builder.RegisterAddressablePool(GameAddress.Platform, "Platforms", 0, 3, Lifetime.Singleton)

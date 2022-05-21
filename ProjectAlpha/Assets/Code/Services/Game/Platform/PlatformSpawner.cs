@@ -10,18 +10,18 @@ public sealed class PlatformSpawner
     private readonly IAsyncRecyclablePool<PlatformController> _pool;
     private readonly CameraController _cameraController;
     private readonly Settings _settings;
-    private readonly WidthGeneratorSpawner _widthGeneratorSpawner;
-    private readonly PositionGeneratorSpawner _positionGeneratorSpawner;
+    private readonly IWidthGenerator _widthGenerator;
+    private readonly IPositionGenerator _positionGenerator;
 
     public PlatformSpawner(IAsyncRecyclablePool<PlatformController> pool, CameraController cameraController,
-        Settings settings, WidthGeneratorSpawner widthGeneratorSpawner,
-        PositionGeneratorSpawner positionGeneratorSpawner)
+        Settings settings, IWidthGenerator widthGenerator,
+        IPositionGenerator positionGenerator)
     {
         _pool = pool;
         _cameraController = cameraController;
         _settings = settings;
-        _widthGeneratorSpawner = widthGeneratorSpawner;
-        _positionGeneratorSpawner = positionGeneratorSpawner;
+        _widthGenerator = widthGenerator;
+        _positionGenerator = positionGenerator;
     }
 
     public async UniTask<IPlatformController> CreateMenuPlatformAsync()
@@ -45,7 +45,7 @@ public sealed class PlatformSpawner
 
     public async UniTask<IPlatformController> CreateAndMoveNextPlatformAsync(IPlatformController currentPlatform)
     {
-        float width = (await _widthGeneratorSpawner.GetAsync()).NextWidth();
+        float width = _widthGenerator.NextWidth();
 
         IPlatformController nextPlatform = await CreateNextPlatformAsync(currentPlatform, width);
         await MoveNextPlatformToRandomPoint(currentPlatform, nextPlatform);
@@ -67,10 +67,7 @@ public sealed class PlatformSpawner
         IPlatformController currentPlatform,
         IPlatformController nextPlatform)
     {
-        IPositionGenerator d = await _positionGeneratorSpawner.GetAsync();
-
-        Debug.Log(d.GetType());
-        float newPos = d.NextPosition(currentPlatform, nextPlatform);
+        float newPos = _positionGenerator.NextPosition(currentPlatform, nextPlatform);
         await nextPlatform.MoveAsync(newPos);
         Debug.Log("Current: " + nextPlatform.Position);
         // await UniTask.Delay(300); do not use random here

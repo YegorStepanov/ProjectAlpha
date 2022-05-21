@@ -54,7 +54,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
         _instanceToPrefab[instance] = prefab;
         return instance;
     }
-
+    
     public async UniTask<T> LoadAssetAsync<T>(Address<T> address) where T : Object
     {
         if (typeof(T).IsAssignableTo(typeof(Component)))
