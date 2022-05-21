@@ -10,8 +10,6 @@ public static class SceneAddress
     public static readonly Address<Scene> Menu = new("Menu");
     public static readonly Address<Scene> Game = new("Game");
     public static readonly Address<Scene> MiniGame = new("MiniGame");
-    
-    public static readonly Address<Scene> Bootstrapper = new("Bootstrap1");
 }
 
 public sealed class Scene : Object { }

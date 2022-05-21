@@ -1,13 +1,25 @@
-﻿using System;
-using Code.AddressableAssets;
+﻿using Code.AddressableAssets;
+using Code.Game;
 using Code.Services;
+using Sirenix.OdinInspector;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace Code.Scopes;
 
+//todo: create issue "No reference checker when CodeGen is enabled"
 public sealed class RootScope : LifetimeScope
 {
+    [Required, AssetsOnly, SerializeField]
+    private CameraController _cameraController;
+
+    [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(GameSettings))]
+    private GameSettings _gameSettings;
+
+    [Required, SerializeField]
+    private GameObject _graphy;
+
     // todo:
     // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
     // public static void InitUniTaskLoop()
@@ -22,14 +34,6 @@ public sealed class RootScope : LifetimeScope
     //     base.Awake();
     //     
     // }
-
-    public static Action<IContainerBuilder> Preload11111(
-        IPositionGenerator positionGenerator,
-        IWidthGenerator widthGenerator) => builder =>
-    {
-        builder.RegisterInstance(positionGenerator);
-        builder.RegisterInstance(widthGenerator);
-    };
 
     protected override async void Configure(IContainerBuilder builder)
     {
@@ -63,6 +67,13 @@ public sealed class RootScope : LifetimeScope
         //to Event Viewer works correct, simply
 
         //refactor it
+        Instantiate(_graphy);
+
+        _gameSettings.RegisterAllSettings(builder);
+
+        //        Container.Bind<AddressableFactory>().AsSingle().WithArguments(transform);
+
+        builder.RegisterComponentInNewPrefab(_cameraController, Lifetime.Singleton); //GOname? nonlazy?
 
         builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
         builder.Register<GameTriggers>(Lifetime.Singleton);
@@ -73,6 +84,6 @@ public sealed class RootScope : LifetimeScope
         // to inject dependencies, it should be Scoped with static instances
         builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);
 
-        builder.RegisterEntryPoint<RootStart>(); //mb move it to Project scope?
+        builder.RegisterEntryPoint<RootStart>();
     }
 }

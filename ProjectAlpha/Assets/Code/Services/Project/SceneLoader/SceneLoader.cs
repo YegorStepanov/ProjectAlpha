@@ -47,7 +47,6 @@ public sealed class SceneLoader : ISceneLoader
 
         using (LifetimeScope.EnqueueParent(parentScope))
         {
-            // LifetimeScope.Enqueue()
             await LoadSceneCore();
         }
 
@@ -70,13 +69,12 @@ public sealed class SceneLoader : ISceneLoader
         else
         {
             //todo: find a better solution
-            await SceneManager.UnloadSceneAsync(_startupSceneName).WithCancellation(token);
+            await SceneManager.UnloadSceneAsync(_startupSceneName);
         }
     }
 
     private static Address<Scene> GetAddress<TScene>() where TScene : struct, IScene => typeof(TScene) switch
     {
-        Type t when t == typeof(Bootstrapper) => SceneAddress.Bootstrapper,
         Type t when t == typeof(BootstrapScene) => SceneAddress.Bootstrap,
         Type t when t == typeof(MenuScene) => SceneAddress.Menu,
         Type t when t == typeof(GameScene) => SceneAddress.Game,
@@ -89,11 +87,8 @@ public interface IScene { }
 
 public struct BootstrapScene : IScene { }
 
-public struct ProjectScene : IScene { }
-
 public struct MenuScene : IScene { }
 
 public readonly record struct GameScene : IScene { }
 
 public struct MiniGameScene : IScene { }
-
