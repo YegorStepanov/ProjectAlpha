@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
@@ -20,50 +19,36 @@ public sealed class SceneLoader : ISceneLoader
     public SceneLoader() =>
         _startupSceneName = SceneManager.GetActiveScene().name;
 
-    public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene =>
-        LoadAsync<TScene>(null, token);
+    public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
+    {
+        return LoadCoreAsync(Address<TScene>(), token);
+    }
 
-    // Do not load scene concurrently
     public async UniTask LoadAsync<TScene>(LifetimeScope parentScope, CancellationToken token)
         where TScene : struct, IScene
     {
-        Address<Scene> address = GetAddress<TScene>();
-        await LoadAsync(address, parentScope, token);
+        using (LifetimeScope.EnqueueParent(parentScope))
+            await LoadCoreAsync(Address<TScene>(), token);
     }
 
     public UniTask UnloadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
     {
-        Address<Scene> address = GetAddress<TScene>();
-        return UnloadAsync(address, token);
+        return UnloadCoreAsync(Address<TScene>(), token);
     }
 
-    private async UniTask LoadAsync(Address<Scene> sceneAddress, LifetimeScope parentScope, CancellationToken token)
+    private async UniTask LoadCoreAsync(Address<Scene> address, CancellationToken token)
     {
-        if (parentScope == null)
-        {
-            await LoadSceneCore();
-            return;
-        }
+        SceneInstance scene = await Addressables.LoadSceneAsync(address.Key, LoadSceneMode.Additive)
+            .WithCancellation(token);
 
-        using (LifetimeScope.EnqueueParent(parentScope))
-        {
-            await LoadSceneCore();
-        }
-
-        async Task LoadSceneCore()
-        {
-            SceneInstance scene = await Addressables.LoadSceneAsync(sceneAddress.Key, LoadSceneMode.Additive)
-                .WithCancellation(token);
-
-            _scenes.Add(sceneAddress, scene);
-        }
+        _scenes.Add(address, scene);
     }
 
-    private async UniTask UnloadAsync(Address<Scene> sceneAddress, CancellationToken token)
+    private async UniTask UnloadCoreAsync(Address<Scene> address, CancellationToken token)
     {
-        if (_scenes.TryGetValue(sceneAddress, out SceneInstance scene))
+        if (_scenes.TryGetValue(address, out SceneInstance scene))
         {
-            _scenes.Remove(sceneAddress);
+            _scenes.Remove(address);
             await Addressables.UnloadSceneAsync(scene).WithCancellation(token);
         }
         else
@@ -73,7 +58,7 @@ public sealed class SceneLoader : ISceneLoader
         }
     }
 
-    private static Address<Scene> GetAddress<TScene>() where TScene : struct, IScene => typeof(TScene) switch
+    private static Address<Scene> Address<TScene>() where TScene : struct, IScene => typeof(TScene) switch
     {
         Type t when t == typeof(BootstrapScene) => SceneAddress.Bootstrap,
         Type t when t == typeof(MenuScene) => SceneAddress.Menu,

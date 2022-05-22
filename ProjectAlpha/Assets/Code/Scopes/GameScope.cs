@@ -23,7 +23,7 @@ public sealed class GameScope : Scope
 
         _heroController = await loader.LoadAssetAsync(GameAddress.Hero);
     }
-    
+
     protected override void Configure(IContainerBuilder builder)
     {
         RegisterPlatformSpawner(builder);
@@ -31,10 +31,9 @@ public sealed class GameScope : Scope
 
         builder.Register<GameStateMachine>(Lifetime.Singleton);
 
-        //some of them should be prefabs
         builder.RegisterInstance(_widthGenerator);
         builder.RegisterInstance(_positionGenerator);
-        builder.RegisterComponentInNewPrefab(_heroController, Lifetime.Singleton);
+        builder.RegisterComponent(this.InstantiateInScene(_heroController));
 
         builder.Register<HeroSpawner>(Lifetime.Singleton);
 
@@ -44,7 +43,7 @@ public sealed class GameScope : Scope
 
         //RegisterComponent = RegisterInstance + Resolve NonLazy?
     }
-    
+
     private static void RegisterPlatformSpawner(IContainerBuilder builder)
     {
         builder.RegisterAddressablePool(GameAddress.Platform, "Platforms", 0, 3, Lifetime.Singleton)

@@ -41,7 +41,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
         
         GameObject prefab = await LoadAssetTAsync(address.As<GameObject>());
 
-        GameObject instance = _scope.Instantiate(prefab, address, under);
+        GameObject instance = _scope.InstantiateInScene(prefab, address, under);
         _instanceToPrefab[instance] = prefab;
         
         if (IsComponent<T>())
