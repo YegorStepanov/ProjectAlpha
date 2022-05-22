@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Code.AddressableAssets;
+using Code.Services;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine.AddressableAssets;
@@ -11,8 +12,11 @@ public class RootStart : IAsyncStartable
 {
     private readonly IAddressablesCache _cache;
 
-    public RootStart(IAddressablesCache cache) =>
+    public RootStart(IAddressablesCache cache, CameraController camera)
+    {
         _cache = cache;
+        _ = camera; //aka camera.NonLazy()
+    }
 
     public async UniTask StartAsync(CancellationToken cancellation)
     {
