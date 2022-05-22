@@ -2,6 +2,7 @@
 using System.Reflection;
 using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine.Assertions;
 using VContainer.Unity;
 
@@ -11,14 +12,24 @@ public abstract class Scope : LifetimeScope
 {
     private AddressablesLoader _loader;
 
-    private new async UniTaskVoid Awake()
+    [UsedImplicitly]
+    private new async UniTask Awake()
     {
         AssertAutoRunIsDisabled();
-        base.Awake();
 
+        if (VContainerSettings.Instance.RootLifetimeScope is Scope { Container: null } rootScope)
+        {
+            await rootScope.PreloadAndBuildAsync();
+        }
+
+        base.Awake();
+        await PreloadAndBuildAsync();
+    }
+
+    private async UniTask PreloadAndBuildAsync()
+    {
         _loader = new AddressablesLoader(this);
         await PreloadAsync(_loader);
-
         Build();
     }
 
@@ -26,9 +37,8 @@ public abstract class Scope : LifetimeScope
     {
         _loader.Dispose();
         base.OnDestroy();
-        _loader.Dispose();
     }
-    
+
     protected abstract UniTask PreloadAsync(IAddressablesLoader loader);
 
     private void AssertAutoRunIsDisabled()
@@ -40,6 +50,6 @@ public abstract class Scope : LifetimeScope
     private static object GetPrivateInstanceField(Type type, object instance, string fieldName)
     {
         FieldInfo field = type.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-        return field.GetValue(instance);
+        return field!.GetValue(instance);
     }
 }
