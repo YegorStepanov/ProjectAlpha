@@ -35,7 +35,10 @@ public class AddressablesLoader : IScopedAddressablesLoader
     public async UniTask<T> InstantiateAsync<T>(Address<T> address, Transform under = null) where T : Object
     {
         if (IsAsset<T>())
-            throw new ArgumentException("<T> must be a Component or MonoBehaviour");
+        {
+            Debug.LogWarning("<T> must be a Component or MonoBehaviour, use LoadAssetAsync<T> instead");
+            return await LoadAssetAsync(address);
+        }
 
         if (_isDisposed) return null;
         
