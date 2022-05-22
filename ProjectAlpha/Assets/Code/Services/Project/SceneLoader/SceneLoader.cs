@@ -74,6 +74,6 @@ public struct BootstrapScene : IScene { }
 
 public struct MenuScene : IScene { }
 
-public readonly record struct GameScene : IScene { }
+public struct GameScene : IScene { }
 
 public struct MiniGameScene : IScene { }
