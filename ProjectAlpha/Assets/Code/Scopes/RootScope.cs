@@ -1,24 +1,19 @@
 ﻿using Code.AddressableAssets;
 using Code.Game;
 using Code.Services;
-using Sirenix.OdinInspector;
-using UnityEngine;
+using Cysharp.Threading.Tasks;
+using Tayx.Graphy;
 using VContainer;
 using VContainer.Unity;
 
 namespace Code.Scopes;
 
 //todo: create issue "No reference checker when CodeGen is enabled"
-public sealed class RootScope : LifetimeScope
+public sealed class RootScope : Scope
 {
-    [Required, AssetsOnly, SerializeField]
     private CameraController _cameraController;
-
-    [Required, SerializeField, AssetSelector(Filter = "t:" + nameof(GameSettings))]
     private GameSettings _gameSettings;
-
-    [Required, SerializeField]
-    private GameObject _graphy;
+    private GraphyManager _graphy;
 
     // todo:
     // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
@@ -35,17 +30,15 @@ public sealed class RootScope : LifetimeScope
     //     
     // }
 
-    protected override async void Configure(IContainerBuilder builder)
+    protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        // var q = await Addressables.LoadResourceLocationsAsync()
+        _cameraController = await loader.InstantiateAsync(RootAddress.CameraController);
+        _gameSettings = await loader.LoadAssetAsync(RootAddress.Settings);
+        _graphy = await loader.InstantiateAsync(RootAddress.Graphy);
+    }
 
-        //Addressables.InstantiateAsync() == Addressables.ReleaseInstance
-        //Addressables.LoadAsset() == Addressables.Release()
-
-        //asset bundles:
-        //AssetBundle.LoadFromFileAsync - local
-        //UnityWebRequest.GetAssetBundle - remote
-
+    protected override void Configure(IContainerBuilder builder)
+    {
         //when fail, erro contain usefull info:
         //https://docs.unity3d.com/Packages/com.unity.addressables@1.20/manual/LoadingAssetBundles.html
 
@@ -57,23 +50,9 @@ public sealed class RootScope : LifetimeScope
         //AsyncOperationHandle.GetDownloadStatus
         //Addressables.GetDownloadSizeAsync() == 0 if it cached
 
-        //if u don't need to access the result, set autoReleaseHandle to true:
-        //Addressables.DownloadDependenciesAsync("preload", true);
-
-        // Addressables.DownloadDependenciesAsync()
-
-        //how to check if it remote?
-
-        //to Event Viewer works correct, simply
-
-        //refactor it
-        Instantiate(_graphy);
-
+        builder.RegisterComponent(_cameraController);
+        builder.RegisterInstance(_graphy);
         _gameSettings.RegisterAllSettings(builder);
-
-        //        Container.Bind<AddressableFactory>().AsSingle().WithArguments(transform);
-
-        builder.RegisterComponentInNewPrefab(_cameraController, Lifetime.Singleton); //GOname? nonlazy?
 
         builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
         builder.Register<GameTriggers>(Lifetime.Singleton);

@@ -46,12 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentReference:
     TypeName: 
-  autoRun: 1
+  autoRun: 0
   autoInjectGameObjects: []
-  _cameraController: {fileID: 3622642699467653958, guid: 7592d5cb0eaa83d4a85c118776fae846,
-    type: 3}
-  _gameSettings: {fileID: 11400000, guid: b23838d16aa5f5741859bfeed0b40a4a, type: 2}
-  _graphy: {fileID: 6024950000428896382, guid: 48e401aae5bd81240a779bc1a23be347, type: 3}
 --- !u!114 &-909845970274656760
 MonoBehaviour:
   m_ObjectHideFlags: 0
