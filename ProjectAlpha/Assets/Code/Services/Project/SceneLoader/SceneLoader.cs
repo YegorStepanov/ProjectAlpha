@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Code.AddressableAssets;
+using Code.Scopes;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
@@ -15,9 +17,13 @@ public sealed class SceneLoader : ISceneLoader
     private readonly Dictionary<Address<Scene>, SceneInstance> _scenes = new();
 
     private readonly string _startupSceneName;
+    private readonly List<GameObject> _tempRootGameObjects;
 
-    public SceneLoader() =>
+    public SceneLoader()
+    {
         _startupSceneName = SceneManager.GetActiveScene().name;
+        _tempRootGameObjects = new List<GameObject>(32);
+    }
 
     public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
     {
@@ -42,6 +48,11 @@ public sealed class SceneLoader : ISceneLoader
             .WithCancellation(token);
 
         _scenes.Add(address, scene);
+
+        if (TryGetScope(scene, out Scope scope))
+            await scope.OnPreloadedAsync();
+        else
+            Debug.LogError("The first object in scene should be Scope");
     }
 
     private async UniTask UnloadCoreAsync(Address<Scene> address, CancellationToken token)
@@ -66,6 +77,14 @@ public sealed class SceneLoader : ISceneLoader
         Type t when t == typeof(MiniGameScene) => SceneAddress.MiniGame,
         _ => throw new ArgumentOutOfRangeException(typeof(TScene).FullName)
     };
+
+    private bool TryGetScope(SceneInstance scene, out Scope scope)
+    {
+        scene.Scene.GetRootGameObjects(_tempRootGameObjects);
+        GameObject first = _tempRootGameObjects[0];
+
+        return first.TryGetComponent(out scope);
+    }
 }
 
 public interface IScene { }

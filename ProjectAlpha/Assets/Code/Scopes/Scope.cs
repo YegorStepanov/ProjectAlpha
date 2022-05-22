@@ -12,6 +12,11 @@ public abstract class Scope : LifetimeScope
 {
     private AddressablesLoader _loader;
 
+    private bool _isPreloaded;
+
+    public UniTask OnPreloadedAsync() =>
+        UniTask.WaitWhile(() => _isPreloaded == false);
+
     [UsedImplicitly]
     private new async UniTask Awake()
     {
@@ -31,6 +36,7 @@ public abstract class Scope : LifetimeScope
         _loader = new AddressablesLoader(this);
         await PreloadAsync(_loader);
         Build();
+        _isPreloaded = true;
     }
 
     protected override void OnDestroy()
