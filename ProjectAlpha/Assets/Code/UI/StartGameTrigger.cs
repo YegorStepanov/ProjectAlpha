@@ -14,9 +14,9 @@ public sealed class StartGameTrigger : MonoBehaviour
     public void Construct(GameTriggers gameTriggers)
     {
         _gameTriggers = gameTriggers;
-        _gameTriggers.StartGameClicked.SetTrigger(this.GetAsyncPointerClickTrigger());
+        _gameTriggers.OnGameStarted.SetTrigger(this.GetAsyncPointerClickTrigger());
     }
 
     private void OnDestroy() =>
-        _gameTriggers.StartGameClicked.SetTrigger(null);
+        _gameTriggers.OnGameStarted.SetTrigger(null);
 }

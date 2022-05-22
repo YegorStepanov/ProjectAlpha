@@ -30,7 +30,7 @@ public sealed class BootstrapState : IState
 
         IHeroController hero = await _heroSpawner.CreateHeroAsync(menuPlatform.Position, Relative.Left);
 
-        await _gameTriggers.StartGameClicked.OnClickAsync();
+        await _gameTriggers.OnGameStarted.Await();
 
         await loadBackgroundTask;
 
