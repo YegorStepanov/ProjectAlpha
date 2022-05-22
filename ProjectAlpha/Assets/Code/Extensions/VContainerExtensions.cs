@@ -42,7 +42,7 @@ public static class VContainerExtensions
         if (name is not null)
             instance.name = name;
 
-        scope.Container.InjectGameObject(instance);
+        scope.Container?.InjectGameObject(instance);
         return instance;
     }
 

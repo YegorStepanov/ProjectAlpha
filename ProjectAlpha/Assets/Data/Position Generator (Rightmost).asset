@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a957652db09a4110856d38ced908e32d, type: 3}
   m_Name: Position Generator (Rightmost)
   m_EditorClassIdentifier: 
-  LeftPlatformOffsetX: 0.5
+  RightOffset: 0.5

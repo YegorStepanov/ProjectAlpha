@@ -1,14 +1,19 @@
-﻿using Code.Services;
+﻿using Code.AddressableAssets;
+using Code.Services;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace Code.Scopes;
 
-public sealed class MenuScope : LifetimeScope
+public sealed class MenuScope : Scope
 {
-    [SerializeField] private MenuMediator _menu;
+    private MenuMediator _menu;
+
+    protected override async UniTask PreloadAsync(IAddressablesLoader loader)
+    {
+        _menu = await loader.InstantiateAsync(MenuAddress.MenuMediator);
+    }
 
     protected override void Configure(IContainerBuilder builder)
     {

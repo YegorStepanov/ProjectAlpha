@@ -7,17 +7,36 @@ using VContainer.Unity;
 
 namespace Code.Scopes;
 
-public sealed class GameScope : LifetimeScope
+public sealed class GameScope : Scope
 {
+    private IWidthGenerator _widthGenerator;
+    private IPositionGenerator _positionGenerator;
+    private HeroController _heroController;
+
+    protected override async UniTask PreloadAsync(IAddressablesLoader loader)
+    {
+        WidthGeneratorData widthGeneratorData = await loader.LoadAssetAsync(GameAddress.WidthGenerator);
+        _widthGenerator = widthGeneratorData.Create();
+
+        PositionGeneratorData positionGeneratorData = await loader.LoadAssetAsync(GameAddress.PositionGenerator);
+        _positionGenerator = positionGeneratorData.Create();
+
+        _heroController = await loader.LoadAssetAsync(GameAddress.Hero);
+    }
+    
     protected override void Configure(IContainerBuilder builder)
     {
         RegisterPlatformSpawner(builder);
         RegisterStickSpawner(builder);
-        RegisterHeroSpawner(builder);
 
         builder.Register<GameStateMachine>(Lifetime.Singleton);
 
-        RegisterWidthGenerator(builder);
+        //some of them should be prefabs
+        builder.RegisterInstance(_widthGenerator);
+        builder.RegisterInstance(_positionGenerator);
+        builder.RegisterComponentInNewPrefab(_heroController, Lifetime.Singleton);
+
+        builder.Register<HeroSpawner>(Lifetime.Singleton);
 
         builder.RegisterEntryPoint<GameStart>();
 
@@ -25,28 +44,7 @@ public sealed class GameScope : LifetimeScope
 
         //RegisterComponent = RegisterInstance + Resolve NonLazy?
     }
-
-    private void RegisterWidthGenerator(IContainerBuilder builder)
-    {
-        builder.RegisterAsync<IAsyncObject<WidthGeneratorData>, AsyncAsset<WidthGeneratorData>, WidthGeneratorData>(
-            DataAddress.WidthGenerator, Lifetime.Singleton);
-
-        builder.Register<WidthGeneratorSpawner>(Lifetime.Singleton);
-        
-        builder.RegisterAsync<IAsyncObject<PositionGeneratorData>, AsyncAsset<PositionGeneratorData>, PositionGeneratorData>(
-            DataAddress.PositionGenerator, Lifetime.Singleton);
-
-        builder.Register<PositionGeneratorSpawner>(Lifetime.Singleton);
-    }
-
-    private static void RegisterHeroSpawner(IContainerBuilder builder)
-    {
-        builder.RegisterAsync<IAsyncObject<HeroController>, AsyncComponent<HeroController>, HeroController>(
-            GameAddress.Hero, Lifetime.Singleton);
-
-        builder.Register<HeroSpawner>(Lifetime.Singleton);
-    }
-
+    
     private static void RegisterPlatformSpawner(IContainerBuilder builder)
     {
         builder.RegisterAddressablePool(GameAddress.Platform, "Platforms", 0, 3, Lifetime.Singleton)
