@@ -54,7 +54,7 @@ public sealed class RootScope : Scope
         builder.RegisterInstance(_graphy);
         _gameSettings.RegisterAllSettings(builder);
 
-        builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
+        builder.RegisterInstance(SceneLoader.Instance);
         builder.Register<GameTriggers>(Lifetime.Singleton);
         builder.Register<InputManager>(Lifetime.Singleton);
 

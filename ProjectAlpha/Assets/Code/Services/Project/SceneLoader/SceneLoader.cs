@@ -15,15 +15,15 @@ namespace Code.Services;
 public sealed class SceneLoader : ISceneLoader
 {
     private readonly Dictionary<Address<Scene>, SceneInstance> _scenes = new();
+    private readonly List<GameObject> _tempRootGameObjects = new(32);
 
-    private readonly string _startupSceneName;
-    private readonly List<GameObject> _tempRootGameObjects;
+    public static ISceneLoader Instance { get; private set; }
 
-    public SceneLoader()
-    {
-        _startupSceneName = SceneManager.GetActiveScene().name;
-        _tempRootGameObjects = new List<GameObject>(32);
-    }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void Init() =>
+        Instance = new SceneLoader();
+
+    private SceneLoader() { }
 
     public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
     {
@@ -65,7 +65,7 @@ public sealed class SceneLoader : ISceneLoader
         else
         {
             //todo: find a better solution
-            await SceneManager.UnloadSceneAsync(_startupSceneName);
+            await SceneManager.UnloadSceneAsync(StartupSceneInfo.SceneName); //StartupSceneInfo.SceneName or address.Key
         }
     }
 
