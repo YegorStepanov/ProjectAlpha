@@ -12,6 +12,8 @@ public sealed class GameScope : Scope
     private IWidthGenerator _widthGenerator;
     private IPositionGenerator _positionGenerator;
     private HeroController _heroController;
+    private IAsyncPool<PlatformController> _platformPool;
+    private IAsyncPool<StickController> _stickPool;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
@@ -22,49 +24,29 @@ public sealed class GameScope : Scope
         _positionGenerator = positionGeneratorData.Create();
 
         _heroController = await loader.LoadAssetAsync(GameAddress.Hero);
+
+        _platformPool = loader.CreateCyclicPool(GameAddress.Platform, 3, "Platforms");
+        _stickPool = loader.CreateCyclicPool(GameAddress.Stick, 2, "Sticks");
     }
 
     protected override void Configure(IContainerBuilder builder)
     {
-        RegisterPlatformSpawner(builder);
-        RegisterStickSpawner(builder);
-
         builder.Register<GameStateMachine>(Lifetime.Singleton);
 
         builder.RegisterInstance(_widthGenerator);
         builder.RegisterInstance(_positionGenerator);
-        builder.RegisterComponentInNewPrefab(_heroController, Lifetime.Singleton);
 
+        builder.RegisterComponentInNewPrefab(_heroController, Lifetime.Singleton);
         builder.Register<HeroSpawner>(Lifetime.Singleton);
+
+        builder.RegisterInstance(_platformPool);
+        builder.Register<PlatformSpawner>(Lifetime.Singleton);
+
+        builder.RegisterInstance(_stickPool);
+        builder.Register<StickSpawner>(Lifetime.Singleton);
 
         builder.RegisterEntryPoint<GameStart>();
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
-
-        //RegisterComponent = RegisterInstance + Resolve NonLazy?
-    }
-
-    private static void RegisterPlatformSpawner(IContainerBuilder builder)
-    {
-        builder.RegisterAddressablePool(GameAddress.Platform, "Platforms", 0, 3, Lifetime.Singleton)
-            .AsImplementedInterfaces();
-
-        builder.Register
-            <IAsyncRecyclablePool<PlatformController>, RecyclablePool<PlatformController>>
-            (Lifetime.Singleton);
-
-        builder.Register<PlatformSpawner>(Lifetime.Singleton);
-    }
-
-    private static void RegisterStickSpawner(IContainerBuilder builder)
-    {
-        builder.RegisterAddressablePool(GameAddress.Stick, "Sticks", 0, 2, Lifetime.Singleton)
-            .AsImplementedInterfaces();
-
-        builder.Register
-            <IAsyncRecyclablePool<StickController>, RecyclablePool<StickController>>
-            (Lifetime.Singleton);
-
-        builder.Register<StickSpawner>(Lifetime.Singleton);
     }
 }

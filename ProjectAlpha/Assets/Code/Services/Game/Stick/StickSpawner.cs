@@ -7,10 +7,10 @@ namespace Code.Services;
 
 public sealed class StickSpawner
 {
-    private readonly IAsyncRecyclablePool<StickController> _pool;
+    private readonly IAsyncPool<StickController> _pool;
     private readonly Settings _settings;
 
-    public StickSpawner(IAsyncRecyclablePool<StickController> pool, Settings settings)
+    public StickSpawner(IAsyncPool<StickController> pool, Settings settings)
     {
         _pool = pool;
         _settings = settings;

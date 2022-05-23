@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Code.VContainer;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
@@ -41,12 +42,12 @@ public class AddressablesLoader : IScopedAddressablesLoader
         }
 
         if (_isDisposed) return null;
-        
+
         GameObject prefab = await LoadAssetTAsync(address.As<GameObject>());
 
         GameObject instance = _scope.InstantiateInScene(prefab, address, under);
         _instanceToPrefab[instance] = prefab;
-        
+
         if (IsComponent<T>())
             return instance.GetComponent<T>();
 
@@ -142,7 +143,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
     public void Dispose()
     {
         _isDisposed = true;
-        
+
         foreach (var loader in _loaders.Values)
             loader.Dispose();
 
@@ -158,4 +159,21 @@ public class AddressablesLoader : IScopedAddressablesLoader
 
     private static bool IsAsset<T>() where T : Object =>
         !IsComponent<T>() && !IsGameObject<T>();
+    
+    public IAsyncPool<T> CreatePool<T>(Address<T> address, int size, string container) where T : Component
+    {
+        if (_isDisposed) return null;
+
+        ComponentPoolData data = new(container, 0, size);
+        AddressableComponentPool<T> pool = new(address, data, this, _scope);
+        return pool;
+    }
+
+    public IAsyncPool<T> CreateCyclicPool<T>(Address<T> address, int size, string container) where T : Component
+    {
+        if (_isDisposed) return null;
+
+        IAsyncPool<T> pool = CreatePool(address, size, container);
+        return new RecyclablePool<T>(pool);
+    }
 }

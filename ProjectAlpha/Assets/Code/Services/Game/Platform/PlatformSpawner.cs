@@ -7,13 +7,13 @@ namespace Code.Services;
 
 public sealed class PlatformSpawner
 {
-    private readonly IAsyncRecyclablePool<PlatformController> _pool;
+    private readonly IAsyncPool<PlatformController> _pool;
     private readonly CameraController _cameraController;
     private readonly Settings _settings;
     private readonly IWidthGenerator _widthGenerator;
     private readonly IPositionGenerator _positionGenerator;
 
-    public PlatformSpawner(IAsyncRecyclablePool<PlatformController> pool, CameraController cameraController,
+    public PlatformSpawner(IAsyncPool<PlatformController> pool, CameraController cameraController,
         Settings settings, IWidthGenerator widthGenerator, IPositionGenerator positionGenerator)
     {
         _pool = pool;

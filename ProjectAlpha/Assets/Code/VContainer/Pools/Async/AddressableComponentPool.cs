@@ -14,7 +14,7 @@ public class AddressableComponentPool<TComponent> : AsyncPool<TComponent> where 
 
     private Transform _container;
 
-    protected AddressableComponentPool(
+    public AddressableComponentPool(
         Address<TComponent> address, 
         ComponentPoolData data, 
         IScopedAddressablesLoader loader, 

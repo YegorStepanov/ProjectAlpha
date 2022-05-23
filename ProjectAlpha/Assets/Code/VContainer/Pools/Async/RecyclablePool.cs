@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 namespace Code.VContainer;
 
 //it will be the decorator when VContainer adds support for it
-public sealed class RecyclablePool<T> : IAsyncRecyclablePool<T>
+public sealed class RecyclablePool<T> : IAsyncPool<T>
 {
     private readonly IAsyncPool<T> _pool;
     private readonly List<T> _cachedValues;

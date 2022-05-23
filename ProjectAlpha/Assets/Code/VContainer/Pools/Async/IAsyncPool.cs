@@ -8,4 +8,5 @@ public interface IAsyncPool<T>
     bool CanBeSpawned { get; }
     UniTask<T> SpawnAsync();
     void Despawn(T value);
+    //todo: void WarmUp(int count);
 }
