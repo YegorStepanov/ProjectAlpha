@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 177638, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_Name
-      value: '[Graphy] Variant'
+      value: Graphy
       objectReference: {fileID: 0}
     - target: {fileID: 11439282, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_ReferenceResolution.x
