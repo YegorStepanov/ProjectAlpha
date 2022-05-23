@@ -32,9 +32,9 @@ public sealed class RootScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        _cameraController = await loader.InstantiateAsync(RootAddress.CameraController);
+        _cameraController = await loader.LoadAssetAsync(RootAddress.CameraController);
         _gameSettings = await loader.LoadAssetAsync(RootAddress.Settings);
-        _graphy = await loader.InstantiateAsync(RootAddress.Graphy);
+        _graphy = await loader.LoadAssetAsync(RootAddress.Graphy);
     }
 
     protected override void Configure(IContainerBuilder builder)
@@ -50,8 +50,8 @@ public sealed class RootScope : Scope
         //AsyncOperationHandle.GetDownloadStatus
         //Addressables.GetDownloadSizeAsync() == 0 if it cached
 
-        builder.RegisterComponent(_cameraController);
-        builder.RegisterInstance(_graphy);
+        builder.RegisterComponentInNewPrefab(_cameraController, Lifetime.Singleton);// RegisterComponent(_cameraController);
+        builder.RegisterComponentInNewPrefab(_graphy, Lifetime.Singleton);// RegisterInstance(_graphy);
         _gameSettings.RegisterAllSettings(builder);
 
         builder.RegisterInstance(SceneLoader.Instance);

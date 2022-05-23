@@ -17,7 +17,7 @@ public sealed class BootstrapScope : Scope
     
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterComponent(this.InstantiateInScene(_loadingScreen));
+        builder.RegisterComponentInNewPrefab(_loadingScreen, Lifetime.Singleton);
 
         builder.RegisterEntryPoint<BootstrapStart>();
     }

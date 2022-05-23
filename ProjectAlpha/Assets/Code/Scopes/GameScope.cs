@@ -33,7 +33,7 @@ public sealed class GameScope : Scope
 
         builder.RegisterInstance(_widthGenerator);
         builder.RegisterInstance(_positionGenerator);
-        builder.RegisterComponent(this.InstantiateInScene(_heroController));
+        builder.RegisterComponentInNewPrefab(_heroController, Lifetime.Singleton);
 
         builder.Register<HeroSpawner>(Lifetime.Singleton);
 

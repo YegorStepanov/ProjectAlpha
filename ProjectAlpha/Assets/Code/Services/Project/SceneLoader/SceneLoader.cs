@@ -50,7 +50,10 @@ public sealed class SceneLoader : ISceneLoader
         _scenes.Add(address, scene);
 
         if (TryGetScope(scene, out Scope scope))
+        {
+            scope.Scene = scene.Scene;
             await scope.OnPreloadedAsync();
+        }
         else
             Debug.LogError("The first object in scene should be Scope");
     }

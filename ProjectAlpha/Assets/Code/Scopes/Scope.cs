@@ -4,12 +4,16 @@ using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
 namespace Code.Scopes;
 
 public abstract class Scope : LifetimeScope
 {
+    //VContainer issue, it spawns new gameobjects in the active scene
+    public UnityEngine.SceneManagement.Scene Scene { get; set; }
+
     private AddressablesLoader _loader;
 
     private bool _isPreloaded;
@@ -27,15 +31,23 @@ public abstract class Scope : LifetimeScope
             await rootScope.PreloadAndBuildAsync();
         }
 
+        // Set parent
         base.Awake();
+
         await PreloadAndBuildAsync();
     }
 
     private async UniTask PreloadAndBuildAsync()
     {
         _loader = new AddressablesLoader(this);
+
         await PreloadAsync(_loader);
+
+        if (Scene.IsValid())
+            SceneManager.SetActiveScene(Scene);
+
         Build();
+
         _isPreloaded = true;
     }
 
