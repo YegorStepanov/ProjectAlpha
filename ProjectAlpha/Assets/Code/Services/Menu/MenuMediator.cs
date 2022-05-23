@@ -18,34 +18,33 @@ public sealed class MenuMediator : MonoBehaviour
     public void CloseMainMenu() => _uiManager.Unload<MainMenu>();
 
     //Odin doesn't recognize generic methods, so resolve them manually
-
     [BoxGroup("Main Menu")]
-    [HorizontalGroup("Main Menu/b")] [Button("Show")]
+    [HorizontalGroup("Main Menu/b"), Button("Show")]
     private void ShowMainMenu() => _uiManager.Show<MainMenu>();
 
-    [HorizontalGroup("Main Menu/b")] [Button("Hide")]
+    [HorizontalGroup("Main Menu/b"), Button("Hide")]
     private void HideMainMenu() => _uiManager.Hide<MainMenu>();
 
-    [HorizontalGroup("Main Menu/b")] [Button("Unload")]
+    [HorizontalGroup("Main Menu/b"), Button("Unload")]
     private void UnloadMainMenu() => _uiManager.Unload<MainMenu>();
 
     [BoxGroup("Shop Panel")]
-    [HorizontalGroup("Shop Panel/b")] [Button("Show")]
+    [HorizontalGroup("Shop Panel/b"), Button("Show")]
     private void ShowShopPanel() => _uiManager.Show<ShopPanel>();
 
-    [HorizontalGroup("Shop Panel/b")] [Button("Hide")]
+    [HorizontalGroup("Shop Panel/b"), Button("Hide")]
     private void HideShopPanel() => _uiManager.Hide<ShopPanel>();
 
-    [HorizontalGroup("Shop Panel/b")] [Button("Unload")]
+    [HorizontalGroup("Shop Panel/b"), Button("Unload")]
     private void UnloadShopPanel() => _uiManager.Unload<ShopPanel>();
 
     [BoxGroup("Hero Selector Panel")]
-    [HorizontalGroup("Hero Selector Panel/b")] [Button("Show")]
+    [HorizontalGroup("Hero Selector Panel/b"), Button("Show")]
     private void ShowHeroSelectorPanel() => _uiManager.Show<HeroSelectorPanel>();
 
-    [HorizontalGroup("Hero Selector Panel/b")] [Button("Hide")]
+    [HorizontalGroup("Hero Selector Panel/b"), Button("Hide")]
     private void HideHeroSelectorPanel() => _uiManager.Hide<HeroSelectorPanel>();
 
-    [HorizontalGroup("Hero Selector Panel/b")] [Button("Unload")]
+    [HorizontalGroup("Hero Selector Panel/b"), Button("Unload")]
     private void UnloadHeroSelectorPanel() => _uiManager.Unload<HeroSelectorPanel>();
 }
