@@ -18,14 +18,14 @@ public sealed class UIManager
 
     public void Show<TPanel>() where TPanel : struct, IPanel
     {
-        ShowAsync().Forget();
+        ShowAsync<TPanel>().Forget();
+    }
 
-        async UniTaskVoid ShowAsync()
-        {
-            GameObject panel = GetPanel<TPanel>();
-            Address<GameObject> address = GetAddress<TPanel>();
-            SetPanel<TPanel>(await GetOrCreatePanelAsync(panel, address));
-        }
+    private async UniTaskVoid ShowAsync<TPanel>() where TPanel : struct, IPanel
+    {
+        GameObject panel = GetPanel<TPanel>();
+        Address<GameObject> address = GetAddress<TPanel>();
+        SetPanel<TPanel>(await GetOrCreatePanelAsync(panel, address));
     }
 
     public void Hide<TPanel>() where TPanel : struct, IPanel
