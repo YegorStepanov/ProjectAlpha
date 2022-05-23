@@ -12,7 +12,6 @@ public static class MenuAddress
     public static readonly Address<GameObject> HeroSelectorPanel = new("Hero Selector Panel");
 
     public static readonly Address<MenuMediator> MenuMediator = new("Menu Mediator");
-    public static readonly Address<MenuMediator> EventSystem = new("EventSystem");
 
     //Loading Screen?
 }

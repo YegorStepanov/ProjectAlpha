@@ -3,6 +3,7 @@ using Code.Game;
 using Code.Services;
 using Cysharp.Threading.Tasks;
 using Tayx.Graphy;
+using UnityEngine.EventSystems;
 using VContainer;
 using VContainer.Unity;
 
@@ -14,6 +15,7 @@ public sealed class RootScope : Scope
     private CameraController _cameraController;
     private GameSettings _gameSettings;
     private GraphyManager _graphy;
+    private EventSystem _eventSystem;
 
     // todo:
     // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
@@ -35,6 +37,7 @@ public sealed class RootScope : Scope
         _cameraController = await loader.LoadAssetAsync(RootAddress.CameraController);
         _gameSettings = await loader.LoadAssetAsync(RootAddress.Settings);
         _graphy = await loader.LoadAssetAsync(RootAddress.Graphy);
+        _eventSystem = await loader.LoadAssetAsync(RootAddress.EventSystem);
     }
 
     protected override void Configure(IContainerBuilder builder)
@@ -53,6 +56,7 @@ public sealed class RootScope : Scope
         builder.RegisterComponentInNewPrefab(_cameraController, Lifetime.Singleton);// RegisterComponent(_cameraController);
         builder.RegisterComponentInNewPrefab(_graphy, Lifetime.Singleton);// RegisterInstance(_graphy);
         _gameSettings.RegisterAllSettings(builder);
+        builder.RegisterComponentInNewPrefab(_eventSystem, Lifetime.Singleton);
 
         builder.RegisterInstance(SceneLoader.Instance);
         builder.Register<GameTriggers>(Lifetime.Singleton);
