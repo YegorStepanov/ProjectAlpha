@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Code.UI.Animations;
@@ -15,6 +16,7 @@ public sealed class FloatContinually : MonoBehaviour
 
     private float HalfRange => _hoveringRange / 2;
 
+    [UsedImplicitly] 
     private async UniTaskVoid Awake()
     {
         CancellationToken token = this.GetCancellationTokenOnDestroy();

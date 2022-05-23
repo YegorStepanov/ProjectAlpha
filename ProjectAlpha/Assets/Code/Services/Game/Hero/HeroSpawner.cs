@@ -10,10 +10,10 @@ public sealed class HeroSpawner
     public HeroSpawner(HeroController asset) =>
         _asset = asset;
 
-    public async UniTask<IHeroController> CreateHeroAsync(Vector2 position, Relative relative)
+    public UniTask<IHeroController> CreateHeroAsync(Vector2 position, Relative relative)
     {
         //remove spawner?
         _asset.TeleportTo(position, relative);
-        return _asset;
+        return UniTask.FromResult<IHeroController>(_asset);
     }
 }
