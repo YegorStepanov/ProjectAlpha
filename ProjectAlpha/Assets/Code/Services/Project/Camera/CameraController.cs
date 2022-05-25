@@ -30,7 +30,6 @@ public sealed class CameraController : MonoBehaviour, IDisposable
     public void Construct(IScopedAddressablesLoader loader)
     {
         _backgroundChanger = new BackgroundChanger(loader, _backgroundImage);
-        DontDestroyOnLoad(this);
     }
 
     public UniTask ChangeBackgroundAsync() =>
