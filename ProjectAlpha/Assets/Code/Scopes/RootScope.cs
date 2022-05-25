@@ -2,6 +2,8 @@
 using Code.Game;
 using Code.Services;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using UnityEngine.AddressableAssets;
 using VContainer;
 using VContainer.Unity;
 
@@ -59,9 +61,15 @@ public sealed class RootScope : Scope
 
         builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
         builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);
-        // to inject dependencies, it should be Scoped with static instances
         builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);
 
-        builder.RegisterEntryPoint<RootStart>();
+        builder.RegisterBuildCallback(BuildCallback);
+    }
+
+    private static void BuildCallback(IObjectResolver resolver)
+    {
+        //GameTriggers gameTriggers???
+        DOTween.Init();
+        Addressables.InitializeAsync(true);
     }
 }

@@ -5,15 +5,14 @@ using UnityEngine;
 
 namespace Code.Services;
 
-public sealed class UIManager
+public sealed class PanelManager
 {
     private readonly IGlobalAddressablesLoader _loader;
 
-    private GameObject _mainMenu;
     private GameObject _shopPanel;
     private GameObject _heroSelectorPanel;
 
-    public UIManager(IGlobalAddressablesLoader loader) =>
+    public PanelManager(IGlobalAddressablesLoader loader) =>
         _loader = loader;
 
     public void Show<TPanel>() where TPanel : struct, IPanel
@@ -53,9 +52,6 @@ public sealed class UIManager
     {
         switch (typeof(TPanel))
         {
-            case Type t when t == typeof(MainMenu):
-                _mainMenu = panel;
-                break;
             case Type t when t == typeof(ShopPanel):
                 _shopPanel = panel;
                 break;
@@ -69,7 +65,6 @@ public sealed class UIManager
 
     private GameObject GetPanel<TPanel>() where TPanel : struct, IPanel => typeof(TPanel) switch
     {
-        Type t when t == typeof(MainMenu) => _mainMenu,
         Type t when t == typeof(ShopPanel) => _shopPanel,
         Type t when t == typeof(HeroSelectorPanel) => _heroSelectorPanel,
         _ => throw new ArgumentOutOfRangeException(typeof(TPanel).FullName)
@@ -77,7 +72,6 @@ public sealed class UIManager
 
     private static Address<GameObject> GetAddress<TPanel>() where TPanel : struct, IPanel => typeof(TPanel) switch
     {
-        Type t when t == typeof(MainMenu) => MenuAddress.MainMenu,
         Type t when t == typeof(ShopPanel) => MenuAddress.ShopPanel,
         Type t when t == typeof(HeroSelectorPanel) => MenuAddress.HeroSelectorPanel,
         _ => throw new ArgumentOutOfRangeException(typeof(TPanel).FullName)
@@ -85,8 +79,6 @@ public sealed class UIManager
 }
 
 public interface IPanel { }
-
-public struct MainMenu : IPanel { }
 
 public struct ShopPanel : IPanel { }
 

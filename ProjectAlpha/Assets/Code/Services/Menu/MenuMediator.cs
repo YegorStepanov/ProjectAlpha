@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Threading;
+using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
@@ -7,44 +8,51 @@ namespace Code.Services;
 
 public sealed class MenuMediator : MonoBehaviour
 {
-    [Inject, UsedImplicitly] private UIManager _uiManager;
+    private MainMenuController _mainMenu;
+    private PanelManager _panelManager;
+    private ISceneLoader _sceneLoader;
+    private CancellationToken _token;
 
-    public void Open<TPanel>() where TPanel : struct, IPanel =>
-        _uiManager.Show<TPanel>();
+    [Inject, UsedImplicitly]
+    public void Construct( 
+        MainMenuController mainMenu, 
+        PanelManager panelManager,
+        ISceneLoader sceneLoader,
+        CancellationToken token)
+    {
+        Debug.Log("Consutrcting Menumediator");
+        _mainMenu = mainMenu;
+        _panelManager = panelManager;
+        _sceneLoader = sceneLoader;
+        _token = token;
+    }
 
-    public void Close<TPanel>() where TPanel : struct, IPanel =>
-        _uiManager.Hide<TPanel>();
+    public void Open<TPanel>() where TPanel : struct, IPanel => _panelManager.Show<TPanel>();
+    public void Close<TPanel>() where TPanel : struct, IPanel => _panelManager.Hide<TPanel>();
 
-    public void CloseMainMenu() => _uiManager.Unload<MainMenu>();
+    [Button] public void CloseScene() => _sceneLoader.UnloadAsync<MenuScene>(_token);
+    [Button] public void ToggleSound() => _mainMenu.ToggleSound();
 
+#if UNITY_EDITOR
     //Odin doesn't recognize generic methods, so resolve them manually
-    [BoxGroup("Main Menu")]
-    [HorizontalGroup("Main Menu/b"), Button("Show")]
-    private void ShowMainMenu() => _uiManager.Show<MainMenu>();
-
-    [HorizontalGroup("Main Menu/b"), Button("Hide")]
-    private void HideMainMenu() => _uiManager.Hide<MainMenu>();
-
-    [HorizontalGroup("Main Menu/b"), Button("Unload")]
-    private void UnloadMainMenu() => _uiManager.Unload<MainMenu>();
-
     [BoxGroup("Shop Panel")]
     [HorizontalGroup("Shop Panel/b"), Button("Show")]
-    private void ShowShopPanel() => _uiManager.Show<ShopPanel>();
+    private void ShowShopPanel() => _panelManager.Show<ShopPanel>();
 
     [HorizontalGroup("Shop Panel/b"), Button("Hide")]
-    private void HideShopPanel() => _uiManager.Hide<ShopPanel>();
+    private void HideShopPanel() => _panelManager.Hide<ShopPanel>();
 
     [HorizontalGroup("Shop Panel/b"), Button("Unload")]
-    private void UnloadShopPanel() => _uiManager.Unload<ShopPanel>();
+    private void UnloadShopPanel() => _panelManager.Unload<ShopPanel>();
 
     [BoxGroup("Hero Selector Panel")]
     [HorizontalGroup("Hero Selector Panel/b"), Button("Show")]
-    private void ShowHeroSelectorPanel() => _uiManager.Show<HeroSelectorPanel>();
+    private void ShowHeroSelectorPanel() => _panelManager.Show<HeroSelectorPanel>();
 
     [HorizontalGroup("Hero Selector Panel/b"), Button("Hide")]
-    private void HideHeroSelectorPanel() => _uiManager.Hide<HeroSelectorPanel>();
+    private void HideHeroSelectorPanel() => _panelManager.Hide<HeroSelectorPanel>();
 
     [HorizontalGroup("Hero Selector Panel/b"), Button("Unload")]
-    private void UnloadHeroSelectorPanel() => _uiManager.Unload<HeroSelectorPanel>();
+    private void UnloadHeroSelectorPanel() => _panelManager.Unload<HeroSelectorPanel>();
+#endif
 }

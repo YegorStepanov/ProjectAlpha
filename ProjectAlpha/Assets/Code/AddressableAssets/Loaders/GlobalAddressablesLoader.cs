@@ -6,6 +6,7 @@ using Object = UnityEngine.Object;
 
 namespace Code.AddressableAssets;
 
+// to inject dependencies, it should be Scoped with static instances
 public class GlobalAddressablesLoader : AddressablesLoader, IGlobalAddressablesLoader
 {
     private static readonly Dictionary<Type, IAddressableAssetLoader<Object>> Loaders = new();

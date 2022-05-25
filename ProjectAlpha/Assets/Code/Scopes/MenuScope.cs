@@ -9,19 +9,29 @@ namespace Code.Scopes;
 public sealed class MenuScope : Scope
 {
     private MenuMediator _menu;
+    private MainMenuController _mainMenu;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        _menu = await loader.InstantiateAsync(MenuAddress.MenuMediator);
+        _menu = await loader.LoadAssetAsync(MenuAddress.MenuMediator);
+        _mainMenu = await loader.LoadAssetAsync(MenuAddress.MainMenu);
     }
 
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterComponent(_menu);
-        builder.Register<UIManager>(Lifetime.Singleton);
+        builder.RegisterComponentInNewPrefab(_menu, Lifetime.Singleton);
+        builder.RegisterComponentInNewPrefab(_mainMenu, Lifetime.Singleton);
 
-        builder.RegisterEntryPoint<MenuStart>();
+        builder.Register<PanelManager>(Lifetime.Singleton);
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
+        
+        builder.RegisterBuildCallback(BuildCallback);
+    }
+
+    private static void BuildCallback(IObjectResolver resolver)
+    {
+        var mainMenu = resolver.Resolve<MainMenuController>();
+        resolver.InjectGameObject(mainMenu.gameObject);
     }
 }

@@ -1,15 +1,14 @@
 ﻿using Code.Services;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer;
 
 namespace Code.UI.Actions;
 
-public sealed class CloseMenu : MonoBehaviour, IPointerClickHandler
+public sealed class ToggleSound : MonoBehaviour, IPointerClickHandler
 {
-    [Inject, UsedImplicitly] private MenuMediator _menu;
+    [Inject] private MenuMediator _mainMenu;
 
     public void OnPointerClick(PointerEventData eventData) =>
-        _menu.CloseMainMenu();
+        _mainMenu.ToggleSound();
 }
