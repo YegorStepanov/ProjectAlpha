@@ -9,7 +9,6 @@ using VContainer.Unity;
 
 namespace Code.Scopes;
 
-//todo: create issue "No reference checker when CodeGen is enabled"
 public sealed class RootScope : Scope
 {
     private CameraController _camera;
@@ -22,12 +21,6 @@ public sealed class RootScope : Scope
     //     //var loop = PlayerLoop.GetCurrentPlayerLoop();
     //     // // minimum is Update | FixedUpdate | LastPostLateUpdate
     //     //PlayerLoopHelper.Initialize(ref loop, InjectPlayerLoopTimings.Minimum);
-    // }
-
-    // protected override void Awake()
-    // {
-    //     base.Awake();
-    //     
     // }
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
@@ -69,7 +62,6 @@ public sealed class RootScope : Scope
 
     private static void BuildCallback(IObjectResolver resolver)
     {
-        //GameTriggers gameTriggers???
         DOTween.Init();
         Addressables.InitializeAsync(true);
     }
