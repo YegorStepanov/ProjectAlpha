@@ -13,15 +13,15 @@ namespace Code;
 public static class VContainerExtensions
 {
     public static GameObject InstantiateInScene<T>(this LifetimeScope scope, GameObject prefab, Address<T> asset,
-        Transform under = null)
+        Transform under = null, bool inject = true)
         where T : Object
     {
-        return scope.InstantiateInScene(prefab, asset.Key, under);
+        return scope.InstantiateInScene(prefab, asset.Key, under, inject);
     }
 
     //Instantiate in the scope scene instead of the active scene
     public static GameObject InstantiateInScene(this LifetimeScope scope, GameObject prefab,
-        string name = null, Transform under = null)
+        string name = null, Transform under = null, bool inject = true)
     {
         GameObject instance;
         if (under != null)
@@ -42,7 +42,15 @@ public static class VContainerExtensions
         if (name is not null)
             instance.name = name;
 
-        scope.Container?.InjectGameObject(instance);
+        if (inject)
+        {
+            if (scope.Container == null)
+                Debug.LogError("scope.Container is null");
+            else
+                scope.Container.InjectGameObject(instance);
+        }
+
+
         return instance;
     }
 

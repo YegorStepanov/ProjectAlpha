@@ -33,7 +33,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
         _instanceToPrefab = instanceToPrefab;
     }
 
-    public async UniTask<T> InstantiateAsync<T>(Address<T> address, Transform under = null) where T : Object
+    public async UniTask<T> InstantiateAsync<T>(Address<T> address, Transform under = null, bool inject = true) where T : Object
     {
         if (IsAsset<T>())
         {
@@ -45,7 +45,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
 
         GameObject prefab = await LoadAssetTAsync(address.As<GameObject>());
 
-        GameObject instance = _scope.InstantiateInScene(prefab, address, under);
+        GameObject instance = _scope.InstantiateInScene(prefab, address, under, inject);
         _instanceToPrefab[instance] = prefab;
 
         if (IsComponent<T>())

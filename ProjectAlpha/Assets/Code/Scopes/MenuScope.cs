@@ -13,8 +13,10 @@ public sealed class MenuScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        _menu = await loader.LoadAssetAsync(MenuAddress.MenuMediator);
-        _mainMenu = await loader.LoadAssetAsync(MenuAddress.MainMenu);
+        var loadMediator = loader.LoadAssetAsync(MenuAddress.MenuMediator);
+        var loadMainMenu = loader.LoadAssetAsync(MenuAddress.MainMenu);
+
+        (_menu, _mainMenu) = await (loadMediator, loadMainMenu);
     }
 
     protected override void Configure(IContainerBuilder builder)

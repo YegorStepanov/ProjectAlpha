@@ -12,9 +12,9 @@ namespace Code.Scopes;
 //todo: create issue "No reference checker when CodeGen is enabled"
 public sealed class RootScope : Scope
 {
-    private CameraController _cameraController;
+    private CameraController _camera;
     private GameSettings _gameSettings;
-    
+
     // todo:
     // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
     // public static void InitUniTaskLoop()
@@ -32,11 +32,12 @@ public sealed class RootScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        _cameraController = await loader.InstantiateAsync(RootAddress.CameraController);
-        _gameSettings = await loader.LoadAssetAsync(RootAddress.Settings);
-        
-        _ = await loader.InstantiateAsync(RootAddress.Graphy);
-        _ = await loader.InstantiateAsync(RootAddress.EventSystem);
+        var loadCamera = loader.InstantiateAsync(RootAddress.CameraController, inject: false);
+        var loadGameSettings = loader.LoadAssetAsync(RootAddress.Settings);
+        var loadGraphy = loader.InstantiateAsync(RootAddress.Graphy, inject: false);
+        var loadEventSystem = loader.InstantiateAsync(RootAddress.EventSystem, inject: false);
+
+        (_camera, _gameSettings, _, _) = await ( loadCamera, loadGameSettings, loadGraphy, loadEventSystem);
     }
 
     protected override void Configure(IContainerBuilder builder)
@@ -52,7 +53,7 @@ public sealed class RootScope : Scope
         //AsyncOperationHandle.GetDownloadStatus
         //Addressables.GetDownloadSizeAsync() == 0 if it cached
 
-        builder.RegisterComponent(_cameraController);
+        builder.RegisterComponent(_camera);
         _gameSettings.RegisterAllSettings(builder);
 
         builder.RegisterInstance(SceneLoader.Instance);
