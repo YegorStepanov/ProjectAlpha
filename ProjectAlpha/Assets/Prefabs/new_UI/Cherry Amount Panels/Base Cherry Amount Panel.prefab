@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1999771752478976528}
   - component: {fileID: 7260214343496513026}
   m_Layer: 5
-  m_Name: Base Cherry Amount
+  m_Name: Base Cherry Amount Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

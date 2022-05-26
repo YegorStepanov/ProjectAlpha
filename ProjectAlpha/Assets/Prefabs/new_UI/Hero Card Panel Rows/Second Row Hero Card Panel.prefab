@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2848936336837801810}
   - component: {fileID: 1422398129599546319}
   m_Layer: 5
-  m_Name: Hero Card Panel 2
+  m_Name: Second Row Hero Card Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

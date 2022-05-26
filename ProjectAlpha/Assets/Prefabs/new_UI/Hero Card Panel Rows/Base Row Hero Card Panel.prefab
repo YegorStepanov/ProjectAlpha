@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5246241998939480154}
   - component: {fileID: 6227861888365485142}
   m_Layer: 5
-  m_Name: Base IAP Panel
+  m_Name: Base Row Hero Card Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
