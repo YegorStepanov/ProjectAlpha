@@ -10,14 +10,14 @@ namespace Code.Services;
 
 public sealed class PlatformController : MonoBehaviour, IPlatformController
 {
-    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private SpriteRenderer _platformRenderer;
 
     private Settings _settings;
     private CancellationToken _token;
 
     public Vector2 Position => transform.position;
 
-    public Borders Borders => _spriteRenderer.bounds.AsBorders();
+    public Borders Borders => _platformRenderer.bounds.AsBorders();
 
     [Inject, UsedImplicitly]
     public void Construct(Settings settings) =>
@@ -34,8 +34,8 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
 
     public void SetSize(Vector2 scale)
     {
-        Transform t = transform;
-        Vector2 scaledAABB = _spriteRenderer.bounds.size;
+        Transform t = _platformRenderer.transform;
+        Vector2 scaledAABB = _platformRenderer.bounds.size;
         Vector2 spriteSize = scaledAABB / t.localScale;
         t.localScale = scale / spriteSize;
     }
