@@ -62,7 +62,8 @@ namespace Code.Editor
             "UnityEditor.AddressableAssets.Settings.AddressableAssetGroupTemplate",
             "UnityEngine.EventSystems.EventSystem",
             "UnityEngine.GUISkin",
-            "UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset"
+            "UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset",
+            "UnityEngine.Rendering.Universal.UniversalAdditionalCameraData"
         };
 
         private static readonly (string, string)[] excludedPropertyInType =
