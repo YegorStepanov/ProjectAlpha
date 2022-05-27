@@ -54,7 +54,10 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
         Borders.GetRelativePoint(position, relative);
 
     public bool IsInsideRedPoint(float point) =>
-        point >= RedPointBorders.Left && point <= RedPointBorders.Right;
+        _redPointRenderer.enabled && point >= RedPointBorders.Left && point <= RedPointBorders.Right;
+
+    public void ToggleRedPoint(bool enable) =>
+        _redPointRenderer.enabled = enable;
     
     [Serializable]
     public class Settings

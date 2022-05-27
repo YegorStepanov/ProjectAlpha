@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _platformRenderer: {fileID: 7583334913541630921}
+  _redPointRenderer: {fileID: 4326162081635893656}
 --- !u!1 &6713335473536499148
 GameObject:
   m_ObjectHideFlags: 0

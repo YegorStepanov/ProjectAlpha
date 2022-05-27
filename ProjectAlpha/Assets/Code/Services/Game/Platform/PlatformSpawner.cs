@@ -27,10 +27,12 @@ public sealed class PlatformSpawner
     {
         Vector2 position = _cameraController.ViewportToWorldPosition(_settings.viewportMenuPlatformPosition);
         float width = _settings.MenuPlatformWidth;
-        return await CreatePlatformAsync(position, width, Relative.Center);
+        
+        IPlatformController platform = await CreatePlatformAsync(position, width, Relative.Center, false);
+        return platform;
     }
 
-    private async UniTask<IPlatformController> CreatePlatformAsync(Vector2 position, float width, Relative relative)
+    private async UniTask<IPlatformController> CreatePlatformAsync(Vector2 position, float width, Relative relative, bool isRedPointEnabled)
     {
         PlatformController platform = await _pool.SpawnAsync();
 
@@ -38,6 +40,7 @@ public sealed class PlatformSpawner
 
         platform.SetSize(new Vector2(width, height));
         platform.SetPosition(position, relative);
+        platform.ToggleRedPoint(isRedPointEnabled);
 
         return platform;
     }
@@ -59,18 +62,15 @@ public sealed class PlatformSpawner
             _cameraController.Borders.Right + distanceToPlatform,
             currentPlatform.Borders.Top);
 
-        return await CreatePlatformAsync(position, width, Relative.Left);
+        return await CreatePlatformAsync(position, width, Relative.Left, true);
     }
 
     private async UniTask MoveNextPlatformToRandomPoint(
         IPlatformController currentPlatform,
         IPlatformController nextPlatform)
     {
-        Debug.Log(_positionGenerator.GetType());
         float newPos = _positionGenerator.NextPosition(currentPlatform, nextPlatform);
         await nextPlatform.MoveAsync(newPos);
-        Debug.Log("Current: " + nextPlatform.Position);
-        // await UniTask.Delay(300); do not use random here
     }
 
     [Serializable]
