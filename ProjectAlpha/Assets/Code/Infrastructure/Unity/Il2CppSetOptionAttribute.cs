@@ -22,6 +22,7 @@ namespace Unity.IL2CPP.CompilerServices
         /// have been emitted though.
         /// </summary>
         NullChecks = 1,
+
         /// <summary>
         /// Enable or disable code generation for array bounds checks.
         ///
@@ -34,6 +35,7 @@ namespace Unity.IL2CPP.CompilerServices
         /// Disable this check with extreme caution.
         /// </summary>
         ArrayBoundsChecks = 2,
+
         /// <summary>
         /// Enable or disable code generation for divide by zero checks.
         ///
@@ -60,7 +62,9 @@ namespace Unity.IL2CPP.CompilerServices
     ///         return tmp.ToString();
     ///     }
     /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Struct | AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+    [AttributeUsage(
+        AttributeTargets.Assembly | AttributeTargets.Struct | AttributeTargets.Class | AttributeTargets.Method |
+        AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class Il2CppSetOptionAttribute : Attribute
     {
@@ -71,6 +75,60 @@ namespace Unity.IL2CPP.CompilerServices
         {
             Option = option;
             Value = value;
+        }
+    }
+
+    [Il2CppSetOption(Option.NullChecks, false)]
+    public class TypeWithNullChecksDisabled
+    {
+        public static string AnyMethod()
+        {
+            // Unity doesn’t perform null checks in this method.
+            var tmp = new object();
+            return tmp.ToString();
+        }
+
+        [Il2CppSetOption(Option.NullChecks, true)]
+        public static string MethodWithNullChecksEnabled()
+        {
+            // Unity performs null checks in this method.
+            var tmp = new object();
+            return tmp.ToString();
+        }
+    }
+
+    public class SomeType
+    {
+        [Il2CppSetOption(Option.NullChecks, false)]
+        public string PropertyWithNullChecksDisabled
+        {
+            get
+            {
+                // Unity doesn’t perform null checks here.
+                var tmp = new object();
+                return tmp.ToString();
+            }
+            set
+            {
+                // Unity doesn’t perform null checks here.
+                value.ToString();
+            }
+        }
+
+        public string PropertyWithNullChecksDisabledOnGetterOnly
+        {
+            [Il2CppSetOption(Option.NullChecks, false)]
+            get
+            {
+                // Unity doesn’t perform null checks here.
+                var tmp = new object();
+                return tmp.ToString();
+            }
+            set
+            {
+                // Unity performs null checks here.
+                value.ToString();
+            }
         }
     }
 }

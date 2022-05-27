@@ -11,7 +11,7 @@ public sealed class BackgroundChanger : IDisposable
 {
     //Types=UnityEngine.Texture2D, UnityEngine.Sprite
     //test Sprite.Create()
-    private readonly Address<Sprite>[] _addresses; 
+    private readonly Address<Sprite>[] _addresses;
     private readonly Image _backgroundImage;
     private readonly IScopedAddressablesLoader _loader;
 

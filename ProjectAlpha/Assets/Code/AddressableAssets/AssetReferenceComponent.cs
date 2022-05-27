@@ -8,9 +8,7 @@ namespace Code.AddressableAssets;
 [Serializable]
 public class AssetReferenceComponent<T> : AssetReferenceGameObject where T : Component
 {
-    public AssetReferenceComponent(string guid) : base(guid)
-    {
-    }
+    public AssetReferenceComponent(string guid) : base(guid) { }
 
     public override bool ValidateAsset(Object obj)
     {
@@ -27,7 +25,7 @@ public class AssetReferenceComponent<T> : AssetReferenceGameObject where T : Com
             return false;
 #endif
     }
-    
-    public static implicit operator Address<T>(AssetReferenceComponent<T> reference) => 
+
+    public static implicit operator Address<T>(AssetReferenceComponent<T> reference) =>
         new((string)reference.RuntimeKey);
 }

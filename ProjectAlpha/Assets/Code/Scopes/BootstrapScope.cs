@@ -9,12 +9,12 @@ namespace Code.Scopes;
 public sealed class BootstrapScope : Scope
 {
     private LoadingScreen _loadingScreen;
-    
+
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
         _loadingScreen = await loader.LoadAssetAsync(BootstrapAddress.LoadingScreen);
     }
-    
+
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterComponentInNewPrefab(_loadingScreen, Lifetime.Singleton);

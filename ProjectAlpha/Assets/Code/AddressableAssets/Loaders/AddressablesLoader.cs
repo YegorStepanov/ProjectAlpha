@@ -159,7 +159,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
 
     private static bool IsAsset<T>() where T : Object =>
         !IsComponent<T>() && !IsGameObject<T>();
-    
+
     public IAsyncPool<T> CreatePool<T>(Address<T> address, int size, string container) where T : Component
     {
         if (_isDisposed) return null;

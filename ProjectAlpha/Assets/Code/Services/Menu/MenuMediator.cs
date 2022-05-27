@@ -14,8 +14,8 @@ public sealed class MenuMediator : MonoBehaviour
     private CancellationToken _token;
 
     [Inject, UsedImplicitly]
-    public void Construct( 
-        MainMenuController mainMenu, 
+    public void Construct(
+        MainMenuController mainMenu,
         PanelManager panelManager,
         ISceneLoader sceneLoader,
         CancellationToken token)

@@ -3,7 +3,7 @@ using UnityEngine;
 public sealed class AnimatorStateReporter : StateMachineBehaviour
 {
     private IAnimationStateReader _stateReader;
-    
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
@@ -11,7 +11,7 @@ public sealed class AnimatorStateReporter : StateMachineBehaviour
 
         _stateReader.EnteredState(stateInfo.shortNameHash);
     }
-    
+
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
@@ -22,9 +22,9 @@ public sealed class AnimatorStateReporter : StateMachineBehaviour
 
     private void FindReader(Animator animator)
     {
-        if(_stateReader != null)    
+        if (_stateReader != null)
             return;
-        
+
         _stateReader = animator.GetComponent<IAnimationStateReader>();
     }
 }

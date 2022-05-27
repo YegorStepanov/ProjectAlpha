@@ -72,7 +72,7 @@ internal sealed class AddressableAssetCache<TAsset> : IAddressableAssetCache<TAs
             if (pair.Address == address)
                 return pair.Handle;
         }
-        
+
         throw new Exception($"Handle not found for address: {address}");
     }
 

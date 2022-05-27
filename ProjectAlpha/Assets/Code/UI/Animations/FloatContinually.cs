@@ -16,7 +16,7 @@ public sealed class FloatContinually : MonoBehaviour
 
     private float HalfRange => _hoveringRange / 2;
 
-    [UsedImplicitly] 
+    [UsedImplicitly]
     private async UniTaskVoid Awake()
     {
         CancellationToken token = this.GetCancellationTokenOnDestroy();

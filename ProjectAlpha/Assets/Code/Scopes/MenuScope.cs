@@ -27,7 +27,7 @@ public sealed class MenuScope : Scope
         builder.Register<PanelManager>(Lifetime.Singleton);
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
-        
+
         builder.RegisterBuildCallback(BuildCallback);
     }
 

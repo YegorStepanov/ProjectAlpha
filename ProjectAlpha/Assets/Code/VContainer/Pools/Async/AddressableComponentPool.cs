@@ -15,9 +15,9 @@ public class AddressableComponentPool<TComponent> : AsyncPool<TComponent> where 
     private Transform _container;
 
     public AddressableComponentPool(
-        Address<TComponent> address, 
-        ComponentPoolData data, 
-        IScopedAddressablesLoader loader, 
+        Address<TComponent> address,
+        ComponentPoolData data,
+        IScopedAddressablesLoader loader,
         LifetimeScope scope)
         : base(data.InitialSize, data.Capacity)
     {

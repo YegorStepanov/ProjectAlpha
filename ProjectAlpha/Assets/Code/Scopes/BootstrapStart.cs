@@ -24,7 +24,7 @@ public sealed class BootstrapStart : IAsyncStartable
         UniTask menuLoad = _sceneLoader.LoadAsync<MenuScene>(token);
 
         await (loadGame: gameLoad, loadMenu: menuLoad);
-        
+
         await _loadingScreen.HideAsync();
         await _sceneLoader.UnloadAsync<BootstrapScene>(token);
     }

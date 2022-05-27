@@ -35,7 +35,7 @@ internal sealed class AddressableAssetLoader<TAsset> : IAddressableAssetLoader<T
             if (pair.Asset != null)
                 Addressables.Release(pair.Handle);
         }
-        
+
         _handleToAsset.Clear();
     }
 
@@ -75,10 +75,10 @@ internal sealed class AddressableAssetLoader<TAsset> : IAddressableAssetLoader<T
     {
         foreach (var pair in _handleToAsset)
         {
-            if(pair.Asset == asset)
+            if (pair.Asset == asset)
                 return true;
         }
-        
+
         return false;
     }
 }

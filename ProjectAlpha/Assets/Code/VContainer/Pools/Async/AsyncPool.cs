@@ -29,7 +29,7 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
             Debug.LogWarning("Incorrect spawn index: " + _activeCount);
             return default;
         }
-        
+
         TValue value = await Pop();
         OnSpawned(value);
 
@@ -43,13 +43,13 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
             Debug.LogWarning("Pool is not initialized");
             return;
         }
-        
+
         if (!IsIndexCorrectForDespawn())
         {
             Debug.LogWarning("Incorrect despawn index: " + _activeCount);
             return;
         }
-        
+
         Push(value);
         OnDespawned(value);
     }
@@ -63,10 +63,10 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
     private async UniTask<TValue[]> CreatePoolAsync()
     {
         var pool = new TValue[Capacity];
-        
-        if(_initialSize == 0)
+
+        if (_initialSize == 0)
             return pool;
-        
+
         for (int i = 0; i < _initialSize; i++)
         {
             pool[i] = await CreateAsync();
@@ -87,7 +87,7 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
         _activeCount++;
         return value;
     }
-    
+
     private void Push(TValue value)
     {
         _activeCount--;

@@ -42,7 +42,7 @@ public class AddressablesCache : IDisposable, IAddressablesCache
 
         return (IAddressableAssetCache<T>)cache;
     }
-    
+
     public void Dispose()
     {
         _isDisposed = true;
