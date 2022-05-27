@@ -606,9 +606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077eeda8b984c4e459a39f73ecf68aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 0}
-  _hoveringRange: 0
-  _duration: 0
+  _rectTransform: {fileID: 5039357476330554162}
+  _hoveringRange: 10
+  _duration: 3
 --- !u!114 &8350140041735810397
 MonoBehaviour:
   m_ObjectHideFlags: 0
