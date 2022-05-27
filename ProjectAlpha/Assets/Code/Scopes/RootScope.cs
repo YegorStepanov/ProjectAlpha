@@ -30,7 +30,7 @@ public sealed class RootScope : Scope
         var loadGraphy = loader.InstantiateAsync(RootAddress.Graphy, inject: false);
         var loadEventSystem = loader.InstantiateAsync(RootAddress.EventSystem, inject: false);
 
-        (_camera, _gameSettings, _, _) = await ( loadCamera, loadGameSettings, loadGraphy, loadEventSystem);
+        (_camera, _gameSettings, _, _) = await (loadCamera, loadGameSettings, loadGraphy, loadEventSystem);
     }
 
     protected override void Configure(IContainerBuilder builder)
