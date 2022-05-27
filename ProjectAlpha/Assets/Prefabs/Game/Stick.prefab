@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3208649589101164659}
   m_Layer: 0
-  m_Name: arrow
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,3 +159,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stick: {fileID: 8047122916972879037}
   _spriteRenderer: {fileID: 6312553818513177248}
+  _arrow: {fileID: 3208649589101164659}

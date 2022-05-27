@@ -12,12 +12,16 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
 {
     [SerializeField] private SpriteRenderer _platformRenderer;
 
+    [SerializeField] private SpriteRenderer _redPointRenderer;
+
     private Settings _settings;
     private CancellationToken _token;
 
     public Vector2 Position => transform.position;
 
     public Borders Borders => _platformRenderer.bounds.AsBorders();
+
+    private Borders RedPointBorders => _redPointRenderer.bounds.AsBorders();
 
     [Inject, UsedImplicitly]
     public void Construct(Settings settings) =>
@@ -49,6 +53,9 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
     public Vector2 GetRelativePosition(Vector2 position, Relative relative) =>
         Borders.GetRelativePoint(position, relative);
 
+    public bool IsInsideRedPoint(float point) =>
+        point >= RedPointBorders.Left && point <= RedPointBorders.Right;
+    
     [Serializable]
     public class Settings
     {

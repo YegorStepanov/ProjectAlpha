@@ -15,7 +15,6 @@ public static class StartupSceneInfo
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     public static void Init()
     {
-        Debug.Log("StartupScene Init");
         SceneName = SceneManager.GetActiveScene().name;
 
         IsGameScene = SceneName == SceneAddress.Game.Key;

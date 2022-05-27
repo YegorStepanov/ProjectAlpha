@@ -15,6 +15,7 @@ public sealed class StickController : MonoBehaviour, IStickController
 {
     [SerializeField] private Transform _stick;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private Transform _arrow;
 
     private Settings _settings;
     private CancellationToken _token;
@@ -31,6 +32,8 @@ public sealed class StickController : MonoBehaviour, IStickController
         get => _stick.position;
         set => _stick.position = value;
     }
+
+    public Vector2 ArrowPosition => _arrow.position;
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
