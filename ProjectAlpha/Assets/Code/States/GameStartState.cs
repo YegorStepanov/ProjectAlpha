@@ -30,6 +30,8 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         await UniTask.Delay(100);
         UniTask moveCameraTask = MoveCameraAsync(args.CurrentPlatform);
 
+        _ = args.CurrentPlatform.FadeOutRedPointAsync();
+
         IPlatformController nextPlatform = await _platformSpawner.CreateAndMoveNextPlatformAsync(args.CurrentPlatform);
 
         await moveCameraTask;

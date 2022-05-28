@@ -54,14 +54,18 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
         Borders.GetRelativePoint(position, relative);
 
     public bool IsInsideRedPoint(float point) =>
-        _redPointRenderer.enabled && point >= RedPointBorders.Left && point <= RedPointBorders.Right;
+        _redPointRenderer.color.a != 0 && point >= RedPointBorders.Left && point <= RedPointBorders.Right;
 
     public void ToggleRedPoint(bool enable) =>
-        _redPointRenderer.enabled = enable;
-    
+        _redPointRenderer.color = _redPointRenderer.color with { a = enable ? 1 : 0 };
+
+    public UniTask FadeOutRedPointAsync() =>
+        _redPointRenderer.DOFade(0f, _settings.FadeOutRedPointSpeed).WithCancellation(_token);
+
     [Serializable]
     public class Settings
     {
         public float MovementSpeed = 10f;
+        public float FadeOutRedPointSpeed = 0.3f;
     }
 }

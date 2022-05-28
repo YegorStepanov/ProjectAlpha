@@ -10,4 +10,5 @@ public interface IPlatformController
     UniTask MoveAsync(float destinationX);
     Vector2 GetRelativePosition(Vector2 position, Relative relative);
     bool IsInsideRedPoint(float point);
+    UniTask FadeOutRedPointAsync();
 }
