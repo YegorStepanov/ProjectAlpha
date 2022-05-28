@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5556461390882412268}
   - component: {fileID: 5399997620018796029}
+  - component: {fileID: 1230593007632038818}
   m_Layer: 0
   m_Name: "\u0421herry"
   m_TagString: Untagged
@@ -46,6 +47,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transform: {fileID: 5556461390882412268}
   _sprite: {fileID: 4450341412904034427}
+--- !u!114 &1230593007632038818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319777244502522145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b06dc37fb6d4073b375d1dfa0f5a3ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 5556461390882412268}
+  _hoveringRange: 0.05
+  _duration: 2
 --- !u!1 &6004981809500038616
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,7 +87,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6004981809500038616}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.025, z: 0}
+  m_LocalPosition: {x: 0, y: -0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5556461390882412268}
