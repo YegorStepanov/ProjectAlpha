@@ -50,7 +50,12 @@ PrefabInstance:
     - target: {fileID: 5246241998939480152, guid: 1dfdf67798f0f5a408d434b4103bcc32,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1000
+      value: 85.333336
+      objectReference: {fileID: 0}
+    - target: {fileID: 5246241998939480152, guid: 1dfdf67798f0f5a408d434b4103bcc32,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 85.333336
       objectReference: {fileID: 0}
     - target: {fileID: 5246241998939480152, guid: 1dfdf67798f0f5a408d434b4103bcc32,
         type: 3}
@@ -147,6 +152,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Small Cherry Amount
       objectReference: {fileID: 0}
+    - target: {fileID: 6447309247729958740, guid: ae176ed98ba0cce40917444629e32097,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b75f0d9e9a3916e42ab29099f12b9f83,
+        type: 3}
     - target: {fileID: 8054071711232829224, guid: ae176ed98ba0cce40917444629e32097,
         type: 3}
       propertyPath: m_Pivot.x
