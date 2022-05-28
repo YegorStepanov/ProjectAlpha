@@ -21,6 +21,6 @@ public sealed class LoadingScreen : MonoBehaviour
         _loadingScreen.alpha = 1f;
     }
 
-    public UniTask HideAsync() =>
+    public UniTask FadeOutAsync() =>
         _loadingScreen.DOFade(0f, _duration).WithCancellation(_token);
 }
