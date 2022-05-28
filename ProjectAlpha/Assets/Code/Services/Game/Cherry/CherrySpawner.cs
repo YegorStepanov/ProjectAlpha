@@ -26,7 +26,7 @@ public sealed class CherrySpawner
             _cameraController.Borders.Right + distanceWhichCameraWillMove,
             nextPlatform.Borders.Top);
 
-        cherry.TeleportTo(position, Relative.Left);
+        cherry.TeleportTo(position, Relative.LeftTop);
         return cherry;
     }
 }

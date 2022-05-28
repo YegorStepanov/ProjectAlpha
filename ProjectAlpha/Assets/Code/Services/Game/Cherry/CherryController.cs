@@ -1,7 +1,9 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using JetBrains.Annotations;
 using UnityEngine;
+using VContainer;
 
 namespace Code.Services;
 
@@ -9,12 +11,18 @@ public sealed class CherryController : MonoBehaviour, ICherryController
 {
     [SerializeField] private Transform _transform;
     [SerializeField] private SpriteRenderer _sprite;
+
+    private StickSpawner _stickSpawner;
     private CancellationToken _token;
 
     public Borders Borders => _sprite.bounds.AsBorders();
 
-    private void Awake() =>
-        _token = this.GetCancellationTokenOnDestroy();
+    [Inject, UsedImplicitly]
+    private void Construct(StickSpawner stickSpawner, CancellationToken token)
+    {
+        _stickSpawner = stickSpawner;
+        _token = token;
+    }
 
     public UniTask MoveRandomlyAsync(IPlatformController leftPlatform, float rightPlatformLeftBorder)
     {
@@ -29,6 +37,9 @@ public sealed class CherryController : MonoBehaviour, ICherryController
             .WithCancellation(_token);
     }
 
-    public void TeleportTo(Vector2 position, Relative relative) =>
+    public void TeleportTo(Vector2 position, Relative relative)
+    {
+        position.y -= _stickSpawner.StickWidth;
         _transform.position = Borders.GetRelativePoint(position, relative);
+    }
 }
