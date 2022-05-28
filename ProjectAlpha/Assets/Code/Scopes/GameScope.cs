@@ -14,6 +14,7 @@ public sealed class GameScope : Scope
     private HeroController _heroController;
     private IAsyncPool<PlatformController> _platformPool;
     private IAsyncPool<StickController> _stickPool;
+    private IAsyncPool<CherryController> _cherryPool;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
@@ -27,6 +28,7 @@ public sealed class GameScope : Scope
 
         _platformPool = loader.CreateCyclicPool(GameAddress.Platform, 3, "Platforms");
         _stickPool = loader.CreateCyclicPool(GameAddress.Stick, 2, "Sticks");
+        _cherryPool = loader.CreateCyclicPool(GameAddress.Cherry, 2, "Cherries");
     }
 
     protected override void Configure(IContainerBuilder builder)
@@ -45,6 +47,9 @@ public sealed class GameScope : Scope
         builder.RegisterInstance(_stickPool);
         builder.Register<StickSpawner>(Lifetime.Singleton);
 
+        builder.RegisterInstance(_cherryPool);
+        builder.Register<CherrySpawner>(Lifetime.Singleton);
+        
         builder.RegisterEntryPoint<GameStart>();
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());

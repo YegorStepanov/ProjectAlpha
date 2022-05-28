@@ -11,23 +11,21 @@ public sealed class PlatformSpawner
     private readonly CameraController _cameraController;
     private readonly Settings _settings;
     private readonly IWidthGenerator _widthGenerator;
-    private readonly IPositionGenerator _positionGenerator;
 
     public PlatformSpawner(IAsyncPool<PlatformController> pool, CameraController cameraController,
-        Settings settings, IWidthGenerator widthGenerator, IPositionGenerator positionGenerator)
+        Settings settings, IWidthGenerator widthGenerator)
     {
         _pool = pool;
         _cameraController = cameraController;
         _settings = settings;
         _widthGenerator = widthGenerator;
-        _positionGenerator = positionGenerator;
     }
 
     public async UniTask<IPlatformController> CreateMenuPlatformAsync()
     {
         Vector2 position = _cameraController.ViewportToWorldPosition(_settings.viewportMenuPlatformPosition);
         float width = _settings.MenuPlatformWidth;
-        
+
         IPlatformController platform = await CreatePlatformAsync(position, width, Relative.Center, false);
         return platform;
     }
@@ -45,32 +43,23 @@ public sealed class PlatformSpawner
         return platform;
     }
 
-    public async UniTask<IPlatformController> CreateAndMoveNextPlatformAsync(IPlatformController currentPlatform)
+    public async UniTask<IPlatformController> CreateNextPlatformAsync(IPlatformController currentPlatform)
     {
         float width = _widthGenerator.NextWidth();
 
         IPlatformController nextPlatform = await CreateNextPlatformAsync(currentPlatform, width);
-        await MoveNextPlatformToRandomPoint(currentPlatform, nextPlatform);
         return nextPlatform;
     }
 
     private async UniTask<IPlatformController> CreateNextPlatformAsync(IPlatformController currentPlatform, float width)
     {
-        float distanceToPlatform = currentPlatform.Borders.Left - _cameraController.Borders.Left;
+        float distanceWhichCameraWillMove = currentPlatform.Borders.Left - _cameraController.Borders.Left;
 
         Vector2 position = new(
-            _cameraController.Borders.Right + distanceToPlatform,
+            _cameraController.Borders.Right + distanceWhichCameraWillMove,
             currentPlatform.Borders.Top);
 
         return await CreatePlatformAsync(position, width, Relative.Left, true);
-    }
-
-    private async UniTask MoveNextPlatformToRandomPoint(
-        IPlatformController currentPlatform,
-        IPlatformController nextPlatform)
-    {
-        float newPos = _positionGenerator.NextPosition(currentPlatform, nextPlatform);
-        await nextPlatform.MoveAsync(newPos);
     }
 
     [Serializable]

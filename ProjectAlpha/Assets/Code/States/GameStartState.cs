@@ -10,17 +10,20 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
 
     private readonly CameraController _cameraController;
     private readonly PlatformSpawner _platformSpawner;
-
     private readonly StickSpawner _stickSpawner;
+    private readonly CherrySpawner _cherrySpawner;
+    private readonly IPositionGenerator _positionGenerator;
 
     public GameStartState(
         CameraController cameraController,
         PlatformSpawner platformSpawner,
-        StickSpawner stickSpawner)
+        StickSpawner stickSpawner, CherrySpawner cherrySpawner, IPositionGenerator positionGenerator)
     {
         _cameraController = cameraController;
         _platformSpawner = platformSpawner;
         _stickSpawner = stickSpawner;
+        _cherrySpawner = cherrySpawner;
+        _positionGenerator = positionGenerator;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
@@ -32,12 +35,29 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
 
         _ = args.CurrentPlatform.FadeOutRedPointAsync();
 
-        IPlatformController nextPlatform = await _platformSpawner.CreateAndMoveNextPlatformAsync(args.CurrentPlatform);
+        IPlatformController nextPlatform = await _platformSpawner.CreateNextPlatformAsync(args.CurrentPlatform);
+        ICherryController cherry = await _cherrySpawner.CreateCherryAsync(args.CurrentPlatform, nextPlatform);
+
+        await MoveNextPlatformToRandomPoint(args.CurrentPlatform, nextPlatform, cherry);
 
         await moveCameraTask;
 
         stateMachine.Enter<StickControlState, StickControlState.Arguments>(
             new StickControlState.Arguments(args.CurrentPlatform, nextPlatform, args.Hero));
+    }
+
+    private async UniTask MoveNextPlatformToRandomPoint(
+        IPlatformController currentPlatform,
+        IPlatformController nextPlatform, 
+        ICherryController cherry)
+    {
+        float newPos = _positionGenerator.NextPosition(currentPlatform, nextPlatform);
+        
+        UniTask movePlatform = nextPlatform.MoveAsync(newPos);
+        float end = newPos - nextPlatform.Borders.Width / 2f;
+        UniTask moveCherry = cherry.MoveRandomlyAsync(currentPlatform, end);
+
+        await (movePlatform, moveCherry);
     }
 
     public void Exit() { }
