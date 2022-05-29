@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
@@ -14,14 +15,16 @@ public sealed class CherryController : MonoBehaviour, ICherryController
 
     private StickSpawner _stickSpawner;
     private CancellationToken _token;
+    private GameUIMediator _gameUI;
 
     public Borders Borders => _sprite.bounds.AsBorders();
 
     [Inject, UsedImplicitly]
-    private void Construct(StickSpawner stickSpawner, CancellationToken token)
+    private void Construct(StickSpawner stickSpawner, CancellationToken token, GameUIMediator gameUI)
     {
         _stickSpawner = stickSpawner;
         _token = token;
+        _gameUI = gameUI;
     }
 
     public UniTask MoveRandomlyAsync(IPlatformController leftPlatform, float rightPlatformLeftBorder)
@@ -41,5 +44,11 @@ public sealed class CherryController : MonoBehaviour, ICherryController
     {
         position.y -= _stickSpawner.StickWidth;
         _transform.position = Borders.GetRelativePoint(position, relative);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Hero")) return;
+        _gameUI.IncreaseCherryCount();
     }
 }

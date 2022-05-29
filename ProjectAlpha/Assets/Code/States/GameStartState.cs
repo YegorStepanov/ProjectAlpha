@@ -1,4 +1,5 @@
 ﻿using Code.Services;
+using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -13,22 +14,26 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
     private readonly StickSpawner _stickSpawner;
     private readonly CherrySpawner _cherrySpawner;
     private readonly IPositionGenerator _positionGenerator;
+    private readonly GameUIMediator _gameUI;
 
     public GameStartState(
         CameraController cameraController,
         PlatformSpawner platformSpawner,
-        StickSpawner stickSpawner, CherrySpawner cherrySpawner, IPositionGenerator positionGenerator)
+        StickSpawner stickSpawner, CherrySpawner cherrySpawner, IPositionGenerator positionGenerator, GameUIMediator gameUI)
     {
         _cameraController = cameraController;
         _platformSpawner = platformSpawner;
         _stickSpawner = stickSpawner;
         _cherrySpawner = cherrySpawner;
         _positionGenerator = positionGenerator;
+        _gameUI = gameUI;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
         await MoveHeroAsync(args.CurrentPlatform, args.Hero);
+        _gameUI.IncreaseScore();
+        _gameUI.IncreaseCherryCount();
 
         await UniTask.Delay(100);
         UniTask moveCameraTask = MoveCameraAsync(args.CurrentPlatform);

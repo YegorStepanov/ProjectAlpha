@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Code.UI.Animations;
 
-public sealed class FloatContinuallyUI : MonoBehaviour
+public sealed class FloatContinuallyAnimation : MonoBehaviour
 {
     [SerializeField] private RectTransform _rectTransform;
 

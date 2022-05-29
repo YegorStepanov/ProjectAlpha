@@ -1,5 +1,7 @@
 ﻿using Code.AddressableAssets;
+using Code.Animations.Game;
 using Code.Services;
+using Code.Services.Game.UI;
 using Code.VContainer;
 using Cysharp.Threading.Tasks;
 using VContainer;
@@ -15,6 +17,8 @@ public sealed class GameScope : Scope
     private IAsyncPool<PlatformController> _platformPool;
     private IAsyncPool<StickController> _stickPool;
     private IAsyncPool<CherryController> _cherryPool;
+    private GameUIMediator _gameUI;
+    private RedPointHitGameAnimation _redPointHitGameAnimation;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
@@ -29,6 +33,9 @@ public sealed class GameScope : Scope
         _platformPool = loader.CreateCyclicPool(GameAddress.Platform, 3, "Platforms");
         _stickPool = loader.CreateCyclicPool(GameAddress.Stick, 2, "Sticks");
         _cherryPool = loader.CreateCyclicPool(GameAddress.Cherry, 2, "Cherries");
+
+        _gameUI = await loader.LoadAssetAsync(GameAddress.GameUI);
+        _redPointHitGameAnimation = await loader.LoadAssetAsync(GameAddress.Plus1Notification);
     }
 
     protected override void Configure(IContainerBuilder builder)
@@ -49,7 +56,10 @@ public sealed class GameScope : Scope
 
         builder.RegisterInstance(_cherryPool);
         builder.Register<CherrySpawner>(Lifetime.Singleton);
-        
+
+        builder.RegisterComponentInNewPrefab(_gameUI, Lifetime.Singleton);
+        builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
+
         builder.RegisterEntryPoint<GameStart>();
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());

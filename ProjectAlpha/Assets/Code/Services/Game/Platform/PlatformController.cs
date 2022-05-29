@@ -21,7 +21,7 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
 
     public Borders Borders => _platformRenderer.bounds.AsBorders();
 
-    private Borders RedPointBorders => _redPointRenderer.bounds.AsBorders();
+    public Borders RedPointBorders => _redPointRenderer.bounds.AsBorders();
 
     [Inject, UsedImplicitly]
     public void Construct(Settings settings) =>

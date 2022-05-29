@@ -1,4 +1,5 @@
 ﻿using Code.Services;
+using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -10,12 +11,14 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
         IHeroController Hero);
 
     private readonly InputManager _inputManager;
+    private readonly GameUIMediator _gameUI;
     private readonly StickSpawner _stickSpawner;
 
-    public StickControlState(StickSpawner stickSpawner, InputManager inputManager)
+    public StickControlState(StickSpawner stickSpawner, InputManager inputManager, GameUIMediator gameUI)
     {
         _stickSpawner = stickSpawner;
         _inputManager = inputManager;
+        _gameUI = gameUI;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
@@ -35,6 +38,12 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
 
         bool isInside = args.NextPlatform.IsInsideRedPoint(stick.ArrowPosition.x);
         Debug.Log("IsInsideRedPoint: " + isInside);
+
+        if (isInside)
+        {
+            _gameUI.IncreaseScore();
+            _gameUI.ShowRedPointHitNotification(args.NextPlatform.RedPointBorders.Center);
+        }
 
         stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
             new MoveHeroToNextPlatformState.Arguments(args.CurrentPlatform, args.NextPlatform, stick, args.Hero));
