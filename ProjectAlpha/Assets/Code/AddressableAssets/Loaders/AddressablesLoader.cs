@@ -61,7 +61,11 @@ public class AddressablesLoader : IScopedAddressablesLoader
         if (IsComponent<T>())
         {
             GameObject prefab = await LoadAssetTAsync(address.As<GameObject>());
-            return prefab.GetComponent<T>();
+            
+            if (!prefab.TryGetComponent(out T component))
+                Debug.LogError("No component of type " + typeof(T).Name + " found on prefab " + prefab.name);
+ 
+            return component;
         }
 
         return await LoadAssetTAsync(address);
