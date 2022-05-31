@@ -15,6 +15,9 @@ public sealed class InputManager
     public async UniTask NextMouseClick() =>
         await UniTask.WaitUntil(() => Input.GetMouseButtonDown(0), cancellationToken: _token);
 
+    public UniTask NextMouseClick(CancellationToken token) =>
+        UniTask.WaitUntil(() => Input.GetMouseButtonDown(0), cancellationToken: token).SuppressCancellationThrow();
+
     public async UniTask NextMouseRelease() =>
         await UniTask.WaitUntil(() => Input.GetMouseButtonUp(0), cancellationToken: _token);
 }

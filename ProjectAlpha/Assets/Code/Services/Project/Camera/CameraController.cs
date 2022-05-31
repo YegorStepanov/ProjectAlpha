@@ -18,7 +18,6 @@ public sealed class CameraController : MonoBehaviour, IDisposable
 
     private BackgroundChanger _backgroundChanger;
 
-
     public Borders Borders => UpdateBorders();
 
     public Vector3 CameraPosition => _baseCamera.transform.position;
@@ -46,23 +45,8 @@ public sealed class CameraController : MonoBehaviour, IDisposable
     //     // screenSizeChecker.OnScreenResized -= UpdateBorders;
     // }
 
-    public async UniTask ShiftAsync(Vector2 offset) =>
-        await MoveAsync(CameraPosition.ShiftXY(-offset));
-
-    public async UniTask MoveAsync(float destinationX, Relative relative = Relative.Center)
-    {
-        float finalX = Borders.GetRelativePointX(destinationX, relative);
-        await MoveAsync(CameraPosition.WithX(finalX));
-    }
-
-    public async UniTask MoveAsync(Vector2 destination, Relative relative = Relative.Center)
-    {
-        Vector2 finalDestination = GetRelativePosition(destination, relative);
-        await MoveAsync(CameraPosition.WithXY(finalDestination));
-    }
-
-    public Vector2 GetRelativePosition(Vector2 position, Relative relative) =>
-        Borders.GetRelativePoint(position, relative);
+    public async UniTask MoveAsync(Vector2 destination) =>
+        await MoveAsync(destination.WithZ(CameraPosition.z));
 
     private async UniTask MoveAsync(Vector3 destination) =>
         await _baseCamera.transform.DOMove(destination, 7f).SetSpeedBased();

@@ -43,7 +43,7 @@ public sealed class CherryController : MonoBehaviour, ICherryController
     public void TeleportTo(Vector2 position, Relative relative)
     {
         position.y -= _stickSpawner.StickWidth;
-        _transform.position = Borders.GetRelativePoint(position, relative);
+        _transform.position = position.Shift(Borders, relative);
     }
 
     private void OnTriggerEnter(Collider other)

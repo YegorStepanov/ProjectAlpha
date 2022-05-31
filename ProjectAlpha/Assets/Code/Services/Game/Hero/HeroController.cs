@@ -29,14 +29,17 @@ public sealed class HeroController : MonoBehaviour, IHeroController
     private void Awake() =>
         _token = this.GetCancellationTokenOnDestroy();
 
-    public async UniTask MoveAsync(float destinationX)
+    public async UniTask MoveAsync(float destinationX, CancellationToken token = default)
     {
+        if(token == default)
+            token = _token;
+        
         _animator.PlayMove();
 
         await transform.DOMoveX(destinationX, _settings.MovementSpeed)
             .SetEase(Ease.Linear)
             .SetSpeedBased()
-            .WithCancellation(_token);
+            .WithCancellation(token);
 
         _animator.PlayStay();
     }
@@ -48,10 +51,15 @@ public sealed class HeroController : MonoBehaviour, IHeroController
             .WithCancellation(_token);
 
     public void TeleportTo(Vector2 destination, Relative relative) =>
-        transform.position = Borders.GetRelativePoint(destination, relative);
+        transform.position = destination.Shift(Borders, relative);
 
     public UniTask KickAsync() =>
         _animator.PlayKickAsync();
+
+    public void Flip() =>
+        transform.localScale = transform.localScale with { y = transform.localScale.y * -1 };
+
+    public bool IsFlipped => transform.localScale.y < 0;
 
     [Serializable]
     public class Settings

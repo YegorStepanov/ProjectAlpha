@@ -49,7 +49,7 @@ public sealed class RootScope : Scope
         builder.RegisterComponent(_camera);
         _gameSettings.RegisterAllSettings(builder);
 
-        builder.RegisterInstance(SceneLoader.Instance);
+        builder.RegisterInstance<ISceneLoader>(SceneLoader.Instance);
         builder.Register<GameTriggers>(Lifetime.Singleton);
         builder.Register<InputManager>(Lifetime.Singleton);
 

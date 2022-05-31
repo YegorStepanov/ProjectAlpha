@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.ComponentModel;
+using UnityEngine;
 
 namespace Code;
 
@@ -22,4 +23,24 @@ public static class VectorExtensions
     public static Vector2 ShiftX(this Vector2 v, float offset) => new(v.x + offset, v.y);
     public static Vector2 ShiftY(this Vector2 v, float offset) => new(v.x, v.y + offset);
     public static Vector3 ShiftZ(this Vector2 v, float offset) => new(v.x, v.y, offset);
+    
+    public static Vector2 Shift(this Vector2 point, Borders borders, Relative relative)
+    {
+        float halfHeight = borders.Height / 2f;
+        float halfWidth = borders.Width / 2f;
+
+        return relative switch
+        {
+            Relative.Center => point,
+            Relative.Top => point.ShiftY(-halfHeight),
+            Relative.Bottom => point.ShiftY(halfHeight),
+            Relative.Left => point.ShiftX(halfWidth),
+            Relative.Right => point.ShiftX(-halfWidth),
+            Relative.LeftTop => point.ShiftX(halfWidth).ShiftY(-halfHeight),
+            Relative.RightTop => point.ShiftX(-halfWidth).ShiftY(-halfHeight),
+            Relative.LeftBottom => point.ShiftX(halfWidth).ShiftY(halfHeight),
+            Relative.RightBottom => point.ShiftX(-halfWidth).ShiftY(halfHeight),
+            _ => throw new InvalidEnumArgumentException(nameof(relative), (int)relative, typeof(Relative))
+        };
+    }
 }

@@ -9,7 +9,6 @@ public interface IPlatformController
     Borders Borders { get; }
     Borders RedPointBorders { get; }
     UniTask MoveAsync(float destinationX);
-    Vector2 GetRelativePosition(Vector2 position, Relative relative);
     bool IsInsideRedPoint(float point);
     UniTask FadeOutRedPointAsync();
 }

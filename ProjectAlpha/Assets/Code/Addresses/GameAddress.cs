@@ -13,7 +13,7 @@ public static class GameAddress
     public static readonly Address<CherryController> Cherry = new("Cherry");
 
     public static readonly Address<WidthGeneratorData> WidthGenerator = new("Width Generator");
-    public static readonly Address<PositionGeneratorData> PositionGenerator = new("Position Generator");
+    public static readonly Address<NextPositionGenerator> NextPositionGenerator = new("Next Position Generator");
 
     public static readonly Address<GameUIMediator> GameUI = new("Game UI");
     public static readonly Address<RedPointHitGameAnimation> Plus1Notification = new("Plus 1 Notification");

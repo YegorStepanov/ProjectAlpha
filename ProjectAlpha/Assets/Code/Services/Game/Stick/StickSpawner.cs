@@ -27,6 +27,9 @@ public sealed class StickSpawner
         stick.Width = _settings.StickWidth;
         return stick;
     }
+    
+    public void DespawnAll() =>
+        _pool.DespawnAll();
 
     [Serializable]
     public class Settings

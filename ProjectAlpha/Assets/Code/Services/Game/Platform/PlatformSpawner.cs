@@ -21,45 +21,33 @@ public sealed class PlatformSpawner
         _widthGenerator = widthGenerator;
     }
 
-    public async UniTask<IPlatformController> CreateMenuPlatformAsync()
+    public UniTask<IPlatformController> CreateMenuPlatformAsync()
     {
         Vector2 position = _cameraController.ViewportToWorldPosition(_settings.viewportMenuPlatformPosition);
         float width = _settings.MenuPlatformWidth;
-
-        IPlatformController platform = await CreatePlatformAsync(position, width, Relative.Center, false);
-        return platform;
+        return CreatePlatformAsync(position, width, Relative.Center, false);
     }
+
+    public UniTask<IPlatformController> CreateNextPlatformAsync(Vector2 position)
+    {
+        float width = _widthGenerator.NextWidth();
+        return CreatePlatformAsync(position, width, Relative.Left, true);
+    }
+
+    public void DespawnAll() =>
+        _pool.DespawnAll();
 
     private async UniTask<IPlatformController> CreatePlatformAsync(Vector2 position, float width, Relative relative, bool isRedPointEnabled)
     {
         PlatformController platform = await _pool.SpawnAsync();
 
-        float height = _cameraController.Borders.GetRelativePointY(position.y, Relative.Bottom);
+        float height = position.y + _cameraController.Borders.Height / 2f;
 
         platform.SetSize(new Vector2(width, height));
         platform.SetPosition(position, relative);
         platform.ToggleRedPoint(isRedPointEnabled);
 
         return platform;
-    }
-
-    public async UniTask<IPlatformController> CreateNextPlatformAsync(IPlatformController currentPlatform)
-    {
-        float width = _widthGenerator.NextWidth();
-
-        IPlatformController nextPlatform = await CreateNextPlatformAsync(currentPlatform, width);
-        return nextPlatform;
-    }
-
-    private async UniTask<IPlatformController> CreateNextPlatformAsync(IPlatformController currentPlatform, float width)
-    {
-        float distanceWhichCameraWillMove = currentPlatform.Borders.Left - _cameraController.Borders.Left;
-
-        Vector2 position = new(
-            _cameraController.Borders.Right + distanceWhichCameraWillMove,
-            currentPlatform.Borders.Top);
-
-        return await CreatePlatformAsync(position, width, Relative.Left, true);
     }
 
     [Serializable]

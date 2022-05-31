@@ -12,7 +12,7 @@ namespace Code.Scopes;
 public sealed class GameScope : Scope
 {
     private IWidthGenerator _widthGenerator;
-    private IPositionGenerator _positionGenerator;
+    private NextPositionGenerator _nextPositionGenerator;
     private HeroController _heroController;
     private IAsyncPool<PlatformController> _platformPool;
     private IAsyncPool<StickController> _stickPool;
@@ -25,8 +25,7 @@ public sealed class GameScope : Scope
         WidthGeneratorData widthGeneratorData = await loader.LoadAssetAsync(GameAddress.WidthGenerator);
         _widthGenerator = widthGeneratorData.Create();
 
-        PositionGeneratorData positionGeneratorData = await loader.LoadAssetAsync(GameAddress.PositionGenerator);
-        _positionGenerator = positionGeneratorData.Create();
+        _nextPositionGenerator = await loader.LoadAssetAsync(GameAddress.NextPositionGenerator);
 
         _heroController = await loader.LoadAssetAsync(GameAddress.Hero);
 
@@ -43,7 +42,7 @@ public sealed class GameScope : Scope
         builder.Register<GameStateMachine>(Lifetime.Singleton);
 
         builder.RegisterInstance(_widthGenerator);
-        builder.RegisterInstance(_positionGenerator);
+        builder.RegisterInstance(_nextPositionGenerator); //rework?
 
         builder.RegisterComponentInNewPrefab(_heroController, Lifetime.Singleton);
         builder.Register<HeroSpawner>(Lifetime.Singleton);
@@ -63,5 +62,14 @@ public sealed class GameScope : Scope
         builder.RegisterEntryPoint<GameStart>();
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
+        
+        //temp
+        builder.RegisterBuildCallback(resolver =>
+        {
+            var gum = resolver.Resolve<GameUIMediator>();
+            resolver.InjectGameObject(gum.gameObject);
+            
+            gum.gameStateMachine = resolver.Resolve<GameStateMachine>();
+        });
     }
 }

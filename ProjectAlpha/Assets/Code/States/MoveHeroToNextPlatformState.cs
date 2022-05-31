@@ -1,4 +1,5 @@
 ﻿using Code.Services;
+using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States;
@@ -11,10 +12,12 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
         IStickController Stick, IHeroController Hero);
 
     private readonly PlatformSpawner _platformSpawner;
+    private readonly GameUIMediator _gameUIMediator;
 
-    public MoveHeroToNextPlatformState(PlatformSpawner platformSpawner)
+    public MoveHeroToNextPlatformState(PlatformSpawner platformSpawner, GameUIMediator gameUIMediator)
     {
         _platformSpawner = platformSpawner;
+        _gameUIMediator = gameUIMediator;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
@@ -22,14 +25,16 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
         if (IsStickOnPlatform(args.Stick, args.NextPlatform))
         {
             stateMachine.Enter<GameStartState, GameStartState.Arguments>(
-                new GameStartState.Arguments(args.NextPlatform, args.Hero));
+                new GameStartState.Arguments(args.CurrentPlatform, args.NextPlatform, args.Hero));
         }
         else
         {
             await args.Hero.MoveAsync(args.Stick.Borders.Right);
             await UniTask.Delay(100);
             await args.Hero.FellAsync();
+            await UniTask.Delay(300);
 
+            _gameUIMediator.ShowGameOver();
             //earthshake screen
         }
     }

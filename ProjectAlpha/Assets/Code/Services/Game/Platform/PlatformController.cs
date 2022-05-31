@@ -32,7 +32,7 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
 
     public void SetPosition(Vector2 position, Relative relative = Relative.Center)
     {
-        Vector2 pos = Borders.GetRelativePoint(position, relative);
+        Vector2 pos = position.Shift(Borders, relative);
         transform.position = pos;
     }
 
@@ -49,9 +49,6 @@ public sealed class PlatformController : MonoBehaviour, IPlatformController
             .SetEase(Ease.OutQuad)
             .SetSpeedBased()
             .WithCancellation(_token);
-
-    public Vector2 GetRelativePosition(Vector2 position, Relative relative) =>
-        Borders.GetRelativePoint(position, relative);
 
     public bool IsInsideRedPoint(float point) =>
         _redPointRenderer.color.a != 0 && point >= RedPointBorders.Left && point <= RedPointBorders.Right;

@@ -27,18 +27,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8802fb5e2027bb04f900f0a775dc1817
-    m_Address: Position Generator 1
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f80abb1029c62d84c92470d4bb528d59
-    m_Address: Position Generator
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a758f3b0780a0984a983e24e2bc19aa4
-    m_Address: Position Generator 2
+  - m_GUID: 9b67d2c2bd0bf584a8fbf1878b8c08dd
+    m_Address: Next Position Generator
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

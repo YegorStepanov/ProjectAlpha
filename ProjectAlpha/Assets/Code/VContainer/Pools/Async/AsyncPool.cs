@@ -54,6 +54,15 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
         OnDespawned(value);
     }
 
+    public void DespawnAll()
+    {
+        for (int i = 0; i < _activeCount; i++)
+        {
+            TValue instance = _pool[i];
+            Despawn(instance);
+        }
+    }
+
     protected abstract UniTask<TValue> CreateAsync();
 
     protected abstract void OnSpawned(TValue instance);

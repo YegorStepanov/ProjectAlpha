@@ -23,4 +23,9 @@ public sealed class CherrySpawner
         cherry.TeleportTo(position, Relative.RightTop);
         return cherry;
     }
+    
+    public void DespawnAll()
+    {
+        _pool.DespawnAll();
+    }
 }

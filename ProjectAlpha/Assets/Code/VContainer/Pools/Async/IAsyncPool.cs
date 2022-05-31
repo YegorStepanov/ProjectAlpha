@@ -9,4 +9,5 @@ public interface IAsyncPool<T>
     UniTask<T> SpawnAsync();
     void Despawn(T value);
     //todo: void WarmUp(int count);
+    void DespawnAll();
 }

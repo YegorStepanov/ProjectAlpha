@@ -14,10 +14,10 @@ namespace Code.Services;
 
 public sealed class SceneLoader : ISceneLoader
 {
-    private readonly Dictionary<Address<Scene>, SceneInstance> _scenes = new();
+    private readonly Dictionary<Address<Scene>, List<SceneInstance>> _scenes = new();
     private readonly List<GameObject> _tempRootGameObjects = new(32);
 
-    public static ISceneLoader Instance { get; private set; }
+    public static SceneLoader Instance { get; private set; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void Init() =>
@@ -47,7 +47,7 @@ public sealed class SceneLoader : ISceneLoader
         SceneInstance scene = await Addressables.LoadSceneAsync(address.Key, LoadSceneMode.Additive)
             .WithCancellation(token);
 
-        _scenes.Add(address, scene);
+        PushScene(address, scene);
 
         if (TryGetScope(scene, out Scope scope))
         {
@@ -58,11 +58,37 @@ public sealed class SceneLoader : ISceneLoader
             Debug.LogError("The first object in scene should be Scope");
     }
 
+    private void PushScene(Address<Scene> address, SceneInstance scene)
+    {
+        // _scenes.Add(address, scene);
+
+        if (_scenes.TryGetValue(address, out List<SceneInstance> list))
+            list.Add(scene);
+        else
+            _scenes.Add(address, new List<SceneInstance>() { scene });
+    }
+
+    private bool TryPopScene(Address<Scene> address, out SceneInstance scene)
+    {
+        if (_scenes.TryGetValue(address, out List<SceneInstance> scenes))
+        {
+            scene = scenes[0];
+            scenes.RemoveAt(0);
+
+            if (scenes.Count == 0)
+                _scenes.Remove(address);
+            
+            return true;
+        }
+
+        scene = default;
+        return false;
+    }
+
     private async UniTask UnloadCoreAsync(Address<Scene> address, CancellationToken token)
     {
-        if (_scenes.TryGetValue(address, out SceneInstance scene))
+        if (TryPopScene(address, out SceneInstance scene))
         {
-            _scenes.Remove(address);
             await Addressables.UnloadSceneAsync(scene).WithCancellation(token);
         }
         else
