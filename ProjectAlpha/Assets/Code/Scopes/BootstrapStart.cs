@@ -20,10 +20,10 @@ public sealed class BootstrapStart : IAsyncStartable
     {
         _loadingScreen.Show();
 
-        UniTask gameLoad = _sceneLoader.LoadAsync<GameScene>(token);
-        UniTask menuLoad = _sceneLoader.LoadAsync<MenuScene>(token);
+        await _sceneLoader.LoadAsync<GameScene>(token);
+        await _sceneLoader.LoadAsync<MenuScene>(token);
 
-        await (loadGame: gameLoad, loadMenu: menuLoad);
+        // await (loadGame: gameLoad, loadMenu: menuLoad);
 
         await _loadingScreen.FadeOutAsync();
         await _sceneLoader.UnloadAsync<BootstrapScene>(token);
