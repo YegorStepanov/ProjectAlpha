@@ -19,6 +19,7 @@ public sealed class GameStateMachine : IStateMachine
         [typeof(GameStartState)] = resolver.ResolveInstance<GameStartState>(),
         [typeof(StickControlState)] = resolver.ResolveInstance<StickControlState>(),
         [typeof(MoveHeroToNextPlatformState)] = resolver.ResolveInstance<MoveHeroToNextPlatformState>(),
+        [typeof(RestartState)] = resolver.ResolveInstance<RestartState>(),
     };
 
     public void Enter<TState>() where TState : class, IState =>

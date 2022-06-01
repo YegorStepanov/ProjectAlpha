@@ -66,4 +66,10 @@ public sealed class CameraController : MonoBehaviour, IDisposable
 
     public Vector2 ViewportToWorldPosition(Vector2 viewportPosition) =>
         _baseCamera.ViewportToWorldPoint(viewportPosition);
+    
+    public float ViewportToWorldPositionX(float viewportPosX) =>
+        _baseCamera.ViewportToWorldPoint(new Vector2(viewportPosX, 0)).x;
+    
+    public float ViewportToWorldPositionY(float viewportPosY) =>
+        _baseCamera.ViewportToWorldPoint(new Vector2(0, viewportPosY)).y;
 }

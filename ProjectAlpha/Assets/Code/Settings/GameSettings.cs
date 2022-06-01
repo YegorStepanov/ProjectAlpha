@@ -1,4 +1,5 @@
 ﻿using Code.Services;
+using Code.Services.Game.UI;
 using UnityEngine;
 using VContainer;
 
@@ -12,6 +13,7 @@ public sealed class GameSettings : ScriptableObject
     [SerializeField] private StickController.Settings _stick;
     [SerializeField] private StickSpawner.Settings _stickSpawner;
     [SerializeField] private PlatformSpawner.Settings _platformSpawner;
+    [SerializeField] private GameData.Settings _gameData;
 
     public void RegisterAllSettings(IContainerBuilder builder)
     {
@@ -20,5 +22,6 @@ public sealed class GameSettings : ScriptableObject
         builder.RegisterInstance(_stick);
         builder.RegisterInstance(_stickSpawner);
         builder.RegisterInstance(_platformSpawner);
+        builder.RegisterInstance(_gameData);
     }
 }

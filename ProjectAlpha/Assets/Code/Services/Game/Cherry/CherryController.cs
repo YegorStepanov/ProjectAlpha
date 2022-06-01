@@ -15,16 +15,16 @@ public sealed class CherryController : MonoBehaviour, ICherryController
 
     private StickSpawner _stickSpawner;
     private CancellationToken _token;
-    private GameUIMediator _gameUI;
+    private GameMediator _gameMediator;
 
     public Borders Borders => _sprite.bounds.AsBorders();
 
     [Inject, UsedImplicitly]
-    private void Construct(StickSpawner stickSpawner, CancellationToken token, GameUIMediator gameUI)
+    private void Construct(StickSpawner stickSpawner, CancellationToken token, GameMediator gameMediator)
     {
         _stickSpawner = stickSpawner;
         _token = token;
-        _gameUI = gameUI;
+        _gameMediator = gameMediator;
     }
 
     public UniTask MoveRandomlyAsync(IPlatformController leftPlatform, float rightPlatformLeftBorder)
@@ -49,6 +49,6 @@ public sealed class CherryController : MonoBehaviour, ICherryController
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Hero")) return;
-        _gameUI.IncreaseCherryCount();
+        _gameMediator.IncreaseCherryCount();
     }
 }

@@ -9,15 +9,14 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
     public readonly record struct Arguments(
         IPlatformController CurrentPlatform,
         IPlatformController NextPlatform,
-        IStickController Stick, IHeroController Hero);
+        IStickController Stick,
+        IHeroController Hero);
 
-    private readonly PlatformSpawner _platformSpawner;
-    private readonly GameUIMediator _gameUIMediator;
+    private readonly GameMediator _gameMediator;
 
-    public MoveHeroToNextPlatformState(PlatformSpawner platformSpawner, GameUIMediator gameUIMediator)
+    public MoveHeroToNextPlatformState(GameMediator gameMediator)
     {
-        _platformSpawner = platformSpawner;
-        _gameUIMediator = gameUIMediator;
+        _gameMediator = gameMediator;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
@@ -25,7 +24,7 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
         if (IsStickOnPlatform(args.Stick, args.NextPlatform))
         {
             stateMachine.Enter<GameStartState, GameStartState.Arguments>(
-                new GameStartState.Arguments(args.CurrentPlatform, args.NextPlatform, args.Hero));
+                new(args.CurrentPlatform, args.NextPlatform, args.Hero));
         }
         else
         {
@@ -34,8 +33,7 @@ public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatfo
             await args.Hero.FellAsync();
             await UniTask.Delay(300);
 
-            _gameUIMediator.ShowGameOver();
-            //earthshake screen
+            _gameMediator.GameOver();
         }
     }
 

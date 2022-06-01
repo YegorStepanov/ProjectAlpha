@@ -1,4 +1,5 @@
 ﻿using System;
+using Code.Services.Game.UI;
 using Code.VContainer;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -11,41 +12,45 @@ public sealed class PlatformSpawner
     private readonly CameraController _cameraController;
     private readonly Settings _settings;
     private readonly IWidthGenerator _widthGenerator;
+    private readonly GameData _gameData;
 
     public PlatformSpawner(IAsyncPool<PlatformController> pool, CameraController cameraController,
-        Settings settings, IWidthGenerator widthGenerator)
+        Settings settings, IWidthGenerator widthGenerator, GameData gameData)
     {
         _pool = pool;
         _cameraController = cameraController;
         _settings = settings;
         _widthGenerator = widthGenerator;
+        _gameData = gameData;
     }
 
     public UniTask<IPlatformController> CreateMenuPlatformAsync()
     {
-        Vector2 position = _cameraController.ViewportToWorldPosition(_settings.viewportMenuPlatformPosition);
         float width = _settings.MenuPlatformWidth;
-        return CreatePlatformAsync(position, width, Relative.Center, false);
+        float posX = _cameraController.ViewportToWorldPositionX(_settings.ViewportMenuPlatformPositionX);
+        return CreatePlatformAsync(posX, width, Relative.Center, false);
     }
 
-    public UniTask<IPlatformController> CreateNextPlatformAsync(Vector2 position)
+    public UniTask<IPlatformController> CreatePlatformAsync(float posX, Relative relative, bool redPointEnabled = true) //Relative.Left
     {
         float width = _widthGenerator.NextWidth();
-        return CreatePlatformAsync(position, width, Relative.Left, true);
+        return CreatePlatformAsync(posX, width, relative, redPointEnabled);
     }
 
     public void DespawnAll() =>
         _pool.DespawnAll();
 
-    private async UniTask<IPlatformController> CreatePlatformAsync(Vector2 position, float width, Relative relative, bool isRedPointEnabled)
+    private async UniTask<IPlatformController> CreatePlatformAsync(float posX, float width, Relative relative, bool redPointEnabled)
     {
+        Vector2 position = new Vector2(posX, _gameData.GameHeight);
+        
         PlatformController platform = await _pool.SpawnAsync();
 
         float height = position.y + _cameraController.Borders.Height / 2f;
 
         platform.SetSize(new Vector2(width, height));
         platform.SetPosition(position, relative);
-        platform.ToggleRedPoint(isRedPointEnabled);
+        platform.ToggleRedPoint(redPointEnabled);
 
         return platform;
     }
@@ -53,8 +58,7 @@ public sealed class PlatformSpawner
     [Serializable]
     public class Settings
     {
-        public Vector2 viewportMenuPlatformPosition = new(0.5f, 0.2f);
-
+        public float ViewportMenuPlatformPositionX = 0.5f;
         public float MenuPlatformWidth = 2f;
     }
 }

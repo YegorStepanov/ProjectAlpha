@@ -17,7 +17,7 @@ public sealed class GameScope : Scope
     private IAsyncPool<PlatformController> _platformPool;
     private IAsyncPool<StickController> _stickPool;
     private IAsyncPool<CherryController> _cherryPool;
-    private GameUIMediator _gameUI;
+    private GameUI _gameUI;
     private RedPointHitGameAnimation _redPointHitGameAnimation;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
@@ -62,14 +62,21 @@ public sealed class GameScope : Scope
         builder.RegisterEntryPoint<GameStart>();
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
-        
+
+        builder.Register<GameData>(Lifetime.Singleton);
+        builder.Register<GameSceneLoader>(Lifetime.Singleton);
+        builder.Register<GameMediator>(Lifetime.Singleton);
+        builder.Register<GameUIController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+
         //temp
         builder.RegisterBuildCallback(resolver =>
         {
-            var gum = resolver.Resolve<GameUIMediator>();
+            var gum = resolver.Resolve<GameUI>();
             resolver.InjectGameObject(gum.gameObject);
-            
-            gum.gameStateMachine = resolver.Resolve<GameStateMachine>();
+
+            var gm = resolver.Resolve<GameMediator>();
+
+            gm.gameStateMachine = resolver.Resolve<GameStateMachine>();
         });
     }
 }

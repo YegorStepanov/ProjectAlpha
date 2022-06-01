@@ -9,7 +9,9 @@ namespace Code.States;
 
 public sealed class GameStartState : IArgState<GameStartState.Arguments>
 {
-    public readonly record struct Arguments(IPlatformController LeftPlatform, IPlatformController CurrentPlatform,
+    public readonly record struct Arguments(
+        IPlatformController LeftPlatform,
+        IPlatformController CurrentPlatform,
         IHeroController Hero);
 
     private readonly CameraController _cameraController;
@@ -17,7 +19,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
     private readonly StickSpawner _stickSpawner;
     private readonly CherrySpawner _cherrySpawner;
     private readonly NextPositionGenerator _nextPositionGenerator;
-    private readonly GameUIMediator _gameUI;
+    private readonly GameMediator _gameMediator;
     private readonly InputManager _inputManager;
 
     public GameStartState(
@@ -26,7 +28,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         StickSpawner stickSpawner,
         CherrySpawner cherrySpawner,
         NextPositionGenerator nextPositionGenerator,
-        GameUIMediator gameUI,
+        GameMediator gameMediator,
         InputManager inputManager)
     {
         _cameraController = cameraController;
@@ -34,7 +36,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         _stickSpawner = stickSpawner;
         _cherrySpawner = cherrySpawner;
         _nextPositionGenerator = nextPositionGenerator;
-        _gameUI = gameUI;
+        _gameMediator = gameMediator;
         _inputManager = inputManager;
     }
 
@@ -91,25 +93,23 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
             throw new Exception("The end");
         }
 
-        _gameUI.IncreaseScore();
-        _gameUI.IncreaseCherryCount();
+        _gameMediator.IncreaseScore();
+        _gameMediator.IncreaseCherryCount();
 
         await UniTask.Delay(100);
 
-        Vector2 destination = new(args.CurrentPlatform.Borders.Left, args.CurrentPlatform.Borders.Bottom);
+        Vector2 destination = args.CurrentPlatform.Borders.LeftBottom;
         var cameraDestination = destination.Shift(_cameraController.Borders, Relative.LeftBottom);
         var platformDestination = _cameraController.Borders.Right +
                                   (args.CurrentPlatform.Borders.Left - _cameraController.Borders.Left); //rework
-        
+
         var moveCameraTask = _cameraController.MoveAsync(cameraDestination);
 
         _ = args.CurrentPlatform.FadeOutRedPointAsync();
 
-        Vector2 nextPosition = new(
-            args.CurrentPlatform.Borders.Left + _cameraController.Borders.Width,
-            args.CurrentPlatform.Borders.Top);
+        float nextPositionX = args.CurrentPlatform.Borders.Left + _cameraController.Borders.Width;
 
-        IPlatformController nextPlatform = await _platformSpawner.CreateNextPlatformAsync(nextPosition);
+        IPlatformController nextPlatform = await _platformSpawner.CreatePlatformAsync(nextPositionX, Relative.Left);
         ICherryController cherry = await _cherrySpawner.CreateCherryAsync(args.CurrentPlatform, nextPlatform);
 
         await MoveNextPlatformToRandomPoint(args.CurrentPlatform, nextPlatform, cherry, platformDestination);
@@ -117,7 +117,7 @@ public sealed class GameStartState : IArgState<GameStartState.Arguments>
         await moveCameraTask;
 
         stateMachine.Enter<StickControlState, StickControlState.Arguments>(
-            new StickControlState.Arguments(args.CurrentPlatform, nextPlatform, args.Hero));
+            new(args.CurrentPlatform, nextPlatform, args.Hero));
     }
 
     private async UniTask MoveNextPlatformToRandomPoint(

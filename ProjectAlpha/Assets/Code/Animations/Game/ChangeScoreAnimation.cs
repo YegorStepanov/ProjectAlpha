@@ -8,11 +8,11 @@ public sealed class ChangeScoreAnimation : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
 
-    public void Show(int score)
+    public void Show(int score, bool animate = true)
     {
         _text.text = score.ToString();
 
-        if (score != 0)
+        if (animate)
             _text.transform.DOPunchScale(new Vector2(0.3f, 0.3f), 0.3f, 0, 0f);
     }
 }

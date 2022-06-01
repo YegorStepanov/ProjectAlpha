@@ -7,57 +7,41 @@ namespace Code.States;
 //from menu
 public sealed class BootstrapState : IState
 {
-    private readonly CameraController _cameraController;
+    private readonly CameraController _camera;
     private readonly GameTriggers _gameTriggers;
-    private readonly GameUIMediator _gameUI;
-    private readonly CherrySpawner _cherrySpawner;
-    private readonly StickSpawner _stickSpawner;
+    private readonly GameData _gameData;
     private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
 
     public BootstrapState(
         PlatformSpawner platformSpawner,
         HeroSpawner heroSpawner,
-        CameraController cameraController,
-        GameTriggers gameTriggers, 
-        GameUIMediator gameUI,
-        CherrySpawner cherrySpawner,
-        StickSpawner stickSpawner)
+        CameraController camera,
+        GameTriggers gameTriggers,
+        GameData gameData)
     {
         _platformSpawner = platformSpawner;
         _heroSpawner = heroSpawner;
-        _cameraController = cameraController;
+        _camera = camera;
         _gameTriggers = gameTriggers;
-        _gameUI = gameUI;
-        _cherrySpawner = cherrySpawner;
-        _stickSpawner = stickSpawner;
+        _gameData = gameData;
     }
 
-    private static int c = 0;
-    
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
-        _platformSpawner.DespawnAll();
-        _cherrySpawner.DespawnAll();
-        _stickSpawner.DespawnAll();
-        
-        _ = _gameUI.ShowHelp();
-        
-        UniTask loadBackgroundTask = _cameraController.ChangeBackgroundAsync();
+        _gameData.ChangeToMenuHeight();
+
+        await _camera.ChangeBackgroundAsync();
 
         IPlatformController menuPlatform = await _platformSpawner.CreateMenuPlatformAsync();
 
-        IHeroController hero = await _heroSpawner.CreateHeroAsync(menuPlatform.Position, Relative.Left);
+        IHeroController hero = await _heroSpawner.CreateHeroAsync(menuPlatform.Borders.CenterTop, Relative.Left);
 
-        if(c++ == 0) //rework 
-            await _gameTriggers.OnGameStarted.Await();
+        await _gameTriggers.OnGameStarted.Await();
 
-        await loadBackgroundTask;
+        // _gameData.ChangeToGameHeight();
 
-        stateMachine.Enter<GameStartState, GameStartState.Arguments>(
-            new GameStartState.Arguments(menuPlatform, menuPlatform, hero));
-
-        //set idle animation
+        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(menuPlatform, menuPlatform, hero));
     }
 
     public void Exit() { }

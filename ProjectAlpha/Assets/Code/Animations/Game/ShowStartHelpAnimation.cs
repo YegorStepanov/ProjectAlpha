@@ -22,6 +22,8 @@ public sealed class ShowStartHelpAnimation : MonoBehaviour
 
     public async UniTask HideAsync(CancellationToken token)
     {
+        if(_text.color.a == 0f) return;
+        
         await _text.DOFade(0f, 1f).WithCancellation(token);
 
         _canvas.enabled = false;

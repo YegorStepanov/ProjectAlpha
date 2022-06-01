@@ -7,24 +7,25 @@ namespace Code.States;
 
 public sealed class StickControlState : IArgState<StickControlState.Arguments>
 {
-    public readonly record struct Arguments(IPlatformController CurrentPlatform, IPlatformController NextPlatform,
+    public readonly record struct Arguments(
+        IPlatformController CurrentPlatform,
+        IPlatformController NextPlatform,
         IHeroController Hero);
 
     private readonly InputManager _inputManager;
-    private readonly GameUIMediator _gameUI;
+    private readonly GameMediator _gameMediator;
     private readonly StickSpawner _stickSpawner;
 
-    public StickControlState(StickSpawner stickSpawner, InputManager inputManager, GameUIMediator gameUI)
+    public StickControlState(StickSpawner stickSpawner, InputManager inputManager, GameMediator gameMediator)
     {
         _stickSpawner = stickSpawner;
         _inputManager = inputManager;
-        _gameUI = gameUI;
+        _gameMediator = gameMediator;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-        Vector2 stickPosition = new(args.CurrentPlatform.Borders.Right, args.CurrentPlatform.Borders.Top);
-        IStickController stick = await _stickSpawner.CreateStickAsync(stickPosition);
+        IStickController stick = await _stickSpawner.CreateStickAsync(args.CurrentPlatform.Borders.RightTop);
 
         await _inputManager.NextMouseClick();
         stick.StartIncreasing();
@@ -40,13 +41,10 @@ public sealed class StickControlState : IArgState<StickControlState.Arguments>
         Debug.Log("IsInsideRedPoint: " + isInside);
 
         if (isInside)
-        {
-            _gameUI.IncreaseScore();
-            _gameUI.ShowRedPointHitNotification(args.NextPlatform.RedPointBorders.Center);
-        }
+            _gameMediator.OnRedPointHit(args.NextPlatform.RedPointBorders.Center);
 
         stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
-            new MoveHeroToNextPlatformState.Arguments(args.CurrentPlatform, args.NextPlatform, stick, args.Hero));
+            new(args.CurrentPlatform, args.NextPlatform, stick, args.Hero));
     }
 
     public void Exit() { }
