@@ -5,7 +5,7 @@ using VContainer.Unity;
 
 namespace Code.VContainer;
 
-public class AddressableComponentPool<TComponent> : AsyncPool<TComponent> where TComponent : Component
+public sealed class AddressableComponentPool<TComponent> : AsyncPool<TComponent> where TComponent : Component
 {
     private readonly Address<TComponent> _address;
     private readonly string _containerName;
