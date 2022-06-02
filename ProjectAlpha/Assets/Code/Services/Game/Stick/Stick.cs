@@ -11,7 +11,7 @@ using VContainer;
 namespace Code.Services;
 
 //Bug: stick speed depends on PPU of sprite `rectangle`  
-public sealed class StickController : MonoBehaviour, IStickController
+public sealed class Stick : MonoBehaviour, IStick
 {
     [SerializeField] private Transform _stick;
     [SerializeField] private SpriteRenderer _spriteRenderer;

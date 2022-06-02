@@ -13,16 +13,16 @@ namespace Tests;
 public class AddressableTestFixture: IDisposable
 {
     private static readonly Address<GameObject> gameObjectAddress = new("Platform");
-    private static readonly Address<PlatformController> monoBehaviourAddress = new("Platform");
+    private static readonly Address<Platform> monoBehaviourAddress = new("Platform");
     private static readonly Address<Sprite> assetAddress = new("Background 1");
 
     public Address<GameObject> GameObjectAddress => gameObjectAddress;
-    public Address<PlatformController> MonoBehaviourAddress => monoBehaviourAddress;
+    public Address<Platform> MonoBehaviourAddress => monoBehaviourAddress;
     public Address<Sprite> AssetAddress => assetAddress;
 
 
     public ITestGameObjectLoader<GameObject> GameObject { get; } = new TestAssetLoader<GameObject>(gameObjectAddress);
-    public ITestComponentLoader<PlatformController> MonoBehaviour { get; } =  new TestAssetLoader<PlatformController>(monoBehaviourAddress);
+    public ITestComponentLoader<Platform> MonoBehaviour { get; } =  new TestAssetLoader<Platform>(monoBehaviourAddress);
     public ITestAssetLoader<Sprite> Asset { get; } = new TestAssetLoader<Sprite>(assetAddress);
 
     [UnitySetUp]

@@ -8,7 +8,7 @@ using VContainer;
 
 namespace Code.Services;
 
-public sealed class CherryController : MonoBehaviour, ICherryController
+public sealed class Cherry : MonoBehaviour, ICherry
 {
     [SerializeField] private Transform _transform;
     [SerializeField] private SpriteRenderer _sprite;
@@ -29,7 +29,7 @@ public sealed class CherryController : MonoBehaviour, ICherryController
         _token = token;
     }
 
-    public UniTask MoveRandomlyAsync(IPlatformController leftPlatform, float rightPlatformLeftBorder)
+    public UniTask MoveRandomlyAsync(IPlatform leftPlatform, float rightPlatformLeftBorder)
     {
         float min = leftPlatform.Borders.Right + Borders.Width / 2f;
         float max = rightPlatformLeftBorder - Borders.Width / 2f;

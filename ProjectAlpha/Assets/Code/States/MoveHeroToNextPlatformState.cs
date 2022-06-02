@@ -6,11 +6,11 @@ namespace Code.States;
 public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformState.Arguments>
 {
     public readonly record struct Arguments(
-        IPlatformController CurrentPlatform,
-        IPlatformController NextPlatform,
-        IStickController Stick,
-        IHeroController Hero,
-        ICherryController Cherry);
+        IPlatform CurrentPlatform,
+        IPlatform NextPlatform,
+        IStick Stick,
+        IHero Hero,
+        ICherry Cherry);
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
@@ -30,7 +30,7 @@ public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformS
 
     public void Exit() { }
 
-    private static bool IsStickOnPlatform(IStickController stick, IPlatformController platform)
+    private static bool IsStickOnPlatform(IStick stick, IPlatform platform)
     {
         float stickPosX = stick.Borders.Right;
 

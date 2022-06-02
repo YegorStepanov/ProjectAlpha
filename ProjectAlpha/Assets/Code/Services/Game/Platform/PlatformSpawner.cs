@@ -8,30 +8,30 @@ namespace Code.Services;
 
 public sealed class PlatformSpawner
 {
-    private readonly IAsyncPool<PlatformController> _pool;
-    private readonly CameraController _cameraController;
+    private readonly IAsyncPool<Platform> _pool;
+    private readonly Camera _camera;
     private readonly Settings _settings;
     private readonly IWidthGenerator _widthGenerator;
     private readonly GameData _gameData;
 
-    public PlatformSpawner(IAsyncPool<PlatformController> pool, CameraController cameraController,
+    public PlatformSpawner(IAsyncPool<Platform> pool, Camera camera,
         Settings settings, IWidthGenerator widthGenerator, GameData gameData)
     {
         _pool = pool;
-        _cameraController = cameraController;
+        _camera = camera;
         _settings = settings;
         _widthGenerator = widthGenerator;
         _gameData = gameData;
     }
 
-    public UniTask<IPlatformController> CreateMenuPlatformAsync()
+    public UniTask<IPlatform> CreateMenuPlatformAsync()
     {
         float width = _settings.MenuPlatformWidth;
-        float posX = _cameraController.ViewportToWorldPositionX(_settings.ViewportMenuPlatformPositionX);
+        float posX = _camera.ViewportToWorldPositionX(_settings.ViewportMenuPlatformPositionX);
         return CreatePlatformAsync(posX, width, Relative.Center, false);
     }
 
-    public UniTask<IPlatformController> CreatePlatformAsync(float posX, Relative relative, bool redPointEnabled = true) //Relative.Left
+    public UniTask<IPlatform> CreatePlatformAsync(float posX, Relative relative, bool redPointEnabled = true) //Relative.Left
     {
         float width = _widthGenerator.NextWidth();
         return CreatePlatformAsync(posX, width, relative, redPointEnabled);
@@ -40,13 +40,13 @@ public sealed class PlatformSpawner
     public void DespawnAll() =>
         _pool.DespawnAll();
 
-    private async UniTask<IPlatformController> CreatePlatformAsync(float posX, float width, Relative relative, bool redPointEnabled)
+    private async UniTask<IPlatform> CreatePlatformAsync(float posX, float width, Relative relative, bool redPointEnabled)
     {
         Vector2 position = new Vector2(posX, _gameData.GameHeight);
         
-        PlatformController platform = await _pool.SpawnAsync();
+        Platform platform = await _pool.SpawnAsync();
 
-        float height = position.y + _cameraController.Borders.Height / 2f;
+        float height = position.y + _camera.Borders.Height / 2f;
 
         platform.SetSize(new Vector2(width, height));
         platform.SetPosition(position, relative);

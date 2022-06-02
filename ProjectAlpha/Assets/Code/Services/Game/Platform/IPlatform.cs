@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Code.Services;
 
-public interface IPlatformController
+public interface IPlatform
 {
     Vector2 Position { get; }
     Borders Borders { get; }

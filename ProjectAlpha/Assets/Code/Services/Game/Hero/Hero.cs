@@ -8,7 +8,7 @@ using VContainer;
 
 namespace Code.Services;
 
-public sealed class HeroController : MonoBehaviour, IHeroController
+public sealed class Hero : MonoBehaviour, IHero
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private HeroAnimator _animator;
@@ -16,7 +16,7 @@ public sealed class HeroController : MonoBehaviour, IHeroController
     private Settings _settings;
     private CancellationToken _token;
 
-    private IStickController _stick;
+    private IStick _stick;
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
 

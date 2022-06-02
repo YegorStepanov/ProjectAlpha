@@ -2,27 +2,28 @@
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Camera = Code.Services.Camera;
 
 namespace Code.States;
 
 public sealed class GameStartState : IState<GameStartState.Arguments>
 {
-    public readonly record struct Arguments(IPlatformController CurrentPlatform, IHeroController Hero);
+    public readonly record struct Arguments(IPlatform CurrentPlatform, IHero Hero);
 
-    private readonly CameraController _cameraController;
+    private readonly Camera _camera;
     private readonly PlatformSpawner _platformSpawner;
     private readonly CherrySpawner _cherrySpawner;
     private readonly NextPositionGenerator _nextPositionGenerator;
     private readonly GameMediator _gameMediator;
 
     public GameStartState(
-        CameraController cameraController,
+        Camera camera,
         PlatformSpawner platformSpawner,
         CherrySpawner cherrySpawner,
         NextPositionGenerator nextPositionGenerator,
         GameMediator gameMediator)
     {
-        _cameraController = cameraController;
+        _camera = camera;
         _platformSpawner = platformSpawner;
         _cherrySpawner = cherrySpawner;
         _nextPositionGenerator = nextPositionGenerator;
@@ -38,18 +39,18 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
         await UniTask.Delay(100);
 
         Vector2 destination = args.CurrentPlatform.Borders.LeftBottom;
-        var cameraDestination = destination.Shift(_cameraController.Borders, Relative.LeftBottom);
-        var platformDestination = _cameraController.Borders.Right +
-                                  (args.CurrentPlatform.Borders.Left - _cameraController.Borders.Left); //rework
+        var cameraDestination = destination.Shift(_camera.Borders, Relative.LeftBottom);
+        var platformDestination = _camera.Borders.Right +
+                                  (args.CurrentPlatform.Borders.Left - _camera.Borders.Left); //rework
 
-        var moveCameraTask = _cameraController.MoveAsync(cameraDestination);
+        var moveCameraTask = _camera.MoveAsync(cameraDestination);
 
         _ = args.CurrentPlatform.FadeOutRedPointAsync();
 
-        float nextPositionX = args.CurrentPlatform.Borders.Left + _cameraController.Borders.Width;
+        float nextPositionX = args.CurrentPlatform.Borders.Left + _camera.Borders.Width;
 
-        IPlatformController nextPlatform = await _platformSpawner.CreatePlatformAsync(nextPositionX, Relative.Left);
-        ICherryController cherry = await _cherrySpawner.CreateCherryAsync(nextPlatform);
+        IPlatform nextPlatform = await _platformSpawner.CreatePlatformAsync(nextPositionX, Relative.Left);
+        ICherry cherry = await _cherrySpawner.CreateCherryAsync(nextPlatform);
 
         await MoveNextPlatformToRandomPoint(args.CurrentPlatform, nextPlatform, cherry, platformDestination);
 
@@ -60,9 +61,9 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
     }
 
     private async UniTask MoveNextPlatformToRandomPoint(
-        IPlatformController currentPlatform,
-        IPlatformController nextPlatform,
-        ICherryController cherry,
+        IPlatform currentPlatform,
+        IPlatform nextPlatform,
+        ICherry cherry,
         float cameraDestination)
     {
         float newPos = _nextPositionGenerator.NextPosition(currentPlatform, nextPlatform, cameraDestination);

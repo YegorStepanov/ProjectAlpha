@@ -15,11 +15,11 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
 
     public readonly record struct Arguments(
         bool IsGameOver,
-        IPlatformController LeftPlatform,
-        IPlatformController CurrentPlatform,
-        IHeroController Hero,
-        [CanBeNull] ICherryController Cherry,
-        [CanBeNull] IStickController Stick);
+        IPlatform LeftPlatform,
+        IPlatform CurrentPlatform,
+        IHero Hero,
+        [CanBeNull] ICherry Cherry,
+        [CanBeNull] IStick Stick);
 
     public HeroMovementState(InputManager inputManager, StickSpawner stickSpawner, GameMediator gameMediator)
     {
@@ -32,7 +32,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
     {
         using CancellationTokenSource cts = new();
 
-        _ = FlippingHeroOnClickAsync(args.Hero, args.LeftPlatform, args.CurrentPlatform, cts.Token);
+        _ = FlippingHeroOnClick(args.Hero, args.LeftPlatform, args.CurrentPlatform, cts.Token);
         
         if(args.Cherry != null)
             _ = PickingUpCherryByHero(args.Hero, args.Cherry, cts.Token);
@@ -59,12 +59,12 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
         stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(args.CurrentPlatform, args.Hero));
     }
 
-    private async UniTask FlippingHeroOnClick(IHeroController hero, IPlatformController leftPlatform,
-        IPlatformController rightPlatform, CancellationToken token)
+    private async UniTask FlippingHeroOnClick(IHero hero, IPlatform leftPlatform,
+        IPlatform rightPlatform, CancellationToken token)
     {
         await foreach (var _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(token))
         {
-            if (leftPlatform.Borders.Right < hero.Borders.Left && hero.Borders.Right < rightPlatform.Borders.Left)
+            if (!hero.Borders.Intersect(leftPlatform.Borders) && !hero.Borders.Intersect(rightPlatform.Borders))
             {
                 hero.Flip();
             }
@@ -72,7 +72,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
     }
 
     private static async UniTask<bool> CollidingHeroWithPlatform(
-        IHeroController hero, IPlatformController nextPlatform, CancellationToken token)
+        IHero hero, IPlatform nextPlatform, CancellationToken token)
     {
         await UniTask.WaitUntil(() => hero.Borders.Right > nextPlatform.Borders.Left && hero.IsFlipped,
             cancellationToken: token);
@@ -80,7 +80,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
     }
 
     private static async UniTask PickingUpCherryByHero(
-        IHeroController hero, ICherryController cherry, CancellationToken token)
+        IHero hero, ICherry cherry, CancellationToken token)
     {
         await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(token))
         {
@@ -92,7 +92,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
         }
     }
 
-    private async UniTask MoveHeroAsync(float destinationX, IHeroController hero, CancellationToken token)
+    private async UniTask MoveHeroAsync(float destinationX, IHero hero, CancellationToken token)
     {
         float destination = destinationX;
         //do it only for platform, not for endgame

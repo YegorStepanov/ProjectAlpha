@@ -13,10 +13,10 @@ public sealed class GameScope : Scope
 {
     private IWidthGenerator _widthGenerator;
     private NextPositionGenerator _nextPositionGenerator;
-    private HeroController _heroController;
-    private IAsyncPool<PlatformController> _platformPool;
-    private IAsyncPool<StickController> _stickPool;
-    private IAsyncPool<CherryController> _cherryPool;
+    private Hero _hero;
+    private IAsyncPool<Platform> _platformPool;
+    private IAsyncPool<Stick> _stickPool;
+    private IAsyncPool<Cherry> _cherryPool;
     private GameUI _gameUI;
     private RedPointHitGameAnimation _redPointHitGameAnimation;
 
@@ -27,7 +27,7 @@ public sealed class GameScope : Scope
 
         _nextPositionGenerator = await loader.LoadAssetAsync(GameAddress.NextPositionGenerator);
 
-        _heroController = await loader.LoadAssetAsync(GameAddress.Hero);
+        _hero = await loader.LoadAssetAsync(GameAddress.Hero);
 
         _platformPool = loader.CreateCyclicPool(GameAddress.Platform, 3, "Platforms");
         _stickPool = loader.CreateCyclicPool(GameAddress.Stick, 2, "Sticks");
@@ -44,7 +44,7 @@ public sealed class GameScope : Scope
         builder.RegisterInstance(_widthGenerator);
         builder.RegisterInstance(_nextPositionGenerator); //rework?
 
-        builder.RegisterComponentInNewPrefab(_heroController, Lifetime.Singleton);
+        builder.RegisterComponentInNewPrefab(_hero, Lifetime.Singleton);
         builder.Register<HeroSpawner>(Lifetime.Singleton);
 
         builder.RegisterInstance(_platformPool);

@@ -7,7 +7,7 @@ namespace Code.States;
 //from menu
 public sealed class BootstrapState : IState
 {
-    private readonly CameraController _camera;
+    private readonly Camera _camera;
     private readonly GameTriggers _gameTriggers;
     private readonly GameData _gameData;
     private readonly HeroSpawner _heroSpawner;
@@ -16,7 +16,7 @@ public sealed class BootstrapState : IState
     public BootstrapState(
         PlatformSpawner platformSpawner,
         HeroSpawner heroSpawner,
-        CameraController camera,
+        Camera camera,
         GameTriggers gameTriggers,
         GameData gameData)
     {
@@ -33,9 +33,9 @@ public sealed class BootstrapState : IState
 
         await _camera.ChangeBackgroundAsync();
 
-        IPlatformController menuPlatform = await _platformSpawner.CreateMenuPlatformAsync();
+        IPlatform menuPlatform = await _platformSpawner.CreateMenuPlatformAsync();
 
-        IHeroController hero = await _heroSpawner.CreateHeroAsync(menuPlatform.Borders.CenterTop, Relative.Left);
+        IHero hero = await _heroSpawner.CreateHeroAsync(menuPlatform.Borders.CenterTop, Relative.Left);
 
         await _gameTriggers.OnGameStarted.Await();
 

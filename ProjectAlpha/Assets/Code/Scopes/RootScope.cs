@@ -11,7 +11,7 @@ namespace Code.Scopes;
 
 public sealed class RootScope : Scope
 {
-    private CameraController _camera;
+    private Camera _camera;
     private GameSettings _gameSettings;
 
     // todo:

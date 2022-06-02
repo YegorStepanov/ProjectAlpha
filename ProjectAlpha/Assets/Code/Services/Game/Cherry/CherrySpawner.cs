@@ -6,14 +6,14 @@ namespace Code.Services;
 
 public sealed class CherrySpawner
 {
-    private readonly IAsyncPool<CherryController> _pool;
+    private readonly IAsyncPool<Cherry> _pool;
 
-    public CherrySpawner(IAsyncPool<CherryController> pool) =>
+    public CherrySpawner(IAsyncPool<Cherry> pool) =>
         _pool = pool;
 
-    public async UniTask<ICherryController> CreateCherryAsync(IPlatformController nextPlatform)
+    public async UniTask<ICherry> CreateCherryAsync(IPlatform nextPlatform)
     {
-        CherryController cherry = await _pool.SpawnAsync();
+        Cherry cherry = await _pool.SpawnAsync();
 
         Vector2 position = new(
             nextPlatform.Borders.Left,
@@ -28,7 +28,7 @@ public sealed class CherrySpawner
         _pool.DespawnAll();
     }
     
-    public void Despawn(CherryController cherry)
+    public void Despawn(Cherry cherry)
     {
         _pool.Despawn(cherry);
     }

@@ -11,7 +11,7 @@ public sealed class NextPositionGenerator : ScriptableObject
     [SerializeField] private float _leftOffset;
     [SerializeField] private float _rightOffset;
     
-    public float NextPosition(IPlatformController currentPlatform, IPlatformController nextPlatform, float cameraDestinationRightCorner)
+    public float NextPosition(IPlatform currentPlatform, IPlatform nextPlatform, float cameraDestinationRightCorner)
     {
         float halfWidth = nextPlatform.Borders.Width / 2f;
 

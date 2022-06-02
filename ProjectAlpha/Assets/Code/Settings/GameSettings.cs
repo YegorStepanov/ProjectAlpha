@@ -8,9 +8,9 @@ namespace Code.Game;
 [CreateAssetMenu(menuName = "Data/Game Settings")]
 public sealed class GameSettings : ScriptableObject
 {
-    [SerializeField] private HeroController.Settings _hero;
-    [SerializeField] private PlatformController.Settings _platform;
-    [SerializeField] private StickController.Settings _stick;
+    [SerializeField] private Hero.Settings _hero;
+    [SerializeField] private Platform.Settings _platform;
+    [SerializeField] private Stick.Settings _stick;
     [SerializeField] private StickSpawner.Settings _stickSpawner;
     [SerializeField] private PlatformSpawner.Settings _platformSpawner;
     [SerializeField] private GameData.Settings _gameData;

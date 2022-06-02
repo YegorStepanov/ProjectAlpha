@@ -8,10 +8,10 @@ namespace Code.States;
 public sealed class StickControlState : IState<StickControlState.Arguments>
 {
     public readonly record struct Arguments(
-        IPlatformController CurrentPlatform,
-        IPlatformController NextPlatform,
-        IHeroController Hero,
-        ICherryController Cherry);
+        IPlatform CurrentPlatform,
+        IPlatform NextPlatform,
+        IHero Hero,
+        ICherry Cherry);
 
     private readonly InputManager _inputManager;
     private readonly GameMediator _gameMediator;
@@ -26,7 +26,7 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-        IStickController stick = await _stickSpawner.CreateStickAsync(args.CurrentPlatform.Borders.RightTop);
+        IStick stick = await _stickSpawner.CreateStickAsync(args.CurrentPlatform.Borders.RightTop);
 
         await _inputManager.NextMouseClick();
         stick.StartIncreasing();

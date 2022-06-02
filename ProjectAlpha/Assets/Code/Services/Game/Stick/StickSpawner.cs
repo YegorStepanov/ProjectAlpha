@@ -7,10 +7,10 @@ namespace Code.Services;
 
 public sealed class StickSpawner
 {
-    private readonly IAsyncPool<StickController> _pool;
+    private readonly IAsyncPool<Stick> _pool;
     private readonly Settings _settings;
 
-    public StickSpawner(IAsyncPool<StickController> pool, Settings settings)
+    public StickSpawner(IAsyncPool<Stick> pool, Settings settings)
     {
         _pool = pool;
         _settings = settings;
@@ -18,9 +18,9 @@ public sealed class StickSpawner
 
     public float StickWidth => _settings.StickWidth;
 
-    public async UniTask<IStickController> CreateStickAsync(Vector2 position)
+    public async UniTask<IStick> CreateStickAsync(Vector2 position)
     {
-        StickController stick = await _pool.SpawnAsync();
+        Stick stick = await _pool.SpawnAsync();
         stick.ResetStick();
 
         stick.Position = position;

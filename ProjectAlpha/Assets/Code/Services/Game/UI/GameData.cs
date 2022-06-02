@@ -4,14 +4,14 @@ namespace Code.Services.Game.UI;
 
 public sealed class GameData
 {
-    private readonly CameraController _camera;
+    private readonly Camera _camera;
     private readonly Settings _settings;
     
     public int Score { get; private set; } = -1;
     public int CherryCount { get; private set; }
     public float GameHeight { get; private set; }
 
-    public GameData(CameraController camera, Settings settings)
+    public GameData(Camera camera, Settings settings)
     {
         _camera = camera;
         _settings = settings;

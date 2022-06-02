@@ -8,7 +8,7 @@ using VContainer;
 
 namespace Code.Services;
 
-public sealed class PlatformController : MonoBehaviour, IPlatformController
+public sealed class Platform : MonoBehaviour, IPlatform
 {
     [SerializeField] private SpriteRenderer _platformRenderer;
 

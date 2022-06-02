@@ -10,10 +10,10 @@ using VContainer;
 
 namespace Code.Services;
 
-[RequireComponent(typeof(Camera))]
-public sealed class CameraController : MonoBehaviour, IDisposable
+[RequireComponent(typeof(UnityEngine.Camera))]
+public sealed class Camera : MonoBehaviour, IDisposable
 {
-    [Required, SerializeField] private Camera _baseCamera;
+    [Required, SerializeField] private UnityEngine.Camera _baseCamera;
     [Required, SerializeField] private Image _backgroundImage;
 
     private BackgroundChanger _backgroundChanger;

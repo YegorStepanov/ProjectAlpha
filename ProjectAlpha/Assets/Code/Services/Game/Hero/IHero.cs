@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Code.Services;
 
-public interface IHeroController
+public interface IHero
 {
     float HandOffset { get; } //todo: OffsetToItem/Stick?
     Borders Borders { get; }
