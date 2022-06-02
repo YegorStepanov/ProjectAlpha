@@ -41,7 +41,7 @@ public sealed class BootstrapState : IState
 
         // _gameData.ChangeToGameHeight();
 
-        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(menuPlatform, menuPlatform, hero));
+        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(menuPlatform, hero));
     }
 
     public void Exit() { }

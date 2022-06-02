@@ -24,4 +24,10 @@ public readonly record struct Borders(float Top, float Bottom, float Left, float
     
     private float CenterX => (Left + Right) / 2f;   
     private float CenterY => (Top + Bottom) / 2f;
+
+    public bool Intersects(Borders other) =>
+        !(other.Left > Right || other.Right < Left || other.Top < Bottom || other.Bottom > Top);
+
+    public bool IsInside(Borders other) =>
+        other.Left <= Left && other.Right >= Right && other.Top >= Top && other.Bottom <= Bottom;
 }

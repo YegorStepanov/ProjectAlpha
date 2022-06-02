@@ -16,6 +16,7 @@ public sealed class GameStateMachine : IStateMachine
     public GameStateMachine(IObjectResolver resolver) => _states = new Dictionary<Type, IExitState>
     {
         [typeof(BootstrapState)] = resolver.ResolveInstance<BootstrapState>(),
+        [typeof(HeroMovementState)] = resolver.ResolveInstance<HeroMovementState>(),
         [typeof(GameStartState)] = resolver.ResolveInstance<GameStartState>(),
         [typeof(StickControlState)] = resolver.ResolveInstance<StickControlState>(),
         [typeof(MoveHeroToNextPlatformState)] = resolver.ResolveInstance<MoveHeroToNextPlatformState>(),
@@ -25,7 +26,7 @@ public sealed class GameStateMachine : IStateMachine
     public void Enter<TState>() where TState : class, IState =>
         ChangeState<TState>().EnterAsync(this).Forget();
 
-    public void Enter<TState, TArg>(TArg argument) where TState : class, IArgState<TArg> =>
+    public void Enter<TState, TArg>(TArg argument) where TState : class, IState<TArg> =>
         ChangeState<TState>().EnterAsync(argument, this).Forget();
 
     private TState ChangeState<TState>() where TState : class, IExitState

@@ -11,8 +11,7 @@ public sealed class CherrySpawner
     public CherrySpawner(IAsyncPool<CherryController> pool) =>
         _pool = pool;
 
-    public async UniTask<ICherryController> CreateCherryAsync(IPlatformController currentPlatform,
-        IPlatformController nextPlatform)
+    public async UniTask<ICherryController> CreateCherryAsync(IPlatformController nextPlatform)
     {
         CherryController cherry = await _pool.SpawnAsync();
 
@@ -27,5 +26,10 @@ public sealed class CherrySpawner
     public void DespawnAll()
     {
         _pool.DespawnAll();
+    }
+    
+    public void Despawn(CherryController cherry)
+    {
+        _pool.Despawn(cherry);
     }
 }

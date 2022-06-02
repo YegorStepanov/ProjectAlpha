@@ -6,4 +6,5 @@ public interface ICherryController
 {
     Borders Borders { get; }
     UniTask MoveRandomlyAsync(IPlatformController leftPlatform, float rightPlatformLeftBorder);
+    void PickUp();
 }

@@ -10,7 +10,8 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
     public readonly record struct Arguments(
         IPlatformController CurrentPlatform,
         IPlatformController NextPlatform,
-        IHeroController Hero);
+        IHeroController Hero,
+        ICherryController Cherry);
 
     private readonly InputManager _inputManager;
     private readonly GameMediator _gameMediator;
@@ -44,7 +45,7 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
             _gameMediator.OnRedPointHit(args.NextPlatform.RedPointBorders.Center);
 
         stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
-            new(args.CurrentPlatform, args.NextPlatform, stick, args.Hero));
+            new(args.CurrentPlatform, args.NextPlatform, stick, args.Hero, args.Cherry));
     }
 
     public void Exit() { }

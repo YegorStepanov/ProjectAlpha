@@ -10,7 +10,8 @@ public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformS
         IPlatformController CurrentPlatform,
         IPlatformController NextPlatform,
         IStickController Stick,
-        IHeroController Hero);
+        IHeroController Hero,
+        ICherryController Cherry);
 
     private readonly GameMediator _gameMediator;
 
@@ -23,8 +24,8 @@ public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformS
     {
         if (IsStickOnPlatform(args.Stick, args.NextPlatform))
         {
-            stateMachine.Enter<GameStartState, GameStartState.Arguments>(
-                new(args.CurrentPlatform, args.NextPlatform, args.Hero));
+            stateMachine.Enter<HeroMovementState, HeroMovementState.Arguments>(
+                new(args.CurrentPlatform, args.NextPlatform, args.Hero, args.Cherry));
         }
         else
         {

@@ -38,7 +38,7 @@ public sealed class RestartState : IState
 
         IHeroController hero = await _heroSpawner.CreateHeroAsync(platform.Borders.LeftTop, Relative.Center);
 
-        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(platform, platform, hero));
+        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(platform, hero));
     }
 
     public void Exit() { }

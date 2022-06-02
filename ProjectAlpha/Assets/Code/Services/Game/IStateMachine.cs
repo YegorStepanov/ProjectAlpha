@@ -5,5 +5,5 @@ namespace Code.Services;
 public interface IStateMachine
 {
     void Enter<TState>() where TState : class, IState;
-    void Enter<TState, TArg>(TArg argument) where TState : class, IArgState<TArg>;
+    void Enter<TState, TArg>(TArg argument) where TState : class, IState<TArg>;
 }

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -20,4 +21,15 @@ public sealed class InputManager
 
     public async UniTask NextMouseRelease() =>
         await UniTask.WaitUntil(() => Input.GetMouseButtonUp(0), cancellationToken: _token);
+    
+    public IUniTaskAsyncEnumerable<AsyncUnit> OnClickAsAsyncEnumerable() =>
+        UniTaskAsyncEnumerable.Create<AsyncUnit>(async (writer, token) =>
+        {
+            await NextMouseClick(token);
+            while (!token.IsCancellationRequested)
+            {
+                await writer.YieldAsync(AsyncUnit.Default);
+                await NextMouseClick(token);
+            }
+        });
 }
