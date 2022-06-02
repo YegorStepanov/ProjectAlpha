@@ -41,8 +41,7 @@
         "Sirenix.Utilities.dll",
         "Sirenix.Serialization.dll",
         "Sirenix.Serialization.Config.dll",
-        "Zenject-usage.dll",
-        "FluentAssertions.dll"
+        "Zenject-usage.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
