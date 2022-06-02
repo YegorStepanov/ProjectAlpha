@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Code.States;
 
-public sealed class MoveHeroToNextPlatformState : IArgState<MoveHeroToNextPlatformState.Arguments>
+public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformState.Arguments>
 {
     public readonly record struct Arguments(
         IPlatformController CurrentPlatform,

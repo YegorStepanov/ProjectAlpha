@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Code.States;
 
-public sealed class StickControlState : IArgState<StickControlState.Arguments>
+public sealed class StickControlState : IState<StickControlState.Arguments>
 {
     public readonly record struct Arguments(
         IPlatformController CurrentPlatform,

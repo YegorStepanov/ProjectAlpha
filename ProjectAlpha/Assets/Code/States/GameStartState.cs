@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Code.States;
 
-public sealed class GameStartState : IArgState<GameStartState.Arguments>
+public sealed class GameStartState : IState<GameStartState.Arguments>
 {
     public readonly record struct Arguments(
         IPlatformController LeftPlatform,

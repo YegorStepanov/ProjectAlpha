@@ -7,3 +7,8 @@ public interface IState : IExitState
 {
     UniTaskVoid EnterAsync(IStateMachine stateMachine);
 }
+
+public interface IState<in TArg> : IExitState
+{
+    UniTaskVoid EnterAsync(TArg arg, IStateMachine stateMachine);
+}
