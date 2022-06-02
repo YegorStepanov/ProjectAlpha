@@ -10,7 +10,6 @@ namespace Code.States;
 public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
 {
     private readonly InputManager _inputManager;
-    private readonly StickSpawner _stickSpawner;
     private readonly GameMediator _gameMediator;
 
     public readonly record struct Arguments(
@@ -19,12 +18,11 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
         IPlatform CurrentPlatform,
         IHero Hero,
         [CanBeNull] ICherry Cherry,
-        [CanBeNull] IStick Stick);
+        IStick Stick);
 
-    public HeroMovementState(InputManager inputManager, StickSpawner stickSpawner, GameMediator gameMediator)
+    public HeroMovementState(InputManager inputManager, GameMediator gameMediator)
     {
         _inputManager = inputManager;
-        _stickSpawner = stickSpawner;
         _gameMediator = gameMediator;
     }
 
@@ -39,11 +37,11 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
 
         UniTask<bool> checkHeroCollision = CollidingHeroWithPlatform(args.Hero, args.CurrentPlatform, cts.Token);
 
-        var dest = args.IsGameOver && args.Stick != null
+        var dest = args.IsGameOver
             ? args.Stick.Borders.Right
             : args.CurrentPlatform.Borders.Right;
 
-        UniTask move = MoveHeroAsync(dest, args.Hero, cts.Token);
+        UniTask move = MoveHeroAsync(dest, args.Hero, args.Stick, cts.Token);
 
         (bool isHeroCollided, _) = await UniTask.WhenAny(checkHeroCollision, move);
         cts.Cancel();
@@ -56,7 +54,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
             _gameMediator.GameOver();
         }
 
-        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(args.CurrentPlatform, args.Hero));
+        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(args.CurrentPlatform, args.Hero, args.Stick));
     }
 
     private async UniTask FlippingHeroOnClick(IHero hero, IPlatform leftPlatform,
@@ -92,11 +90,11 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
         }
     }
 
-    private async UniTask MoveHeroAsync(float destinationX, IHero hero, CancellationToken token)
+    private async UniTask MoveHeroAsync(float destinationX, IHero hero, IStick stick, CancellationToken token)
     {
         float destination = destinationX;
         //do it only for platform, not for endgame
-        destination -= _stickSpawner.StickWidth / 2f;
+        destination -= stick.Borders.HalfWidth;
         destination -= hero.HandOffset;
         await UniTask.Delay(200); //move it to another place
         await hero.MoveAsync(destination, token);

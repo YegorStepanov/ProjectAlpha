@@ -5,6 +5,8 @@ namespace Code.States;
 
 public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformState.Arguments>
 {
+    private readonly StickSpawner _stickSpawner;
+
     public readonly record struct Arguments(
         IPlatform CurrentPlatform,
         IPlatform NextPlatform,
@@ -12,12 +14,20 @@ public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformS
         IHero Hero,
         ICherry Cherry);
 
+    public MoveHeroToNextPlatformState(StickSpawner stickSpawner)
+    {
+        _stickSpawner = stickSpawner;
+    }
+    
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-        if (IsStickOnPlatform(args.Stick, args.NextPlatform))
+        if (args.Stick.Intersect(args.NextPlatform))
         {
+            //it should be created AFTER move, to be able to reuse only 2, not 3
+            IStick stick = await _stickSpawner.CreateStickAsync(args.NextPlatform.Borders.RightTop);
+
             stateMachine.Enter<HeroMovementState, HeroMovementState.Arguments>(
-                new(false, args.CurrentPlatform, args.NextPlatform, args.Hero, args.Cherry, args.Stick));
+                new(false, args.CurrentPlatform, args.NextPlatform, args.Hero, args.Cherry, stick));
         }
         else
         {
@@ -29,17 +39,4 @@ public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformS
     }
 
     public void Exit() { }
-
-    private static bool IsStickOnPlatform(IStick stick, IPlatform platform)
-    {
-        float stickPosX = stick.Borders.Right;
-
-        if (stickPosX < platform.Borders.Left)
-            return false;
-
-        if (stickPosX > platform.Borders.Right)
-            return false;
-
-        return true;
-    }
 }

@@ -38,7 +38,9 @@ public sealed class RestartState : IState
 
         IHero hero = await _heroSpawner.CreateHeroAsync(platform.Borders.LeftTop, Relative.Center);
 
-        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(platform, hero));
+        IStick stick = await _stickSpawner.CreateStickAsync(platform.Borders.RightTop); //old args.currentPlatform
+
+        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(platform, hero, stick));
     }
 
     public void Exit() { }

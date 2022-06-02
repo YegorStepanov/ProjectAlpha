@@ -13,7 +13,6 @@ public sealed class Cherry : MonoBehaviour, ICherry
     [SerializeField] private Transform _transform;
     [SerializeField] private SpriteRenderer _sprite;
 
-    private StickSpawner _stickSpawner;
     private GameMediator _gameMediator;
     private CancellationToken _token;
     private CherrySpawner _cherrySpawner;
@@ -21,9 +20,8 @@ public sealed class Cherry : MonoBehaviour, ICherry
     public Borders Borders => _sprite.bounds.AsBorders();
 
     [Inject, UsedImplicitly]
-    private void Construct(StickSpawner stickSpawner, GameMediator gameMediator, CherrySpawner cherrySpawner, CancellationToken token)
+    private void Construct(GameMediator gameMediator, CherrySpawner cherrySpawner, CancellationToken token)
     {
-        _stickSpawner = stickSpawner;
         _gameMediator = gameMediator;
         _cherrySpawner = cherrySpawner;
         _token = token;
@@ -44,7 +42,6 @@ public sealed class Cherry : MonoBehaviour, ICherry
 
     public void TeleportTo(Vector2 position, Relative relative)
     {
-        position.y -= _stickSpawner.StickWidth;
         _transform.position = position.Shift(Borders, relative);
     }
 

@@ -11,22 +11,21 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
         IPlatform CurrentPlatform,
         IPlatform NextPlatform,
         IHero Hero,
-        ICherry Cherry);
+        ICherry Cherry,
+        IStick Stick);
 
     private readonly InputManager _inputManager;
     private readonly GameMediator _gameMediator;
-    private readonly StickSpawner _stickSpawner;
 
-    public StickControlState(StickSpawner stickSpawner, InputManager inputManager, GameMediator gameMediator)
+    public StickControlState(InputManager inputManager, GameMediator gameMediator)
     {
-        _stickSpawner = stickSpawner;
         _inputManager = inputManager;
         _gameMediator = gameMediator;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-        IStick stick = await _stickSpawner.CreateStickAsync(args.CurrentPlatform.Borders.RightTop);
+        IStick stick = args.Stick;
 
         await _inputManager.NextMouseClick();
         stick.StartIncreasing();
