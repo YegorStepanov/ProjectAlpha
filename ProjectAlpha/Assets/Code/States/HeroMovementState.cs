@@ -59,7 +59,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
         stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(args.CurrentPlatform, args.Hero));
     }
 
-    private async UniTask FlippingHeroOnClickAsync(IHeroController hero, IPlatformController leftPlatform,
+    private async UniTask FlippingHeroOnClick(IHeroController hero, IPlatformController leftPlatform,
         IPlatformController rightPlatform, CancellationToken token)
     {
         await foreach (var _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(token))
@@ -84,7 +84,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
     {
         await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(token))
         {
-            if (hero.Borders.Intersects(cherry.Borders))
+            if (hero.Borders.Intersect(cherry.Borders))
             {
                 cherry.PickUp();
                 return;
@@ -95,6 +95,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
     private async UniTask MoveHeroAsync(float destinationX, IHeroController hero, CancellationToken token)
     {
         float destination = destinationX;
+        //do it only for platform, not for endgame
         destination -= _stickSpawner.StickWidth / 2f;
         destination -= hero.HandOffset;
         await UniTask.Delay(200); //move it to another place
