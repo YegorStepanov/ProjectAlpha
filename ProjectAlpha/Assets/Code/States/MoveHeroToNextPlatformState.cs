@@ -1,5 +1,4 @@
 ﻿using Code.Services;
-using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States;
@@ -13,29 +12,20 @@ public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformS
         IHeroController Hero,
         ICherryController Cherry);
 
-    private readonly GameMediator _gameMediator;
-
-    public MoveHeroToNextPlatformState(GameMediator gameMediator)
-    {
-        _gameMediator = gameMediator;
-    }
-
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
         if (IsStickOnPlatform(args.Stick, args.NextPlatform))
         {
             stateMachine.Enter<HeroMovementState, HeroMovementState.Arguments>(
-                new(args.CurrentPlatform, args.NextPlatform, args.Hero, args.Cherry));
+                new(false, args.CurrentPlatform, args.NextPlatform, args.Hero, args.Cherry, args.Stick));
         }
         else
         {
-            await args.Hero.MoveAsync(args.Stick.Borders.Right);
-            await UniTask.Delay(100);
-            await args.Hero.FellAsync();
-            await UniTask.Delay(300);
-
-            _gameMediator.GameOver();
+            stateMachine.Enter<HeroMovementState, HeroMovementState.Arguments>(
+                new(true, args.CurrentPlatform, args.NextPlatform, args.Hero, args.Cherry, args.Stick));
         }
+
+        await UniTask.CompletedTask;
     }
 
     public void Exit() { }
