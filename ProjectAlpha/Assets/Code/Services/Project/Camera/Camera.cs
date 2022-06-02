@@ -11,7 +11,7 @@ using VContainer;
 namespace Code.Services;
 
 [RequireComponent(typeof(UnityEngine.Camera))]
-public sealed class Camera : MonoBehaviour, IDisposable
+public sealed class Camera : MonoBehaviour, IEntity, IDisposable
 {
     [Required, SerializeField] private UnityEngine.Camera _baseCamera;
     [Required, SerializeField] private Image _backgroundImage;

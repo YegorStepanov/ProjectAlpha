@@ -3,9 +3,8 @@ using UnityEngine;
 
 namespace Code.Services;
 
-public interface IStick
+public interface IStick : IEntity
 {
-    Borders Borders { get; }
     Vector2 ArrowPosition { get; }
     public void StartIncreasing();
     public void StopIncreasing();

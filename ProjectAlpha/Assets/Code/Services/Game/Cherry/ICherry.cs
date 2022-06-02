@@ -2,9 +2,8 @@
 
 namespace Code.Services;
 
-public interface ICherry
+public interface ICherry : IEntity
 {
-    Borders Borders { get; }
     UniTask MoveRandomlyAsync(IPlatform leftPlatform, float rightPlatformLeftBorder);
     void PickUp();
 }

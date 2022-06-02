@@ -64,7 +64,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
     {
         await foreach (var _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(token))
         {
-            if (!hero.Borders.Intersect(leftPlatform.Borders) && !hero.Borders.Intersect(rightPlatform.Borders))
+            if (!hero.Intersect(leftPlatform) && !hero.Intersect(rightPlatform))
             {
                 hero.Flip();
             }
@@ -74,7 +74,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
     private static async UniTask<bool> CollidingHeroWithPlatform(
         IHero hero, IPlatform nextPlatform, CancellationToken token)
     {
-        await UniTask.WaitUntil(() => hero.Borders.Right > nextPlatform.Borders.Left && hero.IsFlipped,
+        await UniTask.WaitUntil(() => hero.Intersect(nextPlatform) && hero.IsFlipped,
             cancellationToken: token);
         return true;
     }
@@ -84,7 +84,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
     {
         await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(token))
         {
-            if (hero.Borders.Intersect(cherry.Borders))
+            if (hero.Intersect(cherry))
             {
                 cherry.PickUp();
                 return;
