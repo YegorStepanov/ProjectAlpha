@@ -7,13 +7,13 @@ namespace Code.Services.Game.UI;
 public class GameSceneLoader
 {
     private readonly ISceneLoader _sceneLoader;
-    private readonly GameUIController _gameUIController;
+    private readonly GameMediator _gameMediator;
     private readonly CancellationToken _token;
 
-    public GameSceneLoader(ISceneLoader sceneLoader, GameUIController gameUIController, CancellationToken token)
+    public GameSceneLoader(ISceneLoader sceneLoader, GameMediator gameMediator, CancellationToken token)
     {
         _sceneLoader = sceneLoader;
-        _gameUIController = gameUIController;
+        _gameMediator = gameMediator;
         _token = token;
     }
 
@@ -32,7 +32,7 @@ public class GameSceneLoader
 
     public void Restart(GameStateMachine gameStateMachine)
     {
-        _gameUIController.HideGameOver();
+        _gameMediator.HideGameOver();
         //black fade out
         //HideGameOver();
         gameStateMachine.Enter<RestartState>();

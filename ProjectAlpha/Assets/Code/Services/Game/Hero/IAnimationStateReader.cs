@@ -1,4 +1,6 @@
-﻿public interface IAnimationStateReader
+﻿namespace Code.HeroAnimators;
+
+public interface IAnimationStateReader
 {
     HeroAnimatorState State { get; }
     void EnteredState(int stateHash);

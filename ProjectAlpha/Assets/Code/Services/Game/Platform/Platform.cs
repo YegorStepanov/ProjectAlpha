@@ -17,14 +17,12 @@ public sealed class Platform : MonoBehaviour, IPlatform
     private Settings _settings;
     private CancellationToken _token;
 
-    public Vector2 Position => transform.position;
-
     public Borders Borders => _platformRenderer.bounds.AsBorders();
 
     public Borders RedPointBorders => _redPointRenderer.bounds.AsBorders();
 
     [Inject, UsedImplicitly]
-    public void Construct(Settings settings) =>
+    public void Construct(Settings settings, CancellationToken token) =>
         _settings = settings;
 
     private void Awake() =>

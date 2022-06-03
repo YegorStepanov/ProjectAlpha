@@ -16,14 +16,12 @@ public sealed class StickSpawner
         _settings = settings;
     }
 
-    public float StickWidth => _settings.StickWidth;
-
     public async UniTask<IStick> CreateStickAsync(Vector2 position)
     {
         Stick stick = await _pool.SpawnAsync();
         stick.ResetStick();
 
-        stick.Position = position;
+        stick.SetPosition(position);
         stick.Width = _settings.StickWidth;
         return stick;
     }

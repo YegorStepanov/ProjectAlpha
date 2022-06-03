@@ -20,7 +20,6 @@ public sealed class MenuMediator : MonoBehaviour
         ISceneLoader sceneLoader,
         CancellationToken token)
     {
-        Debug.Log("Consutrcting Menumediator");
         _mainMenu = mainMenu;
         _panelManager = panelManager;
         _sceneLoader = sceneLoader;

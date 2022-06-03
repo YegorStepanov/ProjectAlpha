@@ -1,13 +1,11 @@
-﻿using System;
-using Code.AddressableAssets;
+﻿using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace Code.Services;
 
-public sealed class BackgroundChanger : IDisposable
+public sealed class BackgroundChanger
 {
     private readonly Address<Sprite>[] _addresses;
     private readonly Image _backgroundImage;
@@ -30,11 +28,11 @@ public sealed class BackgroundChanger : IDisposable
         };
     }
 
-    public void Dispose() =>
-        UnloadSpriteImage();
-
     public async UniTask ChangeToRandomBackgroundAsync()
     {
+        if (_spriteAsset != null)
+            _loader.Release(_spriteAsset);
+
         Address<Sprite> newAddress = GetRandomBackground();
 
         Sprite sprite = await _loader.LoadAssetAsync(newAddress);
@@ -47,7 +45,4 @@ public sealed class BackgroundChanger : IDisposable
         int index = Random.Range(0, _addresses.Length);
         return _addresses[index];
     }
-
-    private void UnloadSpriteImage() =>
-        _loader.Release(_spriteAsset); //
 }

@@ -3,6 +3,8 @@ using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
 
+namespace Code.HeroAnimators;
+
 public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
 {
     private static readonly int Kick = Animator.StringToHash("Kick");
@@ -45,14 +47,9 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
 
     private static HeroAnimatorState GetState(int stateHash)
     {
-        if (stateHash == KickState)
-            return HeroAnimatorState.Kick;
-
-        if (stateHash == MoveState)
-            return HeroAnimatorState.Move;
-
-        if (stateHash == StayState)
-            return HeroAnimatorState.Stay;
+        if (stateHash == KickState) return HeroAnimatorState.Kick;
+        if (stateHash == MoveState) return HeroAnimatorState.Move;
+        if (stateHash == StayState) return HeroAnimatorState.Stay;
 
         throw new ArgumentException($"Unknown state hash: {stateHash}");
     }

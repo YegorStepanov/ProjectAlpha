@@ -1,5 +1,4 @@
-﻿using System;
-using Code.AddressableAssets;
+﻿using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
@@ -11,7 +10,7 @@ using VContainer;
 namespace Code.Services;
 
 [RequireComponent(typeof(UnityEngine.Camera))]
-public sealed class Camera : MonoBehaviour, IEntity, IDisposable
+public sealed class Camera : MonoBehaviour, IEntity
 {
     [Required, SerializeField] private UnityEngine.Camera _baseCamera;
     [Required, SerializeField] private Image _backgroundImage;
@@ -22,12 +21,10 @@ public sealed class Camera : MonoBehaviour, IEntity, IDisposable
 
     public Vector3 CameraPosition => _baseCamera.transform.position;
 
-    public void Dispose() =>
-        _backgroundChanger?.Dispose();
-
     [Inject, UsedImplicitly]
     public void Construct(IScopedAddressablesLoader loader)
     {
+        //it should be null, isn't?
         _backgroundChanger = new BackgroundChanger(loader, _backgroundImage);
     }
 

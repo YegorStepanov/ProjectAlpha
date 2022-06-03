@@ -1,5 +1,7 @@
 using UnityEngine;
 
+namespace Code.HeroAnimators;
+
 public sealed class AnimatorStateReporter : StateMachineBehaviour
 {
     private IAnimationStateReader _stateReader;

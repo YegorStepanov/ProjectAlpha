@@ -27,12 +27,6 @@ public sealed class Stick : MonoBehaviour, IStick
         set => _stick.localScale = _stick.localScale.WithX(value / Borders.Width);
     }
 
-    public Vector2 Position
-    {
-        get => _stick.position;
-        set => _stick.position = value;
-    }
-
     public Vector2 ArrowPosition => _arrow.position;
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
@@ -46,6 +40,9 @@ public sealed class Stick : MonoBehaviour, IStick
         _token = this.GetCancellationTokenOnDestroy();
         ResetStick();
     }
+
+    public void SetPosition(Vector2 position) =>
+        _stick.position = position;
 
     public void ResetStick()
     {

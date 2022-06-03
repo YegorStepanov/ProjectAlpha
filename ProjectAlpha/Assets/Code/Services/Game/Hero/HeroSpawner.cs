@@ -13,7 +13,7 @@ public sealed class HeroSpawner
     public UniTask<IHero> CreateHeroAsync(Vector2 position, Relative relative)
     {
         //remove spawner?
-        _asset.TeleportTo(position, relative);
+        _asset.SetPosition(position, relative);
         return UniTask.FromResult<IHero>(_asset);
     }
 }

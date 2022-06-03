@@ -16,33 +16,35 @@ public sealed class Cherry : MonoBehaviour, ICherry
     private GameMediator _gameMediator;
     private CancellationToken _token;
     private CherrySpawner _cherrySpawner;
+    private Settings _settings;
 
     public Borders Borders => _sprite.bounds.AsBorders();
 
     [Inject, UsedImplicitly]
-    private void Construct(GameMediator gameMediator, CherrySpawner cherrySpawner, CancellationToken token)
+    private void Construct(GameMediator gameMediator, CherrySpawner cherrySpawner, Settings settings)
     {
         _gameMediator = gameMediator;
         _cherrySpawner = cherrySpawner;
-        _token = token;
+        _settings = settings;
     }
+    
+    private void Awake() =>
+        _token = this.GetCancellationTokenOnDestroy();
+
+    public void SetPosition(Vector2 position, Relative relative) =>
+        _transform.position = position.Shift(Borders, relative);
 
     public UniTask MoveRandomlyAsync(IPlatform leftPlatform, float rightPlatformLeftBorder)
     {
-        float min = leftPlatform.Borders.Right + Borders.Width / 2f;
-        float max = rightPlatformLeftBorder - Borders.Width / 2f;
+        float min = leftPlatform.Borders.Right + Borders.HalfWidth;
+        float max = rightPlatformLeftBorder - Borders.HalfWidth;
 
         float endDestination = Random.Range(min, max);
 
-        return _transform.DOMoveX(endDestination, 10f)
+        return _transform.DOMoveX(endDestination, _settings.MovementSpeed)
             .SetEase(Ease.OutQuad)
             .SetSpeedBased()
             .WithCancellation(_token);
-    }
-
-    public void TeleportTo(Vector2 position, Relative relative)
-    {
-        _transform.position = position.Shift(Borders, relative);
     }
 
     public void PickUp()
@@ -50,5 +52,11 @@ public sealed class Cherry : MonoBehaviour, ICherry
         _gameMediator.IncreaseCherryCount();
         _cherrySpawner.Despawn(this);
         //show super effect
+    }
+
+    [System.Serializable]
+    public class Settings
+    {
+        public float MovementSpeed = 10f;
     }
 }

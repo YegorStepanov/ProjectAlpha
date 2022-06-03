@@ -13,7 +13,7 @@ public sealed class NextPositionGenerator : ScriptableObject
     
     public float NextPosition(IPlatform currentPlatform, IPlatform nextPlatform, float cameraDestinationRightCorner)
     {
-        float halfWidth = nextPlatform.Borders.Width / 2f;
+        float halfWidth = nextPlatform.Borders.HalfWidth;
 
         return _mode switch
         {
