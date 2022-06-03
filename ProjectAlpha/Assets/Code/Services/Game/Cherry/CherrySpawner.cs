@@ -10,7 +10,7 @@ public sealed class CherrySpawner
     public CherrySpawner(IAsyncPool<Cherry> pool) =>
         _pool = pool;
 
-    public async UniTask<ICherry> CreateCherryAsync(IPlatform nextPlatform)
+    public async UniTask<ICherry> CreateAsync(IPlatform nextPlatform)
     {
         Cherry cherry = await _pool.SpawnAsync();
 

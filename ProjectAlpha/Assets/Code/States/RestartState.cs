@@ -34,9 +34,9 @@ public sealed class RestartState : IState
         _stickSpawner.DespawnAll();
 
         IPlatform platform =
-            await _platformSpawner.CreatePlatformAsync(_camera.Borders.Left, Relative.Left, false);
+            await _platformSpawner.CreateAsync(_camera.Borders.Left, Relative.Left, false);
 
-        IHero hero = await _heroSpawner.CreateHeroAsync(platform.Borders.LeftTop, Relative.Center);
+        IHero hero = await _heroSpawner.CreateAsync(platform.Borders.LeftTop, Relative.Center);
 
         stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(platform, hero));
     }

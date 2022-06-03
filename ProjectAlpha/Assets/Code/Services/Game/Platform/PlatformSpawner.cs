@@ -24,23 +24,23 @@ public sealed class PlatformSpawner
         _gameData = gameData;
     }
 
-    public UniTask<IPlatform> CreateMenuPlatformAsync()
+    public UniTask<IPlatform> CreateMenuAsync()
     {
         float width = _settings.MenuPlatformWidth;
         float posX = _camera.ViewportToWorldPositionX(_settings.ViewportMenuPlatformPositionX);
-        return CreatePlatformAsync(posX, width, Relative.Center, false);
+        return CreateAsync(posX, width, Relative.Center, false);
     }
 
-    public UniTask<IPlatform> CreatePlatformAsync(float posX, Relative relative, bool redPointEnabled = true) //Relative.Left
+    public UniTask<IPlatform> CreateAsync(float posX, Relative relative, bool redPointEnabled = true)
     {
         float width = _widthGenerator.NextWidth();
-        return CreatePlatformAsync(posX, width, relative, redPointEnabled);
+        return CreateAsync(posX, width, relative, redPointEnabled);
     }
 
     public void DespawnAll() =>
         _pool.DespawnAll();
 
-    private async UniTask<IPlatform> CreatePlatformAsync(float posX, float width, Relative relative, bool redPointEnabled)
+    private async UniTask<IPlatform> CreateAsync(float posX, float width, Relative relative, bool redPointEnabled)
     {
         Vector2 position = new Vector2(posX, _gameData.GameHeight);
 

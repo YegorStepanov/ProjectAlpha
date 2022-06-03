@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 
 namespace Code.States;
 
-//from menu
 public sealed class BootstrapState : IState
 {
     private readonly Camera _camera;
@@ -33,9 +32,9 @@ public sealed class BootstrapState : IState
 
         await _camera.ChangeBackgroundAsync();
 
-        IPlatform menuPlatform = await _platformSpawner.CreateMenuPlatformAsync();
+        IPlatform menuPlatform = await _platformSpawner.CreateMenuAsync();
 
-        IHero hero = await _heroSpawner.CreateHeroAsync(menuPlatform.Borders.CenterTop, Relative.Left);
+        IHero hero = await _heroSpawner.CreateAsync(menuPlatform.Borders.CenterTop, Relative.Left);
 
         await _gameTriggers.OnGameStarted.Await();
 

@@ -49,8 +49,8 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
 
         float nextPositionX = args.CurrentPlatform.Borders.Left + _camera.Borders.Width;
 
-        IPlatform nextPlatform = await _platformSpawner.CreatePlatformAsync(nextPositionX, Relative.Left);
-        ICherry cherry = await _cherrySpawner.CreateCherryAsync(nextPlatform);
+        IPlatform nextPlatform = await _platformSpawner.CreateAsync(nextPositionX, Relative.Left);
+        ICherry cherry = await _cherrySpawner.CreateAsync(nextPlatform);
 
         await MoveNextPlatformToRandomPoint(args.CurrentPlatform, nextPlatform, cherry, platformDestination);
 
