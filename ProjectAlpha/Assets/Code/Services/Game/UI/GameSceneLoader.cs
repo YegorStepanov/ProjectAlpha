@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using Code.States;
 using Cysharp.Threading.Tasks;
 
 namespace Code.Services.Game.UI;
@@ -7,13 +6,11 @@ namespace Code.Services.Game.UI;
 public class GameSceneLoader
 {
     private readonly ISceneLoader _sceneLoader;
-    private readonly GameMediator _gameMediator;
     private readonly CancellationToken _token;
 
-    public GameSceneLoader(ISceneLoader sceneLoader, GameMediator gameMediator, CancellationToken token)
+    public GameSceneLoader(ISceneLoader sceneLoader, CancellationToken token)
     {
         _sceneLoader = sceneLoader;
-        _gameMediator = gameMediator;
         _token = token;
     }
 
@@ -28,13 +25,5 @@ public class GameSceneLoader
             await _sceneLoader.UnloadAsync<GameScene>(_token);
             // await _sceneLoader.LoadAsync<GameScene>(default);
         }
-    }
-
-    public void Restart(GameStateMachine gameStateMachine)
-    {
-        _gameMediator.HideGameOver();
-        //black fade out
-        //HideGameOver();
-        gameStateMachine.Enter<RestartState>();
     }
 }

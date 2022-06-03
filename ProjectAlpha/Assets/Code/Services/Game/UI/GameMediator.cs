@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.States;
+using UnityEngine;
 using VContainer;
 
 namespace Code.Services.Game.UI;
@@ -7,7 +8,7 @@ public sealed class GameMediator
 {
     [Inject] GameSceneLoader _gameSceneLoader;
     [Inject] GameUIController _gameUIController;
-    
+
     public GameStateMachine gameStateMachine; //rework later
 
     public void IncreaseScore() => _gameUIController.IncreaseScore();
@@ -16,5 +17,12 @@ public sealed class GameMediator
     public void GameOver() => _gameUIController.ShowGameOver(); //earthshake screen
     public void HideGameOver() => _gameUIController.HideGameOver();
     public void LoadMenu() => _gameSceneLoader.LoadMenu();
-    public void Restart() => _gameSceneLoader.Restart(gameStateMachine);
+
+    public void Restart() //todo
+    {
+        HideGameOver();
+        //black fade out
+        //HideGameOver();
+        gameStateMachine.Enter<RestartState>();
+    }
 }

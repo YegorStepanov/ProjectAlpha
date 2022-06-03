@@ -1,9 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using JetBrains.Annotations;
 using UnityEngine;
-using VContainer;
 
 namespace Code.Services;
 
@@ -14,9 +12,8 @@ public sealed class LoadingScreen : MonoBehaviour
 
     private CancellationToken _token;
 
-    [Inject, UsedImplicitly]
-    public void Construct(CancellationToken token) =>
-        _token = token;
+    private void Awake() =>
+        _token = this.GetCancellationTokenOnDestroy();
 
     public void Show()
     {
