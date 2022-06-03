@@ -21,18 +21,18 @@ public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformS
     
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-        if (args.Stick.Intersect(args.NextPlatform))
+        if (args.NextPlatform.Contains(args.Stick.ArrowPosition))
         {
             //it should be created AFTER move, to be able to reuse only 2, not 3
             IStick stick = await _stickSpawner.CreateStickAsync(args.NextPlatform.Borders.RightTop);
 
-            stateMachine.Enter<HeroMovementState, HeroMovementState.Arguments>(
-                new(false, args.CurrentPlatform, args.NextPlatform, args.Hero, args.Cherry, stick));
+            stateMachine.Enter<HeroMovementToPlatformState, HeroMovementToPlatformState.Arguments>(
+                new(args.CurrentPlatform, args.NextPlatform, args.Hero, stick, args.Cherry));
         }
         else
         {
-            stateMachine.Enter<HeroMovementState, HeroMovementState.Arguments>(
-                new(true, args.CurrentPlatform, args.NextPlatform, args.Hero, args.Cherry, args.Stick));
+            stateMachine.Enter<HeroMovementToGameOverState, HeroMovementToGameOverState.Arguments>(
+                new(args.CurrentPlatform, args.NextPlatform, args.Hero, args.Stick, args.Cherry));
         }
 
         await UniTask.CompletedTask;

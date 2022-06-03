@@ -16,11 +16,12 @@ public sealed class GameStateMachine : IStateMachine
     public GameStateMachine(IObjectResolver resolver) => _states = new Dictionary<Type, IExitState>
     {
         [typeof(BootstrapState)] = resolver.ResolveInstance<BootstrapState>(),
-        [typeof(HeroMovementState)] = resolver.ResolveInstance<HeroMovementState>(),
+        [typeof(HeroMovementToPlatformState)] = resolver.ResolveInstance<HeroMovementToPlatformState>(),
         [typeof(GameStartState)] = resolver.ResolveInstance<GameStartState>(),
         [typeof(StickControlState)] = resolver.ResolveInstance<StickControlState>(),
         [typeof(MoveHeroToNextPlatformState)] = resolver.ResolveInstance<MoveHeroToNextPlatformState>(),
         [typeof(RestartState)] = resolver.ResolveInstance<RestartState>(),
+        [typeof(HeroMovementToGameOverState)] = resolver.ResolveInstance<HeroMovementToGameOverState>(),
     };
 
     public void Enter<TState>() where TState : class, IState =>

@@ -47,8 +47,8 @@ public sealed class BootstrapState : IState
         
         IStick stick = await _stickSpawner.CreateStickAsync(menuPlatform.Borders.RightTop); //old args.currentPlatform
 
-        stateMachine.Enter<HeroMovementState, HeroMovementState.Arguments>(
-            new(false, menuPlatform, menuPlatform, hero, null, stick));
+        stateMachine.Enter<HeroMovementToPlatformState, HeroMovementToPlatformState.Arguments>(
+            new(menuPlatform, menuPlatform, hero, stick, null));
     }
 
     public void Exit() { }

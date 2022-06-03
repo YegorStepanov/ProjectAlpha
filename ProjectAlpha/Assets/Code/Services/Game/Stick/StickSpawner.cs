@@ -22,7 +22,7 @@ public sealed class StickSpawner
         stick.ResetStick();
 
         stick.SetPosition(position);
-        stick.Width = _settings.StickWidth;
+        stick.SetWidth(_settings.StickWidth);
         return stick;
     }
     

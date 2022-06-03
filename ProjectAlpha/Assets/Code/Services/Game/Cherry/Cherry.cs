@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
@@ -13,7 +12,6 @@ public sealed class Cherry : MonoBehaviour, ICherry
     [SerializeField] private Transform _transform;
     [SerializeField] private SpriteRenderer _sprite;
 
-    private GameMediator _gameMediator;
     private CancellationToken _token;
     private CherrySpawner _cherrySpawner;
     private Settings _settings;
@@ -21,9 +19,8 @@ public sealed class Cherry : MonoBehaviour, ICherry
     public Borders Borders => _sprite.bounds.AsBorders();
 
     [Inject, UsedImplicitly]
-    private void Construct(GameMediator gameMediator, CherrySpawner cherrySpawner, Settings settings)
+    private void Construct(CherrySpawner cherrySpawner, Settings settings)
     {
-        _gameMediator = gameMediator;
         _cherrySpawner = cherrySpawner;
         _settings = settings;
     }
@@ -49,7 +46,6 @@ public sealed class Cherry : MonoBehaviour, ICherry
 
     public void PickUp()
     {
-        _gameMediator.IncreaseCherryCount();
         _cherrySpawner.Despawn(this);
         //show super effect
     }

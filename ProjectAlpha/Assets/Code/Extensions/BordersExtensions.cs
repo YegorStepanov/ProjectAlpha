@@ -23,4 +23,22 @@ public static class BordersExtensions
             Relative.RightBottom => point.ShiftX(-borders.Right).ShiftY(-borders.Bottom),
             _ => throw new InvalidEnumArgumentException(nameof(relative), (int)relative, typeof(Relative))
         };
+    
+    public static bool Intersect(this Borders borders, Borders other)
+    {
+        return !(other.Left > borders.Right || other.Right < borders.Left ||
+                 other.Top < borders.Bottom || other.Bottom > borders.Top);
+    }
+
+    public static bool Inside(this Borders borders, Borders other)
+    {
+        return other.Left <= borders.Left && other.Right >= borders.Right &&
+               other.Top >= borders.Top && other.Bottom <= borders.Bottom;
+    }
+
+    public static bool Inside(this Borders borders, Vector2 point)
+    {
+        return point.x >= borders.Left && point.x <= borders.Right &&
+               point.y >= borders.Bottom && point.y <= borders.Top;
+    }
 }

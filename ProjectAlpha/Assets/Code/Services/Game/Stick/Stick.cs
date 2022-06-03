@@ -21,12 +21,6 @@ public sealed class Stick : MonoBehaviour, IStick
     private CancellationToken _token;
     private TweenerCore<Vector3, Vector3, VectorOptions> _increaseTweener;
 
-    public float Width
-    {
-        get => _stick.localScale.x * Borders.Width;
-        set => _stick.localScale = _stick.localScale.WithX(value / Borders.Width);
-    }
-
     public Vector2 ArrowPosition => _arrow.position;
 
     public Borders Borders => _spriteRenderer.bounds.AsBorders();
@@ -44,6 +38,9 @@ public sealed class Stick : MonoBehaviour, IStick
     public void SetPosition(Vector2 position) =>
         _stick.position = position;
 
+    public void SetWidth(float width) =>
+        _stick.localScale = _stick.localScale.WithX(width / Borders.Width);
+    
     public void ResetStick()
     {
         _stick.rotation = Quaternion.identity;

@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System.Threading.Tasks;
 using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
@@ -7,57 +8,18 @@ using JetBrains.Annotations;
 
 namespace Code.States;
 
-public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
+public abstract class BaseHeroMovementState
 {
     private readonly InputManager _inputManager;
     private readonly GameMediator _gameMediator;
 
-    public readonly record struct Arguments(
-        bool IsGameOver,
-        IPlatform LeftPlatform,
-        IPlatform CurrentPlatform,
-        IHero Hero,
-        [CanBeNull] ICherry Cherry,
-        IStick Stick);
-
-    public HeroMovementState(InputManager inputManager, GameMediator gameMediator)
+    protected BaseHeroMovementState(InputManager inputManager, GameMediator gameMediator)
     {
         _inputManager = inputManager;
         _gameMediator = gameMediator;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
-    {
-        using CancellationTokenSource cts = new();
-
-        _ = FlippingHeroOnClick(args.Hero, args.LeftPlatform, args.CurrentPlatform, cts.Token);
-        
-        if(args.Cherry != null)
-            _ = PickingUpCherryByHero(args.Hero, args.Cherry, cts.Token);
-
-        UniTask<bool> checkHeroCollision = CollidingHeroWithPlatform(args.Hero, args.CurrentPlatform, cts.Token);
-
-        var dest = args.IsGameOver
-            ? args.Stick.Borders.Right
-            : args.CurrentPlatform.Borders.Right;
-
-        UniTask move = MoveHeroAsync(dest, args.Hero, args.Stick, cts.Token);
-
-        (bool isHeroCollided, _) = await UniTask.WhenAny(checkHeroCollision, move);
-        cts.Cancel();
-
-        if (isHeroCollided || args.IsGameOver)
-        {
-            await UniTask.Delay(100);
-            await args.Hero.FellAsync();
-            await UniTask.Delay(300);
-            _gameMediator.GameOver();
-        }
-
-        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(args.CurrentPlatform, args.Hero, args.Stick));
-    }
-
-    private async UniTask FlippingHeroOnClick(IHero hero, IPlatform leftPlatform,
+    protected async UniTask HeroFlipsOnClick(IHero hero, IPlatform leftPlatform,
         IPlatform rightPlatform, CancellationToken token)
     {
         await foreach (var _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(token))
@@ -69,7 +31,7 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
         }
     }
 
-    private static async UniTask<bool> CollidingHeroWithPlatform(
+    protected static async UniTask<bool> HeroCollides(
         IHero hero, IPlatform nextPlatform, CancellationToken token)
     {
         await UniTask.WaitUntil(() => hero.Intersect(nextPlatform) && hero.IsFlipped,
@@ -77,12 +39,12 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
         return true;
     }
 
-    private static async UniTask PickingUpCherryByHero(
-        IHero hero, ICherry cherry, CancellationToken token)
+    protected static async UniTask HeroCollectsCherry(
+        IHero hero, [CanBeNull] ICherry cherry, CancellationToken token)
     {
         await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(token))
         {
-            if (hero.Intersect(cherry))
+            if (cherry != null && hero.Intersect(cherry))
             {
                 cherry.PickUp();
                 return;
@@ -90,15 +52,25 @@ public sealed class HeroMovementState : IState<HeroMovementState.Arguments>
         }
     }
 
-    private async UniTask MoveHeroAsync(float destinationX, IHero hero, IStick stick, CancellationToken token)
+    protected async UniTask MoveHero(float destinationX, IHero hero, IStick stick, CancellationToken token)
     {
-        float destination = destinationX;
-        //do it only for platform, not for endgame
-        destination -= stick.Borders.HalfWidth;
-        destination -= hero.HandOffset;
         await UniTask.Delay(200); //move it to another place
-        await hero.MoveAsync(destination, token);
+        await hero.MoveAsync(destinationX, token);
     }
 
-    public void Exit() { }
+    protected async Task GameOver(IHero hero)
+    {
+        await UniTask.Delay(100);
+        await hero.FellAsync();
+        await UniTask.Delay(300);
+        _gameMediator.GameOver();
+    }
+
+    protected void TryIncreaseCherryCount(UniTask collectTask)
+    {
+        if (collectTask.Status == UniTaskStatus.Succeeded)
+        {
+            _gameMediator.IncreaseCherryCount();
+        }
+    }
 }

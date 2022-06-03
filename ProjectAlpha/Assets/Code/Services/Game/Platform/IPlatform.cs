@@ -6,6 +6,6 @@ public interface IPlatform : IEntity
 {
     Borders RedPointBorders { get; }
     UniTask MoveAsync(float destinationX);
-    bool IsInsideRedPoint(float point);
+    bool InsideRedPoint(float point);
     UniTask FadeOutRedPointAsync();
 }

@@ -37,7 +37,7 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
 
         await stick.RotateAsync();
 
-        bool isInside = args.NextPlatform.IsInsideRedPoint(stick.ArrowPosition.x);
+        bool isInside = args.NextPlatform.InsideRedPoint(stick.ArrowPosition.x);
         Debug.Log("IsInsideRedPoint: " + isInside);
 
         if (isInside)

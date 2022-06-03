@@ -48,7 +48,7 @@ public sealed class Platform : MonoBehaviour, IPlatform
             .SetSpeedBased()
             .WithCancellation(_token);
 
-    public bool IsInsideRedPoint(float point) =>
+    public bool InsideRedPoint(float point) =>
         _redPointRenderer.color.a != 0 && point >= RedPointBorders.Left && point <= RedPointBorders.Right;
 
     public void ToggleRedPoint(bool enable) =>

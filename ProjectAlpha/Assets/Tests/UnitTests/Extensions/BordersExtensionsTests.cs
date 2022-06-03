@@ -18,10 +18,10 @@ public sealed class BordersExtensionsTests
     [TestCase(10, 20, Relative.Right, 20, 0)]
     public void GetRelativePoint_HorizontalTest(float left, float right, Relative relative, float value, float expected)
     {
-        var border = new Borders(0, 0, left, right);
-        var point = new Vector2(value, 0);
+        Borders border = new(0, 0, left, right);
+        Vector2 point = new(value, 0);
 
-        var result = border.GetRelativePoint(point, relative);
+        Vector2 result = border.GetRelativePoint(point, relative);
 
         Assert.That(result.x, Is.EqualTo(expected));
     }
@@ -38,10 +38,10 @@ public sealed class BordersExtensionsTests
     [TestCase(20, 10, Relative.Top, 20, 0)]
     public void GetRelativePoint_VerticalTest(float top, float bottom, Relative relative, float value, float expected)
     {
-        var border = new Borders(top, bottom, 0, 0);
-        var point = new Vector2(0, value);
+        Borders border = new(top, bottom, 0, 0);
+        Vector2 point = new(0, value);
 
-        var result = border.GetRelativePoint(point, relative);
+        Vector2 result = border.GetRelativePoint(point, relative);
 
         Assert.That(result.y, Is.EqualTo(expected));
     }
@@ -55,13 +55,13 @@ public sealed class BordersExtensionsTests
     [TestCase(10, 5, 20, 30, Relative.RightTop, 20, 5, -10, -5)]
     [TestCase(10, 5, 20, 30, Relative.RightBottom, 30, 10, 0, 5)]
     [TestCase(10, 5, 20, 30, Relative.RightBottom, 30, 5, 0, 0)]
-    public void GetRelativePoint_CornerTest(float top, float bottom, float left, float right, Relative relative, 
+    public void GetRelativePoint_CornerTest(float top, float bottom, float left, float right, Relative relative,
         float valueX, float valueY, float expectedX, float expectedY)
     {
-        var border = new Borders(top, bottom, left, right);
-        var point = new Vector2(valueX, valueY);
+        Borders border = new(top, bottom, left, right);
+        Vector2 point = new(valueX, valueY);
 
-        var result = border.GetRelativePoint(point, relative);
+        Vector2 result = border.GetRelativePoint(point, relative);
 
         Assert.That(result, Is.EqualTo(new Vector2(expectedX, expectedY)));
     }
@@ -69,11 +69,61 @@ public sealed class BordersExtensionsTests
     [Test]
     public void GetRelativePoint_Vector3_PreserveZTest()
     {
-        var point = new Vector3(1, 1, 30);
-        var border = new Borders(1, 1, 1, 1);
+        Vector3 point = new(1, 1, 30);
+        Borders border = new(1, 1, 1, 1);
 
-        var result = border.GetRelativePoint(point, Relative.Center);
+        Vector3 result = border.GetRelativePoint(point, Relative.Center);
 
         Assert.That(result.z, Is.EqualTo(30));
+    }
+
+    [Test]
+    [TestCase(1, -1, -1, 1)]
+    [TestCase(0, 0, 0, 0)]
+    public void Inside_Reflexivity_Test(float top, float bottom, float left, float right)
+    {
+        Borders borders = new(top, bottom, left, right);
+
+        Assert.That(borders.Inside(borders), Is.True);
+    }
+
+
+    [Test]
+    [TestCase(1, -1, -1, 1)]
+    public void Intersect_CornerTests(float top, float bottom, float left, float right)
+    {
+        Borders borders = new(top, bottom, left, right);
+
+        Borders topPoint = new(top, 0, 0, 0);
+        Borders bottomPoint = new(0, bottom, 0, 0);
+        Borders leftPoint = new(0, 0, left, 0);
+        Borders rightPoint = new(0, 0, 0, right);
+
+        Assert.That(borders.Intersect(topPoint), Is.True);
+        Assert.That(borders.Intersect(bottomPoint), Is.True);
+        Assert.That(borders.Intersect(leftPoint), Is.True);
+        Assert.That(borders.Intersect(rightPoint), Is.True);
+
+        Assert.That(topPoint.Intersect(borders), Is.True);
+        Assert.That(bottomPoint.Intersect(borders), Is.True);
+        Assert.That(leftPoint.Intersect(borders), Is.True);
+        Assert.That(rightPoint.Intersect(borders), Is.True);
+    }
+
+    [Test]
+    [TestCase(1, -1, -1, 1)]
+    public void Inside_CornerTests(float top, float bottom, float left, float right)
+    {
+        Borders borders = new(top, bottom, left, right);
+
+        Borders topPoint = new(top, 0, 0, 0);
+        Borders bottomPoint = new(0, bottom, 0, 0);
+        Borders leftPoint = new(0, 0, left, 0);
+        Borders rightPoint = new(0, 0, 0, right);
+
+        Assert.That(topPoint.Inside(borders), Is.True);
+        Assert.That(bottomPoint.Inside(borders), Is.True);
+        Assert.That(leftPoint.Inside(borders), Is.True);
+        Assert.That(rightPoint.Inside(borders), Is.True);
     }
 }
