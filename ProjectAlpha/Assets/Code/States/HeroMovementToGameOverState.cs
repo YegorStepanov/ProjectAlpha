@@ -29,7 +29,7 @@ public sealed class HeroMovementToGameOverState : BaseHeroMovementState, IState<
 
         await UniTask.WhenAny(
             HeroCollides(args.Hero, args.CurrentPlatform, cts.Token),
-            MoveHero(destinationX, args.Hero, args.Stick, cts.Token));
+            MoveHero(destinationX, args.Hero, cts.Token));
 
         cts.Cancel();
 

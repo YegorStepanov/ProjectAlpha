@@ -33,14 +33,12 @@ public sealed class RestartState : IState
         _cherrySpawner.DespawnAll();
         _stickSpawner.DespawnAll();
 
-        IPlatform platform = 
+        IPlatform platform =
             await _platformSpawner.CreatePlatformAsync(_camera.Borders.Left, Relative.Left, false);
 
         IHero hero = await _heroSpawner.CreateHeroAsync(platform.Borders.LeftTop, Relative.Center);
 
-        IStick stick = await _stickSpawner.CreateStickAsync(platform.Borders.RightTop); //old args.currentPlatform
-
-        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(platform, hero, stick));
+        stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(platform, hero));
     }
 
     public void Exit() { }

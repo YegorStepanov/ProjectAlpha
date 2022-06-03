@@ -52,7 +52,7 @@ public abstract class BaseHeroMovementState
         }
     }
 
-    protected async UniTask MoveHero(float destinationX, IHero hero, IStick stick, CancellationToken token)
+    protected async UniTask MoveHero(float destinationX, IHero hero, CancellationToken token)
     {
         await UniTask.Delay(200); //move it to another place
         await hero.MoveAsync(destinationX, token);

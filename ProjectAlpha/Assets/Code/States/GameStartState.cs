@@ -8,7 +8,7 @@ namespace Code.States;
 
 public sealed class GameStartState : IState<GameStartState.Arguments>
 {
-    public readonly record struct Arguments(IPlatform CurrentPlatform, IHero Hero, IStick Stick);
+    public readonly record struct Arguments(IPlatform CurrentPlatform, IHero Hero);
 
     private readonly Camera _camera;
     private readonly PlatformSpawner _platformSpawner;
@@ -57,7 +57,7 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
         await moveCameraTask;
 
         stateMachine.Enter<StickControlState, StickControlState.Arguments>(
-            new(args.CurrentPlatform, nextPlatform, args.Hero, cherry, args.Stick));
+            new(args.CurrentPlatform, nextPlatform, args.Hero, cherry));
     }
 
     private async UniTask MoveNextPlatformToRandomPoint(

@@ -10,7 +10,6 @@ public sealed class BootstrapState : IState
     private readonly Camera _camera;
     private readonly GameTriggers _gameTriggers;
     private readonly GameData _gameData;
-    private readonly StickSpawner _stickSpawner;
     private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
 
@@ -19,15 +18,13 @@ public sealed class BootstrapState : IState
         HeroSpawner heroSpawner,
         Camera camera,
         GameTriggers gameTriggers,
-        GameData gameData,
-        StickSpawner stickSpawner)
+        GameData gameData)
     {
         _platformSpawner = platformSpawner;
         _heroSpawner = heroSpawner;
         _camera = camera;
         _gameTriggers = gameTriggers;
         _gameData = gameData;
-        _stickSpawner = stickSpawner;
     }
 
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
@@ -42,13 +39,8 @@ public sealed class BootstrapState : IState
 
         await _gameTriggers.OnGameStarted.Await();
 
-        // _gameData.ChangeToGameHeight();
-
-        
-        IStick stick = await _stickSpawner.CreateStickAsync(menuPlatform.Borders.RightTop); //old args.currentPlatform
-
         stateMachine.Enter<HeroMovementToPlatformState, HeroMovementToPlatformState.Arguments>(
-            new(menuPlatform, menuPlatform, hero, stick, null));
+            new(menuPlatform, menuPlatform, hero, null));
     }
 
     public void Exit() { }
