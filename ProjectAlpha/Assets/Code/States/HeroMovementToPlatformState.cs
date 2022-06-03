@@ -42,10 +42,12 @@ public sealed class HeroMovementToPlatformState : BaseHeroMovementState, IState<
         cts.Cancel();
 
         if (isCollided)
+        {
             await GameOver(args.Hero);
-        else
-            TryIncreaseCherryCount(collect);
+            return;
+        }
 
+        TryIncreaseCherryCount(collect);
         stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(args.CurrentPlatform, args.Hero));
     }
 
