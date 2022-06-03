@@ -38,8 +38,8 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
 
         await UniTask.Delay(100);
 
-        Vector2 destination = args.CurrentPlatform.Borders.LeftBottom;
-        var cameraDestination = destination.Shift(_camera.Borders, Relative.LeftBottom);
+        Vector2 destination = args.CurrentPlatform.Borders.LeftBot;
+        var cameraDestination = destination.Shift(_camera.Borders, Relative.LeftBot);
         var platformDestination = _camera.Borders.Right +
                                   (args.CurrentPlatform.Borders.Left - _camera.Borders.Left); //rework
 

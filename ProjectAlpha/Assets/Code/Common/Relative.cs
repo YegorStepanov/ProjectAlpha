@@ -4,11 +4,11 @@ public enum Relative
 {
     Center,
     Top,
-    Bottom,
+    Bot,
     Left,
     Right,
     LeftTop,
     RightTop,
-    LeftBottom,
-    RightBottom,
+    LeftBot,
+    RightBot,
 }

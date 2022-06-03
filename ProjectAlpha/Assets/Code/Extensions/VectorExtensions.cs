@@ -33,13 +33,13 @@ public static class VectorExtensions
         {
             Relative.Center => point,
             Relative.Top => point.ShiftY(-halfHeight),
-            Relative.Bottom => point.ShiftY(halfHeight),
+            Relative.Bot => point.ShiftY(halfHeight),
             Relative.Left => point.ShiftX(halfWidth),
             Relative.Right => point.ShiftX(-halfWidth),
             Relative.LeftTop => point.ShiftX(halfWidth).ShiftY(-halfHeight),
             Relative.RightTop => point.ShiftX(-halfWidth).ShiftY(-halfHeight),
-            Relative.LeftBottom => point.ShiftX(halfWidth).ShiftY(halfHeight),
-            Relative.RightBottom => point.ShiftX(-halfWidth).ShiftY(halfHeight),
+            Relative.LeftBot => point.ShiftX(halfWidth).ShiftY(halfHeight),
+            Relative.RightBot => point.ShiftX(-halfWidth).ShiftY(halfHeight),
             _ => throw new InvalidEnumArgumentException(nameof(relative), (int)relative, typeof(Relative))
         };
     }

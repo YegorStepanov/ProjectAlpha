@@ -50,14 +50,14 @@ public sealed class Camera : MonoBehaviour, IEntity
 
     private Borders UpdateBorders()
     {
-        Vector2 topRightCorner = _baseCamera.ViewportToWorldPoint(Vector2.one);
-        Vector2 bottomLeftCorner = _baseCamera.ViewportToWorldPoint(Vector2.zero);
+        Vector2 rightTopCorner = _baseCamera.ViewportToWorldPoint(Vector2.one);
+        Vector2 leftBotCorner = _baseCamera.ViewportToWorldPoint(Vector2.zero);
 
         return new Borders(
-            Top: topRightCorner.y,
-            Right: topRightCorner.x,
-            Bottom: bottomLeftCorner.y,
-            Left: bottomLeftCorner.x
+            Top: rightTopCorner.y,
+            Right: rightTopCorner.x,
+            Bot: leftBotCorner.y,
+            Left: leftBotCorner.x
         );
     }
 
