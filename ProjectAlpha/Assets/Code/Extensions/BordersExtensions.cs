@@ -11,16 +11,15 @@ public static class BordersExtensions
     public static Vector2 GetRelativePoint(this Borders borders, Vector2 point, Relative relative) =>
         relative switch
         {
-            Relative.Center => point.ShiftX(-(borders.Left + borders.Right) / 2f)
-                .ShiftY(-(borders.Top + borders.Bot) / 2f),
+            Relative.Center => point - borders.Center,
             Relative.Top => point.ShiftY(-borders.Top),
             Relative.Bot => point.ShiftY(-borders.Bot),
             Relative.Left => point.ShiftX(-borders.Left),
             Relative.Right => point.ShiftX(-borders.Right),
-            Relative.LeftTop => point.ShiftX(-borders.Left).ShiftY(-borders.Top),
-            Relative.RightTop => point.ShiftX(-borders.Right).ShiftY(-borders.Top),
-            Relative.LeftBot => point.ShiftX(-borders.Left).ShiftY(-borders.Bot),
-            Relative.RightBot => point.ShiftX(-borders.Right).ShiftY(-borders.Bot),
+            Relative.LeftTop => point - borders.LeftTop,
+            Relative.RightTop => point - borders.RightTop,
+            Relative.LeftBot => point - borders.LeftBot,
+            Relative.RightBot => point - borders.RightBot,
             _ => throw new InvalidEnumArgumentException(nameof(relative), (int)relative, typeof(Relative))
         };
     
