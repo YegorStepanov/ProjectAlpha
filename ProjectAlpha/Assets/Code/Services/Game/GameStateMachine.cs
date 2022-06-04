@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Code.States;
 using JetBrains.Annotations;
 using VContainer;
@@ -13,16 +14,8 @@ public sealed class GameStateMachine : IStateMachine
     private IExitState _activeState;
 
     [Inject, UsedImplicitly]
-    public GameStateMachine(IObjectResolver resolver) => _states = new Dictionary<Type, IExitState>
-    {
-        [typeof(BootstrapState)] = resolver.ResolveInstance<BootstrapState>(),
-        [typeof(HeroMovementToPlatformState)] = resolver.ResolveInstance<HeroMovementToPlatformState>(),
-        [typeof(GameStartState)] = resolver.ResolveInstance<GameStartState>(),
-        [typeof(StickControlState)] = resolver.ResolveInstance<StickControlState>(),
-        [typeof(MoveHeroToNextPlatformState)] = resolver.ResolveInstance<MoveHeroToNextPlatformState>(),
-        [typeof(RestartState)] = resolver.ResolveInstance<RestartState>(),
-        [typeof(HeroMovementToGameOverState)] = resolver.ResolveInstance<HeroMovementToGameOverState>(),
-    };
+    public GameStateMachine(IEnumerable<IExitState> states) =>
+        _states = states.ToDictionary(s => s.GetType());
 
     public void Enter<TState>() where TState : class, IState =>
         ChangeState<TState>().EnterAsync(this).Forget();
