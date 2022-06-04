@@ -42,8 +42,7 @@ public sealed class PlatformSpawner
 
     private async UniTask<IPlatform> CreateAsync(float posX, float width, Relative relative, bool redPointEnabled)
     {
-        Vector2 position = new Vector2(posX, _gameData.GameHeight);
-
+        Vector2 position = new(posX, _gameData.GameHeight);
         Platform platform = await _pool.SpawnAsync();
 
         float height = position.y + _camera.Borders.HalfHeight;

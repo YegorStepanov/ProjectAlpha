@@ -23,10 +23,11 @@ public sealed class GameData
     public void IncreaseCherryCount() =>
         CherryCount++;
 
-    public void ChangeToGameHeight() =>
+    public void SetGameHeight() =>
         GameHeight = _camera.ViewportToWorldPositionY(_settings.ViewportGameHeight);
 
-    public void ChangeToMenuHeight() =>
+    //todo
+    public void SetMenuHeight() =>
         GameHeight = _camera.ViewportToWorldPositionY(_settings.ViewportMenuHeight);
     
     [Serializable]

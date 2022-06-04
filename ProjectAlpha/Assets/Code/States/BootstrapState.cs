@@ -28,7 +28,7 @@ public sealed class BootstrapState : IState
 
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
-        _gameData.ChangeToMenuHeight();
+        _gameData.SetMenuHeight();
 
         await _camera.ChangeBackgroundAsync();
 
