@@ -14,7 +14,7 @@ public sealed class RedPointHitAnimation : MonoBehaviour
     private void Awake() =>
         _canvas.enabled = false;
 
-    public async UniTask ShowAsync(CancellationToken token)
+    public async UniTask PlayAsync(CancellationToken token)
     {
         _canvas.enabled = true;
         _text.color = _text.color with { a = 1f };

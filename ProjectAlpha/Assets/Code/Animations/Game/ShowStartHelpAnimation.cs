@@ -14,7 +14,7 @@ public sealed class ShowStartHelpAnimation : MonoBehaviour
     private void Awake() =>
         _canvas.enabled = false;
 
-    public void Show()
+    public void Play()
     {
         _canvas.enabled = true;
         _text.DOFade(1f, 1f);

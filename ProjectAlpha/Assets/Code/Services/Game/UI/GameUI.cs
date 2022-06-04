@@ -34,23 +34,22 @@ public sealed class GameUI : MonoBehaviour //IDisposable
 
     public void UpdateScore(int score)
     {
-        //rename Show -> Play
-        _changeScoreAnimation.Show(score, animate: score != 0);
+        _changeScoreAnimation.Play(score, animate: score != 0);
     }
 
     public void UpdateCherryCount(int cherryCount)
     {
-        _changeCherryCountAnimation.Show(cherryCount);
+        _changeCherryCountAnimation.Play(cherryCount);
     }
 
     public void OnRedPointHit(Vector2 position)
     {
-        _redPointHitAnimation.ShowAsync(_token).Forget();
-        _redPointHitGameAnimation.ShowAsync(position, _token).Forget();
+        _redPointHitAnimation.PlayAsync(_token).Forget();
+        _redPointHitGameAnimation.PlayAsync(position, _token).Forget();
     }
 
     public void ShowHelp() =>
-        _showStartHelpAnimation.Show();
+        _showStartHelpAnimation.Play();
 
     public void HideHelp() =>
         _showStartHelpAnimation.HideAsync(_token).Forget();

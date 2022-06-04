@@ -9,7 +9,7 @@ public sealed class RedPointHitGameAnimation : MonoBehaviour
 {
     [SerializeField] private Vector2 _offset = new(0, 0.1f);
 
-    public async UniTask ShowAsync(Vector2 position, CancellationToken token)
+    public async UniTask PlayAsync(Vector2 position, CancellationToken token)
     {
         gameObject.SetActive(true);
 

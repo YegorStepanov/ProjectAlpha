@@ -8,7 +8,7 @@ public sealed class ChangeScoreAnimation : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
 
-    public void Show(int score, bool animate = true)
+    public void Play(int score, bool animate = true)
     {
         _text.text = score.ToString();
 
