@@ -19,6 +19,9 @@ MonoBehaviour:
     FallingDestination: -10
   _platform:
     MovementSpeed: 10
+    FadeOutRedPointSpeed: 0.3
+  _cherry:
+    MovementSpeed: 10
   _stick:
     IncreaseSpeed: 25
     RotationDestination: {x: 0, y: 0, z: -90}
@@ -27,5 +30,8 @@ MonoBehaviour:
   _stickSpawner:
     StickWidth: 0.04
   _platformSpawner:
-    viewportMenuPlatformPosition: {x: 0.5, y: 0.2}
+    ViewportMenuPlatformPositionX: 0.5
     MenuPlatformWidth: 2
+  _gameData:
+    ViewportMenuHeight: 0.2
+    ViewportGameHeight: 0.3

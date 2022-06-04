@@ -21,18 +21,22 @@ MonoBehaviour:
     m_Address: Shop Panel
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 798635d1f1d26434782c93c1fed31bf1
     m_Address: Hero Selector Panel
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 204094d8c8689d14dbecd9570afef851
-    m_Address: Loading Screen
+    m_Address: LoadingScreen
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2884972968652d44ab58a653f57aba4d
     m_Address: Main Menu
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0f4399c1e47a2f541b59e585801a7440, type: 2}
   m_SchemaSet:

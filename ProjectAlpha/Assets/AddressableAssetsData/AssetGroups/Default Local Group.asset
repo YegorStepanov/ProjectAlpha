@@ -17,28 +17,8 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 57425a48cdf3d6143bf7e3a7bf225b50
   m_SerializeEntries:
-  - m_GUID: dae4a1de4656c824aaf94d92d69ea3fd
-    m_Address: old_Shop Panel
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 703c86cca18f2aa4fa0679d57334e2b6
-    m_Address: old_Hero Selector Panel
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b246c956afb460648870811b484710f5
-    m_Address: old_Main Menu
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b46ffd07204d6c64e9ca1c1187026450
     m_Address: Background Canvas
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ac99d8c09b9a33c4584133ca13e16c1f
-    m_Address: LoadingScreen
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -52,7 +32,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dd9bf771882b8a9438c0a913907b543e
+  - m_GUID: ae65f7adffdc9dd46bd589930a2264aa
     m_Address: Game UI
     m_ReadOnly: 0
     m_SerializedLabels: []

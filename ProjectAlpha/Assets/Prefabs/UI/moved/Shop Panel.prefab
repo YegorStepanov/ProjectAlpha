@@ -34,10 +34,10 @@ RectTransform:
   m_Father: {fileID: 6530258326045023559}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.1, y: 0.2}
-  m_AnchorMax: {x: 0.9, y: 0.8}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 600, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5777499378361772806
 CanvasRenderer:
@@ -264,6 +264,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5922621891488117282, guid: e2fd7e3f7f5785b48bfe4183e548caec,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5922621892353698005, guid: e2fd7e3f7f5785b48bfe4183e548caec,
         type: 3}
       propertyPath: m_Material
@@ -324,6 +329,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5922621892515565050, guid: e2fd7e3f7f5785b48bfe4183e548caec,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922621892528942539, guid: e2fd7e3f7f5785b48bfe4183e548caec,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922621892974525331, guid: e2fd7e3f7f5785b48bfe4183e548caec,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5922621893136129724, guid: e2fd7e3f7f5785b48bfe4183e548caec,
         type: 3}
       propertyPath: m_Material
@@ -369,6 +389,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5777499378361772802}
     m_Modifications:
+    - target: {fileID: 2287697812137021572, guid: e11f755155f2c9d40be7e6469345295d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -57.399902
+      objectReference: {fileID: 0}
     - target: {fileID: 2287697812566981132, guid: e11f755155f2c9d40be7e6469345295d,
         type: 3}
       propertyPath: m_Name
