@@ -10,20 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Root
+  m_Name: Debug
   m_EditorClassIdentifier: 
-  m_GroupName: Project
+  m_GroupName: Debug
   m_Data:
     m_SerializedData: []
-  m_GUID: bded93e005abee9439bb1a0181d7bab3
+  m_GUID: 6474bc99f298e1a44ac4fbfc36c1410d
   m_SerializeEntries:
-  - m_GUID: 7592d5cb0eaa83d4a85c118776fae846
-    m_Address: Camera
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b23838d16aa5f5741859bfeed0b40a4a
-    m_Address: Settings
+  - m_GUID: 48e401aae5bd81240a779bc1a23be347
+    m_Address: Graphy
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -31,5 +26,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 0f4399c1e47a2f541b59e585801a7440, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 4a8509a52ecf89045805628f0b2be6b7, type: 2}
-    - {fileID: 11400000, guid: cc8dd3814da403f4398b4a3328b3555e, type: 2}
+    - {fileID: 11400000, guid: a1858164a8de84e40b7954de4c0b022d, type: 2}
+    - {fileID: 11400000, guid: 8707c50fd30148a44be6ba47fd056a6f, type: 2}

@@ -1,4 +1,5 @@
-﻿using Code.AddressableAssets;
+﻿using System.Diagnostics;
+using Code.AddressableAssets;
 using Code.Game;
 using Code.Services;
 using Cysharp.Threading.Tasks;
@@ -27,11 +28,15 @@ public sealed class RootScope : Scope
     {
         var loadCamera = loader.InstantiateAsync(RootAddress.CameraController, inject: false);
         var loadGameSettings = loader.LoadAssetAsync(RootAddress.Settings);
-        var loadGraphy = loader.InstantiateAsync(RootAddress.Graphy, inject: false);
         var loadEventSystem = loader.InstantiateAsync(RootAddress.EventSystem, inject: false);
-
-        (_camera, _gameSettings, _, _) = await (loadCamera, loadGameSettings, loadGraphy, loadEventSystem);
+        
+        LoadDevelopmentAssets(loader);
+        (_camera, _gameSettings, _) = await (loadCamera, loadGameSettings, loadEventSystem);
     }
+
+    [Conditional("DEVELOPMENT")]
+    private static void LoadDevelopmentAssets(IAddressablesLoader loader) =>
+        loader.InstantiateAsync(DebugAddress.Graphy, inject: false).Forget();
 
     protected override void Configure(IContainerBuilder builder)
     {
