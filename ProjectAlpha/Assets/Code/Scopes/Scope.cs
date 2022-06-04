@@ -53,7 +53,7 @@ public abstract class Scope : LifetimeScope
 
     protected override void OnDestroy()
     {
-        _loader.Dispose();
+        _loader?.Dispose();
         base.OnDestroy();
     }
 
