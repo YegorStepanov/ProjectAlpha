@@ -34,8 +34,10 @@ public abstract class BaseHeroMovementState
     protected static async UniTask<bool> HeroCollides(
         IHero hero, IPlatform nextPlatform, CancellationToken token)
     {
-        await UniTask.WaitUntil(() => hero.Intersect(nextPlatform) && hero.IsFlipped,
-            cancellationToken: token);
+        bool collided = hero.Intersect(nextPlatform) && hero.IsFlipped;
+        while (!collided && !token.IsCancellationRequested)
+            await UniTask.Yield(token);
+
         return true;
     }
 

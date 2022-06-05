@@ -1,7 +1,6 @@
 ﻿using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace Code.States;
 
@@ -28,10 +27,10 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
     {
         IStick stick = await _stickSpawner.CreateAsync(args.CurrentPlatform.Borders.RightTop);
 
-        await _inputManager.NextMouseClick();
+        await _inputManager.NextClick();
         stick.StartIncreasing();
 
-        await _inputManager.NextMouseRelease();
+        await _inputManager.NextRelease();
         stick.StopIncreasing();
 
         await args.Hero.KickAsync();
@@ -39,7 +38,6 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
         await stick.RotateAsync();
 
         bool isInside = args.NextPlatform.InsideRedPoint(stick.ArrowPosition.x);
-        Debug.Log("IsInsideRedPoint: " + isInside);
 
         if (isInside)
             _gameMediator.OnRedPointHit(args.NextPlatform.RedPointBorders.Center);
