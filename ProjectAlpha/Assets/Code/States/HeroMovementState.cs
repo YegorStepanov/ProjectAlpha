@@ -22,7 +22,7 @@ public abstract class BaseHeroMovementState
     protected async UniTask HeroFlipsOnClick(IHero hero, IPlatform leftPlatform,
         IPlatform rightPlatform, CancellationToken token)
     {
-        await foreach (var _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(token))
+        await foreach (AsyncUnit _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(token))
         {
             if (!hero.Intersect(leftPlatform) && !hero.Intersect(rightPlatform))
             {
@@ -34,9 +34,11 @@ public abstract class BaseHeroMovementState
     protected static async UniTask<bool> HeroCollides(
         IHero hero, IPlatform nextPlatform, CancellationToken token)
     {
-        bool collided = hero.Intersect(nextPlatform) && hero.IsFlipped;
-        while (!collided && !token.IsCancellationRequested)
+        while (!token.IsCancellationRequested)
+        {
+            if(hero.Intersect(nextPlatform) && hero.IsFlipped) break;
             await UniTask.Yield(token);
+        }
 
         return true;
     }
