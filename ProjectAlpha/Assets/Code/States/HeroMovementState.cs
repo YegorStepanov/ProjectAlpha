@@ -24,10 +24,10 @@ public abstract class BaseHeroMovementState
     {
         await foreach (AsyncUnit _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(token))
         {
-            if (!hero.Intersect(leftPlatform) && !hero.Intersect(rightPlatform))
-            {
-                hero.Flip();
-            }
+            if (hero.Intersect(leftPlatform) || hero.Intersect(rightPlatform))
+                continue;
+
+            hero.Flip();
         }
     }
 
@@ -36,7 +36,7 @@ public abstract class BaseHeroMovementState
     {
         while (!token.IsCancellationRequested)
         {
-            if(hero.Intersect(nextPlatform) && hero.IsFlipped) break;
+            if (hero.Intersect(nextPlatform) && hero.IsFlipped) break;
             await UniTask.Yield(token);
         }
 
