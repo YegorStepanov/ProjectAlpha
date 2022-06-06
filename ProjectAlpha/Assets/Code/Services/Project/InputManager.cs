@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer.Unity;
 
 namespace Code.Services;
@@ -9,27 +9,52 @@ namespace Code.Services;
 public sealed class InputManager
 {
     private readonly CancellationToken _token;
+    private readonly InputAction _action = new(binding: "*/{primaryAction}");
 
-    public InputManager(LifetimeScope scope) =>
+    public InputManager(LifetimeScope scope)
+    {
         _token = scope.transform.GetCancellationTokenOnDestroy();
+        _action.Enable();
+    }
 
-    public async UniTask NextMouseClick() =>
-        await UniTask.WaitUntil(() => Input.GetMouseButtonDown(0), cancellationToken: _token);
+    public async UniTask NextClick()
+    {
+        await UniTask.NextFrame(_token);
+        while (!IsPressedOrCancelled())
+            await UniTask.NextFrame(_token);
+    }
 
-    public UniTask NextMouseClick(CancellationToken token) =>
-        UniTask.WaitUntil(() => Input.GetMouseButtonDown(0), cancellationToken: token).SuppressCancellationThrow();
+    public async UniTask NextClick(CancellationToken token)
+    {
+        await UniTask.NextFrame(token);
+        while (!IsPressedOrCancelled(token))
+            await UniTask.NextFrame(token);
+    }
 
-    public async UniTask NextMouseRelease() =>
-        await UniTask.WaitUntil(() => Input.GetMouseButtonUp(0), cancellationToken: _token);
-    
+    public async UniTask NextRelease()
+    {
+        await UniTask.NextFrame(_token);
+        while (!IsReleasedOrCancelled())
+            await UniTask.NextFrame(_token);
+    }
+
     public IUniTaskAsyncEnumerable<AsyncUnit> OnClickAsAsyncEnumerable() =>
         UniTaskAsyncEnumerable.Create<AsyncUnit>(async (writer, token) =>
         {
-            await NextMouseClick(token);
+            await NextClick(token);
             while (!token.IsCancellationRequested)
             {
                 await writer.YieldAsync(AsyncUnit.Default);
-                await NextMouseClick(token);
+                await NextClick(token);
             }
         });
+
+    private bool IsPressedOrCancelled(CancellationToken token) =>
+        IsPressedOrCancelled() || token.IsCancellationRequested;
+
+    private bool IsPressedOrCancelled() =>
+        _action.WasPressedThisFrame() || _token.IsCancellationRequested;
+
+    private bool IsReleasedOrCancelled() =>
+        _action.WasReleasedThisFrame() || _token.IsCancellationRequested;
 }

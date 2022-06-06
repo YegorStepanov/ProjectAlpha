@@ -1,4 +1,6 @@
 ﻿using Code.Services;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 using Cysharp.Threading.Tasks.Triggers;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -8,15 +10,11 @@ namespace Code.UI;
 
 public sealed class StartGameTrigger : MonoBehaviour
 {
-    private GameTriggers _gameTriggers;
-
     [Inject, UsedImplicitly]
     public void Construct(GameTriggers gameTriggers)
     {
-        _gameTriggers = gameTriggers;
-        _gameTriggers.OnGameStarted.SetTrigger(this.GetAsyncPointerClickTrigger());
-    }
+        var clickStream = this.GetAsyncPointerClickTrigger().Select(_ => AsyncUnit.Default);
 
-    private void OnDestroy() =>
-        _gameTriggers.OnGameStarted.SetTrigger(null);
+        gameTriggers.GameStarted.SetTrigger(clickStream, this.GetCancellationTokenOnDestroy());
+    }
 }

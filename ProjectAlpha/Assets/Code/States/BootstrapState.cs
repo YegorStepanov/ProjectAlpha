@@ -36,7 +36,7 @@ public sealed class BootstrapState : IState
 
         IHero hero = await _heroSpawner.CreateAsync(menuPlatform.Borders.CenterTop, Relative.Left);
 
-        await _gameTriggers.OnGameStarted.Await();
+        await _gameTriggers.GameStarted.Await();
 
         stateMachine.Enter<HeroMovementToPlatformState, HeroMovementToPlatformState.Arguments>(
             new(menuPlatform, menuPlatform, hero, null));

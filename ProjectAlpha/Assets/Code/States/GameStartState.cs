@@ -32,8 +32,6 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-//        var arp = new AsyncReactiveProperty<int>(10);
-
         _gameMediator.IncreaseScore();
 
         await UniTask.Delay(100);
