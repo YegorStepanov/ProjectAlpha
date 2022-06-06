@@ -37,6 +37,4 @@ public sealed class HeroMovementToGameOverState : BaseHeroMovementState, IState<
 
         await GameOver(args.Hero);
     }
-
-    public void Exit() { }
 }

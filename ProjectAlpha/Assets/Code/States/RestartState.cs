@@ -40,6 +40,4 @@ public sealed class RestartState : IState
 
         stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(platform, hero));
     }
-
-    public void Exit() { }
 }

@@ -27,6 +27,4 @@ public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformS
 
         await UniTask.CompletedTask;
     }
-
-    public void Exit() { }
 }

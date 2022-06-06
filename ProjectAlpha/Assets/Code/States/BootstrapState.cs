@@ -41,6 +41,4 @@ public sealed class BootstrapState : IState
         stateMachine.Enter<HeroMovementToPlatformState, HeroMovementToPlatformState.Arguments>(
             new(menuPlatform, menuPlatform, hero, null));
     }
-
-    public void Exit() { }
 }

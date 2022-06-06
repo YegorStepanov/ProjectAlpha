@@ -45,6 +45,4 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
         stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
             new(args.CurrentPlatform, args.NextPlatform, stick, args.Hero, args.Cherry));
     }
-
-    public void Exit() { }
 }

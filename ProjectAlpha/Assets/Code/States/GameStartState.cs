@@ -71,8 +71,6 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
 
         await (movePlatform, moveCherry);
     }
-
-    public void Exit() { }
 }
 
 //hero is присидает каждый тик

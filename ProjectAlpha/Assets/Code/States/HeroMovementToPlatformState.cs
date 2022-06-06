@@ -50,6 +50,4 @@ public sealed class HeroMovementToPlatformState : BaseHeroMovementState, IState<
         TryIncreaseCherryCount(collect);
         stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(args.CurrentPlatform, args.Hero));
     }
-
-    public void Exit() { }
 }
