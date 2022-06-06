@@ -11,7 +11,7 @@ public sealed class AnimatorStateReporter : StateMachineBehaviour
         base.OnStateEnter(animator, stateInfo, layerIndex);
         FindReader(animator);
 
-        _stateReader.EnteredState(stateInfo.shortNameHash);
+        _stateReader.EnteredState(stateInfo.shortNameHash, layerIndex);
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -19,7 +19,7 @@ public sealed class AnimatorStateReporter : StateMachineBehaviour
         base.OnStateExit(animator, stateInfo, layerIndex);
         FindReader(animator);
 
-        _stateReader.ExitedState(stateInfo.shortNameHash);
+        _stateReader.ExitedState(stateInfo.shortNameHash, layerIndex);
     }
 
     private void FindReader(Animator animator)

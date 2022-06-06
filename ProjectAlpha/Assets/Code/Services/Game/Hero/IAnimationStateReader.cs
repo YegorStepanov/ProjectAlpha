@@ -2,7 +2,6 @@
 
 public interface IAnimationStateReader
 {
-    HeroAnimatorState State { get; }
-    void EnteredState(int stateHash);
-    void ExitedState(int stateHash);
+    void EnteredState(int stateHash, int layerIndex);
+    void ExitedState(int stateHash, int layerIndex);
 }

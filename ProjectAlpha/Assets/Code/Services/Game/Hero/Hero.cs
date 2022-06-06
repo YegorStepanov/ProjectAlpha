@@ -62,7 +62,7 @@ public sealed class Hero : MonoBehaviour, IHero
             .WithCancellation(_token);
 
     public UniTask KickAsync() =>
-        _animator.PlayKickAsync();
+        _animator.PlayKickAsync(_token);
 
     [Serializable]
     public class Settings

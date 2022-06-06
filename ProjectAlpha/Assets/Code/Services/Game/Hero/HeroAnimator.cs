@@ -1,6 +1,6 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Code.HeroAnimators;
@@ -15,23 +15,21 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
     private static readonly int MoveState = Animator.StringToHash("walk");
     private static readonly int StayState = Animator.StringToHash("stay");
 
-    public HeroAnimatorState State { get; private set; }
-
     [SerializeField] private Animator _animator;
 
-    private bool _hitEvent;
+    private AsyncReactiveProperty<HeroAnimatorState>[] _exitStates;
 
-    [UsedImplicitly]
-    private void HitEvent() =>
-        _hitEvent = true;
-
-    public async UniTask PlayKickAsync()
+    private void Awake()
     {
-        _animator.SetTrigger(Kick);
+        _exitStates = new AsyncReactiveProperty<HeroAnimatorState>[2];
 
-        await UniTask.WaitWhile(() => _hitEvent == false);
-        _hitEvent = false;
+        for (int i = 0; i < _exitStates.Length; i++)
+            _exitStates[i] = new AsyncReactiveProperty<HeroAnimatorState>(HeroAnimatorState.None);
     }
+
+    public UniTask PlayKickAsync(CancellationToken token) =>
+        ChangeState(Kick, HeroAnimatorState.Kick, 0, token);
+
 
     public void PlayMove() =>
         _animator.SetTrigger(Move);
@@ -39,13 +37,36 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
     public void PlayStay() =>
         _animator.SetTrigger(Stay);
 
-    public void EnteredState(int stateHash) =>
-        State = GetState(stateHash);
 
-    public void ExitedState(int stateHash) =>
-        State = GetState(stateHash);
+    public void EnteredState(int stateHash, int layerIndex) { }
 
-    private static HeroAnimatorState GetState(int stateHash)
+    public void ExitedState(int stateHash, int layerIndex) =>
+        GetState(layerIndex).Value = GetStateFromHash(stateHash);
+
+
+    private async UniTask ChangeState(
+        int stateHash, HeroAnimatorState heroAnimatorState, int layerIndex, CancellationToken token)
+    {
+        _animator.SetTrigger(stateHash);
+
+        AsyncReactiveProperty<HeroAnimatorState> state = GetState(layerIndex);
+
+        //sometimes the new state can be set in this frame
+        Debug.Log("Before " + Time.frameCount + "  " + state.Value);
+
+        var newState = HeroAnimatorState.None;
+        while (!token.IsCancellationRequested)
+        {
+            if (newState == heroAnimatorState) break;
+ 
+            newState = await state.WaitAsync(token);
+        }
+        
+        Debug.Log("After " + Time.frameCount + "  " + state.Value);
+
+    }
+
+    private static HeroAnimatorState GetStateFromHash(int stateHash)
     {
         if (stateHash == KickState) return HeroAnimatorState.Kick;
         if (stateHash == MoveState) return HeroAnimatorState.Move;
@@ -53,4 +74,7 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
 
         throw new ArgumentException($"Unknown state hash: {stateHash}");
     }
+
+    private AsyncReactiveProperty<HeroAnimatorState> GetState(int layerIndex) =>
+        _exitStates[layerIndex];
 }
