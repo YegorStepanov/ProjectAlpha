@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 
 namespace Code;
 
@@ -24,4 +25,11 @@ public readonly record struct Borders(float Top, float Bot, float Left, float Ri
     
     private float CenterX => (Left + Right) / 2f;   
     private float CenterY => (Top + Bot) / 2f;
+
+    private bool PrintMembers(StringBuilder builder)
+    {
+        builder.Append(LeftTop);
+        builder.Append(RightBot);
+        return true;
+    }
 }
