@@ -1,11 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AddressableAssets;
-using Object = UnityEngine.Object;
 
 namespace Code.AddressableAssets;
 
-[Serializable]
+[System.Serializable]
 public class AssetReferenceComponent<T> : AssetReferenceGameObject where T : Component
 {
     public AssetReferenceComponent(string guid) : base(guid) { }

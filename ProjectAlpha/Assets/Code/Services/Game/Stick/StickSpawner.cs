@@ -1,5 +1,4 @@
-﻿using System;
-using Code.VContainer;
+﻿using Code.VContainer;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -31,7 +30,7 @@ public sealed class StickSpawner
     public void DespawnAll() =>
         _pool.DespawnAll();
 
-    [Serializable]
+    [System.Serializable]
     public class Settings
     {
         public float StickWidth = 0.04f;

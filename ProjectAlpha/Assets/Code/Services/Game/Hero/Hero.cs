@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using Code.HeroAnimators;
 using Cysharp.Threading.Tasks;
@@ -64,7 +63,7 @@ public sealed class Hero : MonoBehaviour, IHero
     public UniTask KickAsync() =>
         _animator.PlayKickAsync(_token);
 
-    [Serializable]
+    [System.Serializable]
     public class Settings
     {
         public float HandOffset = 0.25f;

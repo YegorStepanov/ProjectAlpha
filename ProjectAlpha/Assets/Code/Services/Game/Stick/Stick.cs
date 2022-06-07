@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -60,7 +59,7 @@ public sealed class Stick : MonoBehaviour, IStick
             .SetDelay(_settings.RotationDelay)
             .WithCancellation(_token);
 
-    [Serializable]
+    [System.Serializable]
     public class Settings
     {
         public float IncreaseSpeed = 25f;

@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -57,7 +56,7 @@ public sealed class Platform : MonoBehaviour, IPlatform
     public UniTask FadeOutRedPointAsync() =>
         _redPointRenderer.DOFade(0f, _settings.FadeOutRedPointSpeed).WithCancellation(_token);
 
-    [Serializable]
+    [System.Serializable]
     public class Settings
     {
         public float MovementSpeed = 10f;

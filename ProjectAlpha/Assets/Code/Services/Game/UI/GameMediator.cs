@@ -12,6 +12,7 @@ public sealed class GameMediator
     public GameStateMachine gameStateMachine; //rework later
 
     public void IncreaseScore() => _gameUIController.IncreaseScore();
+    // public void ResetScore() => _gameUIController.ResetScore();
     public void IncreaseCherryCount() => _gameUIController.IncreaseCherryCount();
     public void OnRedPointHit(Vector2 position) => _gameUIController.OnRedPointHit(position);
     public void GameOver() => _gameUIController.ShowGameOver(); //earthshake screen

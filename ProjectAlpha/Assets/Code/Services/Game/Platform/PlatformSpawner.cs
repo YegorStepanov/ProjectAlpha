@@ -1,5 +1,4 @@
-﻿using System;
-using Code.Services.Game.UI;
+﻿using Code.Services.Game.UI;
 using Code.VContainer;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -54,7 +53,7 @@ public sealed class PlatformSpawner
         return platform;
     }
 
-    [Serializable]
+    [System.Serializable]
     public class Settings
     {
         public float ViewportMenuPlatformPositionX = 0.5f;

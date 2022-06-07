@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Code.Services.Game.UI;
+﻿namespace Code.Services.Game.UI;
 
 public sealed class GameData
 {
@@ -30,7 +28,7 @@ public sealed class GameData
     public void SetMenuHeight() =>
         GameHeight = _camera.ViewportToWorldPositionY(_settings.ViewportMenuHeight);
     
-    [Serializable]
+    [System.Serializable]
     public class Settings
     {
         public float ViewportMenuHeight = 0.2f;
