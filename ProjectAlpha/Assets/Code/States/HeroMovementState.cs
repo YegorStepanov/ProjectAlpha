@@ -4,7 +4,6 @@ using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using JetBrains.Annotations;
 
 namespace Code.States;
 
@@ -44,11 +43,11 @@ public abstract class BaseHeroMovementState
     }
 
     protected static async UniTask HeroCollectsCherry(
-        IHero hero, [CanBeNull] ICherry cherry, CancellationToken token)
+        IHero hero, ICherry cherry, CancellationToken token)
     {
         await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(token))
         {
-            if (cherry != null && hero.Intersect(cherry))
+            if (hero.Intersect(cherry))
             {
                 cherry.PickUp();
                 return;

@@ -2,7 +2,6 @@
 using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace Code.States;
 
@@ -13,7 +12,7 @@ public sealed class HeroMovementToGameOverState : BaseHeroMovementState, IState<
         IPlatform CurrentPlatform,
         IHero Hero,
         IStick Stick,
-        [CanBeNull] ICherry Cherry);
+        ICherry Cherry);
 
     public HeroMovementToGameOverState(InputManager inputManager, GameMediator gameMediator) :
         base(inputManager, gameMediator) { }

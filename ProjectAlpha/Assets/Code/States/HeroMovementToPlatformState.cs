@@ -2,7 +2,6 @@
 using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace Code.States;
 
@@ -14,7 +13,7 @@ public sealed class HeroMovementToPlatformState : BaseHeroMovementState, IState<
         IPlatform LeftPlatform,
         IPlatform CurrentPlatform,
         IHero Hero,
-        [CanBeNull] ICherry Cherry);
+        ICherry Cherry);
 
     public HeroMovementToPlatformState(
         InputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner) :
