@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24cc20d788f6406ab43c35ec1743e941, type: 3}
-  m_Name: Next Position Generator
+  m_Script: {fileID: 11500000, guid: 1e228327ea4e426c9d074f4d69ba518d, type: 3}
+  m_Name: Position Generator (Cherry)
   m_EditorClassIdentifier: 
-  _mode: 2
-  _leftOffset: 0.5
-  _rightOffset: 0
+  _mode: 0
+  _leftOffset: 0.2
+  _rightOffset: 0.2

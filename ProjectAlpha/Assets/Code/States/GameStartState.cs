@@ -13,63 +13,68 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
     private readonly Camera _camera;
     private readonly PlatformSpawner _platformSpawner;
     private readonly CherrySpawner _cherrySpawner;
-    private readonly NextPositionGenerator _nextPositionGenerator;
+    private readonly PlatformPositionGenerator _platformPositionGenerator;
+    private readonly CherryPositionGenerator _cherryPositionGenerator;
     private readonly GameMediator _gameMediator;
 
     public GameStartState(
         Camera camera,
         PlatformSpawner platformSpawner,
         CherrySpawner cherrySpawner,
-        NextPositionGenerator nextPositionGenerator,
+        PlatformPositionGenerator platformPositionGenerator,
+        CherryPositionGenerator cherryPositionGenerator,
         GameMediator gameMediator)
     {
         _camera = camera;
         _platformSpawner = platformSpawner;
         _cherrySpawner = cherrySpawner;
-        _nextPositionGenerator = nextPositionGenerator;
+        _platformPositionGenerator = platformPositionGenerator;
+        _cherryPositionGenerator = cherryPositionGenerator;
         _gameMediator = gameMediator;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-        _gameMediator.IncreaseScore();
+        _gameMediator.IncreaseScore(); //replace to Increase and Reset
+
+        IPlatform currentPlatform = args.CurrentPlatform;
+        Borders nextCameraBorders = NextCameraBorders(currentPlatform);
+
+        IPlatform nextPlatform = await _platformSpawner.CreateAsync(nextCameraBorders.Right, Relative.Left);
+        ICherry cherry = await _cherrySpawner.CreateAsync(nextCameraBorders.Right, Relative.RightTop);
 
         await UniTask.Delay(100);
 
-        Vector2 destination = args.CurrentPlatform.Borders.LeftBot;
-        var cameraDestination = destination.Shift(_camera.Borders, Relative.LeftBot);
-        var platformDestination = _camera.Borders.Right +
-                                  (args.CurrentPlatform.Borders.Left - _camera.Borders.Left); //rework
+        currentPlatform.FadeOutRedPointAsync().Forget();
 
-        var moveCameraTask = _camera.MoveAsync(cameraDestination);
-
-        _ = args.CurrentPlatform.FadeOutRedPointAsync();
-
-        float nextPositionX = args.CurrentPlatform.Borders.Left + _camera.Borders.Width;
-
-        IPlatform nextPlatform = await _platformSpawner.CreateAsync(nextPositionX, Relative.Left);
-        ICherry cherry = await _cherrySpawner.CreateAsync(nextPlatform);
-
-        await MoveNextPlatformToRandomPoint(args.CurrentPlatform, nextPlatform, cherry, platformDestination);
-
-        await moveCameraTask;
+        await (MoveCamera(nextCameraBorders),
+            MovePlatformWithCherry(nextPlatform, cherry, currentPlatform, nextCameraBorders));
 
         stateMachine.Enter<StickControlState, StickControlState.Arguments>(
-            new(args.CurrentPlatform, nextPlatform, args.Hero, cherry));
+            new(currentPlatform, nextPlatform, args.Hero, cherry));
     }
 
-    private async UniTask MoveNextPlatformToRandomPoint(
-        IPlatform currentPlatform,
-        IPlatform nextPlatform,
-        ICherry cherry,
-        float cameraDestination)
+    private Borders NextCameraBorders(IPlatform currentPlatform)
     {
-        float newPos = _nextPositionGenerator.NextPosition(currentPlatform, nextPlatform, cameraDestination);
+        Vector2 offset = currentPlatform.Borders.LeftBot - _camera.Borders.LeftBot;
+        return _camera.Borders.Shift(offset);
+    }
 
-        UniTask movePlatform = nextPlatform.MoveAsync(newPos);
-        UniTask moveCherry = cherry.MoveRandomlyAsync(currentPlatform, newPos);
+    private UniTask MoveCamera(Borders nextCameraBorders)
+    {
+        return _camera.MoveAsync(nextCameraBorders.Center);
+    }
 
-        await (movePlatform, moveCherry);
+    private async UniTask MovePlatformWithCherry(
+        IPlatform nextPlatform, ICherry cherry, IPlatform currentPlatform, Borders nextCameraBorders)
+    {
+        float platformDestinationX = _platformPositionGenerator.NextPosition(
+            currentPlatform.Borders.Right, nextCameraBorders.Right, nextPlatform.Borders.Width);
+
+        float cherryDestinationX = _cherryPositionGenerator.NextPosition(
+            currentPlatform.Borders.Right, platformDestinationX - nextPlatform.Borders.HalfWidth, cherry.Borders.Width);
+
+        await (nextPlatform.MoveAsync(platformDestinationX), cherry.MoveAsync(cherryDestinationX));
     }
 }
 

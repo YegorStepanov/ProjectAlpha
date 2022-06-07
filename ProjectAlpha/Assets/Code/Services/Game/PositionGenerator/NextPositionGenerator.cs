@@ -3,17 +3,16 @@ using UnityEngine;
 
 namespace Code.Services;
 
-[CreateAssetMenu(menuName = "Data/Next Position Generator", fileName = "Next Position Generator")]
-public sealed class NextPositionGenerator : ScriptableObject
+public abstract class PositionGenerator : ScriptableObject
 {
     [SerializeField] private Mode _mode;
 
     [SerializeField] private float _leftOffset;
     [SerializeField] private float _rightOffset;
-    
-    public float NextPosition(IPlatform currentPlatform, IPlatform nextPlatform, float cameraDestinationRightCorner)
+
+    public float NextPosition(float minPosX, float maxPosX, float width)
     {
-        float halfWidth = nextPlatform.Borders.HalfWidth;
+        float halfWidth = width / 2f;
 
         return _mode switch
         {
@@ -23,10 +22,11 @@ public sealed class NextPositionGenerator : ScriptableObject
             _ => throw new InvalidEnumArgumentException(nameof(_mode), (int)_mode, typeof(Mode))
         };
 
-        float Leftmost() => currentPlatform.Borders.Right + halfWidth + _leftOffset;
-        float Rightmost() => cameraDestinationRightCorner - halfWidth - _rightOffset;
+
+        float Leftmost() => minPosX + halfWidth + _leftOffset;
+        float Rightmost() => maxPosX - halfWidth - _rightOffset;
     }
-    
+
     private enum Mode
     {
         Between,

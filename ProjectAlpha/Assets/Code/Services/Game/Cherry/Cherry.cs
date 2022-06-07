@@ -24,25 +24,18 @@ public sealed class Cherry : MonoBehaviour, ICherry
         _cherrySpawner = cherrySpawner;
         _settings = settings;
     }
-    
+
     private void Awake() =>
         _token = this.GetCancellationTokenOnDestroy();
 
     public void SetPosition(Vector2 position, Relative relative) =>
         _transform.position = position.Shift(Borders, relative);
 
-    public UniTask MoveRandomlyAsync(IPlatform leftPlatform, float rightPlatformLeftBorder)
-    {
-        float min = leftPlatform.Borders.Right + Borders.HalfWidth;
-        float max = rightPlatformLeftBorder - Borders.HalfWidth;
-
-        float endDestination = Random.Range(min, max);
-
-        return _transform.DOMoveX(endDestination, _settings.MovementSpeed)
+    public UniTask MoveAsync(float destinationX) =>
+        _transform.DOMoveX(destinationX, _settings.MovementSpeed)
             .SetEase(Ease.OutQuad)
             .SetSpeedBased()
             .WithCancellation(_token);
-    }
 
     public void PickUp()
     {

@@ -37,6 +37,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11a93d2ff20e6ce438e25c086bc0269c
+    m_Address: Platform Position Generator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bf5b1d2379dcec4dbd61eaae64eee72
+    m_Address: Cherry Position Generator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0f4399c1e47a2f541b59e585801a7440, type: 2}
   m_SchemaSet:

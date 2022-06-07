@@ -13,7 +13,9 @@ namespace Code.Scopes;
 public sealed class GameScope : Scope
 {
     private IWidthGenerator _widthGenerator;
-    private NextPositionGenerator _nextPositionGenerator;
+    private PlatformPositionGenerator _platformPositionGenerator;
+    private CherryPositionGenerator _cherryPositionGenerator;
+
     private Hero _hero;
     private IAsyncPool<Platform> _platformPool;
     private IAsyncPool<Stick> _stickPool;
@@ -26,7 +28,8 @@ public sealed class GameScope : Scope
         WidthGeneratorData widthGeneratorData = await loader.LoadAssetAsync(GameAddress.WidthGenerator);
         _widthGenerator = widthGeneratorData.Create();
 
-        _nextPositionGenerator = await loader.LoadAssetAsync(GameAddress.NextPositionGenerator);
+        _platformPositionGenerator = await loader.LoadAssetAsync(GameAddress.PlatformPositionGenerator);
+        _cherryPositionGenerator = await loader.LoadAssetAsync(GameAddress.CherryPositionGenerator);
 
         _hero = await loader.LoadAssetAsync(GameAddress.Hero);
 
@@ -43,7 +46,8 @@ public sealed class GameScope : Scope
         RegisterGameStateMachine(builder);
 
         builder.RegisterInstance(_widthGenerator);
-        builder.RegisterInstance(_nextPositionGenerator); //rework?
+        builder.RegisterInstance(_platformPositionGenerator);
+        builder.RegisterInstance(_cherryPositionGenerator);
 
         builder.RegisterComponentInNewPrefab(_hero, Lifetime.Singleton);
         builder.Register<HeroSpawner>(Lifetime.Singleton);

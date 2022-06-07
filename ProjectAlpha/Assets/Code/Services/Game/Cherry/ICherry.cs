@@ -4,6 +4,6 @@ namespace Code.Services;
 
 public interface ICherry : IEntity
 {
-    UniTask MoveRandomlyAsync(IPlatform leftPlatform, float rightPlatformLeftBorder);
+    UniTask MoveAsync(float destinationX);
     void PickUp();
 }
