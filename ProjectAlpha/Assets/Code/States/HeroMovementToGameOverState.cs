@@ -7,6 +7,8 @@ namespace Code.States;
 
 public sealed class HeroMovementToGameOverState : BaseHeroMovementState, IState<HeroMovementToGameOverState.Arguments>
 {
+    private readonly CancellationToken _token;
+
     public readonly record struct Arguments(
         IPlatform LeftPlatform,
         IPlatform CurrentPlatform,
@@ -14,21 +16,25 @@ public sealed class HeroMovementToGameOverState : BaseHeroMovementState, IState<
         IStick Stick,
         ICherry Cherry);
 
-    public HeroMovementToGameOverState(InputManager inputManager, GameMediator gameMediator) :
-        base(inputManager, gameMediator) { }
+    public HeroMovementToGameOverState(InputManager inputManager, GameMediator gameMediator, CancellationToken token) :
+        base(inputManager, gameMediator)
+    {
+        _token = token;
+    }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
         CancellationTokenSource cts = new();
+        CancellationToken linkedToken = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, _token).Token;
 
-        _ = HeroFlipsOnClick(args.Hero, args.LeftPlatform, args.CurrentPlatform, cts.Token);
-        UniTask collect = HeroCollectsCherry(args.Hero, args.Cherry, cts.Token);
+        _ = HeroFlipsOnClick(args.Hero, args.LeftPlatform, args.CurrentPlatform, linkedToken);
+        UniTask collect = HeroCollectsCherry(args.Hero, args.Cherry, linkedToken);
 
         float destinationX = args.Stick.Borders.Right;
 
         await UniTask.WhenAny(
-            HeroCollides(args.Hero, args.CurrentPlatform, cts.Token),
-            MoveHero(destinationX, args.Hero, cts.Token));
+            HeroCollides(args.Hero, args.CurrentPlatform, linkedToken),
+            MoveHero(destinationX, args.Hero, linkedToken));
 
         cts.Cancel();
 

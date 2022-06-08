@@ -8,6 +8,7 @@ namespace Code.States;
 public sealed class HeroMovementToPlatformState : BaseHeroMovementState, IState<HeroMovementToPlatformState.Arguments>
 {
     private readonly StickSpawner _stickSpawner;
+    private readonly CancellationToken _token;
 
     public readonly record struct Arguments(
         IPlatform LeftPlatform,
@@ -16,27 +17,29 @@ public sealed class HeroMovementToPlatformState : BaseHeroMovementState, IState<
         ICherry Cherry);
 
     public HeroMovementToPlatformState(
-        InputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner) :
+        InputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner, CancellationToken token) :
         base(inputManager, gameMediator)
     {
         _stickSpawner = stickSpawner;
+        _token = token;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
         CancellationTokenSource cts = new();
+        CancellationToken linkedToken = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, _token).Token;
 
-        HeroFlipsOnClick(args.Hero, args.LeftPlatform, args.CurrentPlatform, cts.Token).Forget();
+        HeroFlipsOnClick(args.Hero, args.LeftPlatform, args.CurrentPlatform, linkedToken).Forget();
 
-        UniTask collect = HeroCollectsCherry(args.Hero, args.Cherry, cts.Token); //todo
+        UniTask collect = HeroCollectsCherry(args.Hero, args.Cherry, linkedToken); //todo
 
         float destinationX = args.CurrentPlatform.Borders.Right;
         destinationX -= _stickSpawner.StickWidth / 2f;
         destinationX -= args.Hero.HandOffset;
 
         (bool isCollided, _) = await UniTask.WhenAny(
-            HeroCollides(args.Hero, args.CurrentPlatform, cts.Token),
-            MoveHero(destinationX, args.Hero, cts.Token));
+            HeroCollides(args.Hero, args.CurrentPlatform, linkedToken),
+            MoveHero(destinationX, args.Hero, linkedToken));
 
         cts.Cancel();
 
