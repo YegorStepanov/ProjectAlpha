@@ -7,7 +7,7 @@ namespace Code.Triggers;
 
 public sealed class GameStartedTrigger
 {
-    private IUniTaskAsyncEnumerable<AsyncUnit> _events;
+    private IUniTaskAsyncEnumerable<AsyncUnit> _stream;
     private CancellationToken _token;
 
     public GameStartedTrigger(IUniTaskAsyncEnumerable<AsyncUnit> fallbackStream) =>
@@ -15,16 +15,16 @@ public sealed class GameStartedTrigger
 
     public void SetTrigger(IUniTaskAsyncEnumerable<AsyncUnit> stream, CancellationToken token)
     {
-        _events = stream;
+        _stream = stream;
         _token = token;
     }
 
-    public async UniTask Await()
+    public async UniTask WaitAsync()
     {
         if (_token.IsCancellationRequested) 
             Debug.LogError("GameStartedTrigger was cancelled");
 
-        (bool isCanceled, _) = await _events.FirstAsync(_token).SuppressCancellationThrow();
+        (bool isCanceled, _) = await _stream.FirstAsync(_token).SuppressCancellationThrow();
 
         if (isCanceled) 
             Debug.LogError("GameStartedTrigger cancelled");
