@@ -11,6 +11,7 @@ public abstract class BaseHeroMovementState
 {
     private readonly InputManager _inputManager;
     private readonly GameMediator _gameMediator;
+    private readonly CancellationToken _token;
 
     protected BaseHeroMovementState(InputManager inputManager, GameMediator gameMediator)
     {
@@ -64,7 +65,7 @@ public abstract class BaseHeroMovementState
     protected async Task GameOver(IHero hero)
     {
         await UniTask.Delay(100);
-        await hero.FellAsync();
+        await hero.FallAsync();
         await UniTask.Delay(300);
         _gameMediator.GameOver();
     }

@@ -14,7 +14,7 @@ public sealed class MoveHeroToNextPlatformState : IState<MoveHeroToNextPlatformS
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-        if (args.NextPlatform.Contains(args.Stick.ArrowPosition))
+        if (args.Stick.IsStickArrowOn(args.NextPlatform))
         {
             stateMachine.Enter<HeroMovementToPlatformState, HeroMovementToPlatformState.Arguments>(
                 new(args.CurrentPlatform, args.NextPlatform, args.Hero, args.Cherry));

@@ -1,4 +1,6 @@
-﻿using Code.Services;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 
@@ -28,21 +30,24 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
         IStick stick = await _stickSpawner.CreateAsync(args.CurrentPlatform.Borders.RightTop);
 
         await _inputManager.NextClick();
-        stick.StartIncreasing();
-
-        await _inputManager.NextRelease();
-        stick.StopIncreasing();
+        await IncreaseStick(stick);
 
         await args.Hero.KickAsync();
-
         await stick.RotateAsync();
 
-        bool isInside = args.NextPlatform.InsideRedPoint(stick.ArrowPosition.x);
-
-        if (isInside)
-            _gameMediator.OnRedPointHit(args.NextPlatform.RedPointBorders.Center);
+        if (stick.IsStickArrowOn(args.NextPlatform.RedPoint))
+            _gameMediator.OnRedPointHit(args.NextPlatform.RedPoint.Borders.Center); //rename parameter name
 
         stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
             new(args.CurrentPlatform, args.NextPlatform, stick, args.Hero, args.Cherry));
+    }
+
+    private async Task IncreaseStick(IStick stick)
+    {
+        var cts = new CancellationTokenSource();
+        stick.StartIncreasingAsync(cts.Token).Forget();
+
+        await _inputManager.NextRelease();
+        cts.Cancel();
     }
 }

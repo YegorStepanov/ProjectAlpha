@@ -1,5 +1,4 @@
 ﻿using Code.Services;
-using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States;
@@ -25,7 +24,7 @@ public sealed class BootstrapState : IState
 
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
-        _gameData.SetMenuHeight();
+        // _gameData.SetMenuHeight();
 
         await _camera.ChangeBackgroundAsync();
 

@@ -45,7 +45,7 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
 
         await UniTask.Delay(100);
 
-        currentPlatform.FadeOutRedPointAsync().Forget();
+        currentPlatform.RedPoint.FadeOutAsync();
 
         await (MoveCamera(nextCameraBorders),
             MovePlatformWithCherry(nextPlatform, cherry, currentPlatform, nextCameraBorders));
