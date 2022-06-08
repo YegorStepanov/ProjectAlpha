@@ -43,35 +43,16 @@ public sealed class GameScope : Scope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        RegisterHero(builder);
+        RegisterPlatform(builder);
+        RegisterStick(builder);
+        RegisterCherry(builder);
+
+        RegisterUI(builder);
         RegisterGameStateMachine(builder);
 
-        builder.RegisterInstance(_widthGenerator);
-        builder.RegisterInstance(_platformPositionGenerator);
-        builder.RegisterInstance(_cherryPositionGenerator);
-
-        builder.RegisterComponentInNewPrefab(_hero, Lifetime.Singleton);
-        builder.Register<HeroSpawner>(Lifetime.Singleton);
-
-        builder.RegisterInstance(_platformPool);
-        builder.Register<PlatformSpawner>(Lifetime.Singleton);
-
-        builder.RegisterInstance(_stickPool);
-        builder.Register<StickSpawner>(Lifetime.Singleton);
-
-        builder.RegisterInstance(_cherryPool);
-        builder.Register<CherrySpawner>(Lifetime.Singleton);
-
-        builder.RegisterComponentInNewPrefab(_gameUI, Lifetime.Singleton);
-        builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
-
         builder.RegisterEntryPoint<GameStart>();
-
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
-
-        builder.Register<GameData>(Lifetime.Singleton);
-        builder.Register<GameSceneLoader>(Lifetime.Singleton);
-        builder.Register<GameMediator>(Lifetime.Singleton);
-        builder.Register<GameUIController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
 
         //temp
         builder.RegisterBuildCallback(resolver =>
@@ -83,6 +64,46 @@ public sealed class GameScope : Scope
 
             gm.gameStateMachine = resolver.Resolve<GameStateMachine>();
         });
+    }
+
+    private void RegisterHero(IContainerBuilder builder)
+    {
+        builder.RegisterComponentInNewPrefab(_hero, Lifetime.Singleton);
+        builder.Register<HeroSpawner>(Lifetime.Singleton);
+    }
+
+    private void RegisterPlatform(IContainerBuilder builder)
+    {
+        builder.RegisterInstance(_platformPool);
+        builder.Register<PlatformSpawner>(Lifetime.Singleton);
+
+        builder.RegisterInstance(_widthGenerator);
+        builder.RegisterInstance(_platformPositionGenerator);
+    }
+
+    private void RegisterStick(IContainerBuilder builder)
+    {
+        builder.RegisterInstance(_stickPool);
+        builder.Register<StickSpawner>(Lifetime.Singleton);
+    }
+
+    private void RegisterCherry(IContainerBuilder builder)
+    {
+        builder.RegisterInstance(_cherryPool);
+        builder.Register<CherrySpawner>(Lifetime.Singleton);
+
+        builder.RegisterInstance(_cherryPositionGenerator);
+    }
+
+    private void RegisterUI(IContainerBuilder builder)
+    {
+        builder.RegisterComponentInNewPrefab(_gameUI, Lifetime.Singleton);
+        builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
+
+        builder.Register<GameData>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+        builder.Register<GameSceneLoader>(Lifetime.Singleton);
+        builder.Register<GameMediator>(Lifetime.Singleton);
+        builder.Register<GameUIController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
     }
 
     private static void RegisterGameStateMachine(IContainerBuilder builder)
