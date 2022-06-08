@@ -157,6 +157,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 211d4c1c012d4ea42b3583f9c87a5153, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stick: {fileID: 8047122916972879037}
-  _spriteRenderer: {fileID: 6312553818513177248}
+  _sprite: {fileID: 6312553818513177248}
   _arrow: {fileID: 3208649589101164659}

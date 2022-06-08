@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7320549570763579208}
   - component: {fileID: 4326162081635893656}
+  - component: {fileID: 8497285666100613329}
   m_Layer: 0
   m_Name: Red Point
   m_TagString: Untagged
@@ -82,6 +83,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8497285666100613329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4325814496763877471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6faaa4799c4c48dbbc7442321cdb17be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprite: {fileID: 4326162081635893656}
 --- !u!1 &5117981732192170701
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,8 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd294f5c7fe44c7999a4d7bf7ea34613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _platformRenderer: {fileID: 7583334913541630921}
-  _redPointRenderer: {fileID: 4326162081635893656}
+  _sprite: {fileID: 7583334913541630921}
+  _redPoint: {fileID: 8497285666100613329}
 --- !u!1 &6713335473536499148
 GameObject:
   m_ObjectHideFlags: 0
