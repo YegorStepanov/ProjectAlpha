@@ -14,7 +14,7 @@ public sealed class GameUIController : IStartable
         _gameUI = gameUI;
     }
 
-    public void Start()
+    void IStartable.Start()
     {
         _gameUI.ShowHelp();
     }
@@ -25,7 +25,7 @@ public sealed class GameUIController : IStartable
         _gameUI.UpdateScore(_gameData.Score);
 
         if (_gameData.Score == 1)
-            _gameUI.HideHelp(); //hmm where it go?
+            _gameUI.HideHelp();
     }
 
     public void IncreaseCherryCount()
