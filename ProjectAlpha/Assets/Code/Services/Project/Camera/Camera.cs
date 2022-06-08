@@ -19,7 +19,7 @@ public sealed class Camera : MonoBehaviour, IEntity
 
     public Borders Borders => UpdateBorders();
 
-    public Vector3 CameraPosition => _baseCamera.transform.position;
+    private Vector3 CameraPosition => _baseCamera.transform.position;
 
     [Inject, UsedImplicitly]
     public void Construct(IScopedAddressablesLoader loader)
