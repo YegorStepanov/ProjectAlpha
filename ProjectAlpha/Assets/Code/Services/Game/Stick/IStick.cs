@@ -1,12 +1,11 @@
-﻿using Cysharp.Threading.Tasks;
-using UnityEngine;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace Code.Services;
 
 public interface IStick : IEntity
 {
-    Vector2 ArrowPosition { get; }
-    public void StartIncreasing();
-    public void StopIncreasing();
+    bool IsStickArrowOn(IEntity entity);
+    UniTask StartIncreasingAsync(CancellationToken token);
     UniTask RotateAsync();
 }

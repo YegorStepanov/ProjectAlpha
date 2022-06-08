@@ -86,6 +86,7 @@ public sealed class GameScope : Scope
     private void RegisterStick(IContainerBuilder builder)
     {
         builder.RegisterInstance(_stickPool);
+        builder.Register<IStickAnimations, StickAnimations>(Lifetime.Singleton);
         builder.Register<StickSpawner>(Lifetime.Singleton);
     }
 
