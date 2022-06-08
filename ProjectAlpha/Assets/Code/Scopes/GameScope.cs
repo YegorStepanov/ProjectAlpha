@@ -76,6 +76,7 @@ public sealed class GameScope : Scope
     private void RegisterPlatform(IContainerBuilder builder)
     {
         builder.RegisterInstance(_platformPool);
+        builder.Register<IPlatformAnimations, PlatformAnimations>(Lifetime.Singleton);
         builder.Register<PlatformSpawner>(Lifetime.Singleton);
 
         builder.RegisterInstance(_widthGenerator);

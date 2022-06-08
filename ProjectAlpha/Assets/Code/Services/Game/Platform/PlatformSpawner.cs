@@ -48,7 +48,7 @@ public sealed class PlatformSpawner
 
         platform.SetSize(new Vector2(width, height));
         platform.SetPosition(position, relative);
-        platform.ToggleRedPoint(redPointEnabled);
+        platform.RedPoint.Toggle(redPointEnabled);
 
         return platform;
     }

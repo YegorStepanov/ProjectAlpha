@@ -4,8 +4,6 @@ namespace Code.Services;
 
 public interface IPlatform : IEntity
 {
-    Borders RedPointBorders { get; }
+    RedPoint RedPoint { get; }
     UniTask MoveAsync(float destinationX);
-    bool InsideRedPoint(float point);
-    UniTask FadeOutRedPointAsync();
 }
