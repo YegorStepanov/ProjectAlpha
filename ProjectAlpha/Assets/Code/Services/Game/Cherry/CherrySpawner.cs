@@ -9,19 +9,22 @@ public sealed class CherrySpawner
 {
     private readonly IAsyncPool<Cherry> _pool;
     private readonly GameData _gameData;
+    private readonly IRandomizer _randomizer;
     private readonly Settings _settings;
+    private readonly CherryNull _cherryNull = new();
 
-    public CherrySpawner(IAsyncPool<Cherry> pool, GameData gameData, Settings settings)
+    public CherrySpawner(IAsyncPool<Cherry> pool, GameData gameData, IRandomizer randomizer, Settings settings)
     {
         _pool = pool;
         _gameData = gameData;
+        _randomizer = randomizer;
         _settings = settings;
     }
     
     public async UniTask<ICherry> CreateAsync(float posX, Relative relative)
     {
-        if (Random.value < _settings.CherryChance)
-            return new CherryNull();
+        if (_randomizer.NextProbability() > _settings.CherryChance)
+            return _cherryNull;
 
         Cherry cherry = await _pool.SpawnAsync();
 

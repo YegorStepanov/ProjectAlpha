@@ -57,6 +57,7 @@ public sealed class RootScope : Scope
         builder.RegisterInstance<ISceneLoader>(SceneLoader.Instance);
         builder.Register<GameEvents>(Lifetime.Singleton);
         builder.Register<InputManager>(Lifetime.Singleton);
+        builder.Register<IRandomizer, Randomizer>(Lifetime.Singleton);
 
         builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
         builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);
