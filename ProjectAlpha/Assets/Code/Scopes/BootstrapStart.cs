@@ -23,8 +23,6 @@ public sealed class BootstrapStart : IAsyncStartable
         await _sceneLoader.LoadAsync<GameScene>(token);
         await _sceneLoader.LoadAsync<MenuScene>(token);
 
-        // await (loadGame: gameLoad, loadMenu: menuLoad);
-
         await _loadingScreen.FadeOutAsync();
         await _sceneLoader.UnloadAsync<BootstrapScene>(token);
     }
