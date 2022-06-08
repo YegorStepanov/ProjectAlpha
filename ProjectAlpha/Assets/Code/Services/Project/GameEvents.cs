@@ -3,11 +3,11 @@ using Cysharp.Threading.Tasks.Linq;
 
 namespace Code.Services;
 
-public sealed class GameTriggers
+public sealed class GameEvents
 {
     public GameStartedTrigger GameStarted { get; }
 
-    public GameTriggers()
+    public GameEvents()
     {
 #if UNITY_EDITOR
         var events = UniTaskAsyncEnumerable.EveryUpdate();

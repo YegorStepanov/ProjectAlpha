@@ -7,8 +7,7 @@ namespace Code.States;
 public sealed class BootstrapState : IState
 {
     private readonly Camera _camera;
-    private readonly GameTriggers _gameTriggers;
-    private readonly GameData _gameData;
+    private readonly GameEvents _gameEvents;
     private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
 
@@ -16,14 +15,12 @@ public sealed class BootstrapState : IState
         PlatformSpawner platformSpawner,
         HeroSpawner heroSpawner,
         Camera camera,
-        GameTriggers gameTriggers,
-        GameData gameData)
+        GameEvents gameEvents)
     {
         _platformSpawner = platformSpawner;
         _heroSpawner = heroSpawner;
         _camera = camera;
-        _gameTriggers = gameTriggers;
-        _gameData = gameData;
+        _gameEvents = gameEvents;
     }
 
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
@@ -36,7 +33,7 @@ public sealed class BootstrapState : IState
 
         IHero hero = await _heroSpawner.CreateAsync(menuPlatform.Borders.CenterTop, Relative.Left);
 
-        await _gameTriggers.GameStarted.Await();
+        await _gameEvents.GameStarted.WaitAsync();
 
         stateMachine.Enter<HeroMovementToPlatformState, HeroMovementToPlatformState.Arguments>(
             new(menuPlatform, menuPlatform, hero, null));

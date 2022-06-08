@@ -11,10 +11,10 @@ namespace Code.UI;
 public sealed class StartGameTrigger : MonoBehaviour
 {
     [Inject, UsedImplicitly]
-    public void Construct(GameTriggers gameTriggers)
+    public void Construct(GameEvents gameEvents)
     {
         var clickStream = this.GetAsyncPointerClickTrigger().Select(_ => AsyncUnit.Default);
 
-        gameTriggers.GameStarted.SetTrigger(clickStream, this.GetCancellationTokenOnDestroy());
+        gameEvents.GameStarted.SetTrigger(clickStream, this.GetCancellationTokenOnDestroy());
     }
 }
