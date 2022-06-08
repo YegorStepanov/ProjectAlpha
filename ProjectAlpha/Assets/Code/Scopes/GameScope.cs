@@ -90,6 +90,7 @@ public sealed class GameScope : Scope
     private void RegisterCherry(IContainerBuilder builder)
     {
         builder.RegisterInstance(_cherryPool);
+        builder.Register<ICherryAnimations, CherryAnimations>(Lifetime.Singleton);
         builder.Register<CherrySpawner>(Lifetime.Singleton);
 
         builder.RegisterInstance(_cherryPositionGenerator);

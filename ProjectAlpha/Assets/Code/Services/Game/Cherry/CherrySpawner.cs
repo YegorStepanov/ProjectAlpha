@@ -17,7 +17,7 @@ public sealed class CherrySpawner
         _gameData = gameData;
         _settings = settings;
     }
-
+    
     public async UniTask<ICherry> CreateAsync(float posX, Relative relative)
     {
         if (Random.value < _settings.CherryChance)
@@ -29,6 +29,7 @@ public sealed class CherrySpawner
         return cherry;
     }
 
+    //we should disable cherry, hide?
     public void DespawnAll()
     {
         _pool.DespawnAll();
