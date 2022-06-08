@@ -1,6 +1,6 @@
 ﻿namespace Code.Services;
 
-public interface IWidthGenerator
+public interface IWidthGenerator //todo rename to IPlatformWidthGenerator?
 {
     float NextWidth();
 }
