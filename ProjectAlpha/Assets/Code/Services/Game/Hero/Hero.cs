@@ -1,67 +1,51 @@
 using System.Threading;
 using Code.HeroAnimators;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
 namespace Code.Services;
 
-public sealed class Hero : MonoBehaviour, IHero
+public sealed class Hero : SpriteEntity, IHero
 {
-    [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private HeroAnimator _animator;
 
+    private IHeroAnimations _animations;
     private Settings _settings;
-    private CancellationToken _token;
-
-    private IStick _stick;
-
-    public Borders Borders => _spriteRenderer.bounds.AsBorders();
 
     public float HandOffset => _settings.HandOffset; //remove it
-
     public bool IsFlipped => transform.localScale.y < 0;
 
     [Inject, UsedImplicitly]
-    public void Construct(Settings settings) =>
-        _settings = settings;
-
-    //cache transform in Construct
-    private void Awake() =>
-        _token = this.GetCancellationTokenOnDestroy();
-
-    public void SetPosition(Vector2 destination, Relative relative) =>
-        transform.position = destination.Shift(Borders, relative);
-
-    // ReSharper disable Unity.InefficientPropertyAccess
-    public void Flip() =>
-        transform.localScale = transform.localScale with { y = transform.localScale.y * -1 };
-
-    public async UniTask MoveAsync(float destinationX, CancellationToken token = default)
+    public void Construct(IHeroAnimations animations, Settings settings)
     {
-        if (token == default)
-            token = _token;
+        _animations = animations;
+        _settings = settings;
+    }
 
+    public UniTask MoveAsync(float destinationX) =>
+        MoveAsync(destinationX, token);
+
+    public async UniTask MoveAsync(float destinationX, CancellationToken token)
+    {
         _animator.PlayMove();
-
-        await transform.DOMoveX(destinationX, _settings.MovementSpeed)
-            .SetEase(Ease.Linear)
-            .SetSpeedBased()
-            .WithCancellation(token);
-
+        await _animations.Move(transform, destinationX, _settings.MovementSpeed, token);
         _animator.PlayStay();
     }
 
-    public async UniTask FellAsync() =>
-        await transform.DOMoveY(_settings.FallingDestination, _settings.FallingSpeed)
-            .SetSpeedBased()
-            .SetEase(Ease.Linear)
-            .WithCancellation(_token);
+    public UniTask FallAsync() =>
+        _animations.Fall(transform, _settings.FallingDestination, _settings.FallingSpeed, token);
 
     public UniTask KickAsync() =>
-        _animator.PlayKickAsync(_token);
+        _animator.PlayKickAsync(token);
+
+    public void Flip()
+    {
+        Vector3 scale = transform.localScale;
+        scale.y *= -1;
+        transform.localScale = scale;
+    }
 
     [System.Serializable]
     public class Settings

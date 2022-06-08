@@ -69,6 +69,7 @@ public sealed class GameScope : Scope
     private void RegisterHero(IContainerBuilder builder)
     {
         builder.RegisterComponentInNewPrefab(_hero, Lifetime.Singleton);
+        builder.Register<IHeroAnimations, HeroAnimations>(Lifetime.Singleton);
         builder.Register<HeroSpawner>(Lifetime.Singleton);
     }
 
