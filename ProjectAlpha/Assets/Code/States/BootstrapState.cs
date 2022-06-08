@@ -36,6 +36,6 @@ public sealed class BootstrapState : IState
         await _gameEvents.GameStarted.WaitAsync();
 
         stateMachine.Enter<HeroMovementToPlatformState, HeroMovementToPlatformState.Arguments>(
-            new(menuPlatform, menuPlatform, hero, null));
+            new(menuPlatform, menuPlatform, hero, new CherryNull()));
     }
 }
