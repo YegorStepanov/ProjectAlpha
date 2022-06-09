@@ -94,7 +94,7 @@ public sealed class GameScope : Scope
     {
         builder.RegisterInstance(_cherryPool);
         builder.Register<ICherryAnimations, CherryAnimations>(Lifetime.Singleton);
-        builder.Register<CherrySpawner>(Lifetime.Singleton);
+        builder.Register<CherrySpawner>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
 
         builder.RegisterInstance(_cherryPositionGenerator);
     }

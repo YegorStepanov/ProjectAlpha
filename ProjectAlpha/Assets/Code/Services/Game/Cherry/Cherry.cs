@@ -7,14 +7,14 @@ namespace Code.Services;
 public sealed class Cherry : SpriteEntity, ICherry
 {
     private ICherryAnimations _animations;
-    private CherrySpawner _cherrySpawner;
+    private ICherryPickHandler _pickHandler;
     private Settings _settings;
 
     [Inject, UsedImplicitly]
-    private void Construct(ICherryAnimations animations, CherrySpawner cherrySpawner, Settings settings)
+    private void Construct(ICherryAnimations animations, ICherryPickHandler pickHandler, Settings settings)
     {
         _animations = animations;
-        _cherrySpawner = cherrySpawner;
+        _pickHandler = pickHandler;
         _settings = settings;
     }
 
@@ -23,7 +23,7 @@ public sealed class Cherry : SpriteEntity, ICherry
 
     public void PickUp()
     {
-        _cherrySpawner.Despawn(this); //use event
+        _pickHandler.OnCherryPicked(this);
         //show super effect
     }
 

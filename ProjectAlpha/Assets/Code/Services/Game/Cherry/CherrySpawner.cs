@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Code.Services;
 
-public sealed class CherrySpawner
+public sealed class CherrySpawner : ICherryPickHandler
 {
     private readonly IAsyncPool<Cherry> _pool;
     private readonly GameData _gameData;
@@ -20,7 +20,7 @@ public sealed class CherrySpawner
         _randomizer = randomizer;
         _settings = settings;
     }
-    
+
     public async UniTask<ICherry> CreateAsync(float posX, Relative relative)
     {
         if (_randomizer.NextProbability() > _settings.CherryChance)
@@ -33,20 +33,16 @@ public sealed class CherrySpawner
     }
 
     //we should disable cherry, hide?
-    public void DespawnAll()
-    {
+    public void DespawnAll() =>
         _pool.DespawnAll();
-    }
 
-    public void Despawn(Cherry cherry)
-    {
+    void ICherryPickHandler.OnCherryPicked(Cherry cherry) =>
         _pool.Despawn(cherry);
-    }
 
     [System.Serializable]
     public class Settings
     {
-        [Range(0, 1)] 
+        [Range(0, 1)]
         public float CherryChance = 0.1f;
     }
 }
