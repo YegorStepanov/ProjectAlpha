@@ -28,8 +28,7 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
     }
 
     public UniTask PlayKickAsync(CancellationToken token) =>
-        ChangeState(Kick, HeroAnimatorState.Kick, 0, token);
-
+        Play(Kick, HeroAnimatorState.Kick, 0, token);
 
     public void PlayMove() =>
         _animator.SetTrigger(Move);
@@ -37,14 +36,13 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
     public void PlayStay() =>
         _animator.SetTrigger(Stay);
 
-
     public void EnteredState(int stateHash, int layerIndex) { }
 
     public void ExitedState(int stateHash, int layerIndex) =>
         GetState(layerIndex).Value = GetStateFromHash(stateHash);
 
 
-    private async UniTask ChangeState(
+    private async UniTask Play(
         int stateHash, HeroAnimatorState heroAnimatorState, int layerIndex, CancellationToken token)
     {
         _animator.SetTrigger(stateHash);
