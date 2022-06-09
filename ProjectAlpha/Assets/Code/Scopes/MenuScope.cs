@@ -9,7 +9,7 @@ namespace Code.Scopes;
 public sealed class MenuScope : Scope
 {
     private MenuMediator _menu;
-    private MainMenuController _mainMenu;
+    private MainMenu _mainMenu;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
@@ -33,7 +33,7 @@ public sealed class MenuScope : Scope
 
     private static void BuildCallback(IObjectResolver resolver)
     {
-        var mainMenu = resolver.Resolve<MainMenuController>();
+        var mainMenu = resolver.Resolve<MainMenu>();
         resolver.InjectGameObject(mainMenu.gameObject);
     }
 }

@@ -8,14 +8,14 @@ namespace Code.Services;
 
 public sealed class MenuMediator : MonoBehaviour
 {
-    private MainMenuController _mainMenu;
+    private MainMenu _mainMenu;
     private PanelManager _panelManager;
     private ISceneLoader _sceneLoader;
     private CancellationToken _token;
 
     [Inject, UsedImplicitly]
     public void Construct(
-        MainMenuController mainMenu,
+        MainMenu mainMenu,
         PanelManager panelManager,
         ISceneLoader sceneLoader,
         CancellationToken token)

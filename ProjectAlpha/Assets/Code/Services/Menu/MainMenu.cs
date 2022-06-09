@@ -2,7 +2,7 @@
 
 namespace Code.Services;
 
-public sealed class MainMenuController : MonoBehaviour
+public sealed class MainMenu : MonoBehaviour
 {
     [SerializeField] private GameObject _soundOn;
     [SerializeField] private GameObject _soundOff;
