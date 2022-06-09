@@ -11,7 +11,7 @@ public sealed class Platform : SpriteEntity, IPlatform
     private Settings _settings;
     private IPlatformAnimations _animations;
 
-    public RedPoint RedPoint => _redPoint;
+    public IRedPoint RedPoint => _redPoint;
 
     [Inject, UsedImplicitly]
     public void Construct(IPlatformAnimations animations, Settings settings)

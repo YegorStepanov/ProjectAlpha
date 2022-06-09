@@ -4,6 +4,6 @@ namespace Code.Services;
 
 public interface IPlatform : IEntity
 {
-    RedPoint RedPoint { get; }
+    IRedPoint RedPoint { get; }
     UniTask MoveAsync(float destinationX);
 }
