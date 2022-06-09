@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Code.HeroAnimators;
+namespace Code;
 
 public sealed class AnimatorStateReporter : StateMachineBehaviour
 {

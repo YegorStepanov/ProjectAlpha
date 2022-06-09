@@ -1,4 +1,4 @@
-﻿namespace Code.HeroAnimators;
+﻿namespace Code;
 
 public interface IAnimationStateReader
 {
