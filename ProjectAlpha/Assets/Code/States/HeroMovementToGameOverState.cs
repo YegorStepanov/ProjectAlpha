@@ -16,8 +16,8 @@ public sealed class HeroMovementToGameOverState : BaseHeroMovementState, IState<
         IStick Stick,
         ICherry Cherry);
 
-    public HeroMovementToGameOverState(InputManager inputManager, GameMediator gameMediator, CancellationToken token) :
-        base(inputManager, gameMediator)
+    public HeroMovementToGameOverState(InputManager inputManager, GameMediator gameMediator, Camera camera, CancellationToken token) :
+        base(inputManager, gameMediator, camera)
     {
         _token = token;
     }

@@ -1,4 +1,5 @@
-﻿using Code.AddressableAssets;
+﻿using System.Threading;
+using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
@@ -13,7 +14,7 @@ namespace Code.Services;
 public sealed class Camera : MonoBehaviour, IEntity
 {
     [Required, SerializeField] private UnityEngine.Camera _baseCamera;
-    [Required, SerializeField] private Image _backgroundImage;
+    [Required, SerializeField] private RawImage _backgroundImage;
 
     private BackgroundChanger _backgroundChanger;
 
@@ -22,14 +23,17 @@ public sealed class Camera : MonoBehaviour, IEntity
     private Vector3 CameraPosition => _baseCamera.transform.position;
 
     [Inject, UsedImplicitly]
-    public void Construct(IScopedAddressablesLoader loader)
+    public void Construct(IScopedAddressablesLoader loader, IRandomizer randomizer)
     {
         //it should be null, isn't?
-        _backgroundChanger = new BackgroundChanger(loader, _backgroundImage);
+        _backgroundChanger = new BackgroundChanger(loader, randomizer, _backgroundImage);
     }
 
     public UniTask ChangeBackgroundAsync() =>
         _backgroundChanger.ChangeToRandomBackgroundAsync();
+
+    public UniTask MoveBackgroundAsync(CancellationToken cancellationToken) =>
+        _backgroundChanger.MoveBackgroundAsync(cancellationToken);
 
     //
     // void IInitializable.Initialize()
@@ -63,10 +67,10 @@ public sealed class Camera : MonoBehaviour, IEntity
 
     public Vector2 ViewportToWorldPosition(Vector2 viewportPosition) =>
         _baseCamera.ViewportToWorldPoint(viewportPosition);
-    
+
     public float ViewportToWorldPositionX(float viewportPosX) =>
         _baseCamera.ViewportToWorldPoint(new Vector2(viewportPosX, 0)).x;
-    
+
     public float ViewportToWorldPositionY(float viewportPosY) =>
         _baseCamera.ViewportToWorldPoint(new Vector2(0, viewportPosY)).y;
 }

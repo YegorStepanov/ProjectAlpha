@@ -11,12 +11,14 @@ public abstract class BaseHeroMovementState
 {
     private readonly InputManager _inputManager;
     private readonly GameMediator _gameMediator;
+    private readonly Camera _camera;
     private readonly CancellationToken _token;
 
-    protected BaseHeroMovementState(InputManager inputManager, GameMediator gameMediator)
+    protected BaseHeroMovementState(InputManager inputManager, GameMediator gameMediator, Camera camera)
     {
         _inputManager = inputManager;
         _gameMediator = gameMediator;
+        _camera = camera;
     }
 
     protected async UniTask HeroFlipsOnClick(IHero hero, IPlatform leftPlatform,
@@ -58,7 +60,8 @@ public abstract class BaseHeroMovementState
 
     protected async UniTask MoveHero(float destinationX, IHero hero, CancellationToken token)
     {
-        await UniTask.Delay(200); //move it to another place
+        await UniTask.Delay(200, cancellationToken: token); //move it to another place
+        _camera.MoveBackgroundAsync(token).Forget();
         await hero.MoveAsync(destinationX, token);
     }
 

@@ -1,5 +1,7 @@
-﻿using Code.AddressableAssets;
+﻿using System.Threading;
+using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,16 +9,20 @@ namespace Code.Services;
 
 public sealed class BackgroundChanger
 {
-    private readonly Address<Sprite>[] _addresses;
-    private readonly Image _backgroundImage;
+    private readonly Address<Texture2D>[] _addresses;
+    private readonly RawImage _image;
     private readonly IScopedAddressablesLoader _loader;
+    private readonly IRandomizer _randomizer;
 
-    private Sprite _spriteAsset;
+    private Texture2D _spriteAsset;
 
-    public BackgroundChanger(IScopedAddressablesLoader loader, Image backgroundImage)
+    private int lastIndex = -1;
+
+    public BackgroundChanger(IScopedAddressablesLoader loader, IRandomizer randomizer, RawImage image)
     {
         _loader = loader;
-        _backgroundImage = backgroundImage;
+        _randomizer = randomizer;
+        _image = image;
 
         _addresses = new[]
         {
@@ -33,16 +39,26 @@ public sealed class BackgroundChanger
         if (_spriteAsset != null)
             _loader.Release(_spriteAsset);
 
-        Address<Sprite> newAddress = GetRandomBackground();
+        Address<Texture2D> background = GetRandomBackground();
 
-        Sprite sprite = await _loader.LoadAssetAsync(newAddress);
-        _backgroundImage.sprite = sprite;
-        _spriteAsset = sprite;
+        Texture2D texture = await _loader.LoadAssetAsync(background);
+        _image.texture = texture;
+        _spriteAsset = texture;
     }
 
-    private Address<Sprite> GetRandomBackground()
+    public UniTask MoveBackgroundAsync(CancellationToken token) => _image
+        .DOMoveUVX(1f, 0.05f)
+        .SetRelative()
+        .SetSpeedBased()
+        .WithCancellation(token);
+
+    private Address<Texture2D> GetRandomBackground()
     {
-        int index = Random.Range(0, _addresses.Length);
-        return _addresses[index];
+        lastIndex = GetNextIndex();
+        return _addresses[lastIndex];
     }
+
+    private int GetNextIndex() => lastIndex == -1
+        ? _randomizer.Next(_addresses.Length)
+        : _randomizer.NextExcept(_addresses.Length, lastIndex);
 }
