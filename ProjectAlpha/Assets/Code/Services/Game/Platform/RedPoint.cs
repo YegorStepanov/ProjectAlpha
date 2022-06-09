@@ -16,10 +16,6 @@ public sealed class RedPoint : SpriteEntity, IRedPoint
         _settings = settings;
     }
 
-    //todo: rename
-    public bool Inside(float pointX) =>
-        _sprite.color.a != 0 && pointX >= Borders.Left && pointX <= Borders.Right;
-
     public void Toggle(bool enable) =>
         _sprite.color = _sprite.color with { a = enable ? 1 : 0 };
 

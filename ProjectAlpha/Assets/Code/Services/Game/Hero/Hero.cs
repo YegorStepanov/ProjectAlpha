@@ -27,10 +27,10 @@ public sealed class Hero : SpriteEntity, IHero
     public UniTask MoveAsync(float destinationX) =>
         MoveAsync(destinationX, token);
 
-    public async UniTask MoveAsync(float destinationX, CancellationToken token)
+    public async UniTask MoveAsync(float destinationX, CancellationToken stopToken)
     {
         _animator.PlayMove();
-        await _animations.Move(transform, destinationX, _settings.MovementSpeed, token);
+        await _animations.Move(transform, destinationX, _settings.MovementSpeed, stopToken);
         _animator.PlayStay();
     }
 
