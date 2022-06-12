@@ -29,7 +29,8 @@
         "Extenject-Async",
         "UnitySceneReference",
         "DOTween.Modules",
-        "VContainer"
+        "VContainer",
+        "UnityEngine.Advertisements"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

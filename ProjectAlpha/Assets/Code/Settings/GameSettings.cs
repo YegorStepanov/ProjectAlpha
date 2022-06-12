@@ -1,12 +1,13 @@
 ﻿using Code.Services;
 using Code.Services.Game.UI;
+using Code.Services.Monetization;
 using UnityEngine;
 using VContainer;
 
 namespace Code.Game;
 
 [CreateAssetMenu(menuName = "Data/Game Settings")]
-public sealed class GameSettings : ScriptableObject
+public sealed class GameSettings : ScriptableObject //rename
 {
     [SerializeField] private Hero.Settings _hero;
     [SerializeField] private Platform.Settings _platform;
@@ -16,6 +17,8 @@ public sealed class GameSettings : ScriptableObject
     [SerializeField] private StickSpawner.Settings _stickSpawner;
     [SerializeField] private PlatformSpawner.Settings _platformSpawner;
     [SerializeField] private GameData.Settings _gameData;
+    [SerializeField] private AdsSettings _androidAdsProvider;
+    [SerializeField] private AdsSettings _iosAdsProvider;
 
     public void RegisterAllSettings(IContainerBuilder builder)
     {
@@ -27,5 +30,11 @@ public sealed class GameSettings : ScriptableObject
         builder.RegisterInstance(_stickSpawner);
         builder.RegisterInstance(_platformSpawner);
         builder.RegisterInstance(_gameData);
+
+#if UNITY_ANDROID || UNITY_EDITOR
+        builder.RegisterInstance(_androidAdsProvider);
+#elif UNITY_IOS
+        builder.RegisterInstance(_iosAdsProvider);
+#endif
     }
 }

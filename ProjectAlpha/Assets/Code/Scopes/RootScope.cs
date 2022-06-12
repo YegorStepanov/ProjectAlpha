@@ -2,6 +2,7 @@
 using Code.AddressableAssets;
 using Code.Game;
 using Code.Services;
+using Code.Services.Monetization;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine.AddressableAssets;
@@ -29,7 +30,7 @@ public sealed class RootScope : Scope
         var loadCamera = loader.InstantiateAsync(RootAddress.CameraController, inject: false);
         var loadGameSettings = loader.LoadAssetAsync(RootAddress.Settings);
         var loadEventSystem = loader.InstantiateAsync(RootAddress.EventSystem, inject: false);
-        
+
         LoadDevelopmentAssets(loader);
         (_camera, _gameSettings, _) = await (loadCamera, loadGameSettings, loadEventSystem);
     }
@@ -63,7 +64,24 @@ public sealed class RootScope : Scope
         builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);
         builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);
 
+        RegisterAds(builder);
+
         builder.RegisterBuildCallback(BuildCallback);
+    }
+
+    private void RegisterAds(IContainerBuilder builder)
+    {
+        builder.Register<IAdBannerShow, AdBannerShow>(Lifetime.Transient);
+        builder.Register<BannerAd>(Lifetime.Transient).AsImplementedInterfaces().AsSelf();
+
+        builder.Register<IAdShow, AdShow>(Lifetime.Transient);
+        builder.Register<InterstitialAd>(Lifetime.Transient);
+        builder.Register<RewardedAd>(Lifetime.Transient);
+
+        builder.Register<IAdInitializer, AdInitializer>(Lifetime.Transient);
+        builder.Register<Ads>(Lifetime.Singleton);
+
+        builder.RegisterInstance(this.GetCancellationTokenOnDestroy()); //remove
     }
 
     private static void BuildCallback(IObjectResolver resolver)

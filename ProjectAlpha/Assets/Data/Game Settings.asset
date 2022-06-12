@@ -37,3 +37,13 @@ MonoBehaviour:
   _gameData:
     ViewportMenuHeight: 0.2
     ViewportGameHeight: 0.3
+  _androidAdsProvider:
+    GameId: 4791421
+    InterstitialId: Interstitial_Android
+    RewardedId: Rewarded_Android
+    BannerId: Banner_Android
+  _iosAdsProvider:
+    GameId: 4791420
+    InterstitialId: Interstitial_Android
+    RewardedId: Rewarded_Android
+    BannerId: Banner_Android
