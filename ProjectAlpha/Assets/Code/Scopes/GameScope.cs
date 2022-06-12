@@ -51,10 +51,9 @@ public sealed class GameScope : Scope
         RegisterUI(builder);
         RegisterGameStateMachine(builder);
 
-        builder.RegisterEntryPoint<GameStart>();
+        builder.RegisterEntryPoint<GameEntryPoint>();
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
 
-        //temp
         builder.RegisterBuildCallback(resolver =>
         {
             var gum = resolver.Resolve<GameUI>();
