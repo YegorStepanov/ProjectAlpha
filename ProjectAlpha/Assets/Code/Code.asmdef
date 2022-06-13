@@ -30,7 +30,10 @@
         "UnitySceneReference",
         "DOTween.Modules",
         "VContainer",
-        "UnityEngine.Advertisements"
+        "UnityEngine.Advertisements",
+        "Purchasing.Common",
+        "UnityEngine.Purchasing",
+        "UnityEngine.Purchasing.Stores"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
