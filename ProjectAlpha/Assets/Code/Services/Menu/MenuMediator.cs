@@ -1,7 +1,9 @@
 ﻿using System.Threading;
+using Code.Services.Monetization;
 using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Purchasing;
 using VContainer;
 
 namespace Code.Services;
@@ -11,6 +13,7 @@ public sealed class MenuMediator : MonoBehaviour
     private MainMenu _mainMenu;
     private PanelManager _panelManager;
     private ISceneLoader _sceneLoader;
+    private IPurchasingManager _purchasingManager;
     private CancellationToken _token;
 
     [Inject, UsedImplicitly]
@@ -18,11 +21,13 @@ public sealed class MenuMediator : MonoBehaviour
         MainMenu mainMenu,
         PanelManager panelManager,
         ISceneLoader sceneLoader,
+        IPurchasingManager purchasingManager,
         CancellationToken token)
     {
         _mainMenu = mainMenu;
         _panelManager = panelManager;
         _sceneLoader = sceneLoader;
+        _purchasingManager = purchasingManager;
         _token = token;
     }
 
@@ -31,6 +36,12 @@ public sealed class MenuMediator : MonoBehaviour
 
     [Button] public void CloseScene() => _sceneLoader.UnloadAsync<MenuScene>(_token);
     [Button] public void ToggleSound() => _mainMenu.ToggleSound();
+
+    public void PurchaseComplete(Product product) =>
+        _purchasingManager.PurchaseComplete(product);
+
+    public void PurchaseFailed(Product product, PurchaseFailureReason failureReason) =>
+        _purchasingManager.PurchaseFailed(product, failureReason);
 
 #if UNITY_EDITOR
     //Odin doesn't recognize generic methods, so resolve them manually

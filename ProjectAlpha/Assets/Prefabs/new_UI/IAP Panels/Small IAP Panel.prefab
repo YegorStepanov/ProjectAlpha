@@ -7,6 +7,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2338576959343688755, guid: 1dfdf67798f0f5a408d434b4103bcc32,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140298872733705543, guid: 1dfdf67798f0f5a408d434b4103bcc32,
+        type: 3}
+      propertyPath: m_Name
+      value: Price Text
+      objectReference: {fileID: 0}
     - target: {fileID: 5246241997446340661, guid: 1dfdf67798f0f5a408d434b4103bcc32,
         type: 3}
       propertyPath: m_text

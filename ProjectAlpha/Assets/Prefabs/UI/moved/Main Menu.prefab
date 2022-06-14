@@ -1539,6 +1539,8 @@ GameObject:
   - component: {fileID: 7803771782989886046}
   - component: {fileID: 3476684293457718423}
   - component: {fileID: 5956902273362875377}
+  - component: {fileID: 556082209102326262}
+  - component: {fileID: 1271490239386603144}
   m_Layer: 5
   m_Name: NoAds_button
   m_TagString: Untagged
@@ -1648,6 +1650,66 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &556082209102326262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7418015699189124515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a5f511b0d8142cba0aeb92d0b264c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  productId: com.code.disable_ads
+  buttonType: 0
+  consumePurchase: 1
+  onPurchaseComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1271490239386603144}
+        m_TargetAssemblyTypeName: Code.UI.Purchase, Code
+        m_MethodName: PurchaseComplete
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPurchaseFailed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1271490239386603144}
+        m_TargetAssemblyTypeName: Code.UI.Purchase, Code
+        m_MethodName: PurchaseFailed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  titleText: {fileID: 0}
+  descriptionText: {fileID: 0}
+  priceText: {fileID: 0}
+--- !u!114 &1271490239386603144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7418015699189124515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cca35f3202a4073808997ae0b356616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8198299866899344866
 GameObject:
   m_ObjectHideFlags: 0
@@ -1993,15 +2055,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d094c0ca05ce14846bb28b4e2a621b88, type: 3}
---- !u!1 &640181984498659518 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7019248975598029749, guid: d094c0ca05ce14846bb28b4e2a621b88,
-    type: 3}
-  m_PrefabInstance: {fileID: 7605176654023768843}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2850394772462049444 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5622076933062075311, guid: d094c0ca05ce14846bb28b4e2a621b88,
+    type: 3}
+  m_PrefabInstance: {fileID: 7605176654023768843}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &640181984498659518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7019248975598029749, guid: d094c0ca05ce14846bb28b4e2a621b88,
     type: 3}
   m_PrefabInstance: {fileID: 7605176654023768843}
   m_PrefabAsset: {fileID: 0}

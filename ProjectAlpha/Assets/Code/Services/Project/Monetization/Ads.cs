@@ -10,18 +10,21 @@ public sealed class Ads : IDisposable
     private readonly BannerAd _bannerAd;
     private readonly InterstitialAd _interstitialAd;
     private readonly RewardedAd _rewardedAd;
+    private readonly PlayerProgress _playerProgress;
 
     public Ads(
         IAdInitializer adInitializer,
         BannerAd bannerAd,
         InterstitialAd interstitialAd,
         RewardedAd rewardedAd,
+        PlayerProgress playerProgress,
         CancellationToken token)
     {
         _adInitializer = adInitializer;
         _bannerAd = bannerAd;
         _interstitialAd = interstitialAd;
         _rewardedAd = rewardedAd;
+        _playerProgress = playerProgress;
         Initialize(token);
     }
 
@@ -30,13 +33,14 @@ public sealed class Ads : IDisposable
 
     public async UniTask ShowBannerAsync(CancellationToken token)
     {
-        // if (isNoAds) return;
+        if (_playerProgress.IsNoAds) return;
         await _adInitializer.InitializeAsync(token);
         await _bannerAd.ShowAsync(token);
     }
 
     public async UniTask ShowInterstitialAsync(CancellationToken token)
     {
+        if (_playerProgress.IsNoAds) return;
         await _adInitializer.InitializeAsync(token);
         await ShowFullScreenAdAsync(_interstitialAd, token);
     }
