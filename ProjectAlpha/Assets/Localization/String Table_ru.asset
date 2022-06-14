@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: String Table_ru
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ru
+  m_SharedData: {fileID: 11400000, guid: 4ebbbaaba1a9e1449831a2d6c080ef47, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 533261643776
+    m_Localized: "\u0418\u0433\u0440\u0430\u0442\u044C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1147429384192
+    m_Localized: "\u0411\u0435\u0437 \u0440\u0435\u043A\u043B\u0430\u043C\u044B"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1865028661248
+    m_Localized: "\u041E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0432\u0438\u0448\u043D\u0438"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1989247168512
+    m_Localized: "\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C
+      \u043F\u043E\u043A\u0443\u043F\u043A\u0438"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2696478126080
+    m_Localized: "\u0413\u0415\u0420\u041E\u0418"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12580389056512
+    m_Localized: "\u041C\u0430\u0433\u0430\u0437\u0438\u043D"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13906527318016
+    m_Localized: "\u0414\u0435\u0440\u0436\u0438\u0442\u0435 \u043F\u0430\u043B\u0435\u0446
+      \u043D\u0430 \u044D\u043A\u0440\u0430\u043D\u0435 \n\u0434\u043B\u044F \u0443\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u0438\u044F
+      \u043F\u0430\u043B\u043A\u0438"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14235742433280
+    m_Localized: "\u0418\u0414\u0415\u0410\u041B\u042C\u041D\u041E!!!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14364130078720
+    m_Localized: "\u0418\u0413\u0420\u0410 \u041E\u041A\u041E\u041D\u0427\u0415\u041D\u0410"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14674143670272
+    m_Localized: "\u0421\u0427\u0415\u0422"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14719442153472
+    m_Localized: "\u041B\u0423\u0427\u0428\u0415\u0415"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14904251576320
+    m_Localized: "\u041F\u041E\u0414\u0415\u041B\u0418\u0422\u042C\u0421\u042F"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

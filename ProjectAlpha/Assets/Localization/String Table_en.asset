@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: String Table_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 4ebbbaaba1a9e1449831a2d6c080ef47, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 533261643776
+    m_Localized: PLAY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1147429384192
+    m_Localized: NO ADS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1865028661248
+    m_Localized: DISABLE FRUITS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1989247168512
+    m_Localized: RESTORE IN-APP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2696478126080
+    m_Localized: HEROES
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12580389056512
+    m_Localized: Shop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13906527318016
+    m_Localized: 'Hold your finger on screen
+
+      to stretch out the stick'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14235742433280
+    m_Localized: PERFECT!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14364130078720
+    m_Localized: GAME OVER!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14674143670272
+    m_Localized: SCORE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14719442153472
+    m_Localized: BEST
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14904251576320
+    m_Localized: Share
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 1

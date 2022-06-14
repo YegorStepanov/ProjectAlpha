@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: String Table Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: String Table
+  m_TableCollectionNameGuidString: 4ebbbaaba1a9e1449831a2d6c080ef47
+  m_Entries:
+  - m_Id: 533261643776
+    m_Key: Main Menu/Main Menu/Play_button/Play_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1147429384192
+    m_Key: Main Menu/Main Menu/Panel/NoAds_button/Text (TMP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1865028661248
+    m_Key: Infrastructure IAP Panel/Prefab Mode in Context/Infrastructure IAP Panel/Disable
+      Fruits/Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1989247168512
+    m_Key: Infrastructure IAP Panel/Prefab Mode in Context/Infrastructure IAP Panel/Restore
+      In-App/Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2696478126080
+    m_Key: 'Hero Selector Panel/Hero Selector Panel/Panel/Hero Seletor Title/Text '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12580389056512
+    m_Key: 'Shop Panel/Shop Panel/Panel/Shop Title/Text '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13906527318016
+    m_Key: Game UI/Game UI/Help Canvas/Help_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14235742433280
+    m_Key: Game UI/Game UI/Red Point Hit Canvas/Perfect_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14364130078720
+    m_Key: Game UI/Game UI/Game Over Canvas/CloseArea/Gave Over Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14674143670272
+    m_Key: Game UI/Game UI/Game Over Canvas/CloseArea/Panel/Score Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14719442153472
+    m_Key: Game UI/Game UI/Game Over Canvas/CloseArea/Panel/Best Score Label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14904251576320
+    m_Key: Game UI/Game UI/Game Over Canvas/CloseArea/Share Button/Share Button Text
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1655182779652
