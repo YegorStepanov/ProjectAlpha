@@ -1,43 +1,55 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace Code.Services.Game.UI;
 
-public sealed class GameUIController : IStartable
+public sealed class GameUIController : IStartable, IDisposable
 {
-    private readonly GameData _gameData;
     private readonly GameUI _gameUI;
+    private readonly GameProgress _gameProgress;
+    private readonly PlayerProgress _playerProgress;
 
-    public GameUIController(GameData gameData, GameUI gameUI)
+    public GameUIController(GameUI gameUI, GameProgress gameProgress, PlayerProgress playerProgress)
     {
-        _gameData = gameData;
         _gameUI = gameUI;
+        _gameProgress = gameProgress;
+        _playerProgress = playerProgress;
+
+        _gameProgress.ScoreChanged += OnScoreChanged;
+        _playerProgress.CherryCountChanged += OnCherryCountChanged;
+    }
+
+    public void Dispose()
+    {
+        _gameProgress.ScoreChanged -= OnScoreChanged;
+        _playerProgress.CherryCountChanged -= OnCherryCountChanged;
     }
 
     void IStartable.Start()
     {
         _gameUI.ShowHelp();
+        _gameUI.UpdateScore(_gameProgress.Score);
+        _gameUI.UpdateCherryCount(_playerProgress.CherryCount);
     }
 
-    public void IncreaseScore()
+    private void OnScoreChanged(int score)
     {
-        _gameData.IncreaseScore();
-        _gameUI.UpdateScore(_gameData.Score);
+        _gameUI.UpdateScore(score);
 
-        if (_gameData.Score == 1)
+        if (score >= 1)
             _gameUI.HideHelp();
     }
 
-    public void IncreaseCherryCount()
+    private void OnCherryCountChanged(int cherryCount)
     {
-        _gameData.IncreaseCherryCount();
-        _gameUI.UpdateCherryCount(_gameData.CherryCount);
+        _gameUI.UpdateCherryCount(cherryCount);
     }
 
-    public void OnRedPointHit(Vector2 position) //IPlatform?
+    public void OnRedPointHit(Vector2 notificationPosition)
     {
-        IncreaseScore();
-        _gameUI.OnRedPointHit(position);
+        _gameProgress.IncreaseScore();
+        _gameUI.OnRedPointHit(notificationPosition);
     }
 
     public void ShowGameOver()

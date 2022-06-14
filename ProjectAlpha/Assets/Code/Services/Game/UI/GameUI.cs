@@ -42,10 +42,10 @@ public sealed class GameUI : MonoBehaviour //IDisposable
         _changeCherryCountAnimation.Play(cherryCount);
     }
 
-    public void OnRedPointHit(Vector2 position)
+    public void OnRedPointHit(Vector2 notificationPosition)
     {
         _redPointHitAnimation.PlayAsync(_token).Forget();
-        _redPointHitGameAnimation.PlayAsync(position, _token).Forget();
+        _redPointHitGameAnimation.PlayAsync(notificationPosition, _token).Forget();
     }
 
     public void ShowHelp() =>

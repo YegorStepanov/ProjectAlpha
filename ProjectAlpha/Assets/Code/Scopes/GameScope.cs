@@ -51,6 +51,8 @@ public sealed class GameScope : Scope
         RegisterUI(builder);
         RegisterGameStateMachine(builder);
 
+        builder.Register<GameProgress>(Lifetime.Singleton);
+
         builder.RegisterEntryPoint<GameEntryPoint>();
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
 
@@ -103,7 +105,6 @@ public sealed class GameScope : Scope
         builder.RegisterComponentInNewPrefab(_gameUI, Lifetime.Singleton);
         builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
 
-        builder.Register<GameData>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
         builder.Register<GameSceneLoader>(Lifetime.Singleton);
         builder.Register<GameMediator>(Lifetime.Singleton);
         builder.Register<GameUIController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();

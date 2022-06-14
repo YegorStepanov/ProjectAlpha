@@ -2,6 +2,7 @@
 using Code.AddressableAssets;
 using Code.Game;
 using Code.Services;
+using Code.Services.Game.UI;
 using Code.Services.Monetization;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -65,6 +66,11 @@ public sealed class RootScope : Scope
         builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);
 
         RegisterAds(builder);
+        RegisterIAP(builder);
+
+        builder.Register<GameData>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf(); //move to
+
+        builder.Register<PlayerProgress>(Lifetime.Singleton);
 
         builder.RegisterBuildCallback(BuildCallback);
     }
@@ -82,6 +88,11 @@ public sealed class RootScope : Scope
         builder.Register<Ads>(Lifetime.Singleton);
 
         builder.RegisterInstance(this.GetCancellationTokenOnDestroy()); //remove
+    }
+
+    private static void RegisterIAP(IContainerBuilder builder)
+    {
+        builder.Register<IPurchasingManager, PurchasingManager>(Lifetime.Singleton);
     }
 
     private static void BuildCallback(IObjectResolver resolver)
