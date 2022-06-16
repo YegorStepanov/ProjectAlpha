@@ -5,49 +5,51 @@ using Object = UnityEngine.Object;
 
 namespace Code.AddressableAssets;
 
-public class AddressablesCache : IDisposable, IAddressablesCache
+public class AddressablesCache : IAddressablesCache, IDisposable
 {
-    private readonly Dictionary<Type, IAddressableAssetCache<Object>> _caches = new();
+    private readonly Dictionary<Type, object> _typeToHandleStorage = new();
     private bool _isDisposed;
 
-    public UniTask<int> CacheAssetAsync<T>(Address<T> address) where T : Object
+    public UniTask CacheAssetAsync<T>(Address<T> address) where T : Object
     {
         if (_isDisposed) return UniTask.FromResult(0);
-        var cache = GetOrCreateCache<T>();
-        return cache.CacheAssetAsync(address.Key);
-    }
-
-    public int ReleaseCachedAsset<T>(Address<T> address) where T : Object
-    {
-        if (_isDisposed) return 0;
-        var cache = GetOrCreateCache<T>();
-        return cache.ReleaseCachedAsset(address.Key);
+        var storage = GetStorage<T>();
+        return storage.AddAssetAsync(address);
     }
 
     public void RemoveCachedAsset<T>(Address<T> address) where T : Object
     {
         if (_isDisposed) return;
-        var cache = GetOrCreateCache<T>();
-        cache.RemoveCachedAsset(address.Key);
+        var storage = GetStorage<T>();
+        storage.RemoveAsset(address);
     }
 
-    private IAddressableAssetCache<T> GetOrCreateCache<T>() where T : Object
+    public void RemoveAllCachedAssets<T>(Address<T> address) where T : Object
+    {
+        if (_isDisposed) return;
+        var storage = GetStorage<T>();
+        // if (storage.CountAssets(address) > 0)
+        storage.RemoveAllAssets(address);
+    }
+
+    private HandleStorage<T> GetStorage<T>() where T : Object
     {
         Type type = typeof(T);
-        if (!_caches.TryGetValue(type, out IAddressableAssetCache<Object> cache))
+        if (!_typeToHandleStorage.TryGetValue(type, out object storage))
         {
-            cache = new AddressableAssetCache<T>();
-            _caches[type] = cache;
+            storage = new HandleStorage<Object>();
+            _typeToHandleStorage[type] = storage;
         }
 
-        return (IAddressableAssetCache<T>)cache;
+        return (HandleStorage<T>)storage;
     }
 
     public void Dispose()
     {
         _isDisposed = true;
-        foreach (var cache in _caches.Values)
-            cache.Dispose();
-        _caches.Clear();
+
+        foreach (object storage in _typeToHandleStorage.Values)
+            ((IDisposable)storage).Dispose();
+        _typeToHandleStorage.Clear();
     }
 }

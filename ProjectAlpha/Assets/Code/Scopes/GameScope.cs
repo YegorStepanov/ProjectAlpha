@@ -33,6 +33,8 @@ public sealed class GameScope : Scope
 
         _hero = await loader.LoadAssetAsync(GameAddress.Hero);
 
+        _platformPool = loader.CreatePool(GameAddress.Platform, 3, "Platforms");
+
         _platformPool = loader.CreateCyclicPool(GameAddress.Platform, 3, "Platforms");
         _stickPool = loader.CreateCyclicPool(GameAddress.Stick, 2, "Sticks");
         _cherryPool = loader.CreateCyclicPool(GameAddress.Cherry, 2, "Cherries");
@@ -41,7 +43,7 @@ public sealed class GameScope : Scope
         _redPointHitGameAnimation = await loader.LoadAssetAsync(GameAddress.Plus1Notification);
     }
 
-    protected override void Configure(IContainerBuilder builder)
+    protected override void ConfigureServices(IContainerBuilder builder)
     {
         RegisterHero(builder);
         RegisterPlatform(builder);
@@ -54,7 +56,6 @@ public sealed class GameScope : Scope
         builder.Register<GameProgress>(Lifetime.Singleton);
 
         builder.RegisterEntryPoint<GameEntryPoint>();
-        builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
 
         builder.RegisterBuildCallback(resolver =>
         {

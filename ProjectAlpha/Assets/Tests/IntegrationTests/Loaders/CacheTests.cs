@@ -26,43 +26,55 @@ namespace Tests
         [UnityTest]
         public IEnumerator Asset_is_cached_and_released() => UniTask.ToCoroutine(async () =>
         {
-            using var cache = new AddressableAssetCache<GameObject>();
+            using var cache = new HandleStorage<GameObject>();
 
-            await cache.CacheAssetAsync("Platform");
-
+            await cache.AddAssetAsync("Platform");
             Assert.That(await IsAssetCached(), Is.True);
 
-            cache.ReleaseCachedAsset("Platform");
+            cache.RemoveAsset("Platform");
 
+            //one frame sometimes is not enough
             await UniTask.NextFrame();
-            
+            await UniTask.NextFrame();
+
             Assert.That(await IsAssetCached(), Is.False);
         });
-        
+
         [UnityTest]
         public IEnumerator Cache_is_disposed() => UniTask.ToCoroutine(async () =>
         {
-            var cache = new AddressableAssetCache<GameObject>();
-            await cache.CacheAssetAsync("Platform");
+            var cache = new HandleStorage<GameObject>();
+            await CacheAssetAsync(cache, "Platform");
             cache.Dispose();
-            
-            Assert.That(await cache.CacheAssetAsync("Platform"), Is.EqualTo(1));
+
+            Assert.That(await CacheAssetAsync(cache, "Platform"), Is.EqualTo(0));
         });
+
+        private static async UniTask<int> CacheAssetAsync(HandleStorage<GameObject> storage, string address)
+        {
+            await storage.AddAssetAsync(address);
+            return storage.CountAssets(new Address<GameObject>(address));
+        }
+
+        private static int ReleaseCachedAsset(HandleStorage<GameObject> storage, string address)
+        {
+            storage.RemoveAsset(address);
+            return storage.CountAssets(new Address<GameObject>(address));
+        }
 
         [UnityTest]
         public IEnumerator Cache_returns_the_number_of_holding_handles() => UniTask.ToCoroutine(async () =>
         {
-            using var cache = new AddressableAssetCache<GameObject>();
+            using var cache = new HandleStorage<GameObject>();
 
-            Assert.That(await cache.CacheAssetAsync("Platform"), Is.EqualTo(1));
-            Assert.That(cache.ReleaseCachedAsset("Platform"), Is.EqualTo(0));
-            Assert.That(cache.ReleaseCachedAsset("Platform"), Is.EqualTo(-1));
+            Assert.That(await CacheAssetAsync(cache, "Platform"), Is.EqualTo(1));
+            Assert.That(ReleaseCachedAsset(cache, "Platform"), Is.EqualTo(0));
 
-            Assert.That(await cache.CacheAssetAsync("Platform"), Is.EqualTo(1));
-            Assert.That(await cache.CacheAssetAsync("Platform"), Is.EqualTo(2));
-            Assert.That(await cache.CacheAssetAsync("Platform"), Is.EqualTo(3));
-            cache.RemoveCachedAsset("Platform");
-            Assert.That(await cache.CacheAssetAsync("Platform"), Is.EqualTo(1));
+            Assert.That(await CacheAssetAsync(cache, "Platform"), Is.EqualTo(1));
+            Assert.That(await CacheAssetAsync(cache, "Platform"), Is.EqualTo(2));
+            Assert.That(await CacheAssetAsync(cache, "Platform"), Is.EqualTo(3));
+            cache.RemoveAllAssets(new Address<GameObject>("Platform"));
+            Assert.That(await CacheAssetAsync(cache, "Platform"), Is.EqualTo(1));
         });
 
         private static async UniTask<bool> IsAssetCached()

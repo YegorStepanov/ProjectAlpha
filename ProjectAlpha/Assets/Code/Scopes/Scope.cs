@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
 using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using VContainer;
 using VContainer.Unity;
 
 namespace Code.Scopes;
@@ -18,12 +20,16 @@ public abstract class Scope : LifetimeScope
 
     private bool _isPreloaded;
 
+    private CancellationToken _token;
+
     public UniTask OnPreloadedAsync() =>
         UniTask.WaitWhile(() => _isPreloaded == false);
 
     [UsedImplicitly]
     private new async UniTask Awake()
     {
+        _token = this.GetCancellationTokenOnDestroy();
+
         AssertAutoRunIsDisabled();
 
         if (VContainerSettings.Instance.RootLifetimeScope is Scope { Container: null } rootScope)
@@ -39,12 +45,12 @@ public abstract class Scope : LifetimeScope
 
     private async UniTask PreloadAndBuildAsync()
     {
-        _loader = new AddressablesLoader(this);
+        _loader = new AddressablesLoader(new Creator(this));
 
         await PreloadAsync(_loader);
 
         if (Scene.IsValid())
-            SceneManager.SetActiveScene(Scene);
+            SceneManager.SetActiveScene(Scene); //?????
 
         Build();
 
@@ -56,6 +62,14 @@ public abstract class Scope : LifetimeScope
         _loader?.Dispose();
         base.OnDestroy();
     }
+
+    protected sealed override void Configure(IContainerBuilder builder)
+    {
+        builder.RegisterInstance(_token);
+        ConfigureServices(builder);
+    }
+
+    protected abstract void ConfigureServices(IContainerBuilder builder);
 
     protected abstract UniTask PreloadAsync(IAddressablesLoader loader);
 

@@ -40,7 +40,7 @@ public sealed class RootScope : Scope
     private static void LoadDevelopmentAssets(IAddressablesLoader loader) =>
         loader.InstantiateAsync(DebugAddress.Graphy, inject: false).Forget();
 
-    protected override void Configure(IContainerBuilder builder)
+    protected override void ConfigureServices(IContainerBuilder builder)
     {
         //when fail, erro contain usefull info:
         //https://docs.unity3d.com/Packages/com.unity.addressables@1.20/manual/LoadingAssetBundles.html
@@ -86,8 +86,6 @@ public sealed class RootScope : Scope
 
         builder.Register<IAdInitializer, AdInitializer>(Lifetime.Transient);
         builder.Register<Ads>(Lifetime.Singleton);
-
-        builder.RegisterInstance(this.GetCancellationTokenOnDestroy()); //remove
     }
 
     private static void RegisterIAP(IContainerBuilder builder)

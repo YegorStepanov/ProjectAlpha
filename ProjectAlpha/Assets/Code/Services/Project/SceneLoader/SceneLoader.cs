@@ -49,13 +49,9 @@ public sealed class SceneLoader : ISceneLoader
 
         PushScene(address, scene);
 
-        if (TryGetScope(scene, out Scope scope))
-        {
-            scope.Scene = scene.Scene;
-            await scope.OnPreloadedAsync();
-        }
-        else
-            Debug.LogError("The first object in scene should be Scope");
+        Scope scope = GetScope(scene);
+        scope.Scene = scene.Scene;
+        await scope.OnPreloadedAsync();
     }
 
     private void PushScene(Address<Scene> address, SceneInstance scene)
@@ -107,12 +103,15 @@ public sealed class SceneLoader : ISceneLoader
         _ => throw new ArgumentOutOfRangeException(typeof(TScene).FullName)
     };
 
-    private bool TryGetScope(SceneInstance scene, out Scope scope)
+    private Scope GetScope(SceneInstance scene)
     {
         scene.Scene.GetRootGameObjects(_tempRootGameObjects);
         GameObject first = _tempRootGameObjects[0];
 
-        return first.TryGetComponent(out scope);
+        if (!first.TryGetComponent(out Scope scope))
+            Debug.LogError("The first object in scene should be Scope");
+
+        return scope;
     }
 }
 

@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using VContainer.Unity;
+using VContainer;
 
 namespace Code.VContainer;
 
 public sealed class ScriptableObjectFactory<TValue> : BehaviourFactory<TValue> where TValue : ScriptableObject
 {
-    public ScriptableObjectFactory(TValue prefab, InstanceName name, ParentName parentName, LifetimeScope scope)
-        : base(prefab, name, parentName, scope) { }
+    public ScriptableObjectFactory(ICreator creator, IObjectResolver resolver, TValue prefab, InstanceName name, ParentName parentName)
+        : base(creator, resolver, prefab, name, parentName) { }
 }

@@ -5,7 +5,7 @@ namespace Code.AddressableAssets;
 
 public interface IAddressablesCache
 {
-    UniTask<int> CacheAssetAsync<T>(Address<T> address) where T : Object;
-    int ReleaseCachedAsset<T>(Address<T> address) where T : Object;
+    UniTask CacheAssetAsync<T>(Address<T> address) where T : Object;
     void RemoveCachedAsset<T>(Address<T> address) where T : Object;
+    void RemoveAllCachedAssets<T>(Address<T> address) where T : Object;
 }
