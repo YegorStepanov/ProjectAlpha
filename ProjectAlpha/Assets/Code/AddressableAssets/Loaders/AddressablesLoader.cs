@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Code.VContainer;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
@@ -10,11 +9,11 @@ namespace Code.AddressableAssets;
 
 public class AddressablesLoader : IScopedAddressablesLoader
 {
-    private readonly ICreator _creator;
     private readonly Dictionary<Type, object> _typeToHandleStorage;
     private readonly Dictionary<GameObject, GameObject> _instanceToPrefab;
-
     private bool _isDisposed;
+
+    public ICreator Creator { get; }
 
     [Inject]
     public AddressablesLoader(ICreator creator) : this(creator, new(), new()) { }
@@ -25,7 +24,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
         Dictionary<Type, object> typeToHandleStorage,
         Dictionary<GameObject, GameObject> instanceToPrefab)
     {
-        _creator = creator;
+        Creator = creator;
         _typeToHandleStorage = typeToHandleStorage;
         _instanceToPrefab = instanceToPrefab;
     }
@@ -43,7 +42,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
 
         GameObject prefab = await LoadAssetTAsync(address.As<GameObject>());
 
-        GameObject instance = _creator.Instantiate(prefab, inject);
+        GameObject instance = Creator.Instantiate(prefab, inject);
         _instanceToPrefab[instance] = prefab;
 
         if (IsComponent<T>())
@@ -160,17 +159,4 @@ public class AddressablesLoader : IScopedAddressablesLoader
 
     private static bool IsGameObject<T>() where T : Object =>
         typeof(T) == typeof(GameObject);
-
-    public IAsyncPool<T> CreatePool<T>(Address<T> address, int size, string containerName) where T : Component
-    {
-        ComponentPoolData data = new(containerName, 0, size);
-        AddressableComponentPool<T> pool = new(_creator, address, data, this);
-        return pool;
-    }
-
-    public IAsyncPool<T> CreateCyclicPool<T>(Address<T> address, int size, string containerName) where T : Component
-    {
-        IAsyncPool<T> pool = CreatePool(address, size, containerName);
-        return new RecyclablePool<T>(pool);
-    }
 }

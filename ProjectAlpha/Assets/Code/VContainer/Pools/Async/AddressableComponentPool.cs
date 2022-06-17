@@ -6,30 +6,29 @@ namespace Code.VContainer;
 
 public sealed class AddressableComponentPool<TComponent> : AsyncPool<TComponent> where TComponent : Component
 {
-    private readonly ICreator _creator;
     private readonly Address<TComponent> _address;
     private readonly string _containerName;
-    private readonly IScopedAddressablesLoader _loader;
+    private readonly IAddressablesLoader _loader;
 
     private Transform _container;
 
     public AddressableComponentPool(
-        ICreator creator,
         Address<TComponent> address,
-        ComponentPoolData data,
-        IScopedAddressablesLoader loader)
-        : base(data.InitialSize, data.Capacity)
+        int initialSize,
+        int capacity,
+        string containerName,
+        IAddressablesLoader loader)
+        : base(initialSize, capacity)
     {
-        _creator = creator;
         _address = address;
-        _containerName = data.ContainerName;
+        _containerName = containerName;
         _loader = loader;
     }
 
     protected override UniTask<TComponent> CreateAsync()
     {
         if (_container == null)
-            _container = _creator.Instantiate(_containerName).transform;
+            _container = _loader.Creator.Instantiate(_containerName).transform;
 
         return _loader.InstantiateAsync(_address);
     }
@@ -40,8 +39,3 @@ public sealed class AddressableComponentPool<TComponent> : AsyncPool<TComponent>
     protected override void OnDespawned(TComponent instance) =>
         instance.gameObject.SetActive(false);
 }
-
-public record PoolData(int InitialSize, int Capacity);
-
-public sealed record ComponentPoolData(string ContainerName, int InitialSize, int Capacity) :
-    PoolData(InitialSize, Capacity);

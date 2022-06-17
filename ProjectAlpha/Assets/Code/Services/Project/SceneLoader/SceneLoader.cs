@@ -50,8 +50,7 @@ public sealed class SceneLoader : ISceneLoader
         PushScene(address, scene);
 
         Scope scope = GetScope(scene);
-        scope.Scene = scene.Scene;
-        await scope.OnPreloadedAsync();
+        await scope.BuildAsync(scene);
     }
 
     private void PushScene(Address<Scene> address, SceneInstance scene)

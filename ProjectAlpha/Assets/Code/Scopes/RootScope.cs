@@ -5,8 +5,6 @@ using Code.Services;
 using Code.Services.Game.UI;
 using Code.Services.Monetization;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
-using UnityEngine.AddressableAssets;
 using VContainer;
 using VContainer.Unity;
 
@@ -42,17 +40,6 @@ public sealed class RootScope : Scope
 
     protected override void ConfigureServices(IContainerBuilder builder)
     {
-        //when fail, erro contain usefull info:
-        //https://docs.unity3d.com/Packages/com.unity.addressables@1.20/manual/LoadingAssetBundles.html
-
-        //long size = await Addressables.GetDownloadSizeAsync(key);
-        //if size > 0 
-        //Addressables.DownloadDependenciesAsync(key);
-
-        //AsyncOperationHandle.PercentComplete
-        //AsyncOperationHandle.GetDownloadStatus
-        //Addressables.GetDownloadSizeAsync() == 0 if it cached
-
         builder.RegisterComponent(_camera);
         _gameSettings.RegisterAllSettings(builder);
 
@@ -61,6 +48,7 @@ public sealed class RootScope : Scope
         builder.Register<InputManager>(Lifetime.Singleton);
         builder.Register<IRandomizer, Randomizer>(Lifetime.Singleton);
 
+        builder.Register<ICreator, Creator>(Lifetime.Scoped);
         builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
         builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);
         builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);
@@ -71,11 +59,9 @@ public sealed class RootScope : Scope
         builder.Register<GameData>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf(); //move to
 
         builder.Register<PlayerProgress>(Lifetime.Singleton);
-
-        builder.RegisterBuildCallback(BuildCallback);
     }
 
-    private void RegisterAds(IContainerBuilder builder)
+    private static void RegisterAds(IContainerBuilder builder)
     {
         builder.Register<IAdBannerShow, AdBannerShow>(Lifetime.Transient);
         builder.Register<BannerAd>(Lifetime.Transient).AsImplementedInterfaces().AsSelf();
@@ -91,11 +77,5 @@ public sealed class RootScope : Scope
     private static void RegisterIAP(IContainerBuilder builder)
     {
         builder.Register<IPurchasingManager, PurchasingManager>(Lifetime.Singleton);
-    }
-
-    private static void BuildCallback(IObjectResolver resolver)
-    {
-        DOTween.Init();
-        Addressables.InitializeAsync(true);
     }
 }

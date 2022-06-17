@@ -43,7 +43,7 @@ public sealed class RecyclablePool<T> : IAsyncPool<T>
     public void DespawnAll()
     {
         _cacheIndex = 0;
-        foreach (var value in _cachedValues)
+        foreach (T value in _cachedValues)
         {
             Despawn(value);
         }

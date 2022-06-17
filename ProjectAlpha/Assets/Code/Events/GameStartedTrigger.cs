@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using UnityEngine;
 
 namespace Code.Triggers;
 
@@ -21,12 +20,9 @@ public sealed class GameStartedTrigger
 
     public async UniTask WaitAsync()
     {
-        if (_token.IsCancellationRequested) 
-            Debug.LogError("GameStartedTrigger was cancelled");
-
-        (bool isCanceled, _) = await _stream.FirstAsync(_token).SuppressCancellationThrow();
-
-        if (isCanceled) 
-            Debug.LogError("GameStartedTrigger cancelled");
+        if (!_token.IsCancellationRequested)
+        {
+            await _stream.FirstAsync(_token).SuppressCancellationThrow();
+        }
     }
 }

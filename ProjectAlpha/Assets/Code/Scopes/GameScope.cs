@@ -33,11 +33,11 @@ public sealed class GameScope : Scope
 
         _hero = await loader.LoadAssetAsync(GameAddress.Hero);
 
-        _platformPool = loader.CreatePool(GameAddress.Platform, 3, "Platforms");
+        _platformPool = loader.CreatePool(GameAddress.Platform, 0, 3, "Platforms");
 
-        _platformPool = loader.CreateCyclicPool(GameAddress.Platform, 3, "Platforms");
-        _stickPool = loader.CreateCyclicPool(GameAddress.Stick, 2, "Sticks");
-        _cherryPool = loader.CreateCyclicPool(GameAddress.Cherry, 2, "Cherries");
+        _platformPool = loader.CreateCyclicPool(GameAddress.Platform, 0, 3, "Platforms");
+        _stickPool = loader.CreateCyclicPool(GameAddress.Stick, 0, 2, "Sticks");
+        _cherryPool = loader.CreateCyclicPool(GameAddress.Cherry, 0, 2, "Cherries");
 
         _gameUI = await loader.LoadAssetAsync(GameAddress.GameUI);
         _redPointHitGameAnimation = await loader.LoadAssetAsync(GameAddress.Plus1Notification);
