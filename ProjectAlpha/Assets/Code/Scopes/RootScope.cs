@@ -2,7 +2,6 @@
 using Code.AddressableAssets;
 using Code.Game;
 using Code.Services;
-using Code.Services.Game.UI;
 using Code.Services.Monetization;
 using Cysharp.Threading.Tasks;
 using VContainer;
@@ -55,8 +54,6 @@ public sealed class RootScope : Scope
 
         RegisterAds(builder);
         RegisterIAP(builder);
-
-        builder.Register<GameData>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf(); //move to
 
         builder.Register<PlayerProgress>(Lifetime.Singleton);
     }
