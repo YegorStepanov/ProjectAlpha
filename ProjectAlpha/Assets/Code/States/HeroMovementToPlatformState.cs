@@ -17,11 +17,11 @@ public sealed class HeroMovementToPlatformState : BaseHeroMovementState, IState<
         ICherry Cherry);
 
     public HeroMovementToPlatformState(
-        InputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner, Camera camera, CancellationToken token) :
+        InputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner, Camera camera, ScopeCancellationToken token) :
         base(inputManager, gameMediator, camera)
     {
         _stickSpawner = stickSpawner;
-        _token = token;
+        _token = token.Token;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)

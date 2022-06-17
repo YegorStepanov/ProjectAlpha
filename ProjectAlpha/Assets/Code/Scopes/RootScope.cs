@@ -39,6 +39,8 @@ public sealed class RootScope : Scope
 
     protected override void ConfigureServices(IContainerBuilder builder)
     {
+        builder.Register<ScopeCancellationToken>(Lifetime.Scoped);
+
         builder.RegisterComponent(_camera);
         _gameSettings.RegisterAllSettings(builder);
 

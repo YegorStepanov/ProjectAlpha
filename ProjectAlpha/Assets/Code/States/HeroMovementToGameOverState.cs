@@ -16,10 +16,10 @@ public sealed class HeroMovementToGameOverState : BaseHeroMovementState, IState<
         IStick Stick,
         ICherry Cherry);
 
-    public HeroMovementToGameOverState(InputManager inputManager, GameMediator gameMediator, Camera camera, CancellationToken token) :
+    public HeroMovementToGameOverState(InputManager inputManager, GameMediator gameMediator, Camera camera, ScopeCancellationToken token) :
         base(inputManager, gameMediator, camera)
     {
-        _token = token;
+        _token = token.Token;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)

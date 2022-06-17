@@ -89,7 +89,6 @@ public abstract class Scope : LifetimeScope
 
     protected sealed override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_token);
         ConfigureServices(builder);
     }
 

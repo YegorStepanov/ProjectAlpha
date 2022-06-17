@@ -18,14 +18,14 @@ public sealed class Ads : IDisposable
         InterstitialAd interstitialAd,
         RewardedAd rewardedAd,
         PlayerProgress playerProgress,
-        CancellationToken token)
+        ScopeCancellationToken token)
     {
         _adInitializer = adInitializer;
         _bannerAd = bannerAd;
         _interstitialAd = interstitialAd;
         _rewardedAd = rewardedAd;
         _playerProgress = playerProgress;
-        Initialize(token);
+        Initialize(token.Token);
     }
 
     private void Initialize(CancellationToken token) =>

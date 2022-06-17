@@ -8,10 +8,10 @@ public class GameSceneLoader
     private readonly ISceneLoader _sceneLoader;
     private readonly CancellationToken _token;
 
-    public GameSceneLoader(ISceneLoader sceneLoader, CancellationToken token)
+    public GameSceneLoader(ISceneLoader sceneLoader, ScopeCancellationToken token)
     {
         _sceneLoader = sceneLoader;
-        _token = token;
+        _token = token.Token;
     }
 
     public void LoadMenu()
