@@ -20,7 +20,7 @@ public class AssetReferenceComponent<T> : AssetReferenceGameObject where T : Com
         var go = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(path);
         return go != null && go.GetComponent<T>() != null;
 #else
-            return false;
+        return false;
 #endif
     }
 
