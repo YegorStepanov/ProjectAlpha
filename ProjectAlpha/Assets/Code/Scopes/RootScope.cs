@@ -37,7 +37,7 @@ public sealed class RootScope : Scope
     private static void LoadDevelopmentAssets(IAddressablesLoader loader) =>
         loader.InstantiateAsync(DebugAddress.Graphy, inject: false).Forget();
 
-    protected override void ConfigureServices(IContainerBuilder builder)
+    protected override void Configure(IContainerBuilder builder)
     {
         builder.Register<ScopeCancellationToken>(Lifetime.Scoped);
 

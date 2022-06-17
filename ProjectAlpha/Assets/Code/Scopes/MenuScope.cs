@@ -22,7 +22,7 @@ public sealed class MenuScope : Scope
         (_menu, _mainMenu) = await (loadMediator, loadMainMenu);
     }
 
-    protected override void ConfigureServices(IContainerBuilder builder)
+    protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterComponentInNewPrefab(_menu, Lifetime.Singleton);
         builder.RegisterComponentInNewPrefab(_mainMenu, Lifetime.Singleton);
@@ -42,7 +42,7 @@ public sealed class MenuScope : Scope
     }
 }
 
-public class MenuEntryPoint : IAsyncStartable, IStartable
+public class MenuEntryPoint : IAsyncStartable
 {
     private readonly Ads _ads;
 
@@ -62,10 +62,5 @@ public class MenuEntryPoint : IAsyncStartable, IStartable
         Debug.Log("show rewarded: " + Time.frameCount);
         await _ads.ShowRewardedAsync(token);
         Debug.Log("showed rewarded: " + Time.frameCount);
-    }
-
-    public void Start()
-    {
-        Debug.Log("Start");
     }
 }

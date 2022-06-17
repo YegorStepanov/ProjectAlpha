@@ -9,7 +9,6 @@ using JetBrains.Annotations;
 using UnityEngine.Assertions;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
-using VContainer;
 using VContainer.Unity;
 using Debug = UnityEngine.Debug;
 
@@ -87,12 +86,6 @@ public abstract class Scope : LifetimeScope
         base.OnDestroy();
     }
 
-    protected sealed override void Configure(IContainerBuilder builder)
-    {
-        ConfigureServices(builder);
-    }
-
-    protected abstract void ConfigureServices(IContainerBuilder builder);
     protected abstract UniTask PreloadAsync(IAddressablesLoader loader);
 
     [Conditional("DEVELOPMENT")]

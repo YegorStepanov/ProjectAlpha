@@ -43,7 +43,7 @@ public sealed class GameScope : Scope
         _redPointHitGameAnimation = await loader.LoadAssetAsync(GameAddress.Plus1Notification);
     }
 
-    protected override void ConfigureServices(IContainerBuilder builder)
+    protected override void Configure(IContainerBuilder builder)
     {
         builder.Register<GameData>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf(); //move to
 
