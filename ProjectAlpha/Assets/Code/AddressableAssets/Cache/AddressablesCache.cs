@@ -28,7 +28,6 @@ public class AddressablesCache : IAddressablesCache, IDisposable
     {
         if (_isDisposed) return;
         var storage = GetStorage<T>();
-        // if (storage.CountAssets(address) > 0)
         storage.RemoveAllAssets(address);
     }
 

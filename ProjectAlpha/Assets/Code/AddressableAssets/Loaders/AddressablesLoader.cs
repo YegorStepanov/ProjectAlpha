@@ -16,9 +16,9 @@ public class AddressablesLoader : IScopedAddressablesLoader
     public ICreator Creator { get; }
 
     [Inject]
-    public AddressablesLoader(ICreator creator) : this(creator, new(), new()) { }
+    public AddressablesLoader(ICreator creator) :
+        this(creator, new(), new()) { }
 
-    //so that's what it's for...
     private protected AddressablesLoader(
         ICreator creator,
         Dictionary<Type, object> typeToHandleStorage,
