@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Code.AddressableAssets;
+using Code.Infrastructure;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using VContainer.Unity;
-using Debug = UnityEngine.Debug;
 
 namespace Code.Scopes;
 
@@ -88,9 +88,11 @@ public abstract class Scope : LifetimeScope
 
     protected abstract UniTask PreloadAsync(IAddressablesLoader loader);
 
-    [Conditional("DEVELOPMENT")]
     private void AssertAutoRunIsDisabled()
     {
+        if (!PlatformInfo.IsDevelopment)
+            return;
+
         bool autoRun = GetPrivateInstanceField(typeof(LifetimeScope), this, "autoRun");
         Assert.IsFalse(autoRun);
 

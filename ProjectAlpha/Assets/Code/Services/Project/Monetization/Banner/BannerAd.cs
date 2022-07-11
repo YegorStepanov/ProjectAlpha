@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Code.Infrastructure;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Advertisements;
 
@@ -36,9 +37,10 @@ public class BannerAd
 
     public void Destroy()
     {
-#if UNITY_EDITOR
-        Advertisement.Banner.Hide();
-#endif
+        //it's a bug or Hide(true) does nothing in editor
+        if (PlatformInfo.IsEditor)
+            Advertisement.Banner.Hide();
+
         Advertisement.Banner.Hide(true);
     }
 

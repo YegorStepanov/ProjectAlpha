@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using Code.AddressableAssets;
+﻿using Code.AddressableAssets;
 using Code.Game;
+using Code.Infrastructure;
 using Code.Services;
 using Code.Services.Monetization;
 using Cysharp.Threading.Tasks;
@@ -33,31 +33,56 @@ public sealed class RootScope : Scope
         (_camera, _gameSettings, _) = await (loadCamera, loadGameSettings, loadEventSystem);
     }
 
-    [Conditional("DEVELOPMENT")]
-    private static void LoadDevelopmentAssets(IAddressablesLoader loader) =>
+    private static void LoadDevelopmentAssets(IAddressablesLoader loader)
+    {
+        if (!PlatformInfo.IsDevelopment) return;
         loader.InstantiateAsync(DebugAddress.Graphy, inject: false).Forget();
+    }
 
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.Register<ScopeCancellationToken>(Lifetime.Scoped);
+        RegisterCancellationToken(builder);
+        RegisterCamera(builder);
+        RegisterSettings(builder);
 
-        builder.RegisterComponent(_camera);
-        _gameSettings.RegisterAllSettings(builder);
-
-        builder.RegisterInstance<ISceneLoader>(SceneLoader.Instance);
         builder.Register<GameEvents>(Lifetime.Singleton);
-        builder.Register<InputManager>(Lifetime.Singleton);
+        builder.Register<IInputManager, InputManager>(Lifetime.Singleton);
         builder.Register<IRandomizer, Randomizer>(Lifetime.Singleton);
 
-        builder.Register<ICreator, Creator>(Lifetime.Scoped);
-        builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
-        builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);
-        builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);
-
+        RegisterSceneLoader(builder);
+        RegisterLoaders(builder);
         RegisterAds(builder);
         RegisterIAP(builder);
 
         builder.Register<PlayerProgress>(Lifetime.Singleton);
+    }
+
+    private static void RegisterCancellationToken(IContainerBuilder builder)
+    {
+        builder.Register<ScopeCancellationToken>(Lifetime.Scoped);
+    }
+
+    private void RegisterCamera(IContainerBuilder builder)
+    {
+        builder.RegisterComponent(_camera);
+    }
+
+    private void RegisterSettings(IContainerBuilder builder)
+    {
+        _gameSettings.RegisterAllSettings(builder);
+    }
+
+    private static void RegisterSceneLoader(IContainerBuilder builder)
+    {
+        builder.RegisterInstance<ISceneLoader>(SceneLoader.Instance);
+    }
+
+    private static void RegisterLoaders(IContainerBuilder builder)
+    {
+        builder.Register<ICreator, Creator>(Lifetime.Scoped);
+        builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
+        builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);
+        builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);
     }
 
     private static void RegisterAds(IContainerBuilder builder)

@@ -1,4 +1,5 @@
-﻿using Code.Services;
+﻿using Code.Infrastructure;
+using Code.Services;
 using Code.Services.Game.UI;
 using Code.Services.Monetization;
 using UnityEngine;
@@ -31,10 +32,9 @@ public sealed class GameSettings : ScriptableObject //rename
         builder.RegisterInstance(_platformSpawner);
         builder.RegisterInstance(_gameData);
 
-#if UNITY_ANDROID || UNITY_EDITOR
-        builder.RegisterInstance(_androidAdsProvider);
-#elif UNITY_IOS
-        builder.RegisterInstance(_iosAdsProvider);
-#endif
+        if (PlatformInfo.IsApple)
+            builder.RegisterInstance(_iosAdsProvider);
+        else
+            builder.RegisterInstance(_androidAdsProvider);
     }
 }

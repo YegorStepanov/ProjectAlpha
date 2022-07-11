@@ -2,36 +2,31 @@
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using UnityEngine.InputSystem;
-using VContainer.Unity;
 
 namespace Code.Services;
 
-public sealed class InputManager
+public sealed class InputManager : IInputManager
 {
     private readonly CancellationToken _token;
     private readonly InputAction _action = new(binding: "*/{primaryAction}");
 
-    public InputManager(LifetimeScope scope)
+    public InputManager(ScopeCancellationToken token)
     {
-        _token = scope.transform.GetCancellationTokenOnDestroy();
+        _token = token.Token;
         _action.Enable();
     }
 
-    public async UniTask NextClick()
-    {
-        await UniTask.NextFrame(_token);
-        while (!IsPressedOrCancelled())
-            await UniTask.NextFrame(_token);
-    }
+    public UniTask WaitClick() =>
+        WaitClick(_token);
 
-    public async UniTask NextClick(CancellationToken token)
+    public async UniTask WaitClick(CancellationToken token)
     {
         await UniTask.NextFrame(token);
         while (!IsPressedOrCancelled(token))
             await UniTask.NextFrame(token);
     }
 
-    public async UniTask NextRelease()
+    public async UniTask WaitRelease()
     {
         await UniTask.NextFrame(_token);
         while (!IsReleasedOrCancelled())
@@ -41,11 +36,11 @@ public sealed class InputManager
     public IUniTaskAsyncEnumerable<AsyncUnit> OnClickAsAsyncEnumerable() =>
         UniTaskAsyncEnumerable.Create<AsyncUnit>(async (writer, token) =>
         {
-            await NextClick(token);
+            await WaitClick(token);
             while (!token.IsCancellationRequested)
             {
                 await writer.YieldAsync(AsyncUnit.Default);
-                await NextClick(token);
+                await WaitClick(token);
             }
         });
 

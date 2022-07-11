@@ -15,10 +15,10 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
         ICherry Cherry);
 
     private readonly StickSpawner _stickSpawner;
-    private readonly InputManager _inputManager;
+    private readonly IInputManager _inputManager;
     private readonly GameMediator _gameMediator;
 
-    public StickControlState(StickSpawner stickSpawner, InputManager inputManager, GameMediator gameMediator)
+    public StickControlState(StickSpawner stickSpawner, IInputManager inputManager, GameMediator gameMediator)
     {
         _stickSpawner = stickSpawner;
         _inputManager = inputManager;
@@ -29,7 +29,7 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
     {
         IStick stick = await _stickSpawner.CreateAsync(args.CurrentPlatform.Borders.RightTop);
 
-        await _inputManager.NextClick();
+        await _inputManager.WaitClick();
         await IncreaseStick(stick);
 
         await args.Hero.KickAsync();
@@ -47,7 +47,7 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
         var cts = new CancellationTokenSource();
         stick.StartIncreasingAsync(cts.Token).Forget();
 
-        await _inputManager.NextRelease();
+        await _inputManager.WaitRelease();
         cts.Cancel();
     }
 }

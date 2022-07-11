@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Code.Infrastructure;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 namespace Code.AddressableAssets;
@@ -16,12 +17,11 @@ public class AssetReferenceComponent<T> : AssetReferenceGameObject where T : Com
 
     public override bool ValidateAsset(string path)
     {
-#if UNITY_EDITOR
+        if (PlatformInfo.IsPlayer)
+            return false;
+
         var go = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(path);
         return go != null && go.GetComponent<T>() != null;
-#else
-        return false;
-#endif
     }
 
     public static implicit operator Address<T>(AssetReferenceComponent<T> reference) =>
