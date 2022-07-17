@@ -16,7 +16,7 @@ public static class IAddressablesLoaderExtensions
     }
 
     public static IAsyncPool<T> CreateCyclicPool<T>(
-        this IAddressablesLoader loader, Address<T> address,  int initialSize, int capacity, string containerName)
+        this IAddressablesLoader loader, Address<T> address, int initialSize, int capacity, string containerName)
         where T : Component
     {
         IAsyncPool<T> pool = CreatePool(loader, address, initialSize, capacity, containerName);

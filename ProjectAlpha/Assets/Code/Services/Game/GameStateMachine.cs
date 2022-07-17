@@ -20,7 +20,7 @@ public sealed class GameStateMachine : IStateMachine
 
     public void Enter<TState, TArg>(TArg argument) where TState : class, IState<TArg> =>
         GetState<TState>().EnterAsync(argument, this).Forget();
-    
+
     private TState GetState<TState>() where TState : class, IExitState =>
         _states[typeof(TState)] as TState;
 }

@@ -11,7 +11,7 @@ public class StickAnimations : IStickAnimations
         .DOScaleY(float.MaxValue, speed)
         .SetSpeedBased()
         .WithCancellation(token);
-    
+
     public UniTask Rotate(Transform transform, Vector3 endRotation, float speed, float delay,
         CancellationToken token) => transform
         .DORotate(endRotation, speed)

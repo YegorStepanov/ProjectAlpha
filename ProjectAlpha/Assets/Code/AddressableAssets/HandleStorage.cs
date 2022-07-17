@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace Code.AddressableAssets;
 
-public sealed class HandleStorage<TAsset> :IDisposable where TAsset : Object
+public sealed class HandleStorage<TAsset> : IDisposable where TAsset : Object
 {
     // it's not a dictionary because:
     // 1) Addressables.LoadAssetAsync() returns the same handle usually, but sometimes it returns a different one (differs by m_Version)...

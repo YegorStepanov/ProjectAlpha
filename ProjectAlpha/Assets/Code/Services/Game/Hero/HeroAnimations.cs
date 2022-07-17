@@ -12,9 +12,9 @@ public class HeroAnimations : IHeroAnimations
         .SetEase(Ease.Linear)
         .SetSpeedBased()
         .WithCancellation(token);
-    
+
     public UniTask Fall(Transform transform, float destinationY, float speed, CancellationToken token) => transform
-        .DOMoveY( destinationY, speed)
+        .DOMoveY(destinationY, speed)
         .SetEase(Ease.Linear)
         .SetSpeedBased()
         .WithCancellation(token);

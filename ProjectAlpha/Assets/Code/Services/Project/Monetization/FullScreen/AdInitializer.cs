@@ -23,7 +23,7 @@ public class AdInitializer : IAdInitializer, IUnityAdsInitializationListener
         if (token.IsCancellationRequested)
             return UniTask.CompletedTask;
 
-        if(!IsInitialized)
+        if (!IsInitialized)
             Advertisement.Initialize(_gameId, false, this);
 
         return WaitForInitializationAsync(token);

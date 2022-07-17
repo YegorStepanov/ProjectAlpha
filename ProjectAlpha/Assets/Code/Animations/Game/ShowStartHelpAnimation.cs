@@ -10,7 +10,7 @@ public sealed class ShowStartHelpAnimation : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas;
     [SerializeField] private TextMeshProUGUI _text;
-    
+
     private void Awake() =>
         _canvas.enabled = false;
 
@@ -22,8 +22,8 @@ public sealed class ShowStartHelpAnimation : MonoBehaviour
 
     public async UniTask HideAsync(CancellationToken token)
     {
-        if(_text.color.a == 0f) return;
-        
+        if (_text.color.a == 0f) return;
+
         await _text.DOFade(0f, 1f).WithCancellation(token);
 
         _canvas.enabled = false;

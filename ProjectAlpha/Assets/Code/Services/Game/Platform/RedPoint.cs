@@ -19,6 +19,6 @@ public sealed class RedPoint : SpriteEntity, IRedPoint
     public void Toggle(bool enable) =>
         _sprite.color = _sprite.color with { a = enable ? 1 : 0 };
 
-    public UniTask FadeOutAsync() => 
+    public UniTask FadeOutAsync() =>
         _animations.FadeOut(_sprite, _settings.FadeOutRedPointSpeed, token);
 }

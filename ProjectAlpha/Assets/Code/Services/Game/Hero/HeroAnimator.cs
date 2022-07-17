@@ -61,7 +61,6 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
         }
 
         Debug.Log("After " + Time.frameCount + "  " + state.Value);
-
     }
 
     private static HeroAnimatorState GetStateFromHash(int stateHash)

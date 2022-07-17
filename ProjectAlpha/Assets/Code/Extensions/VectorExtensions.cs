@@ -23,7 +23,7 @@ public static class VectorExtensions
     public static Vector2 ShiftX(this Vector2 v, float offset) => new(v.x + offset, v.y);
     public static Vector2 ShiftY(this Vector2 v, float offset) => new(v.x, v.y + offset);
     public static Vector3 ShiftZ(this Vector2 v, float offset) => new(v.x, v.y, offset);
-    
+
     public static Vector2 Shift(this Vector2 point, Borders borders, Relative relative)
     {
         float halfHeight = borders.Height / 2f;

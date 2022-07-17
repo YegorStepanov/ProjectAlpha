@@ -72,7 +72,7 @@ public sealed class SceneLoader : ISceneLoader
 
             if (scenes.Count == 0)
                 _scenes.Remove(address);
-            
+
             return true;
         }
 

@@ -7,7 +7,7 @@ namespace Code.Services;
 public abstract class Entity : MonoBehaviour, IEntity
 {
     protected CancellationToken token;
-    
+
     public abstract Borders Borders { get; }
 
     protected virtual void Awake() =>
