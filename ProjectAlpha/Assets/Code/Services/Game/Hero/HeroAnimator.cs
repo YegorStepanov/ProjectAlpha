@@ -56,10 +56,10 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
         while (!token.IsCancellationRequested)
         {
             if (newState == heroAnimatorState) break;
- 
+
             newState = await state.WaitAsync(token);
         }
-        
+
         Debug.Log("After " + Time.frameCount + "  " + state.Value);
 
     }

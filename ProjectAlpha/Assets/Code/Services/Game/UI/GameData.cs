@@ -1,13 +1,18 @@
-﻿using VContainer.Unity;
+﻿namespace Code.Services.Game.UI;
 
-namespace Code.Services.Game.UI;
-
-public sealed class GameData : IStartable
+public sealed class GameData //rename to GameWorld
 {
     private readonly Camera _camera;
     private readonly Settings _settings;
 
-    public float GameHeight { get; private set; }
+    private bool _isGameHeight;
+
+    //rename height to PosY?
+    public float CurrentHeight => _isGameHeight ? GameHeight : MenuHeight;
+    public float GameHeight => _camera.Borders.Bot + _camera.Borders.Height * _settings.ViewportGameHeight;
+    public float MenuHeight => _camera.Borders.Bot + _camera.Borders.Height * _settings.ViewportMenuHeight;
+
+    public float PlatformHeight => GameHeight - _camera.Borders.Bot;
 
     public GameData(Camera camera, Settings settings)
     {
@@ -15,15 +20,14 @@ public sealed class GameData : IStartable
         _settings = settings;
     }
 
-    void IStartable.Start()
-    {
-        //it should be an camera event
-        GameHeight = _camera.ViewportToWorldPositionY(_settings.ViewportMenuHeight);
-    }
+    public void SwitchToMenuHeight() => _isGameHeight = false;
+    public void SwitchToGameHeight() => _isGameHeight = true;
 
     [System.Serializable]
     public class Settings
     {
+        //add odin attribute, MenuHeight cannot be more that GameHeight
+        //when MenuHeight > GameHeight -> error
         public float ViewportMenuHeight = 0.2f;
         public float ViewportGameHeight = 0.3f;
     }

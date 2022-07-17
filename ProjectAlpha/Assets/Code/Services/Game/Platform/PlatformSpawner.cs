@@ -39,17 +39,19 @@ public sealed class PlatformSpawner
     public void DespawnAll() =>
         _pool.DespawnAll();
 
-    private async UniTask<IPlatform> CreateAsync(float posX, float width, Relative relative, bool redPointEnabled)
+    private UniTask<IPlatform> CreateAsync(float posX, float width, Relative relative, bool redPointEnabled)
     {
-        Vector2 position = new(posX, _gameData.GameHeight);
+        Vector2 position = new(posX, _gameData.CurrentHeight);
+        Vector2 size = new(width, _gameData.PlatformHeight);
+        return CreateAsync(position, size, relative, redPointEnabled);
+    }
+
+    private async UniTask<IPlatform> CreateAsync(Vector2 position, Vector2 size, Relative relative, bool redPointEnabled)
+    {
         Platform platform = await _pool.SpawnAsync();
-
-        float height = position.y + _camera.Borders.HalfHeight;
-
-        platform.SetSize(new Vector2(width, height));
+        platform.SetSize(size);
         platform.SetPosition(position, relative);
         platform.RedPoint.Toggle(redPointEnabled);
-
         return platform;
     }
 

@@ -17,6 +17,7 @@ public sealed class Camera : MonoBehaviour, IEntity
     [Required, SerializeField] private RawImage _backgroundImage;
 
     private BackgroundChanger _backgroundChanger;
+    private Vector3 _initialPosition;
 
     public Borders Borders => UpdateBorders();
 
@@ -27,6 +28,16 @@ public sealed class Camera : MonoBehaviour, IEntity
     {
         //it should be null, isn't?
         _backgroundChanger = new BackgroundChanger(loader, randomizer, _backgroundImage);
+    }
+
+    private void Awake()
+    {
+        _initialPosition = transform.position;
+    }
+
+    public void RestoreInitialPosition()
+    {
+        transform.position = _initialPosition;
     }
 
     public UniTask ChangeBackgroundAsync() =>

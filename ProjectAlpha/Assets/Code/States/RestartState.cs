@@ -28,14 +28,13 @@ public sealed class RestartState : IState
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
         await _camera.ChangeBackgroundAsync();
+        _camera.RestoreInitialPosition();
 
         _platformSpawner.DespawnAll();
         _cherrySpawner.DespawnAll();
         _stickSpawner.DespawnAll();
 
-        IPlatform platform =
-            await _platformSpawner.CreateAsync(_camera.Borders.Left, Relative.Left, false);
-
+        IPlatform platform = await _platformSpawner.CreateAsync(_camera.Borders.Left, Relative.Left, false);
         IHero hero = await _heroSpawner.CreateAsync(platform.Borders.LeftTop, Relative.Center);
 
         stateMachine.Enter<GameStartState, GameStartState.Arguments>(new(platform, hero));

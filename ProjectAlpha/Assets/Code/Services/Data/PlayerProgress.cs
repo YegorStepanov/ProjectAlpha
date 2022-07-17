@@ -17,7 +17,7 @@ public class PlayerProgress
     public PlayerProgress() =>
         Initialize();
 
-    void Initialize()
+    private void Initialize()
     {
         CherryCount = LoadCherryCount();
         IsNoAds = LoadIsNoAds();

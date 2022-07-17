@@ -28,7 +28,7 @@ public sealed class CherrySpawner : ICherryPickHandler
 
         Cherry cherry = await _pool.SpawnAsync();
 
-        cherry.SetPosition(new Vector2(posX, _gameData.GameHeight), relative);
+        cherry.SetPosition(new Vector2(posX, _gameData.CurrentHeight), relative);
         return cherry;
     }
 
