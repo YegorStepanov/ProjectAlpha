@@ -22,7 +22,6 @@ public abstract class PositionGenerator : ScriptableObject
             _ => throw new InvalidEnumArgumentException(nameof(_mode), (int)_mode, typeof(Mode))
         };
 
-
         float Leftmost() => minPosX + halfWidth + _leftOffset;
         float Rightmost() => maxPosX - halfWidth - _rightOffset;
     }

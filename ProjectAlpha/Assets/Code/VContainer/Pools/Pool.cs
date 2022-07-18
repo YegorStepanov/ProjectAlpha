@@ -34,7 +34,6 @@ public abstract class Pool<TValue> : IPool<TValue>
 
         value = _pool[_activeCount];
 
-
         _activeCount++;
 
         OnSpawned(value);

@@ -41,7 +41,6 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
     public void ExitedState(int stateHash, int layerIndex) =>
         GetState(layerIndex).Value = GetStateFromHash(stateHash);
 
-
     private async UniTask Play(
         int stateHash, HeroAnimatorState heroAnimatorState, int layerIndex, CancellationToken token)
     {

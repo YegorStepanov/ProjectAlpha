@@ -27,7 +27,6 @@ public sealed class Randomizer : IRandomizer
         return value;
     }
 
-
     public float NextProbability() =>
         Random.Range(0f, 1f);
 }
