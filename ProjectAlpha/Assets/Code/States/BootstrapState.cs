@@ -8,7 +8,7 @@ public sealed class BootstrapState : IState
 {
     private readonly Camera _camera;
     private readonly GameEvents _gameEvents;
-    private readonly GameData _gameData;
+    private readonly GameWorld _gameWorld;
     private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
 
@@ -17,20 +17,18 @@ public sealed class BootstrapState : IState
         HeroSpawner heroSpawner,
         Camera camera,
         GameEvents gameEvents,
-        GameData gameData)
+        GameWorld gameWorld)
     {
         _platformSpawner = platformSpawner;
         _heroSpawner = heroSpawner;
         _camera = camera;
         _gameEvents = gameEvents;
-        _gameData = gameData;
+        _gameWorld = gameWorld;
     }
 
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
-        _gameData.SwitchToMenuHeight();
-        // _gameData.SetMenuHeight();
-
+        _gameWorld.SwitchToMenuHeight();
         await _camera.ChangeBackgroundAsync();
 
         IPlatform menuPlatform = await _platformSpawner.CreateMenuAsync();

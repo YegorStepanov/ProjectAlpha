@@ -8,15 +8,15 @@ namespace Code.Services;
 public sealed class CherrySpawner : ICherryPickHandler
 {
     private readonly IAsyncPool<Cherry> _pool;
-    private readonly GameData _gameData;
+    private readonly GameWorld _gameWorld;
     private readonly IRandomizer _randomizer;
     private readonly Settings _settings;
     private readonly CherryNull _cherryNull = new();
 
-    public CherrySpawner(IAsyncPool<Cherry> pool, GameData gameData, IRandomizer randomizer, Settings settings)
+    public CherrySpawner(IAsyncPool<Cherry> pool, GameWorld gameWorld, IRandomizer randomizer, Settings settings)
     {
         _pool = pool;
-        _gameData = gameData;
+        _gameWorld = gameWorld;
         _randomizer = randomizer;
         _settings = settings;
     }
@@ -28,7 +28,7 @@ public sealed class CherrySpawner : ICherryPickHandler
 
         Cherry cherry = await _pool.SpawnAsync();
 
-        cherry.SetPosition(new Vector2(posX, _gameData.CurrentPositionY), relative);
+        cherry.SetPosition(new Vector2(posX, _gameWorld.CurrentPositionY), relative);
         return cherry;
     }
 

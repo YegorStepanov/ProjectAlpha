@@ -2,7 +2,7 @@
 
 namespace Code.Services.Game.UI;
 
-public sealed class GameData //rename to GameWorld
+public sealed class GameWorld
 {
     private readonly Camera _camera;
     private readonly Settings _settings;
@@ -15,7 +15,7 @@ public sealed class GameData //rename to GameWorld
     private float GamePositionY => _camera.Borders.Bot + _camera.Borders.Height * _settings.ViewportGamePositionY;
     private float MenuPositionY => _camera.Borders.Bot + _camera.Borders.Height * _settings.ViewportMenuPositionY;
 
-    public GameData(Camera camera, Settings settings)
+    public GameWorld(Camera camera, Settings settings)
     {
         _camera = camera;
         _settings = settings;

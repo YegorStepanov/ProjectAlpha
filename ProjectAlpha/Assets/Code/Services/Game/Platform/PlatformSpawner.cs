@@ -11,16 +11,16 @@ public sealed class PlatformSpawner
     private readonly Camera _camera;
     private readonly Settings _settings;
     private readonly IWidthGenerator _widthGenerator;
-    private readonly GameData _gameData;
+    private readonly GameWorld _gameWorld;
 
     public PlatformSpawner(IAsyncPool<Platform> pool, Camera camera,
-        Settings settings, IWidthGenerator widthGenerator, GameData gameData)
+        Settings settings, IWidthGenerator widthGenerator, GameWorld gameWorld)
     {
         _pool = pool;
         _camera = camera;
         _settings = settings;
         _widthGenerator = widthGenerator;
-        _gameData = gameData;
+        _gameWorld = gameWorld;
     }
 
     public UniTask<IPlatform> CreateMenuAsync()
@@ -41,8 +41,8 @@ public sealed class PlatformSpawner
 
     private UniTask<IPlatform> CreateAsync(float posX, float width, Relative relative, bool redPointEnabled)
     {
-        Vector2 position = new(posX, _gameData.CurrentPositionY);
-        Vector2 size = new(width, _gameData.PlatformHeight);
+        Vector2 position = new(posX, _gameWorld.CurrentPositionY);
+        Vector2 size = new(width, _gameWorld.PlatformHeight);
         return CreateAsync(position, size, relative, redPointEnabled);
     }
 

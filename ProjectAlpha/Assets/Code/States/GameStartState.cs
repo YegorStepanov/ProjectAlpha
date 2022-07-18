@@ -16,7 +16,7 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
     private readonly PlatformPositionGenerator _platformPositionGenerator;
     private readonly CherryPositionGenerator _cherryPositionGenerator;
     private readonly GameMediator _gameMediator;
-    private readonly GameData _gameData;
+    private readonly GameWorld _gameWorld;
 
     public GameStartState(
         Camera camera,
@@ -25,7 +25,7 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
         PlatformPositionGenerator platformPositionGenerator,
         CherryPositionGenerator cherryPositionGenerator,
         GameMediator gameMediator,
-        GameData gameData)
+        GameWorld gameWorld)
     {
         _camera = camera;
         _platformSpawner = platformSpawner;
@@ -33,7 +33,7 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
         _platformPositionGenerator = platformPositionGenerator;
         _cherryPositionGenerator = cherryPositionGenerator;
         _gameMediator = gameMediator;
-        _gameData = gameData;
+        _gameWorld = gameWorld;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
@@ -46,7 +46,7 @@ public sealed class GameStartState : IState<GameStartState.Arguments>
         IPlatform nextPlatform = await _platformSpawner.CreateAsync(nextCameraBorders.Right, Relative.Left);
         ICherry cherry = await _cherrySpawner.CreateAsync(nextCameraBorders.Right, Relative.RightTop);
 
-        _gameData.SwitchToGameHeight();
+        _gameWorld.SwitchToGameHeight();
 
         await UniTask.Delay(100);
 

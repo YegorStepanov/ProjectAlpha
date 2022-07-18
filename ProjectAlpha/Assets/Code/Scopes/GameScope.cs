@@ -45,7 +45,7 @@ public sealed class GameScope : Scope
 
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.Register<GameData>(Lifetime.Singleton); //move to
+        builder.Register<GameWorld>(Lifetime.Singleton); //move to
 
         RegisterHero(builder);
         RegisterPlatform(builder);
