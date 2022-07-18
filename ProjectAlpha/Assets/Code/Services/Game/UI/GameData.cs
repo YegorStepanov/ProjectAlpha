@@ -1,4 +1,6 @@
-﻿namespace Code.Services.Game.UI;
+﻿using Sirenix.OdinInspector;
+
+namespace Code.Services.Game.UI;
 
 public sealed class GameData //rename to GameWorld
 {
@@ -7,12 +9,11 @@ public sealed class GameData //rename to GameWorld
 
     private bool _isGameHeight;
 
-    //rename height to PosY?
-    public float CurrentHeight => _isGameHeight ? GameHeight : MenuHeight;
-    public float GameHeight => _camera.Borders.Bot + _camera.Borders.Height * _settings.ViewportGameHeight;
-    public float MenuHeight => _camera.Borders.Bot + _camera.Borders.Height * _settings.ViewportMenuHeight;
+    public float CurrentPositionY => _isGameHeight ? GamePositionY : MenuPositionY;
+    public float PlatformHeight => GamePositionY - _camera.Borders.Bot;
 
-    public float PlatformHeight => GameHeight - _camera.Borders.Bot;
+    private float GamePositionY => _camera.Borders.Bot + _camera.Borders.Height * _settings.ViewportGamePositionY;
+    private float MenuPositionY => _camera.Borders.Bot + _camera.Borders.Height * _settings.ViewportMenuPositionY;
 
     public GameData(Camera camera, Settings settings)
     {
@@ -26,9 +27,10 @@ public sealed class GameData //rename to GameWorld
     [System.Serializable]
     public class Settings
     {
-        //add odin attribute, MenuHeight cannot be more that GameHeight
-        //when MenuHeight > GameHeight -> error
-        public float ViewportMenuHeight = 0.2f;
-        public float ViewportGameHeight = 0.3f;
+        [ValidateInput("@$value <= ViewportGamePositionY", "this must be equal or greater then ViewportGamePositionY")]
+        [MinValue(0), MaxValue(1)]
+        public float ViewportMenuPositionY = 0.2f;
+        [MinValue(0), MaxValue(1)]
+        public float ViewportGamePositionY = 0.3f;
     }
 }

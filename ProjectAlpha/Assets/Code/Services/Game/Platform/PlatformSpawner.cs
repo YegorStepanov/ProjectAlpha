@@ -41,7 +41,7 @@ public sealed class PlatformSpawner
 
     private UniTask<IPlatform> CreateAsync(float posX, float width, Relative relative, bool redPointEnabled)
     {
-        Vector2 position = new(posX, _gameData.CurrentHeight);
+        Vector2 position = new(posX, _gameData.CurrentPositionY);
         Vector2 size = new(width, _gameData.PlatformHeight);
         return CreateAsync(position, size, relative, redPointEnabled);
     }
