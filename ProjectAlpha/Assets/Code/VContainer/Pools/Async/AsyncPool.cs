@@ -7,7 +7,6 @@ namespace Code.VContainer;
 public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
 {
     private readonly int _initialSize;
-
     private TValue[] _pool;
     private int _activeCount;
 
