@@ -16,8 +16,7 @@ public sealed class HeroMovementToPlatformState : BaseHeroMovementState, IState<
         IHero Hero,
         ICherry Cherry);
 
-    public HeroMovementToPlatformState(
-        IInputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner, Camera camera, ScopeCancellationToken token) :
+    public HeroMovementToPlatformState(IInputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner, Camera camera, ScopeCancellationToken token) :
         base(inputManager, gameMediator, camera)
     {
         _stickSpawner = stickSpawner;
