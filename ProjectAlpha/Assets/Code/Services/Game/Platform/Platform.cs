@@ -21,7 +21,7 @@ public sealed class Platform : SpriteEntity, IPlatform
     }
 
     public UniTask MoveAsync(float destinationX) =>
-        _animations.Move(transform, destinationX, _settings.MovementSpeed, token);
+        _animations.Move(transform, destinationX, _settings.MovementSpeed, DestroyToken);
 
     [System.Serializable]
     public class Settings

@@ -6,12 +6,12 @@ namespace Code.Services;
 
 public abstract class Entity : MonoBehaviour, IEntity
 {
-    protected CancellationToken token;
+    protected CancellationToken DestroyToken;
 
     public abstract Borders Borders { get; }
 
     protected virtual void Awake() =>
-        token = this.GetCancellationTokenOnDestroy();
+        DestroyToken = this.GetCancellationTokenOnDestroy();
 
     public void SetPosition(Vector2 position, Relative relative = Relative.Center) =>
         transform.position = position.Shift(Borders, relative);

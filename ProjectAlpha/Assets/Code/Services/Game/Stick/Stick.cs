@@ -29,11 +29,11 @@ public sealed class Stick : SpriteEntity, IStick
     public bool IsStickArrowOn(IEntity entity) =>
         entity.Borders.Inside(_arrow.position);
 
-    public UniTask StartIncreasingAsync(CancellationToken stopToken) =>
-        _animations.StartIncreasing(transform, _settings.IncreaseSpeed, stopToken);
+    public UniTask StartIncreasingAsync(CancellationToken token) =>
+        _animations.StartIncreasing(transform, _settings.IncreaseSpeed, token);
 
     public UniTask RotateAsync() =>
-        _animations.Rotate(transform, _settings.EndRotation, _settings.RotationTime, _settings.RotationDelay, token);
+        _animations.Rotate(transform, _settings.EndRotation, _settings.RotationTime, _settings.RotationDelay, DestroyToken);
 
     [System.Serializable]
     public class Settings

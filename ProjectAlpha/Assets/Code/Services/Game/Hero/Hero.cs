@@ -25,23 +25,23 @@ public sealed class Hero : SpriteEntity, IHero
     }
 
     public UniTask MoveAsync(float destinationX) =>
-        MoveAsync(destinationX, token);
+        MoveAsync(destinationX, DestroyToken);
 
-    public async UniTask MoveAsync(float destinationX, CancellationToken stopToken)
+    public async UniTask MoveAsync(float destinationX, CancellationToken token)
     {
         _animator.PlayMove();
-        await _animations.Move(transform, destinationX, _settings.MovementSpeed, stopToken);
+        await _animations.Move(transform, destinationX, _settings.MovementSpeed, token);
         _animator.PlayStay();
     }
 
-    public UniTask SquatAsync(CancellationToken stopToken) =>
-        _animations.Squat(transform, _settings.SquatOffset, _settings.SquatSpeed, stopToken);
+    public UniTask SquatAsync(CancellationToken token) =>
+        _animations.Squat(transform, _settings.SquatOffset, _settings.SquatSpeed, token);
 
     public UniTask FallAsync() =>
-        _animations.Fall(transform, _settings.FallingDestination, _settings.FallingSpeed, token);
+        _animations.Fall(transform, _settings.FallingDestination, _settings.FallingSpeed, DestroyToken);
 
     public UniTask KickAsync() =>
-        _animator.PlayKickAsync(token);
+        _animator.PlayKickAsync(DestroyToken);
 
     public void Flip()
     {
