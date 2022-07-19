@@ -18,4 +18,17 @@ public class HeroAnimations : IHeroAnimations
         .SetEase(Ease.Linear)
         .SetSpeedBased()
         .WithCancellation(token);
+
+    public async UniTask Squat(Transform transform, float squatOffset, float squatSpeed, CancellationToken token)
+    {
+        Vector3 scale = transform.localScale;
+
+        await transform.DOScaleY(-squatOffset, squatSpeed)
+            .SetRelative()
+            .SetSpeedBased()
+            .SetLoops(-1, LoopType.Yoyo)
+            .WithCancellation(token);
+
+        transform.localScale = scale;
+    }
 }

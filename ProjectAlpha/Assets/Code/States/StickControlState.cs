@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using System.Threading.Tasks;
 using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
@@ -30,7 +29,7 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
         IStick stick = await _stickSpawner.CreateAsync(args.CurrentPlatform.Borders.RightTop);
 
         await _inputManager.WaitClick();
-        await IncreaseStick(stick);
+        await IncreaseStick(stick, args.Hero);
 
         await args.Hero.KickAsync();
         await stick.RotateAsync();
@@ -42,9 +41,10 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
             new(args.CurrentPlatform, args.NextPlatform, stick, args.Hero, args.Cherry));
     }
 
-    private async Task IncreaseStick(IStick stick)
+    private async UniTask IncreaseStick(IStick stick, IHero hero)
     {
         var cts = new CancellationTokenSource();
+        hero.SquatAsync(cts.Token).Forget();
         stick.StartIncreasingAsync(cts.Token).Forget();
 
         await _inputManager.WaitRelease();

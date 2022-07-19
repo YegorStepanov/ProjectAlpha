@@ -34,6 +34,9 @@ public sealed class Hero : SpriteEntity, IHero
         _animator.PlayStay();
     }
 
+    public UniTask SquatAsync(CancellationToken stopToken) =>
+        _animations.Squat(transform, _settings.SquatOffset, _settings.SquatSpeed, stopToken);
+
     public UniTask FallAsync() =>
         _animations.Fall(transform, _settings.FallingDestination, _settings.FallingSpeed, token);
 
@@ -54,5 +57,7 @@ public sealed class Hero : SpriteEntity, IHero
         public float MovementSpeed = 5f;
         public float FallingSpeed = 30f;
         public float FallingDestination = -10f;
+        public float SquatSpeed = 5f;
+        public float SquatOffset = 0.8f;
     }
 }

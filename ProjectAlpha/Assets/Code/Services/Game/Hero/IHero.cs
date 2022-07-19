@@ -11,5 +11,6 @@ public interface IHero : IEntity
     UniTask MoveAsync(float destinationX);
     UniTask FallAsync();
     UniTask KickAsync();
+    UniTask SquatAsync(CancellationToken stopToken);
     void Flip();
 }
