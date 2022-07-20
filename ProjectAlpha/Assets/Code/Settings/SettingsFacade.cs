@@ -4,12 +4,14 @@ using Code.Services.Game.UI;
 using Code.Services.Monetization;
 using UnityEngine;
 using VContainer;
+using Camera = Code.Services.Camera;
 
 namespace Code.Game;
 
 [CreateAssetMenu(menuName = "Data/Game Settings")]
 public sealed class SettingsFacade : ScriptableObject
 {
+    [SerializeField] private Camera.Settings _camera;
     [SerializeField] private Hero.Settings _hero;
     [SerializeField] private Platform.Settings _platform;
     [SerializeField] private Cherry.Settings _cherry;
@@ -24,6 +26,7 @@ public sealed class SettingsFacade : ScriptableObject
 
     public void RegisterSettings(IContainerBuilder builder)
     {
+        builder.RegisterInstance(_camera);
         builder.RegisterInstance(_hero);
         builder.RegisterInstance(_platform);
         builder.RegisterInstance(_cherry);

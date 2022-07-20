@@ -4,7 +4,6 @@ using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using JetBrains.Annotations;
 
 namespace Code.States;
 
@@ -59,6 +58,7 @@ public abstract class MoveHeroBaseState
         stick.RotateDownAsync().Forget();
         await hero.FallAsync(_camera.Borders.Bot - hero.Borders.Height);
         await UniTask.Delay(TimeSpan.FromSeconds(_settings.DelayBeforeEndGame), cancellationToken: _token);
+        await _camera.Punch(_token);
 
         _gameMediator.GameOver();
     }

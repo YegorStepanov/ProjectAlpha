@@ -18,14 +18,16 @@ public sealed class Camera : MonoBehaviour, IEntity
 
     private BackgroundChanger _backgroundChanger;
     private Vector3 _initialPosition;
+    private Settings _settings;
 
     public Borders Borders => UpdateBorders();
 
     private Vector3 CameraPosition => _baseCamera.transform.position;
 
     [Inject, UsedImplicitly]
-    public void Construct(IScopedAddressablesLoader loader, IRandomizer randomizer)
+    public void Construct(IScopedAddressablesLoader loader, IRandomizer randomizer, Settings settings)
     {
+        _settings = settings;
         //it should be null, isn't?
         _backgroundChanger = new BackgroundChanger(loader, randomizer, _backgroundImage);
     }
@@ -41,6 +43,14 @@ public sealed class Camera : MonoBehaviour, IEntity
 
     public UniTask MoveBackgroundAsync(CancellationToken cancellationToken) =>
         _backgroundChanger.MoveBackgroundAsync(cancellationToken);
+
+    public UniTask Punch(CancellationToken token) => transform
+        .DOPunchPosition(
+            _settings.PunchingStrength,
+            _settings.PunchingDuration,
+            _settings.PunchingVibrato,
+            _settings.PunchingElasticity)
+        .WithCancellation(token);
 
     //
     // void IInitializable.Initialize()
@@ -80,4 +90,13 @@ public sealed class Camera : MonoBehaviour, IEntity
 
     public float ViewportToWorldPositionY(float viewportPosY) =>
         _baseCamera.ViewportToWorldPoint(new Vector2(0, viewportPosY)).y;
+
+    [System.Serializable]
+    public class Settings
+    {
+        public Vector3 PunchingStrength = Vector3.up;
+        public float PunchingDuration = 0.3f;
+        public int PunchingVibrato = 10;
+        public float PunchingElasticity = 1f;
+    }
 }
