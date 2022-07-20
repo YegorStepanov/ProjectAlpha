@@ -2,7 +2,6 @@
 using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace Code.States;
 
@@ -17,10 +16,10 @@ public sealed class MoveHeroToPlatformState : MoveHeroBaseState, IState<MoveHero
         IPlatform LeftPlatform,
         IPlatform CurrentPlatform,
         IHero Hero,
-        [CanBeNull] IStick Stick,
+        IStick Stick,
         ICherry Cherry);
 
-    public MoveHeroToPlatformState(IInputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner, Camera camera, ScopeCancellationToken token, GameStateMachine.Settings settings) :
+    public MoveHeroToPlatformState(IInputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner, Camera camera, ScopeToken token, GameStateMachine.Settings settings) :
         base(gameMediator, camera, settings)
     {
         _stickSpawner = stickSpawner;

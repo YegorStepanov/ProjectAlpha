@@ -12,16 +12,7 @@ namespace Code.Scopes;
 public sealed class RootScope : Scope
 {
     private Camera _camera;
-    private GameSettings _gameSettings;
-
-    // todo:
-    // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-    // public static void InitUniTaskLoop()
-    // {
-    //     //var loop = PlayerLoop.GetCurrentPlayerLoop();
-    //     // // minimum is Update | FixedUpdate | LastPostLateUpdate
-    //     //PlayerLoopHelper.Initialize(ref loop, InjectPlayerLoopTimings.Minimum);
-    // }
+    private SettingsFacade _settingsFacade;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
@@ -30,7 +21,7 @@ public sealed class RootScope : Scope
         var loadEventSystem = loader.InstantiateAsync(RootAddress.EventSystem, inject: false);
 
         LoadDevelopmentAssets(loader);
-        (_camera, _gameSettings, _) = await (loadCamera, loadGameSettings, loadEventSystem);
+        (_camera, _settingsFacade, _) = await (loadCamera, loadGameSettings, loadEventSystem);
     }
 
     private static void LoadDevelopmentAssets(IAddressablesLoader loader)
@@ -41,9 +32,9 @@ public sealed class RootScope : Scope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        RegisterSettings(builder);
         RegisterCancellationToken(builder);
         RegisterCamera(builder);
-        RegisterSettings(builder);
 
         builder.Register<GameEvents>(Lifetime.Singleton);
         builder.Register<IInputManager, InputManager>(Lifetime.Singleton);
@@ -57,19 +48,19 @@ public sealed class RootScope : Scope
         builder.Register<PlayerProgress>(Lifetime.Singleton);
     }
 
+    private void RegisterSettings(IContainerBuilder builder)
+    {
+        _settingsFacade.RegisterSettings(builder);
+    }
+
     private static void RegisterCancellationToken(IContainerBuilder builder)
     {
-        builder.Register<ScopeCancellationToken>(Lifetime.Scoped);
+        builder.Register<ScopeToken>(Lifetime.Scoped);
     }
 
     private void RegisterCamera(IContainerBuilder builder)
     {
         builder.RegisterComponent(_camera);
-    }
-
-    private void RegisterSettings(IContainerBuilder builder)
-    {
-        _gameSettings.RegisterAllSettings(builder);
     }
 
     private static void RegisterSceneLoader(IContainerBuilder builder)

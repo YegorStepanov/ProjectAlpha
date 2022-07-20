@@ -5,7 +5,6 @@ using Code.AddressableAssets;
 using Code.Infrastructure;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
-using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
@@ -26,17 +25,14 @@ public abstract class Scope : LifetimeScope
         _token = this.GetCancellationTokenOnDestroy();
         AssertAutoRunIsDisabled();
         await InitRoot();
-        SetScopeParent();
+        SetParentScope();
         await BuildAsync();
     }
 
-    public async UniTask BuildAsync(SceneInstance scene)
+    public async UniTask WaitForBuild(SceneInstance scene)
     {
         //VContainer issue, it spawns new gameobjects in the active scene
         _scene = scene.Scene;
-
-        if (_token == default) //todo: remove
-            Debug.Log("Token is default", this);
 
         while (!_isBuilt)
             await UniTask.Yield(_token);
@@ -54,7 +50,7 @@ public abstract class Scope : LifetimeScope
         return UniTask.CompletedTask;
     }
 
-    private void SetScopeParent()
+    private void SetParentScope()
     {
         base.Awake();
     }
@@ -89,8 +85,7 @@ public abstract class Scope : LifetimeScope
 
     private void AssertAutoRunIsDisabled()
     {
-        if (!PlatformInfo.IsDevelopment)
-            return;
+        if (!PlatformInfo.IsDevelopment) return;
 
         bool autoRun = GetPrivateInstanceField(typeof(LifetimeScope), this, "autoRun");
         Assert.IsFalse(autoRun);

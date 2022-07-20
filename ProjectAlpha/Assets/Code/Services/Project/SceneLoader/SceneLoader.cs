@@ -50,7 +50,7 @@ public sealed class SceneLoader : ISceneLoader
         PushScene(address, scene);
 
         Scope scope = GetScope(scene);
-        await scope.BuildAsync(scene);
+        await scope.WaitForBuild(scene);
     }
 
     private void PushScene(Address<Scene> address, SceneInstance scene)
@@ -60,7 +60,7 @@ public sealed class SceneLoader : ISceneLoader
         if (_scenes.TryGetValue(address, out List<SceneInstance> list))
             list.Add(scene);
         else
-            _scenes.Add(address, new List<SceneInstance>() { scene });
+            _scenes.Add(address, new List<SceneInstance> { scene });
     }
 
     private bool TryPopScene(Address<Scene> address, out SceneInstance scene)
@@ -108,7 +108,7 @@ public sealed class SceneLoader : ISceneLoader
         GameObject first = _tempRootGameObjects[0];
 
         if (!first.TryGetComponent(out Scope scope))
-            Debug.LogError("The first object in scene should be Scope");
+            Debug.LogError("The first object in the scene should be Scope");
 
         return scope;
     }

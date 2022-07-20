@@ -8,7 +8,7 @@ using VContainer;
 namespace Code.Game;
 
 [CreateAssetMenu(menuName = "Data/Game Settings")]
-public sealed class GameSettings : ScriptableObject //rename
+public sealed class SettingsFacade : ScriptableObject
 {
     [SerializeField] private Hero.Settings _hero;
     [SerializeField] private Platform.Settings _platform;
@@ -22,7 +22,7 @@ public sealed class GameSettings : ScriptableObject //rename
     [SerializeField] private AdsSettings _androidAdsProvider;
     [SerializeField] private AdsSettings _iosAdsProvider;
 
-    public void RegisterAllSettings(IContainerBuilder builder)
+    public void RegisterSettings(IContainerBuilder builder)
     {
         builder.RegisterInstance(_hero);
         builder.RegisterInstance(_platform);

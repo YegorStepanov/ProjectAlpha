@@ -18,7 +18,7 @@ public sealed class Ads : IDisposable
         InterstitialAd interstitialAd,
         RewardedAd rewardedAd,
         PlayerProgress playerProgress,
-        ScopeCancellationToken token)
+        ScopeToken token)
     {
         _adInitializer = adInitializer;
         _bannerAd = bannerAd;

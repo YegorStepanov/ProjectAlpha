@@ -13,7 +13,7 @@ public sealed class StartState : IState
     private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
 
-    public StartState(PlatformSpawner platformSpawner, HeroSpawner heroSpawner, Camera camera, GameEvents gameEvents, GameWorld gameWorld, GameMediator gameMediator)
+    public StartState(PlatformSpawner platformSpawner, HeroSpawner heroSpawner, Camera camera, IGameEvents gameEvents, GameWorld gameWorld, GameMediator gameMediator)
     {
         _platformSpawner = platformSpawner;
         _heroSpawner = heroSpawner;

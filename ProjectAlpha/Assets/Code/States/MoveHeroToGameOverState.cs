@@ -12,7 +12,7 @@ public sealed class MoveHeroToGameOverState : MoveHeroBaseState, IState<MoveHero
     private readonly CancellationToken _token;
     private readonly IInputManager _inputManager;
 
-    public MoveHeroToGameOverState(IInputManager inputManager, GameMediator gameMediator, Camera camera, GameStateMachine.Settings settings, ScopeCancellationToken token)
+    public MoveHeroToGameOverState(IInputManager inputManager, GameMediator gameMediator, Camera camera, GameStateMachine.Settings settings, ScopeToken token)
         : base(gameMediator, camera, settings)
     {
         _inputManager = inputManager;
