@@ -5,6 +5,8 @@ namespace Code.Services;
 
 public sealed class StickNull : IStick
 {
+    public static StickNull Default => new();
+
     public Borders Borders => Borders.Infinity;
 
     public bool IsStickArrowOn(IEntity entity) => true;

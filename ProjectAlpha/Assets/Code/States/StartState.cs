@@ -34,7 +34,7 @@ public sealed class StartState : IState
         await WaitGameStartEvent();
 
         stateMachine.Enter<MoveHeroToPlatformState, MoveHeroToPlatformState.Arguments>(
-            new(menuPlatform, menuPlatform, hero, new StickNull(), new CherryNull()));
+            new(menuPlatform, menuPlatform, hero, StickNull.Default, CherryNull.Default));
     }
 
     private UniTask ChangeBackground()
