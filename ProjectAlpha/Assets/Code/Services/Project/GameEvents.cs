@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks.Linq;
 
 namespace Code.Services;
 
-public sealed class GameEvents
+public sealed class GameEvents : IGameEvents
 {
     public GameStartedTrigger GameStart { get; private set; }
 

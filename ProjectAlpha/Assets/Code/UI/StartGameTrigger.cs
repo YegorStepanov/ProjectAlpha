@@ -11,7 +11,7 @@ namespace Code.UI;
 public sealed class StartGameTrigger : MonoBehaviour
 {
     [Inject, UsedImplicitly]
-    public void Construct(GameEvents gameEvents)
+    public void Construct(IGameEvents gameEvents)
     {
         var clickStream = this.GetAsyncPointerClickTrigger().Select(_ => AsyncUnit.Default);
 

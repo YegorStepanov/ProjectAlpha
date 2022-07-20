@@ -36,7 +36,7 @@ public sealed class RootScope : Scope
         RegisterCancellationToken(builder);
         RegisterCamera(builder);
 
-        builder.Register<GameEvents>(Lifetime.Singleton);
+        builder.Register<IGameEvents, GameEvents>(Lifetime.Singleton);
         builder.Register<IInputManager, InputManager>(Lifetime.Singleton);
         builder.Register<IRandomizer, Randomizer>(Lifetime.Singleton);
 

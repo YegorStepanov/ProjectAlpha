@@ -7,7 +7,7 @@ namespace Code.States;
 public sealed class StartState : IState
 {
     private readonly Camera _camera;
-    private readonly GameEvents _gameEvents;
+    private readonly IGameEvents _gameEvents;
     private readonly GameWorld _gameWorld;
     private readonly GameMediator _gameMediator;
     private readonly HeroSpawner _heroSpawner;
