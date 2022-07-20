@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using Code.AddressableAssets;
 using Code.Infrastructure;
 using Cysharp.Threading.Tasks;
@@ -68,7 +67,7 @@ public abstract class Scope : LifetimeScope
         _isBuilt = true;
     }
 
-    private async Task PreloadScopeAsync()
+    private async UniTask PreloadScopeAsync()
     {
         _loader = new AddressablesLoader(new Creator(this));
         await PreloadAsync(_loader);

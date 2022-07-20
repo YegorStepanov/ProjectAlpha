@@ -6,9 +6,10 @@ namespace Code.Services;
 
 public class ScopeCancellationToken
 {
-    public CancellationToken Token { get; }
+    private readonly CancellationToken _token;
 
-    // ReSharper disable once SuggestBaseTypeForParameterInConstructor
     public ScopeCancellationToken(LifetimeScope scope) =>
-        Token = scope.GetCancellationTokenOnDestroy();
+        _token = scope.GetCancellationTokenOnDestroy();
+
+    public static implicit operator CancellationToken(ScopeCancellationToken scopeToken) => scopeToken._token;
 }

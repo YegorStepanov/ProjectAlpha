@@ -5,39 +5,34 @@ using UnityEngine;
 
 namespace Code.Services;
 
-public sealed class PlatformSpawner
+public sealed class PlatformSpawner : Spawner<Platform>
 {
-    private readonly IAsyncPool<Platform> _pool;
     private readonly Camera _camera;
     private readonly Settings _settings;
     private readonly IWidthGenerator _widthGenerator;
     private readonly GameWorld _gameWorld;
 
-    public PlatformSpawner(IAsyncPool<Platform> pool, Camera camera,
-        Settings settings, IWidthGenerator widthGenerator, GameWorld gameWorld)
+    public PlatformSpawner(IAsyncPool<Platform> pool, Camera camera, Settings settings, IWidthGenerator widthGenerator, GameWorld gameWorld)
+        : base(pool)
     {
-        _pool = pool;
         _camera = camera;
         _settings = settings;
         _widthGenerator = widthGenerator;
         _gameWorld = gameWorld;
     }
 
-    public UniTask<IPlatform> CreateMenuAsync()
+    public UniTask<IPlatform> CreateMenuPlatformAsync()
     {
         float width = _settings.MenuPlatformWidth;
         float posX = _camera.ViewportToWorldPositionX(_settings.ViewportMenuPlatformPositionX);
         return CreateAsync(posX, width, Relative.Center, false);
     }
 
-    public UniTask<IPlatform> CreateAsync(float posX, Relative relative, bool redPointEnabled = true)
+    public UniTask<IPlatform> CreatePlatformAsync(float posX, Relative relative, bool redPointEnabled = true)
     {
         float width = _widthGenerator.NextWidth();
         return CreateAsync(posX, width, relative, redPointEnabled);
     }
-
-    public void DespawnAll() =>
-        _pool.DespawnAll();
 
     private UniTask<IPlatform> CreateAsync(float posX, float width, Relative relative, bool redPointEnabled)
     {
@@ -48,7 +43,7 @@ public sealed class PlatformSpawner
 
     private async UniTask<IPlatform> CreateAsync(Vector2 position, Vector2 size, Relative relative, bool redPointEnabled)
     {
-        Platform platform = await _pool.SpawnAsync();
+        Platform platform = await SpawnAsync();
         platform.SetSize(size);
         platform.SetPosition(position, relative);
         platform.RedPoint.Toggle(redPointEnabled);

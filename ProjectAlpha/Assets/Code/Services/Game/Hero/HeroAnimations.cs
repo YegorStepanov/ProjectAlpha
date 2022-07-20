@@ -19,7 +19,7 @@ public class HeroAnimations : IHeroAnimations
         .SetSpeedBased()
         .WithCancellation(token);
 
-    public async UniTask Squat(Transform transform, float squatOffset, float squatSpeed, CancellationToken token)
+    public async UniTaskVoid Squatting(Transform transform, float squatOffset, float squatSpeed, CancellationToken token)
     {
         Vector3 scale = transform.localScale;
 

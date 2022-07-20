@@ -23,7 +23,7 @@ public sealed class GameUI : MonoBehaviour //IDisposable
     private void Construct(RedPointHitGameAnimation redPointHitGameAnimation, ScopeCancellationToken token)
     {
         _redPointHitGameAnimation = redPointHitGameAnimation;
-        _token = token.Token;
+        _token = token;
     }
 
     private void Awake()

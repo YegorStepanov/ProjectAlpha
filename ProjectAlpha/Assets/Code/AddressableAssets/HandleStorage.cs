@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -103,7 +102,7 @@ public sealed class HandleStorage<TAsset> : IDisposable where TAsset : Object
         _handleData.Clear();
     }
 
-    private static async Task<HandleData<TAsset>> LoadHandleDataAsync(Address<TAsset> address)
+    private static async UniTask<HandleData<TAsset>> LoadHandleDataAsync(Address<TAsset> address)
     {
         AsyncOperationHandle<TAsset> handle = Addressables.LoadAssetAsync<TAsset>(address.Key);
         try

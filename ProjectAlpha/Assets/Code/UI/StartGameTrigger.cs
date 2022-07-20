@@ -15,6 +15,6 @@ public sealed class StartGameTrigger : MonoBehaviour
     {
         var clickStream = this.GetAsyncPointerClickTrigger().Select(_ => AsyncUnit.Default);
 
-        gameEvents.GameStarted.SetTrigger(clickStream, this.GetCancellationTokenOnDestroy());
+        gameEvents.GameStart.SetTrigger(clickStream, this.GetCancellationTokenOnDestroy());
     }
 }

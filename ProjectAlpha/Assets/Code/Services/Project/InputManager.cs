@@ -12,7 +12,7 @@ public sealed class InputManager : IInputManager
 
     public InputManager(ScopeCancellationToken token)
     {
-        _token = token.Token;
+        _token = token;
         _action.Enable();
     }
 
@@ -26,7 +26,7 @@ public sealed class InputManager : IInputManager
             await UniTask.NextFrame(token);
     }
 
-    public async UniTask WaitRelease()
+    public async UniTask WaitClickRelease()
     {
         await UniTask.NextFrame(_token);
         while (!IsReleasedOrCancelled())

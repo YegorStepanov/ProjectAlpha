@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Code.HeroAnimators;
 using Cysharp.Threading.Tasks;
@@ -14,7 +15,6 @@ public sealed class Hero : SpriteEntity, IHero
     private IHeroAnimations _animations;
     private Settings _settings;
 
-    public float HandOffset => _settings.HandOffset; //remove it
     public bool IsFlipped => transform.localScale.y < 0;
 
     [Inject, UsedImplicitly]
@@ -24,21 +24,27 @@ public sealed class Hero : SpriteEntity, IHero
         _settings = settings;
     }
 
-    public UniTask MoveAsync(float destinationX) =>
-        MoveAsync(destinationX, DestroyToken);
+    public void ResetState()
+    {
+        if(IsFlipped)
+            Flip();
+    }
 
     public async UniTask MoveAsync(float destinationX, CancellationToken token)
     {
         _animator.PlayMove();
-        await _animations.Move(transform, destinationX, _settings.MovementSpeed, token);
+        await _animations.Move(transform, destinationX - _settings.HandOffset, _settings.MovementSpeed, token);
         _animator.PlayStay();
     }
 
-    public UniTask SquatAsync(CancellationToken token) =>
-        _animations.Squat(transform, _settings.SquatOffset, _settings.SquatSpeed, token);
+    public void Squatting(CancellationToken token) =>
+        _animations.Squatting(transform, _settings.SquatOffset, _settings.SquatSpeed, token);
 
-    public UniTask FallAsync() =>
-        _animations.Fall(transform, _settings.FallingDestination, _settings.FallingSpeed, DestroyToken);
+    public async UniTask FallAsync(float destinationY)
+    {
+        await UniTask.Delay(TimeSpan.FromSeconds(_settings.FallingDelay));
+        await _animations.Fall(transform, destinationY, _settings.FallingSpeed, DestroyToken);
+    }
 
     public UniTask KickAsync() =>
         _animator.PlayKickAsync(DestroyToken);
@@ -56,7 +62,7 @@ public sealed class Hero : SpriteEntity, IHero
         public float HandOffset = 0.25f;
         public float MovementSpeed = 5f;
         public float FallingSpeed = 30f;
-        public float FallingDestination = -10f;
+        public float FallingDelay = 0.1f;
         public float SquatSpeed = 5f;
         public float SquatOffset = 0.8f;
     }

@@ -1,18 +1,18 @@
-﻿using Cysharp.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.Services;
 
 public sealed class HeroSpawner
 {
-    private readonly Hero _asset;
+    private readonly Hero _hero;
 
-    public HeroSpawner(Hero asset) =>
-        _asset = asset;
+    public HeroSpawner(Hero hero) =>
+        _hero = hero;
 
-    public UniTask<IHero> CreateAsync(Vector2 position, Relative relative)
+    public IHero Create(Vector2 position, Relative relative)
     {
-        _asset.SetPosition(position, relative);
-        return UniTask.FromResult<IHero>(_asset);
+        _hero.ResetState();
+        _hero.SetPosition(position, relative);
+        return _hero;
     }
 }

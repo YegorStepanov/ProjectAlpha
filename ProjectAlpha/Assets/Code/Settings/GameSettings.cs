@@ -18,6 +18,7 @@ public sealed class GameSettings : ScriptableObject //rename
     [SerializeField] private StickSpawner.Settings _stickSpawner;
     [SerializeField] private PlatformSpawner.Settings _platformSpawner;
     [SerializeField] private GameWorld.Settings _gameWorld;
+    [SerializeField] private GameStateMachine.Settings _gameStateMachine;
     [SerializeField] private AdsSettings _androidAdsProvider;
     [SerializeField] private AdsSettings _iosAdsProvider;
 
@@ -31,6 +32,7 @@ public sealed class GameSettings : ScriptableObject //rename
         builder.RegisterInstance(_stickSpawner);
         builder.RegisterInstance(_platformSpawner);
         builder.RegisterInstance(_gameWorld);
+        builder.RegisterInstance(_gameStateMachine);
 
         if (PlatformInfo.IsApple)
             builder.RegisterInstance(_iosAdsProvider);

@@ -23,4 +23,11 @@ public sealed class GameStateMachine : IStateMachine
 
     private TState GetState<TState>() where TState : class, IExitState =>
         _states[typeof(TState)] as TState;
+
+    [System.Serializable]
+    public class Settings
+    {
+        public float DelayBeforeCameraMovement = 0.1f;
+        public float DelayBeforeEndGame = 0.3f;
+    }
 }

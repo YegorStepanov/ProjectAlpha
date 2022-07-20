@@ -8,7 +8,7 @@ namespace Code.Services;
 
 public sealed class GameEvents
 {
-    public GameStartedTrigger GameStarted { get; private set; }
+    public GameStartedTrigger GameStart { get; private set; }
 
     public GameEvents()
     {
@@ -21,7 +21,7 @@ public sealed class GameEvents
             ? UniTaskAsyncEnumerable.EveryUpdate()
             : ThrowExceptionEnumerable();
 
-        GameStarted = new GameStartedTrigger(enumerable);
+        GameStart = new GameStartedTrigger(enumerable);
     }
 
     private static IUniTaskAsyncEnumerable<AsyncUnit> ThrowExceptionEnumerable()

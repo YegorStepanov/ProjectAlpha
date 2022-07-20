@@ -25,7 +25,7 @@ public sealed class Ads : IDisposable
         _interstitialAd = interstitialAd;
         _rewardedAd = rewardedAd;
         _playerProgress = playerProgress;
-        Initialize(token.Token);
+        Initialize(token);
     }
 
     private void Initialize(CancellationToken token) =>

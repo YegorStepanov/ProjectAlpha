@@ -7,11 +7,7 @@ namespace Code.States;
 
 public sealed class StickControlState : IState<StickControlState.Arguments>
 {
-    public readonly record struct Arguments(
-        IPlatform CurrentPlatform,
-        IPlatform NextPlatform,
-        IHero Hero,
-        ICherry Cherry);
+    public readonly record struct Arguments(IPlatform CurrentPlatform, IPlatform NextPlatform, IHero Hero, ICherry Cherry);
 
     private readonly StickSpawner _stickSpawner;
     private readonly IInputManager _inputManager;
@@ -26,28 +22,46 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
 
     public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
     {
-        IStick stick = await _stickSpawner.CreateAsync(args.CurrentPlatform.Borders.RightTop);
+        (IPlatform currentPlatform, IPlatform nextPlatform, IHero hero, ICherry cherry) = args;
 
-        await _inputManager.WaitClick();
-        await IncreaseStick(stick, args.Hero);
-
-        await args.Hero.KickAsync();
+        IStick stick = await CreateStick(currentPlatform);
+        await IncreaseStick(stick, hero);
+        await hero.KickAsync();
         await stick.RotateAsync();
+        HandleRedPointHit(stick, nextPlatform);
 
-        if (stick.IsStickArrowOn(args.NextPlatform.RedPoint))
-            _gameMediator.OnRedPointHit(args.NextPlatform.RedPoint.Borders.Center); //rename parameter name
+        if (stick.IsStickArrowOn(nextPlatform))
+        {
+            stateMachine.Enter<MoveHeroToPlatformState, MoveHeroToPlatformState.Arguments>(
+                new(currentPlatform, nextPlatform, hero, stick, cherry));
+        }
+        else
+        {
+            stateMachine.Enter<MoveHeroToGameOverState, MoveHeroToGameOverState.Arguments>(
+                new(currentPlatform, nextPlatform, hero, stick, cherry));
+        }
+    }
 
-        stateMachine.Enter<MoveHeroToNextPlatformState, MoveHeroToNextPlatformState.Arguments>(
-            new(args.CurrentPlatform, args.NextPlatform, stick, args.Hero, args.Cherry));
+    private UniTask<IStick> CreateStick(IPlatform platform)
+    {
+        return _stickSpawner.CreateAsync(platform.Borders.RightTop);
     }
 
     private async UniTask IncreaseStick(IStick stick, IHero hero)
     {
-        var cts = new CancellationTokenSource();
-        hero.SquatAsync(cts.Token).Forget();
-        stick.StartIncreasingAsync(cts.Token).Forget();
+        await _inputManager.WaitClick();
 
-        await _inputManager.WaitRelease();
+        CancellationTokenSource cts = new();
+        hero.Squatting(cts.Token);
+        stick.Increasing(cts.Token);
+
+        await _inputManager.WaitClickRelease();
         cts.Cancel();
+    }
+
+    private void HandleRedPointHit(IStick stick, IPlatform platform)
+    {
+        if (stick.IsStickArrowOn(platform.RedPoint))
+            _gameMediator.OnRedPointHit(platform.RedPoint.Borders.Center);
     }
 }

@@ -8,17 +8,15 @@ public class GameProgress
 
     public int Score { get; private set; }
 
-    public GameProgress() =>
-        Initialize();
-
-    private void Initialize()
-    {
-        Score = -1;
-    }
-
     public void IncreaseScore()
     {
         Score++;
         ScoreChanged?.Invoke(Score);
+    }
+
+    public void ResetScore()
+    {
+        Score = -1;
+        //ScoreChanged?.Invoke(Score); //todo
     }
 }

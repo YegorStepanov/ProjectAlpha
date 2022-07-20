@@ -7,6 +7,6 @@ public interface IInputManager
 {
     UniTask WaitClick();
     UniTask WaitClick(CancellationToken token);
-    UniTask WaitRelease();
+    UniTask WaitClickRelease();
     IUniTaskAsyncEnumerable<AsyncUnit> OnClickAsAsyncEnumerable();
 }

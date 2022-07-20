@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Code.VContainer;
@@ -88,7 +87,7 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
 
     private async UniTask<TValue> Pop()
     {
-        if (IsDefault(_pool[_activeCount]))
+        if (_pool[_activeCount].IsUnityNull())
             _pool[_activeCount] = await CreateAsync();
 
         TValue value = _pool[_activeCount];
@@ -107,7 +106,4 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
 
     private bool IsIndexCorrectForDespawn() =>
         _activeCount > 0 && _activeCount <= _pool.Length;
-
-    private static bool IsDefault(TValue value) =>
-        EqualityComparer<TValue>.Default.Equals(value, default);
 }

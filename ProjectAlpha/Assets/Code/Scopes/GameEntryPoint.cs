@@ -12,5 +12,5 @@ public sealed class GameEntryPoint : IStartable
         _gameStateMachine = gameStateMachine;
 
     public void Start() =>
-        _gameStateMachine.Enter<BootstrapState>();
+        _gameStateMachine.Enter<StartState>();
 }

@@ -11,7 +11,7 @@ public class GameSceneLoader
     public GameSceneLoader(ISceneLoader sceneLoader, ScopeCancellationToken token)
     {
         _sceneLoader = sceneLoader;
-        _token = token.Token;
+        _token = token;
     }
 
     public void LoadMenu()

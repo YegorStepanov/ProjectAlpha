@@ -5,12 +5,10 @@ namespace Code.Services;
 
 public interface IHero : IEntity
 {
-    float HandOffset { get; } //todo: OffsetToItem/Stick?
     bool IsFlipped { get; }
     UniTask MoveAsync(float destinationX, CancellationToken token);
-    UniTask MoveAsync(float destinationX);
-    UniTask FallAsync();
+    UniTask FallAsync(float destinationY);
     UniTask KickAsync();
-    UniTask SquatAsync(CancellationToken token);
+    void Squatting(CancellationToken token);
     void Flip();
 }

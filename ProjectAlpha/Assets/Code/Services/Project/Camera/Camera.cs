@@ -30,15 +30,11 @@ public sealed class Camera : MonoBehaviour, IEntity
         _backgroundChanger = new BackgroundChanger(loader, randomizer, _backgroundImage);
     }
 
-    private void Awake()
-    {
+    private void Awake() =>
         _initialPosition = transform.position;
-    }
 
-    public void RestoreInitialPosition()
-    {
+    public void RestorePositionToInitial() =>
         transform.position = _initialPosition;
-    }
 
     public UniTask ChangeBackgroundAsync() =>
         _backgroundChanger.ChangeToRandomBackgroundAsync();

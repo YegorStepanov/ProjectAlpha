@@ -6,6 +6,7 @@ namespace Code.Services;
 public interface IStick : IEntity
 {
     bool IsStickArrowOn(IEntity entity);
-    UniTask StartIncreasingAsync(CancellationToken token);
+    void Increasing(CancellationToken token);
     UniTask RotateAsync();
+    UniTask RotateDownAsync();
 }

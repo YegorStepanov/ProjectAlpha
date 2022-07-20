@@ -115,13 +115,12 @@ public sealed class GameScope : Scope
 
     private static void RegisterGameStateMachine(IContainerBuilder builder)
     {
-        builder.Register<IExitState, BootstrapState>(Lifetime.Transient);
-        builder.Register<IExitState, HeroMovementToPlatformState>(Lifetime.Transient);
-        builder.Register<IExitState, GameStartState>(Lifetime.Transient);
+        builder.Register<IExitState, StartState>(Lifetime.Transient);
+        builder.Register<IExitState, MoveHeroToPlatformState>(Lifetime.Transient);
+        builder.Register<IExitState, NextRoundState>(Lifetime.Transient);
         builder.Register<IExitState, StickControlState>(Lifetime.Transient);
-        builder.Register<IExitState, MoveHeroToNextPlatformState>(Lifetime.Transient);
         builder.Register<IExitState, RestartState>(Lifetime.Transient);
-        builder.Register<IExitState, HeroMovementToGameOverState>(Lifetime.Transient);
+        builder.Register<IExitState, MoveHeroToGameOverState>(Lifetime.Transient);
 
         builder.Register<GameStateMachine>(Lifetime.Singleton);
     }

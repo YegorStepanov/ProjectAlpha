@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
 
@@ -29,18 +30,24 @@ public sealed class Stick : SpriteEntity, IStick
     public bool IsStickArrowOn(IEntity entity) =>
         entity.Borders.Inside(_arrow.position);
 
-    public UniTask StartIncreasingAsync(CancellationToken token) =>
-        _animations.StartIncreasing(transform, _settings.IncreaseSpeed, token);
+    public void Increasing(CancellationToken token) =>
+        _animations.Increasing(transform, _settings.IncreaseSpeed, token);
 
     public UniTask RotateAsync() =>
         _animations.Rotate(transform, _settings.EndRotation, _settings.RotationTime, _settings.RotationDelay, DestroyToken);
+
+    public UniTask RotateDownAsync() =>
+        _animations.Rotate(transform, _settings.EndDownRotation, _settings.RotationTime, 0f, DestroyToken);
 
     [System.Serializable]
     public class Settings
     {
         public float IncreaseSpeed = 25f;
-        public Vector3 EndRotation = new(0, 0, -90);
         public float RotationTime = 0.4f;
         public float RotationDelay = 0.3f;
+        [ReadOnly]
+        public Vector3 EndRotation = new(0, 0, -90);
+        [ReadOnly]
+        public Vector3 EndDownRotation = new(0, 0, -180);
     }
 }
