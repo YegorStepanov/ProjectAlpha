@@ -20,14 +20,14 @@ public sealed class RootScope : Scope
         var loadGameSettings = loader.LoadAssetAsync(RootAddress.Settings);
         var loadEventSystem = loader.InstantiateAsync(RootAddress.EventSystem, inject: false);
 
-        LoadDevelopmentAssets(loader);
         (_camera, _settingsFacade, _) = await (loadCamera, loadGameSettings, loadEventSystem);
+        LoadDevelopmentAssets(loader, _settingsFacade);
     }
 
-    private static void LoadDevelopmentAssets(IAddressablesLoader loader)
+    private static void LoadDevelopmentAssets(IAddressablesLoader loader, SettingsFacade settings)
     {
-        if (!PlatformInfo.IsDevelopment) return;
-        loader.InstantiateAsync(DebugAddress.Graphy, inject: false).Forget();
+        if (PlatformInfo.IsDevelopment && settings.Development.GraphyInDebug)
+            loader.InstantiateAsync(DebugAddress.Graphy, inject: false).Forget();
     }
 
     protected override void Configure(IContainerBuilder builder)

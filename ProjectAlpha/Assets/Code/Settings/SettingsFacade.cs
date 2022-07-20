@@ -23,6 +23,9 @@ public sealed class SettingsFacade : ScriptableObject
     [SerializeField] private GameStateMachine.Settings _gameStateMachine;
     [SerializeField] private AdsSettings _androidAdsProvider;
     [SerializeField] private AdsSettings _iosAdsProvider;
+    [SerializeField] private DevelopmentSettings _developmentSettings;
+
+    public DevelopmentSettings Development => _developmentSettings;
 
     public void RegisterSettings(IContainerBuilder builder)
     {
