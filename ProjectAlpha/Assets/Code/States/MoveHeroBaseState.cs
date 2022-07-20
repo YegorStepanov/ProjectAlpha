@@ -54,11 +54,9 @@ public abstract class MoveHeroBaseState
         await hero.MoveAsync(destinationX, token);
     }
 
-    protected async UniTask EndGame(IHero hero, [CanBeNull] IStick stick)
+    protected async UniTask EndGame(IHero hero, IStick stick)
     {
-        if (stick != null)
-            stick.RotateDownAsync().Forget();
-
+        stick.RotateDownAsync().Forget();
         await hero.FallAsync(_camera.Borders.Bot - hero.Borders.Height);
         await UniTask.Delay(TimeSpan.FromSeconds(_settings.DelayBeforeEndGame), cancellationToken: _token);
 

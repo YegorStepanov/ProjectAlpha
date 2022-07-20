@@ -34,7 +34,7 @@ public sealed class RestartState : IState
         IHero hero = CreateHero(platform);
 
         stateMachine.Enter<MoveHeroToPlatformState, MoveHeroToPlatformState.Arguments>(
-            new(platform, platform, hero, null, new CherryNull())); //todo, reuse nullcherry
+            new(platform, platform, hero, new StickNull(), new CherryNull())); //todo, reuse nullcherry
     }
 
     private async UniTask ChangeBackground()
