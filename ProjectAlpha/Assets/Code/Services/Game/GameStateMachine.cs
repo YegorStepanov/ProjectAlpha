@@ -27,7 +27,8 @@ public sealed class GameStateMachine : IStateMachine
     [System.Serializable]
     public class Settings
     {
-        public float DelayBeforeCameraMovement = 0.1f;
+        public float DelayBeforeNextState = 0.1f;
         public float DelayBeforeEndGame = 0.3f;
+        public float DelayBeforeHeroMovement = 0.2f;
     }
 }

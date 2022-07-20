@@ -70,7 +70,7 @@ public sealed class NextRoundState : IState<NextRoundState.Arguments>
 
     private UniTask Delay()
     {
-        return UniTask.Delay(TimeSpan.FromSeconds(_settings.DelayBeforeCameraMovement));
+        return UniTask.Delay(TimeSpan.FromSeconds(_settings.DelayBeforeNextState));
     }
 
     private async UniTask MoveCamera(Borders nextCameraBorders, IPlatform nextPlatform, ICherry cherry, IPlatform currentPlatform)

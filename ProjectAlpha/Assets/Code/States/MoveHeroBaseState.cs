@@ -48,7 +48,8 @@ public abstract class MoveHeroBaseState
 
     protected async UniTask HeroMoving(float destinationX, IHero hero, CancellationToken token)
     {
-        await UniTask.Delay(200, cancellationToken: token); //move it to another place
+        await UniTask.Delay(TimeSpan.FromSeconds(_settings.DelayBeforeHeroMovement));
+
         _camera.MoveBackgroundAsync(token).Forget();
         await hero.MoveAsync(destinationX, token);
     }
@@ -57,7 +58,7 @@ public abstract class MoveHeroBaseState
     {
         stick.RotateDownAsync().Forget();
         await hero.FallAsync(_camera.Borders.Bot - hero.Borders.Height);
-        await UniTask.Delay(TimeSpan.FromSeconds(_settings.DelayBeforeEndGame), cancellationToken: _token);
+        await UniTask.Delay(TimeSpan.FromSeconds(_settings.DelayBeforeEndGame));
         await _camera.Punch(_token);
 
         _gameMediator.GameOver();
