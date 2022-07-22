@@ -55,8 +55,6 @@ public sealed class GameScope : Scope
         RegisterUI(builder);
         RegisterGameStateMachine(builder);
 
-        builder.Register<GameProgress>(Lifetime.Singleton);
-
         builder.RegisterEntryPoint<GameEntryPoint>();
 
         builder.RegisterBuildCallback(resolver =>

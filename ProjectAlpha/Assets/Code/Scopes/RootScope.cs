@@ -46,6 +46,12 @@ public sealed class RootScope : Scope
         RegisterIAP(builder);
 
         builder.Register<PlayerProgress>(Lifetime.Singleton);
+        builder.Register<GameProgress>(Lifetime.Singleton);
+
+        builder.RegisterBuildCallback(resolver =>
+        {
+            _ = resolver.Resolve<AdsManager>();
+        });
     }
 
     private void RegisterSettings(IContainerBuilder builder)
@@ -78,15 +84,15 @@ public sealed class RootScope : Scope
 
     private static void RegisterAds(IContainerBuilder builder)
     {
-        builder.Register<IAdBannerShow, AdBannerShow>(Lifetime.Transient);
         builder.Register<BannerAd>(Lifetime.Transient).AsImplementedInterfaces().AsSelf();
 
-        builder.Register<IAdShow, AdShow>(Lifetime.Transient);
         builder.Register<InterstitialAd>(Lifetime.Transient);
         builder.Register<RewardedAd>(Lifetime.Transient);
 
-        builder.Register<IAdInitializer, AdInitializer>(Lifetime.Transient);
+        builder.Register<AdInitializer>(Lifetime.Transient);
         builder.Register<Ads>(Lifetime.Singleton);
+
+        builder.Register<AdsManager>(Lifetime.Singleton);
     }
 
     private static void RegisterIAP(IContainerBuilder builder)

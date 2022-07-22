@@ -17,20 +17,20 @@ public sealed class GameUIController : IStartable, IDisposable
         _playerProgress = playerProgress;
 
         _gameProgress.ScoreChanged += OnScoreChanged;
-        _playerProgress.CherryCountChanged += OnCherryCountChanged;
+        _playerProgress.CherriesChanged += OnCherriesChanged;
     }
 
     public void Dispose()
     {
         _gameProgress.ScoreChanged -= OnScoreChanged;
-        _playerProgress.CherryCountChanged -= OnCherryCountChanged;
+        _playerProgress.CherriesChanged -= OnCherriesChanged;
     }
 
     void IStartable.Start()
     {
         _gameUI.ShowHelp();
         _gameUI.UpdateScore(_gameProgress.Score);
-        _gameUI.UpdateCherryCount(_playerProgress.CherryCount);
+        _gameUI.UpdateCherries(_playerProgress.Cherries);
     }
 
     private void OnScoreChanged(int score)
@@ -41,9 +41,9 @@ public sealed class GameUIController : IStartable, IDisposable
             _gameUI.HideHelp();
     }
 
-    private void OnCherryCountChanged(int cherryCount)
+    private void OnCherriesChanged(int cherries)
     {
-        _gameUI.UpdateCherryCount(cherryCount);
+        _gameUI.UpdateCherries(cherries);
     }
 
     public void OnRedPointHit(Vector2 notificationPosition)
@@ -54,6 +54,7 @@ public sealed class GameUIController : IStartable, IDisposable
 
     public void ShowGameOver()
     {
+        _gameProgress.IncreaseRestartNumber();
         _gameUI.ShowGameOver();
     }
 

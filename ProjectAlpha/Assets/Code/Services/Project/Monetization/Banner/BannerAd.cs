@@ -1,42 +1,58 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Code.Infrastructure;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Advertisements;
 
 namespace Code.Services.Monetization;
 
-//after move to menu -> show ads 50%, can be disabled
-//bot of cress ads, can be disabled
-//get 5 cherry -> ads
-
-public class BannerAd
+public class BannerAd : IDisposable
 {
-    private readonly string _adUnitAd;
-    private readonly IAdBannerShow _show;
+    private const BannerPosition Position = BannerPosition.BOTTOM_CENTER;
 
-    public BannerAd(IAdBannerShow show, AdsSettings settings)
+    private readonly string _adUnitAd;
+    private readonly BannerOptions _bannerOptions;
+
+    public bool IsShowing { get; private set; }
+
+    public BannerAd(Ads.Settings settings)
     {
         _adUnitAd = settings.BannerId;
-        _show = show;
+
+        _bannerOptions = new BannerOptions
+        {
+            showCallback = () => IsShowing = true,
+            hideCallback = () => IsShowing = false,
+        };
     }
 
     public void Dispose() =>
-        Destroy();
+        DestroyBanner();
 
-    public UniTask ShowAsync(CancellationToken token) =>
-        _show.ShowAsync(_adUnitAd, token);
+    public UniTask ShowAsync(CancellationToken token)
+    {
+        if (IsShowing || token.IsCancellationRequested)
+            return UniTask.CompletedTask;
+
+        Advertisement.Banner.SetPosition(Position);
+        Advertisement.Banner.Show(_adUnitAd, _bannerOptions);
+
+        return WaitForShowingAsync(token);
+    }
 
     public UniTask HideAsync(CancellationToken token)
     {
-        if (token.IsCancellationRequested)
+        if (!IsShowing || token.IsCancellationRequested)
             return UniTask.CompletedTask;
 
         Advertisement.Banner.Hide();
-        return WaitForHidingAsync();
+        return WaitForHidingAsync(token);
     }
 
-    public void Destroy()
+    private void DestroyBanner()
     {
+        if (!IsShowing) return;
+
         //it's a bug or Hide(true) does nothing in editor
         if (PlatformInfo.IsEditor)
             Advertisement.Banner.Hide();
@@ -44,9 +60,15 @@ public class BannerAd
         Advertisement.Banner.Hide(true);
     }
 
-    private async UniTask WaitForHidingAsync()
+    private async UniTask WaitForShowingAsync(CancellationToken token)
     {
-        while (_show.IsShowing)
-            await UniTask.Yield();
+        while (!IsShowing && !token.IsCancellationRequested)
+            await UniTask.Yield(token);
+    }
+
+    private async UniTask WaitForHidingAsync(CancellationToken token)
+    {
+        while (IsShowing && !token.IsCancellationRequested)
+            await UniTask.Yield(token);
     }
 }

@@ -18,13 +18,13 @@ public class PurchasingManager : IPurchasingManager
     {
         if (product.definition.payout.type == PayoutType.Currency)
         {
-            int cherryCount = (int)product.definition.payout.quantity;
-            _playerProgress.AddCherryCount(cherryCount);
+            int cherries = (int)product.definition.payout.quantity;
+            _playerProgress.AddCherries(cherries);
         }
 
         if (product.definition.payout.data == NoAdsData)
         {
-            _playerProgress.SetNoAds();
+            _playerProgress.DisableAds();
         }
     }
 

@@ -1,70 +1,94 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Advertisements;
 
 namespace Code.Services.Monetization;
 
 public sealed class Ads : IDisposable
 {
-    private readonly IAdInitializer _adInitializer;
+    private readonly AdInitializer _adInitializer;
     private readonly BannerAd _bannerAd;
     private readonly InterstitialAd _interstitialAd;
     private readonly RewardedAd _rewardedAd;
-    private readonly PlayerProgress _playerProgress;
 
-    public Ads(
-        IAdInitializer adInitializer,
-        BannerAd bannerAd,
-        InterstitialAd interstitialAd,
-        RewardedAd rewardedAd,
-        PlayerProgress playerProgress,
-        ScopeToken token)
+    public Ads(AdInitializer adInitializer, BannerAd bannerAd, InterstitialAd interstitialAd, RewardedAd rewardedAd)
     {
         _adInitializer = adInitializer;
         _bannerAd = bannerAd;
         _interstitialAd = interstitialAd;
         _rewardedAd = rewardedAd;
-        _playerProgress = playerProgress;
-        Initialize(token);
     }
 
-    private void Initialize(CancellationToken token) =>
-        _adInitializer.InitializeAsync(token);
+    public void Dispose()
+    {
+        _bannerAd.Dispose();
+    }
+
+    private async UniTask InitializeAsync(CancellationToken token)
+    {
+        if (!_adInitializer.IsInitialized)
+            await _adInitializer.InitializeAsync(token);
+    }
 
     public async UniTask ShowBannerAsync(CancellationToken token)
     {
-        if (_playerProgress.IsNoAds) return;
-        await _adInitializer.InitializeAsync(token);
+        await InitializeAsync(token);
         await _bannerAd.ShowAsync(token);
     }
 
     public async UniTask ShowInterstitialAsync(CancellationToken token)
     {
-        if (_playerProgress.IsNoAds) return;
-        await _adInitializer.InitializeAsync(token);
-        await ShowFullScreenAdAsync(_interstitialAd, token);
+        await InitializeAsync(token);
+        await ShowFullScreenAd(_interstitialAd, token);
     }
 
-    public async UniTask ShowRewardedAsync(CancellationToken token)
+    public async UniTask<AdsShowResult> ShowRewardedAsync(CancellationToken token)
     {
-        await _adInitializer.InitializeAsync(token);
-        await ShowFullScreenAdAsync(_rewardedAd, token);
+        await InitializeAsync(token);
+        return await ShowFullScreenAd(_rewardedAd, token);
     }
 
     public async UniTask HideBannerAsync(CancellationToken token)
     {
-        await _adInitializer.InitializeAsync(token);
-        await _bannerAd.ShowAsync(token);
-    }
-
-    private async UniTask ShowFullScreenAdAsync(Ad ad, CancellationToken token)
-    {
-        if (token.IsCancellationRequested) return;
+        await InitializeAsync(token);
         await _bannerAd.HideAsync(token);
-        await ad.ShowAsync(token);
-        await _bannerAd.ShowAsync(token);
     }
 
-    public void Dispose() =>
-        _bannerAd.Destroy();
+    private async UniTask<AdsShowResult> ShowFullScreenAd(FullScreenAd fullScreenAd, CancellationToken token)
+    {
+        bool isBannerActive = _bannerAd.IsShowing;
+        if (isBannerActive) await HideBannerAsync(token);
+
+        AdsShowResult result = await fullScreenAd.ShowAsync(token);
+
+        if (isBannerActive) await ShowBannerAsync(token);
+
+        return result;
+    }
+
+#if UNITY_EDITOR
+    // ads package not working when domain reloading is disabled
+    // https://forum.unity.com/threads/unity-ads-bug-missing-reference-error-and-no-ads-shows-up-after-reopening-the-game.1101634/
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void FixUnityAds()
+    {
+        Type type = typeof(Advertisement);
+        FieldInfo sPlatform = type.GetField("s_Platform", BindingFlags.Static | BindingFlags.NonPublic);
+        sPlatform!.SetValue(null, null);
+
+        type.TypeInitializer.Invoke(null, null);
+    }
+#endif
+
+    [System.Serializable]
+    public class Settings
+    {
+        public string GameId;
+        public string InterstitialId = "Interstitial_Android";
+        public string RewardedId = "Rewarded_Android";
+        public string BannerId = "Banner_Android";
+    }
 }

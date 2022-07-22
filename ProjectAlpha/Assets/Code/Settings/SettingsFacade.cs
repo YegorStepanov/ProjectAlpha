@@ -21,8 +21,9 @@ public sealed class SettingsFacade : ScriptableObject
     [SerializeField] private PlatformSpawner.Settings _platformSpawner;
     [SerializeField] private GameWorld.Settings _gameWorld;
     [SerializeField] private GameStateMachine.Settings _gameStateMachine;
-    [SerializeField] private AdsSettings _androidAdsProvider;
-    [SerializeField] private AdsSettings _iosAdsProvider;
+    [SerializeField] private AdsManager.Settings _adsManager;
+    [SerializeField] private Ads.Settings _androidAdsProvider;
+    [SerializeField] private Ads.Settings _iosAdsProvider;
     [SerializeField] private DevelopmentSettings _developmentSettings;
 
     public DevelopmentSettings Development => _developmentSettings;
@@ -39,6 +40,7 @@ public sealed class SettingsFacade : ScriptableObject
         builder.RegisterInstance(_platformSpawner);
         builder.RegisterInstance(_gameWorld);
         builder.RegisterInstance(_gameStateMachine);
+        builder.RegisterInstance(_adsManager);
 
         if (PlatformInfo.IsApple)
             builder.RegisterInstance(_iosAdsProvider);

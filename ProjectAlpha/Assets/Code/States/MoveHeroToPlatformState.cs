@@ -46,7 +46,7 @@ public sealed class MoveHeroToPlatformState : MoveHeroBaseState, IState<MoveHero
             return;
         }
 
-        UpdateCherryCount(collecting);
+        UpdateCherries(collecting);
         _gameMediator.IncreaseScore();
 
         stateMachine.Enter<NextRoundState, NextRoundState.Arguments>(

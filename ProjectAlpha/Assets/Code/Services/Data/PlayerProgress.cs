@@ -5,52 +5,59 @@ namespace Code.Services;
 
 public class PlayerProgress
 {
-    private const string CherryCountKey = "CherryCount";
-    private const string IsNoAdsKey = "IsNoAds";
+    private const string CherriesKey = "Cherries";
+    private const string AdsEnabledKey = "AdsEnabled";
 
-    public event Action<int> CherryCountChanged;
-    public event Action<bool> IsNoAdsChanged;
+    public event Action<int> CherriesChanged;
+    public event Action<bool> AdsEnabledChanged;
 
-    public int CherryCount { get; private set; }
-    public bool IsNoAds { get; private set; }
+    public int Cherries { get; private set; }
+    public bool AdsEnabled { get; private set; }
 
     public PlayerProgress() =>
         Initialize();
 
     private void Initialize()
     {
-        CherryCount = LoadCherryCount();
-        IsNoAds = LoadIsNoAds();
+        Cherries = LoadCherries();
+        AdsEnabled = LoadAdsEnabled();
     }
 
-    public void IncreaseCherryCount()
+    public void AddCherry()
     {
-        AddCherryCount(1);
+        AddCherries(1);
     }
 
-    public void AddCherryCount(int count)
+    public void AddCherries(int count)
     {
-        CherryCount += count;
-        SaveCherryCount(CherryCount);
-        CherryCountChanged?.Invoke(CherryCount);
+        Cherries += count;
+        SaveCherries(Cherries);
+        CherriesChanged?.Invoke(Cherries);
     }
 
-    public void SetNoAds()
+    public void EnableAds()
     {
-        IsNoAds = true;
-        SaveIsNoAds(IsNoAds);
-        IsNoAdsChanged?.Invoke(IsNoAds);
+        AdsEnabled = true;
+        SaveAdsEnabled(AdsEnabled);
+        AdsEnabledChanged?.Invoke(AdsEnabled);
     }
 
-    private static int LoadCherryCount() =>
-        PlayerPrefs.GetInt(CherryCountKey, 0);
+    public void DisableAds()
+    {
+        AdsEnabled = false;
+        SaveAdsEnabled(AdsEnabled);
+        AdsEnabledChanged?.Invoke(AdsEnabled);
+    }
 
-    private static void SaveCherryCount(int value) =>
-        PlayerPrefs.SetInt(CherryCountKey, value);
+    private static int LoadCherries() =>
+        PlayerPrefs.GetInt(CherriesKey, 0);
 
-    private static bool LoadIsNoAds() =>
-        PlayerPrefs.GetInt(IsNoAdsKey, 0) != 0;
+    private static void SaveCherries(int value) =>
+        PlayerPrefs.SetInt(CherriesKey, value);
 
-    private static void SaveIsNoAds(bool value) =>
-        PlayerPrefs.SetInt(IsNoAdsKey, value ? 1 : 0);
+    private static bool LoadAdsEnabled() =>
+        PlayerPrefs.GetInt(AdsEnabledKey, 0) == 0;
+
+    private static void SaveAdsEnabled(bool value) =>
+        PlayerPrefs.SetInt(AdsEnabledKey, value ? 0 : 1);
 }

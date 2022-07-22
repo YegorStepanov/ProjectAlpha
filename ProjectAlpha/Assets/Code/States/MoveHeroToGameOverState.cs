@@ -28,7 +28,7 @@ public sealed class MoveHeroToGameOverState : MoveHeroBaseState, IState<MoveHero
         UniTask collecting = CollectingCherry(args.Hero, args.Cherry, linkedToken);
         await HeroMoving(args, linkedToken);
         cts.Cancel();
-        UpdateCherryCount(collecting);
+        UpdateCherries(collecting);
         //GameOverState
         await EndGame(args.Hero, args.Stick);
     }

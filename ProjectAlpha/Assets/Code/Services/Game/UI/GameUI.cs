@@ -11,7 +11,7 @@ namespace Code.Services.Game.UI;
 public sealed class GameUI : MonoBehaviour //IDisposable
 {
     [SerializeField] private ChangeScoreAnimation _changeScoreAnimation;
-    [SerializeField] private ChangeCherryCountAnimation _changeCherryCountAnimation;
+    [SerializeField] private ChangeCherriesAnimation _changeCherriesAnimation;
     [SerializeField] private ShowStartHelpAnimation _showStartHelpAnimation;
     [SerializeField] private RedPointHitAnimation _redPointHitAnimation;
     [SerializeField] private Canvas _gameOverCanvas;
@@ -37,9 +37,9 @@ public sealed class GameUI : MonoBehaviour //IDisposable
         _changeScoreAnimation.Play(score, animate: score != 0);
     }
 
-    public void UpdateCherryCount(int cherryCount)
+    public void UpdateCherries(int cherries)
     {
-        _changeCherryCountAnimation.Play(cherryCount);
+        _changeCherriesAnimation.Play(cherries);
     }
 
     public void OnRedPointHit(Vector2 notificationPosition)

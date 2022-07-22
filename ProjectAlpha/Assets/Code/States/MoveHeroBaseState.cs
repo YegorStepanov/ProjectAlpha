@@ -64,10 +64,10 @@ public abstract class MoveHeroBaseState
         _gameMediator.GameOver();
     }
 
-    protected void UpdateCherryCount(UniTask collectTask)
+    protected void UpdateCherries(UniTask collectTask)
     {
         bool isCherryCollected = collectTask.Status == UniTaskStatus.Succeeded;
         if (isCherryCollected)
-            _gameMediator.IncreaseCherryCount();
+            _gameMediator.AddCherry();
     }
 }

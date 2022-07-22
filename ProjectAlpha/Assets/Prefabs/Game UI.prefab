@@ -3327,7 +3327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _changeScoreAnimation: {fileID: 2509292982854048036}
-  _changeCherryCountAnimation: {fileID: 8918922966082015808}
+  _changeCherriesAnimation: {fileID: 8918922966082015808}
   _showStartHelpAnimation: {fileID: 5793693781013400221}
   _redPointHitAnimation: {fileID: 7076933975625103776}
   _gameOverCanvas: {fileID: 7462775058340480753}
