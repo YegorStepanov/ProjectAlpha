@@ -15,11 +15,13 @@ public sealed class MenuMediator : MonoBehaviour
     private ISceneLoader _sceneLoader;
     private IPurchasingManager _purchasingManager;
     private PlayerProgress _playerProgress;
+    private AdsManager _adsManager;
     private CancellationToken _token;
 
     [Inject, UsedImplicitly]
-    public void Construct(MainMenu mainMenu, PanelManager panelManager, ISceneLoader sceneLoader, IPurchasingManager purchasingManager, PlayerProgress playerProgress, CancellationToken token)
+    public void Construct(MainMenu mainMenu, PanelManager panelManager, ISceneLoader sceneLoader, IPurchasingManager purchasingManager, PlayerProgress playerProgress, AdsManager adsManager, CancellationToken token)
     {
+        _adsManager = adsManager;
         _mainMenu = mainMenu;
         _panelManager = panelManager;
         _sceneLoader = sceneLoader;
@@ -35,6 +37,7 @@ public sealed class MenuMediator : MonoBehaviour
     [Button] public void ToggleSound() => _mainMenu.ToggleSound();
     [Button] public void EnableAds() => _playerProgress.EnableAds();
     [Button] public void DisableAds() => _playerProgress.DisableAds();
+    [Button] public void WatchRewardedAd() => _adsManager.WatchRewardedAd();
 
     public void PurchaseComplete(Product product) =>
         _purchasingManager.PurchaseComplete(product);

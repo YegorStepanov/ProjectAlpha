@@ -65,6 +65,10 @@ MonoBehaviour:
     m_Key: Game UI/Game UI/Game Over Canvas/CloseArea/Share Button/Share Button Text
     m_Metadata:
       m_Items: []
+  - m_Id: 14211080572039168
+    m_Key: Orange Button/Canvas (Environment)/Orange Button/Text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

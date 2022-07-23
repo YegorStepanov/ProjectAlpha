@@ -41,7 +41,12 @@ public sealed class AdsManager : IDisposable
         _gameProgress.RestartNumberChanged -= _restartNumberChanged;
     }
 
-    public async UniTaskVoid WatchRewardedAd(int restartNumber)
+    public void WatchRewardedAd()
+    {
+        WatchRewardedAdImpl().Forget();
+    }
+
+    private async UniTaskVoid WatchRewardedAdImpl()
     {
         AdsShowResult result = await _ads.ShowRewardedAsync(_token);
         if (result == AdsShowResult.Completed)

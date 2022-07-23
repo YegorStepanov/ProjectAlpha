@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1200d8c47f8945258beb05f68d1ea192, type: 3}
   m_Name: Game Settings
   m_EditorClassIdentifier: 
+  _camera:
+    PunchingStrength: {x: 0, y: 0.1, z: 0}
+    PunchingDuration: 0.3
+    PunchingVibrato: 20
+    PunchingElasticity: 0
   _hero:
     HandOffset: 0.05
     MovementSpeed: 4
     FallingSpeed: 30
-    FallingDestination: -10
+    FallingDelay: 0.1
+    SquatSpeed: 0.8
+    SquatOffset: 0.1
   _platform:
     MovementSpeed: 10
     FadeOutRedPointSpeed: 0.3
@@ -26,17 +33,25 @@ MonoBehaviour:
     CherryChance: 0.5
   _stick:
     IncreaseSpeed: 25
-    EndRotation: {x: 0, y: 0, z: -90}
     RotationTime: 0.35
     RotationDelay: 0
+    EndRotation: {x: 0, y: 0, z: -90}
+    EndDownRotation: {x: 0, y: 0, z: -180}
   _stickSpawner:
     StickWidth: 0.04
   _platformSpawner:
     ViewportMenuPlatformPositionX: 0.5
     MenuPlatformWidth: 2
-  _gameData:
-    ViewportMenuHeight: 0.2
-    ViewportGameHeight: 0.3
+  _gameWorld:
+    ViewportMenuPositionY: 0.2
+    ViewportGamePositionY: 0.3
+  _gameStateMachine:
+    DelayBeforeNextState: 0.1
+    DelayBeforeEndGame: 0.3
+    DelayBeforeHeroMovement: 0.2
+  _adsManager:
+    ShowAdsAfterRestartNumber: 3
+    CherriesForWatchingRewardedAds: 5
   _androidAdsProvider:
     GameId: 4791421
     InterstitialId: Interstitial_Android
@@ -44,6 +59,8 @@ MonoBehaviour:
     BannerId: Banner_Android
   _iosAdsProvider:
     GameId: 4791420
-    InterstitialId: Interstitial_Android
-    RewardedId: Rewarded_Android
-    BannerId: Banner_Android
+    InterstitialId: Interstitial_iOS
+    RewardedId: Rewarded_iOS
+    BannerId: Banner_iOS
+  _developmentSettings:
+    GraphyInDebug: 0
