@@ -97,6 +97,6 @@ public sealed class RootScope : Scope
 
     private static void RegisterIAP(IContainerBuilder builder)
     {
-        builder.Register<IPurchasingManager, PurchasingManager>(Lifetime.Singleton);
+        builder.Register<IIAPManager, IAPManager>(Lifetime.Singleton);
     }
 }

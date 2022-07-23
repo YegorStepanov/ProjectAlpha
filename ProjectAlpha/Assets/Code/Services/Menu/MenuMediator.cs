@@ -13,19 +13,19 @@ public sealed class MenuMediator : MonoBehaviour
     private MainMenu _mainMenu;
     private PanelManager _panelManager;
     private ISceneLoader _sceneLoader;
-    private IPurchasingManager _purchasingManager;
+    private IIAPManager _iapManager;
     private PlayerProgress _playerProgress;
     private AdsManager _adsManager;
     private CancellationToken _token;
 
     [Inject, UsedImplicitly]
-    public void Construct(MainMenu mainMenu, PanelManager panelManager, ISceneLoader sceneLoader, IPurchasingManager purchasingManager, PlayerProgress playerProgress, AdsManager adsManager, CancellationToken token)
+    public void Construct(MainMenu mainMenu, PanelManager panelManager, ISceneLoader sceneLoader, IIAPManager iiapManager, PlayerProgress playerProgress, AdsManager adsManager, CancellationToken token)
     {
         _adsManager = adsManager;
         _mainMenu = mainMenu;
         _panelManager = panelManager;
         _sceneLoader = sceneLoader;
-        _purchasingManager = purchasingManager;
+        _iapManager = iiapManager;
         _playerProgress = playerProgress;
         _token = token;
     }
@@ -40,10 +40,10 @@ public sealed class MenuMediator : MonoBehaviour
     [Button] public void WatchRewardedAd() => _adsManager.WatchRewardedAd();
 
     public void PurchaseComplete(Product product) =>
-        _purchasingManager.PurchaseComplete(product);
+        _iapManager.PurchaseComplete(product);
 
     public void PurchaseFailed(Product product, PurchaseFailureReason failureReason) =>
-        _purchasingManager.PurchaseFailed(product, failureReason);
+        _iapManager.PurchaseFailed(product, failureReason);
 
 #if UNITY_EDITOR
     //Odin doesn't recognize generic methods, so resolve them manually

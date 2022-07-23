@@ -25,14 +25,17 @@ public sealed class AdsManager : IDisposable
 
         _adsEnabledChanged = UniTaskHelper.Action<bool>(AdsEnabledChanged);
         _restartNumberChanged = UniTaskHelper.Action<int>(RestartNumberChanged);
+
+        _playerProgress.AdsEnabledChanged += _adsEnabledChanged;
+        _gameProgress.RestartNumberChanged += _restartNumberChanged;
+
         Init();
     }
 
     private void Init()
     {
-        ShowBanner().Forget();
-        _playerProgress.AdsEnabledChanged += _adsEnabledChanged;
-        _gameProgress.RestartNumberChanged += _restartNumberChanged;
+        if (_playerProgress.AdsEnabled)
+            ShowBanner().Forget();
     }
 
     public void Dispose()
