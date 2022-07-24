@@ -5,12 +5,12 @@ namespace Code.Services.Monetization;
 
 public class IAPManager : IIAPManager
 {
-    private readonly PlayerProgress _playerProgress;
+    private readonly IProgress _progress;
     private readonly Settings _settings;
 
-    public IAPManager(PlayerProgress playerProgress, Settings settings)
+    public IAPManager(IProgress progress, Settings settings)
     {
-        _playerProgress = playerProgress;
+        _progress = progress;
         _settings = settings;
     }
 
@@ -19,12 +19,12 @@ public class IAPManager : IIAPManager
         if (product.definition.payout.type == _settings.CherryPayoutType)
         {
             int cherries = (int)product.definition.payout.quantity;
-            _playerProgress.AddCherries(cherries);
+            _progress.Persistant.AddCherries(cherries);
         }
 
         if (product.definition.id == _settings.NoAdsId)
         {
-            _playerProgress.DisableAds();
+            _progress.Persistant.DisableAds();
         }
     }
 

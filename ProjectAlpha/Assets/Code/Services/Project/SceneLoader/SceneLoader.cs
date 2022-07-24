@@ -20,10 +20,17 @@ public sealed class SceneLoader : ISceneLoader
     public static SceneLoader Instance { get; private set; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void Init() =>
+    private static void Init()
+    {
         Instance = new SceneLoader();
+    }
 
     private SceneLoader() { }
+
+    public bool IsLoaded<TScene>() where TScene : struct, IScene
+    {
+        return _scenes.ContainsKey(Address<TScene>());
+    }
 
     public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
     {
@@ -89,7 +96,7 @@ public sealed class SceneLoader : ISceneLoader
         else
         {
             //todo: find a better solution
-            await SceneManager.UnloadSceneAsync(StartupSceneInfo.SceneName); //StartupSceneInfo.SceneName or address.Key
+            await SceneManager.UnloadSceneAsync(StartupInfo.StartupSceneName); //StartupSceneInfo.SceneName or address.Key
         }
     }
 

@@ -21,6 +21,8 @@ public sealed class MenuScope : Scope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
+
         builder.RegisterComponentInNewPrefab(_menu, Lifetime.Singleton);
         builder.RegisterComponentInNewPrefab(_mainMenu, Lifetime.Singleton);
 

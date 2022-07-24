@@ -4,6 +4,7 @@ using VContainer.Unity;
 
 namespace Code.VContainer;
 
+//todo: remove full folder?
 public abstract class BehaviourFactory<TValue> : IFactory<TValue> where TValue : Object
 {
     private readonly ICreator _creator;

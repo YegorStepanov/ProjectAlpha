@@ -8,7 +8,7 @@ public class GameSceneLoader
     private readonly ISceneLoader _sceneLoader;
     private readonly CancellationToken _token;
 
-    public GameSceneLoader(ISceneLoader sceneLoader, ScopeToken token)
+    public GameSceneLoader(ISceneLoader sceneLoader, ScopeCancellationToken token)
     {
         _sceneLoader = sceneLoader;
         _token = token;
@@ -16,9 +16,9 @@ public class GameSceneLoader
 
     public void LoadMenu()
     {
-        Core().Forget();
+        Impl().Forget();
 
-        async UniTaskVoid Core()
+        async UniTaskVoid Impl()
         {
             await _sceneLoader.LoadAsync<BootstrapScene>(_token); //it should be black fade out, not red
             // await _sceneLoader.LoadAsync<MenuScene>(_token);

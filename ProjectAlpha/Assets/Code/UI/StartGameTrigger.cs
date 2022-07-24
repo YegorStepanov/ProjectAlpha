@@ -1,20 +1,16 @@
-﻿using Code.Services;
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-using Cysharp.Threading.Tasks.Triggers;
-using JetBrains.Annotations;
+﻿using MessagePipe;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using VContainer;
 
 namespace Code.UI;
 
-public sealed class StartGameTrigger : MonoBehaviour
+public sealed class StartGameTrigger : MonoBehaviour, IPointerClickHandler
 {
-    [Inject, UsedImplicitly]
-    public void Construct(IGameEvents gameEvents)
-    {
-        var clickStream = this.GetAsyncPointerClickTrigger().Select(_ => AsyncUnit.Default);
+    [Inject] private IPublisher<Event.GameStart> _gameStartEvent;
 
-        gameEvents.GameStart.SetTrigger(clickStream, this.GetCancellationTokenOnDestroy());
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        _gameStartEvent.Publish(new());
     }
 }

@@ -1,60 +1,45 @@
-﻿using System;
-using UnityEngine;
-using VContainer.Unity;
+﻿using UnityEngine;
 
 namespace Code.Services.Game.UI;
 
-public sealed class GameUIController : IStartable, IDisposable
+public sealed class GameUIController
 {
     private readonly GameUI _gameUI;
-    private readonly GameProgress _gameProgress;
-    private readonly PlayerProgress _playerProgress;
+    private readonly IProgress _progress;
 
-    public GameUIController(GameUI gameUI, GameProgress gameProgress, PlayerProgress playerProgress)
+    public GameUIController(GameUI gameUI, IProgress progress)
     {
         _gameUI = gameUI;
-        _gameProgress = gameProgress;
-        _playerProgress = playerProgress;
-
-        _gameProgress.ScoreChanged += OnScoreChanged;
-        _playerProgress.CherriesChanged += OnCherriesChanged;
+        _progress = progress;
     }
 
-    public void Dispose()
+    public void UpdateScore()
     {
-        _gameProgress.ScoreChanged -= OnScoreChanged;
-        _playerProgress.CherriesChanged -= OnCherriesChanged;
-    }
-
-    void IStartable.Start()
-    {
-        _gameUI.ShowHelp();
-        _gameUI.UpdateScore(_gameProgress.Score);
-        _gameUI.UpdateCherries(_playerProgress.Cherries);
-    }
-
-    private void OnScoreChanged(int score)
-    {
+        int score = _progress.Session.Score;
         _gameUI.UpdateScore(score);
+
+        if (score == 0) //-1? or <0
+            _gameUI.ShowHelp();
 
         if (score >= 1)
             _gameUI.HideHelp();
     }
 
-    private void OnCherriesChanged(int cherries)
+    public void UpdateCherries()
     {
+        int cherries = _progress.Persistant.Cherries;
         _gameUI.UpdateCherries(cherries);
     }
 
     public void OnRedPointHit(Vector2 notificationPosition)
     {
-        _gameProgress.IncreaseScore();
+        _progress.Session.IncreaseScore();
         _gameUI.OnRedPointHit(notificationPosition);
     }
 
     public void ShowGameOver()
     {
-        _gameProgress.IncreaseRestartNumber();
+        _progress.Session.IncreaseRestartNumber();
         _gameUI.ShowGameOver();
     }
 

@@ -9,9 +9,7 @@ namespace Code.Animations;
 public sealed class FloatContinuallyGameAnimation : MonoBehaviour
 {
     [SerializeField] private Transform _transform;
-
     [SerializeField] private float _hoveringRange;
-
     [SerializeField] private float _duration;
 
     private float HalfRange => _hoveringRange / 2;

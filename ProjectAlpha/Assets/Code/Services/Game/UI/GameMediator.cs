@@ -1,5 +1,6 @@
 ﻿using Code.States;
 using UnityEngine;
+using UnityEngine.iOS;
 using VContainer;
 
 namespace Code.Services.Game.UI;
@@ -9,14 +10,14 @@ public sealed class GameMediator
 {
     [Inject] private GameSceneLoader _gameSceneLoader;
     [Inject] private GameUIController _gameUIController;
-    [Inject] private GameProgress _gameProgress;
-    [Inject] private PlayerProgress _playerProgress;
+    [Inject] private IProgress _progress;
 
     public GameStateMachine gameStateMachine; //rework later
 
-    public void IncreaseScore() => _gameProgress.IncreaseScore();
-    public void ResetScore() => _gameProgress.ResetScore();
-    public void AddCherry() => _playerProgress.AddCherry();
+    public void RequestStoreReview() => Device.RequestStoreReview();
+    public void IncreaseScore() => _progress.Session.IncreaseScore();
+    public void ResetScore() => _progress.Session.ResetScore();
+    public void AddCherry() => _progress.Persistant.AddCherry();
     public void OnRedPointHit(Vector2 position) => _gameUIController.OnRedPointHit(position);
     public void GameOver() => _gameUIController.ShowGameOver(); //earthshake screen
     public void HideGameOver() => _gameUIController.HideGameOver();

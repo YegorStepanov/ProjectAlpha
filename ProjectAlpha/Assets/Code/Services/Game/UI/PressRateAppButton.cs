@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using VContainer;
 
@@ -11,6 +10,6 @@ public sealed class PressRateAppButton : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Assert.IsTrue(_gameMediator != null);
+        _gameMediator.RequestStoreReview();
     }
 }

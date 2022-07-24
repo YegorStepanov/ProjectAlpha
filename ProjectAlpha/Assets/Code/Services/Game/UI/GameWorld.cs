@@ -27,7 +27,7 @@ public sealed class GameWorld
     [System.Serializable]
     public class Settings
     {
-        [ValidateInput("@$value <= ViewportGamePositionY", "this must be equal or greater then ViewportGamePositionY")]
+        [ValidateInput("@$value <= ViewportGamePositionY", "value must be equal or greater then ViewportGamePositionY")]
         [MinValue(0), MaxValue(1)]
         public float ViewportMenuPositionY = 0.2f;
         [MinValue(0), MaxValue(1)]

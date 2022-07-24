@@ -4,12 +4,12 @@ using VContainer.Unity;
 
 namespace Code.Services;
 
-public class ScopeToken //change to struct?
+public struct ScopeCancellationToken
 {
     private readonly CancellationToken _token;
 
-    public ScopeToken(LifetimeScope scope) =>
+    public ScopeCancellationToken(LifetimeScope scope) =>
         _token = scope.GetCancellationTokenOnDestroy();
 
-    public static implicit operator CancellationToken(ScopeToken scopeToken) => scopeToken._token;
+    public static implicit operator CancellationToken(ScopeCancellationToken token) => token._token;
 }

@@ -7,8 +7,8 @@ namespace Code.UI.Actions;
 
 public sealed class ToggleSound : MonoBehaviour, IPointerClickHandler
 {
-    [Inject] private MenuMediator _mainMenu;
+    [Inject] private MenuMediator _menu;
 
     public void OnPointerClick(PointerEventData eventData) =>
-        _mainMenu.ToggleSound();
+        _menu.ToggleSound();
 }

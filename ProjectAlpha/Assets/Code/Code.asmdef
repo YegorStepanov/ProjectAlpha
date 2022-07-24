@@ -33,7 +33,9 @@
     "UnityEngine.Advertisements",
     "Purchasing.Common",
     "UnityEngine.Purchasing",
-    "UnityEngine.Purchasing.Stores"
+    "UnityEngine.Purchasing.Stores",
+    "MessagePipe",
+    "MessagePipe.VContainer"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

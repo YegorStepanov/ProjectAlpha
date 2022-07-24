@@ -7,7 +7,7 @@ using UnityEngine.Advertisements;
 
 namespace Code.Services.Monetization;
 
-public sealed class Ads : IDisposable
+public sealed class Ads : IAds, IDisposable
 {
     private readonly AdInitializer _adInitializer;
     private readonly BannerAd _bannerAd;

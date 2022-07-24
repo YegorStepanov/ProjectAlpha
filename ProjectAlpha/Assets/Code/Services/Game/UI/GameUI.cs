@@ -20,7 +20,7 @@ public sealed class GameUI : MonoBehaviour //IDisposable
     private CancellationToken _token;
 
     [Inject, UsedImplicitly]
-    private void Construct(RedPointHitGameAnimation redPointHitGameAnimation, ScopeToken token)
+    private void Construct(RedPointHitGameAnimation redPointHitGameAnimation, CancellationToken token)
     {
         _redPointHitGameAnimation = redPointHitGameAnimation;
         _token = token;
@@ -60,9 +60,3 @@ public sealed class GameUI : MonoBehaviour //IDisposable
     public void HideGameOver() =>
         _gameOverCanvas.gameObject.SetActive(false);
 }
-
-//create issues:
-//disallow nulls
-//add NonLazy()
-//prefab.name
-//open internal interfaces

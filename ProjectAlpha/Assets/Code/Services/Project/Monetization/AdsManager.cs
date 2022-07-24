@@ -1,80 +1,63 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 
 namespace Code.Services.Monetization;
 
-public sealed class AdsManager : IDisposable
+public sealed class AdsManager
 {
-    private readonly Ads _ads;
-    private readonly PlayerProgress _playerProgress;
-    private readonly GameProgress _gameProgress;
+    private readonly IAds _ads;
+    private readonly IProgress _progress;
     private readonly Settings _settings;
     private readonly CancellationToken _token;
 
-    private readonly Action<bool> _adsEnabledChanged;
-    private readonly Action<int> _restartNumberChanged;
+    private bool AdsEnabled => _progress.Persistant.AdsEnabled;
 
-    public AdsManager(Ads ads, PlayerProgress playerProgress, GameProgress gameProgress, Settings settings, ScopeToken token)
+    public AdsManager(IAds ads, IProgress progress, Settings settings, ScopeCancellationToken token)
     {
         _ads = ads;
-        _playerProgress = playerProgress;
-        _gameProgress = gameProgress;
+        _progress = progress;
         _settings = settings;
         _token = token;
-
-        _adsEnabledChanged = UniTaskHelper.Action<bool>(AdsEnabledChanged);
-        _restartNumberChanged = UniTaskHelper.Action<int>(RestartNumberChanged);
-
-        _playerProgress.AdsEnabledChanged += _adsEnabledChanged;
-        _gameProgress.RestartNumberChanged += _restartNumberChanged;
-
-        Init();
     }
 
-    private void Init()
+    public void ShowBannerIfNeeded()
     {
-        if (_playerProgress.AdsEnabled)
-            ShowBanner().Forget();
+        Impl().Forget();
+
+        async UniTaskVoid Impl()
+        {
+            if (AdsEnabled)
+                await _ads.ShowBannerAsync(_token);
+            else
+                await _ads.HideBannerAsync(_token);
+        }
     }
 
-    public void Dispose()
+    public void ShowInterstitialAdIfNeeded()
     {
-        _playerProgress.AdsEnabledChanged -= _adsEnabledChanged;
-        _gameProgress.RestartNumberChanged -= _restartNumberChanged;
+        Impl().Forget();
+
+        async UniTaskVoid Impl()
+        {
+            if (!AdsEnabled) return;
+
+            int restartNumber = _progress.Session.RestartNumber;
+            if (restartNumber % _settings.ShowAdsAfterRestartNumber == 0)
+                await _ads.ShowInterstitialAsync(_token);
+        }
     }
 
-    public void WatchRewardedAd()
+    public void ShowRewardedAd()
     {
-        WatchRewardedAdImpl().Forget();
-    }
+        Impl().Forget();
 
-    private async UniTaskVoid WatchRewardedAdImpl()
-    {
-        AdsShowResult result = await _ads.ShowRewardedAsync(_token);
-        if (result == AdsShowResult.Completed)
-            _playerProgress.AddCherries(_settings.CherriesForWatchingRewardedAds);
-    }
+        async UniTaskVoid Impl()
+        {
+            AdsShowResult result = await _ads.ShowRewardedAsync(_token);
 
-    private async UniTaskVoid AdsEnabledChanged(bool adsEnabled)
-    {
-        await (adsEnabled ? ShowBanner() : HideBanner());
-    }
-
-    private UniTask ShowBanner()
-    {
-        return _ads.ShowBannerAsync(_token);
-    }
-
-    private UniTask HideBanner()
-    {
-        return _ads.HideBannerAsync(_token);
-    }
-
-    private async UniTaskVoid RestartNumberChanged(int restartNumber)
-    {
-        if (restartNumber % _settings.ShowAdsAfterRestartNumber == 0)
-            await _ads.ShowInterstitialAsync(_token);
+            if (result == AdsShowResult.Completed)
+                _progress.Persistant.AddCherries(_settings.CherriesForWatchingRewardedAds);
+        }
     }
 
     [System.Serializable]

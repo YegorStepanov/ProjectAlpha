@@ -3,21 +3,18 @@ using UnityEngine;
 
 namespace Code.Services;
 
-public class PlayerProgress
+public class PersistentProgress : IPersistentProgress
 {
     private const string CherriesKey = "Cherries";
     private const string AdsEnabledKey = "AdsEnabled";
 
-    public event Action<int> CherriesChanged;
-    public event Action<bool> AdsEnabledChanged;
+    public event Action CherriesChanged;
+    public event Action AdsEnabledChanged;
 
     public int Cherries { get; private set; }
     public bool AdsEnabled { get; private set; }
 
-    public PlayerProgress() =>
-        Initialize();
-
-    private void Initialize()
+    public void RestoreProgressFromDisk()
     {
         Cherries = LoadCherries();
         AdsEnabled = LoadAdsEnabled();
@@ -32,21 +29,21 @@ public class PlayerProgress
     {
         Cherries += count;
         SaveCherries(Cherries);
-        CherriesChanged?.Invoke(Cherries);
+        CherriesChanged?.Invoke();
     }
 
     public void EnableAds()
     {
         AdsEnabled = true;
         SaveAdsEnabled(AdsEnabled);
-        AdsEnabledChanged?.Invoke(AdsEnabled);
+        AdsEnabledChanged?.Invoke();
     }
 
     public void DisableAds()
     {
         AdsEnabled = false;
         SaveAdsEnabled(AdsEnabled);
-        AdsEnabledChanged?.Invoke(AdsEnabled);
+        AdsEnabledChanged?.Invoke();
     }
 
     private static int LoadCherries() =>

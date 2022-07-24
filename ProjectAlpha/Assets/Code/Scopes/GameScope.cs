@@ -45,6 +45,8 @@ public sealed class GameScope : Scope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
+
         builder.Register<GameWorld>(Lifetime.Singleton); //move to
 
         RegisterHero(builder);

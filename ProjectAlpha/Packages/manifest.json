@@ -52,7 +52,9 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "com.cysharp.messagepipe": "1.7.4",
+    "com.cysharp.messagepipe.vcontainer": "1.7.4"
   },
   "scopedRegistries": [
     {
@@ -60,6 +62,8 @@
       "url": "https://package.openupm.com",
       "scopes": [
         "com.coffee.csharp-compiler-settings",
+        "com.cysharp.messagepipe",
+        "com.cysharp.messagepipe.vcontainer",
         "com.cysharp.unitask",
         "com.johannesmp.unityscenereference",
         "com.openupm",

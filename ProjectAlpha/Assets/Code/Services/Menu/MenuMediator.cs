@@ -14,19 +14,19 @@ public sealed class MenuMediator : MonoBehaviour
     private PanelManager _panelManager;
     private ISceneLoader _sceneLoader;
     private IIAPManager _iapManager;
-    private PlayerProgress _playerProgress;
+    private IProgress _progress;
     private AdsManager _adsManager;
     private CancellationToken _token;
 
     [Inject, UsedImplicitly]
-    public void Construct(MainMenu mainMenu, PanelManager panelManager, ISceneLoader sceneLoader, IIAPManager iiapManager, PlayerProgress playerProgress, AdsManager adsManager, CancellationToken token)
+    public void Construct(MainMenu mainMenu, PanelManager panelManager, ISceneLoader sceneLoader, IIAPManager iapManager, IProgress progress, AdsManager adsManager, CancellationToken token)
     {
+        _progress = progress;
         _adsManager = adsManager;
         _mainMenu = mainMenu;
         _panelManager = panelManager;
         _sceneLoader = sceneLoader;
-        _iapManager = iiapManager;
-        _playerProgress = playerProgress;
+        _iapManager = iapManager;
         _token = token;
     }
 
@@ -35,9 +35,9 @@ public sealed class MenuMediator : MonoBehaviour
 
     [Button] public void CloseScene() => _sceneLoader.UnloadAsync<MenuScene>(_token);
     [Button] public void ToggleSound() => _mainMenu.ToggleSound();
-    [Button] public void EnableAds() => _playerProgress.EnableAds();
-    [Button] public void DisableAds() => _playerProgress.DisableAds();
-    [Button] public void WatchRewardedAd() => _adsManager.WatchRewardedAd();
+    [Button] public void EnableAds() => _progress.Persistant.EnableAds();
+    [Button] public void DisableAds() => _progress.Persistant.DisableAds();
+    [Button] public void ShowRewardedAd() => _adsManager.ShowRewardedAd();
 
     public void PurchaseComplete(Product product) =>
         _iapManager.PurchaseComplete(product);

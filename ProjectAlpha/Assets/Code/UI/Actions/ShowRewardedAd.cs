@@ -5,10 +5,10 @@ using VContainer;
 
 namespace Code.UI.Actions;
 
-public sealed class WatchRewardedAd : MonoBehaviour, IPointerClickHandler
+public sealed class ShowRewardedAd : MonoBehaviour, IPointerClickHandler
 {
     [Inject] private MenuMediator _menu;
 
     public void OnPointerClick(PointerEventData eventData) =>
-        _menu.WatchRewardedAd();
+        _menu.ShowRewardedAd();
 }

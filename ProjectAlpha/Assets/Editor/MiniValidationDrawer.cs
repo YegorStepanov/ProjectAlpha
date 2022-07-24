@@ -64,7 +64,7 @@ namespace Code.Utils
                 {
                     ValidationResult result = _validationResults[i];
 
-                    if (Event.current.type == EventType.Layout && (_rerunFullValidation || result.Setup.Validator.RevalidationCriteria == RevalidationCriteria.Always))
+                    if (UnityEngine.Event.current.type == EventType.Layout && (_rerunFullValidation || result.Setup.Validator.RevalidationCriteria == RevalidationCriteria.Always))
                     {
                         ValidationResultType resultType = result.ResultType;
 
@@ -92,7 +92,7 @@ namespace Code.Utils
                     }
                 }
 
-                if (Event.current.type == EventType.Layout)
+                if (UnityEngine.Event.current.type == EventType.Layout)
                     _rerunFullValidation = false;
 
                 // The hack materializes: we skip the next drawer which should be the default ValidationDrawer
@@ -105,7 +105,7 @@ namespace Code.Utils
                         label.tooltip = $"ERROR: {error.Message}";
 
                     Rect rect = GUIHelper.GetCurrentLayoutRect();
-                    if (Event.current.type == EventType.Repaint)
+                    if (UnityEngine.Event.current.type == EventType.Repaint)
                     {
                         SirenixEditorGUI.DrawSolidRect(rect, BG);
                         SirenixEditorGUI.DrawBorders(rect, 0, 0, 1, 0, Shadow);
@@ -117,7 +117,7 @@ namespace Code.Utils
                     label.tooltip = $"WARNING: {warning.Message}";
 
                     Rect rect = GUIHelper.GetCurrentLayoutRect();
-                    if (Event.current.type == EventType.Repaint)
+                    if (UnityEngine.Event.current.type == EventType.Repaint)
                     {
                         SirenixEditorGUI.DrawSolidRect(rect, WarnBG);
                         SirenixEditorGUI.DrawBorders(rect, 0, 0, 1, 0, WarnShadow);

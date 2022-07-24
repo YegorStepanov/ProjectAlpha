@@ -1,31 +1,38 @@
-﻿using Code.Services;
+﻿using System.Threading;
+using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 
 namespace Code.States;
 
 public sealed class StartState : IState
 {
     private readonly Camera _camera;
-    private readonly IGameEvents _gameEvents;
+    private readonly ISubscriber<Event.GameStart> _gameStartEvent;
     private readonly GameWorld _gameWorld;
     private readonly GameMediator _gameMediator;
+    private readonly CancellationToken _token;
     private readonly HeroSpawner _heroSpawner;
+    private readonly ISceneLoader _sceneLoader;
     private readonly PlatformSpawner _platformSpawner;
 
-    public StartState(PlatformSpawner platformSpawner, HeroSpawner heroSpawner, Camera camera, IGameEvents gameEvents, GameWorld gameWorld, GameMediator gameMediator)
+    public StartState(ISceneLoader sceneLoader, PlatformSpawner platformSpawner, HeroSpawner heroSpawner, Camera camera, ISubscriber<Event.GameStart> gameStartEvent, GameWorld gameWorld, GameMediator gameMediator, CancellationToken token)
     {
+        _sceneLoader = sceneLoader;
         _platformSpawner = platformSpawner;
         _heroSpawner = heroSpawner;
         _camera = camera;
-        _gameEvents = gameEvents;
+        _gameStartEvent = gameStartEvent;
         _gameWorld = gameWorld;
         _gameMediator = gameMediator;
+        _token = token;
     }
 
     public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
     {
         await ChangeBackground();
+
         SwitchWorldHeight();
         ResetScore();
 
@@ -64,6 +71,7 @@ public sealed class StartState : IState
 
     private async UniTask WaitGameStartEvent()
     {
-        await _gameEvents.GameStart.WaitAsync();
+        if(_sceneLoader.IsLoaded<MenuScene>())
+           await _gameStartEvent.FirstAsync(_token);
     }
 }

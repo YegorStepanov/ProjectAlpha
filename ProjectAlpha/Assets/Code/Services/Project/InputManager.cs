@@ -10,7 +10,7 @@ public sealed class InputManager : IInputManager
     private readonly CancellationToken _token;
     private readonly InputAction _action = new(binding: "*/{primaryAction}");
 
-    public InputManager(ScopeToken token)
+    public InputManager(ScopeCancellationToken token)
     {
         _token = token;
         _action.Enable();
@@ -18,13 +18,6 @@ public sealed class InputManager : IInputManager
 
     public UniTask WaitClick() =>
         WaitClick(_token);
-
-    public async UniTask WaitClick(CancellationToken token)
-    {
-        await UniTask.NextFrame(token);
-        while (!IsPressedOrCancelled(token))
-            await UniTask.NextFrame(token);
-    }
 
     public async UniTask WaitClickRelease()
     {
@@ -43,6 +36,13 @@ public sealed class InputManager : IInputManager
                 await WaitClick(token);
             }
         });
+
+    private async UniTask WaitClick(CancellationToken token)
+    {
+        await UniTask.NextFrame(token);
+        while (!IsPressedOrCancelled(token))
+            await UniTask.NextFrame(token);
+    }
 
     private bool IsPressedOrCancelled(CancellationToken token) =>
         IsPressedOrCancelled() || token.IsCancellationRequested;
