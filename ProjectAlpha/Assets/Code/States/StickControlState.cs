@@ -20,7 +20,7 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
         _gameMediator = gameMediator;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
+    public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)
     {
         (IPlatform currentPlatform, IPlatform nextPlatform, IHero hero, ICherry cherry) = args;
 

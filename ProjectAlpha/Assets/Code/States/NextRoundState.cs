@@ -16,23 +16,21 @@ public sealed class NextRoundState : IState<NextRoundState.Arguments>
     private readonly CherrySpawner _cherrySpawner;
     private readonly PlatformPositionGenerator _platformPositionGenerator;
     private readonly CherryPositionGenerator _cherryPositionGenerator;
-    private readonly GameMediator _gameMediator;
     private readonly GameWorld _gameWorld;
     private readonly GameStateMachine.Settings _settings;
 
-    public NextRoundState(Camera camera, PlatformSpawner platformSpawner, CherrySpawner cherrySpawner, PlatformPositionGenerator platformPositionGenerator, CherryPositionGenerator cherryPositionGenerator, GameMediator gameMediator, GameWorld gameWorld, GameStateMachine.Settings settings)
+    public NextRoundState(Camera camera, PlatformSpawner platformSpawner, CherrySpawner cherrySpawner, PlatformPositionGenerator platformPositionGenerator, CherryPositionGenerator cherryPositionGenerator, GameWorld gameWorld, GameStateMachine.Settings settings)
     {
         _camera = camera;
         _platformSpawner = platformSpawner;
         _cherrySpawner = cherrySpawner;
         _platformPositionGenerator = platformPositionGenerator;
         _cherryPositionGenerator = cherryPositionGenerator;
-        _gameMediator = gameMediator;
         _gameWorld = gameWorld;
         _settings = settings;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
+    public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)
     {
         (IPlatform currentPlatform, IHero hero) = args;
 

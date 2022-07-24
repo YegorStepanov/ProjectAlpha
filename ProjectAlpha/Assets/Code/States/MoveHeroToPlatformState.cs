@@ -28,7 +28,7 @@ public sealed class MoveHeroToPlatformState : MoveHeroBaseState, IState<MoveHero
         _token = token;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
+    public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)
     {
         (IPlatform leftPlatform, IPlatform currentPlatform, IHero hero, IStick stick, ICherry cherry) = args;
 

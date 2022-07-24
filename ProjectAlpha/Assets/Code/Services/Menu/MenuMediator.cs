@@ -19,7 +19,7 @@ public sealed class MenuMediator : MonoBehaviour
     private CancellationToken _token;
 
     [Inject, UsedImplicitly]
-    public void Construct(MainMenu mainMenu, PanelManager panelManager, ISceneLoader sceneLoader, IIAPManager iapManager, IProgress progress, AdsManager adsManager, CancellationToken token)
+    public void Construct(MainMenu mainMenu, PanelManager panelManager, ISceneLoader sceneLoader, IIAPManager iapManager, IProgress progress, AdsManager adsManager, ScopeCancellationToken token)
     {
         _progress = progress;
         _adsManager = adsManager;

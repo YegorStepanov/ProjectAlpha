@@ -7,7 +7,7 @@ using VContainer;
 
 namespace Code.Services;
 
-public sealed class GameStateMachine : IStateMachine
+public sealed class GameStateMachine : IGameStateMachine
 {
     private readonly Dictionary<Type, IExitState> _states;
 

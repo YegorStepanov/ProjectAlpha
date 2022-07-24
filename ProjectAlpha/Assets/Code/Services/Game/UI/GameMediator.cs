@@ -11,8 +11,7 @@ public sealed class GameMediator
     [Inject] private GameSceneLoader _gameSceneLoader;
     [Inject] private GameUIController _gameUIController;
     [Inject] private IProgress _progress;
-
-    public GameStateMachine gameStateMachine; //rework later
+    [Inject] private IObjectResolver _resolver;
 
     public void RequestStoreReview() => Device.RequestStoreReview();
     public void IncreaseScore() => _progress.Session.IncreaseScore();
@@ -28,6 +27,6 @@ public sealed class GameMediator
         HideGameOver();
         //black fade out
         //HideGameOver();
-        gameStateMachine.Enter<RestartState>();
+        _resolver.Resolve<IGameStateMachine>().Enter<RestartState>();
     }
 }

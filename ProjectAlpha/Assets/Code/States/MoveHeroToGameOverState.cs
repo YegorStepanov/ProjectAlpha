@@ -19,7 +19,7 @@ public sealed class MoveHeroToGameOverState : MoveHeroBaseState, IState<MoveHero
         _token = token;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args, IStateMachine stateMachine)
+    public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)
     {
         CancellationTokenSource cts = new();
         CancellationToken linkedToken = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, _token).Token;

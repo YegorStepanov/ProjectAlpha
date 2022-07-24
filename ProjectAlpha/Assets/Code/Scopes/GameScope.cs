@@ -58,16 +58,6 @@ public sealed class GameScope : Scope
         RegisterGameStateMachine(builder);
 
         builder.RegisterEntryPoint<GameEntryPoint>();
-
-        builder.RegisterBuildCallback(resolver =>
-        {
-            var gum = resolver.Resolve<GameUI>();
-            resolver.InjectGameObject(gum.gameObject);
-
-            var gm = resolver.Resolve<GameMediator>();
-
-            gm.gameStateMachine = resolver.Resolve<GameStateMachine>();
-        });
     }
 
     private void RegisterHero(IContainerBuilder builder)
@@ -106,6 +96,8 @@ public sealed class GameScope : Scope
     private void RegisterUI(IContainerBuilder builder)
     {
         builder.RegisterComponentInNewPrefab(_gameUI, Lifetime.Singleton);
+        builder.InjectGameObject<GameUI>();
+
         builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
 
         builder.Register<GameSceneLoader>(Lifetime.Singleton);
@@ -122,6 +114,6 @@ public sealed class GameScope : Scope
         builder.Register<IExitState, RestartState>(Lifetime.Transient);
         builder.Register<IExitState, MoveHeroToGameOverState>(Lifetime.Transient);
 
-        builder.Register<GameStateMachine>(Lifetime.Singleton);
+        builder.Register<IGameStateMachine, GameStateMachine>(Lifetime.Singleton);
     }
 }

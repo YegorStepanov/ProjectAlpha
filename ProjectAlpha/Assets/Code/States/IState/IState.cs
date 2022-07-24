@@ -7,10 +7,10 @@ public interface IExitState { }
 
 public interface IState : IExitState
 {
-    UniTaskVoid EnterAsync(IStateMachine stateMachine);
+    UniTaskVoid EnterAsync(IGameStateMachine stateMachine);
 }
 
 public interface IState<in TArg> : IExitState
 {
-    UniTaskVoid EnterAsync(TArg arg, IStateMachine stateMachine);
+    UniTaskVoid EnterAsync(TArg arg, IGameStateMachine stateMachine);
 }

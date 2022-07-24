@@ -8,11 +8,11 @@ namespace Code.Scopes;
 
 public sealed class GameEntryPoint : IInitializable, IDisposable, IStartable
 {
-    private readonly GameStateMachine _gameStateMachine;
+    private readonly IGameStateMachine _gameStateMachine;
     private readonly GameUIController _gameUIController;
     private readonly IProgress _progress;
 
-    public GameEntryPoint(GameStateMachine gameStateMachine, GameUIController gameUIController, IProgress progress)
+    public GameEntryPoint(IGameStateMachine gameStateMachine, GameUIController gameUIController, IProgress progress)
     {
         _gameStateMachine = gameStateMachine;
         _gameUIController = gameUIController;

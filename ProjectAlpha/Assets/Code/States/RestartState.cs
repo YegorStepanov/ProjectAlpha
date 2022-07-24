@@ -23,7 +23,7 @@ public sealed class RestartState : IState
         _gameMediator = gameMediator;
     }
 
-    public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
+    public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
     {
         await ChangeBackground();
         ResetCamera();

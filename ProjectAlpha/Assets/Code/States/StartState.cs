@@ -29,7 +29,7 @@ public sealed class StartState : IState
         _token = token;
     }
 
-    public async UniTaskVoid EnterAsync(IStateMachine stateMachine)
+    public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
     {
         await ChangeBackground();
 
