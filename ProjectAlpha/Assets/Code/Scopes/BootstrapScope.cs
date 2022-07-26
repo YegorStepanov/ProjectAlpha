@@ -15,7 +15,7 @@ public sealed class BootstrapScope : Scope
         _loadingScreen = await loader.LoadAssetAsync(BootstrapAddress.LoadingScreen);
     }
 
-    protected override void Configure(IContainerBuilder builder)
+    protected override void ConfigureServices(IContainerBuilder builder)
     {
         builder.RegisterComponentInNewPrefab(_loadingScreen, Lifetime.Singleton);
 

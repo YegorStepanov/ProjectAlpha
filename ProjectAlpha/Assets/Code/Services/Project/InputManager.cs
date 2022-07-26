@@ -10,7 +10,7 @@ public sealed class InputManager : IInputManager
     private readonly CancellationToken _token;
     private readonly InputAction _action = new(binding: "*/{primaryAction}");
 
-    public InputManager(ScopeCancellationToken token)
+    public InputManager(CancellationToken token)
     {
         _token = token;
         _action.Enable();

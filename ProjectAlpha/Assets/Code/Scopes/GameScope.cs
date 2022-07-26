@@ -43,10 +43,8 @@ public sealed class GameScope : Scope
         _redPointHitGameAnimation = await loader.LoadAssetAsync(GameAddress.Plus1Notification);
     }
 
-    protected override void Configure(IContainerBuilder builder)
+    protected override void ConfigureServices(IContainerBuilder builder)
     {
-        builder.RegisterInstance(this.GetCancellationTokenOnDestroy());
-
         builder.Register<GameWorld>(Lifetime.Singleton); //move to
 
         RegisterHero(builder);
@@ -115,5 +113,9 @@ public sealed class GameScope : Scope
         builder.Register<IExitState, MoveHeroToGameOverState>(Lifetime.Transient);
 
         builder.Register<IGameStateMachine, GameStateMachine>(Lifetime.Singleton);
+
+        builder.Register<GameStartEventWaiter>(Lifetime.Singleton);
+        builder.Register<GameStateResetter>(Lifetime.Singleton);
+        builder.Register<SpawnersResetter>(Lifetime.Singleton);
     }
 }

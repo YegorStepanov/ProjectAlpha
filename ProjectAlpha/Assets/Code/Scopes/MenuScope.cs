@@ -19,7 +19,7 @@ public sealed class MenuScope : Scope
         (_menuMediator, _mainMenu) = await (loadMediator, loadMainMenu);
     }
 
-    protected override void Configure(IContainerBuilder builder)
+    protected override void ConfigureServices(IContainerBuilder builder)
     {
         builder.RegisterComponentInNewPrefab(_menuMediator, Lifetime.Singleton);
 

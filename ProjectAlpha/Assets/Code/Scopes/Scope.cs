@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using UnityEngine.Assertions;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
+using VContainer;
 using VContainer.Unity;
 
 namespace Code.Scopes;
@@ -80,6 +81,14 @@ public abstract class Scope : LifetimeScope
         _loader?.Dispose();
         base.OnDestroy();
     }
+
+    protected override void Configure(IContainerBuilder builder)
+    {
+        builder.RegisterInstance(_token);
+        ConfigureServices(builder);
+    }
+
+    protected abstract void ConfigureServices(IContainerBuilder builder);
 
     protected abstract UniTask PreloadAsync(IAddressablesLoader loader);
 

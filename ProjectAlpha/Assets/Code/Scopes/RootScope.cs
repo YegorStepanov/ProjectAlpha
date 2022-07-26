@@ -32,10 +32,8 @@ public sealed class RootScope : Scope
             loader.InstantiateAsync(DebugAddress.Graphy, inject: false).Forget();
     }
 
-    protected override void Configure(IContainerBuilder builder)
+    protected override void ConfigureServices(IContainerBuilder builder)
     {
-        builder.Register<ScopeCancellationToken>(Lifetime.Scoped);
-
         RegisterSettings(builder);
         RegisterCamera(builder);
 

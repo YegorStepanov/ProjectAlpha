@@ -12,7 +12,7 @@ public sealed class AdsManager
 
     private bool AdsEnabled => _progress.Persistant.AdsEnabled;
 
-    public AdsManager(IAds ads, IProgress progress, Settings settings, ScopeCancellationToken token)
+    public AdsManager(IAds ads, IProgress progress, Settings settings, CancellationToken token)
     {
         _ads = ads;
         _progress = progress;

@@ -8,7 +8,7 @@ public class GameSceneLoader
     private readonly ISceneLoader _sceneLoader;
     private readonly CancellationToken _token;
 
-    public GameSceneLoader(ISceneLoader sceneLoader, ScopeCancellationToken token)
+    public GameSceneLoader(ISceneLoader sceneLoader, CancellationToken token)
     {
         _sceneLoader = sceneLoader;
         _token = token;
