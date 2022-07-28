@@ -6,10 +6,11 @@ namespace Code.Services.Game.UI;
 
 public sealed class PressRestartButton : MonoBehaviour, IPointerClickHandler
 {
-    [Inject] private GameMediator _gameMediator;
+    [Inject] private IGameUIMediator _gameUIMediator;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _gameMediator.Restart();
+        _gameUIMediator.HideGameOver();
+        _gameUIMediator.Restart();
     }
 }

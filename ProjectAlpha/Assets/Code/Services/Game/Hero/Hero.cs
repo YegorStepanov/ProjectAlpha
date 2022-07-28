@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using Code.HeroAnimators;
 using Cysharp.Threading.Tasks;
@@ -33,18 +32,16 @@ public sealed class Hero : SpriteEntity, IHero
     public async UniTask MoveAsync(float destinationX, CancellationToken token)
     {
         _animator.PlayMove();
-        await _animations.Move(transform, destinationX - _settings.HandOffset, _settings.MovementSpeed, token);
+        await _animations.Move(transform, destinationX, _settings.MovementSpeed, token);
         _animator.PlayStay();
     }
 
+    //rename to SquatAsync with stopToken
     public void Squatting(CancellationToken token) =>
         _animations.Squatting(transform, _settings.SquatOffset, _settings.SquatSpeed, token);
 
-    public async UniTask FallAsync(float destinationY)
-    {
-        await UniTask.Delay(TimeSpan.FromSeconds(_settings.FallingDelay));
-        await _animations.Fall(transform, destinationY, _settings.FallingSpeed, DestroyToken);
-    }
+    public  UniTask FallAsync(float destinationY) =>
+        _animations.Fall(transform, destinationY, _settings.FallingSpeed, DestroyToken);
 
     public UniTask KickAsync() =>
         _animator.PlayKickAsync(DestroyToken);
@@ -62,7 +59,6 @@ public sealed class Hero : SpriteEntity, IHero
         public float HandOffset = 0.25f;
         public float MovementSpeed = 5f;
         public float FallingSpeed = 30f;
-        public float FallingDelay = 0.1f;
         public float SquatSpeed = 5f;
         public float SquatOffset = 0.8f;
     }

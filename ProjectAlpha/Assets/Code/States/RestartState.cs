@@ -6,29 +6,26 @@ namespace Code.States;
 
 public sealed class RestartState : IState
 {
+    private readonly GameWorld _gameWorld;
+    private readonly GameStateResetter _gameStateResetter;
     private readonly PlatformSpawner _platformSpawner;
-    private readonly CherrySpawner _cherrySpawner;
-    private readonly StickSpawner _stickSpawner;
     private readonly Camera _camera;
     private readonly HeroSpawner _heroSpawner;
-    private readonly GameMediator _gameMediator;
 
-    public RestartState(PlatformSpawner platformSpawner, CherrySpawner cherrySpawner, StickSpawner stickSpawner, Camera camera, HeroSpawner heroSpawner, GameMediator gameMediator)
+    public RestartState(GameWorld gameWorld,
+        GameStateResetter gameStateResetter, PlatformSpawner platformSpawner, Camera camera, HeroSpawner heroSpawner)
     {
+        _gameWorld = gameWorld;
+        _gameStateResetter = gameStateResetter;
         _platformSpawner = platformSpawner;
-        _cherrySpawner = cherrySpawner;
-        _stickSpawner = stickSpawner;
         _camera = camera;
         _heroSpawner = heroSpawner;
-        _gameMediator = gameMediator;
     }
 
     public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
     {
-        await ChangeBackground();
-        ResetCamera();
-        ResetSpawners();
-        _gameMediator.ResetScore();
+        SwitchToGameHeight();
+        await ResetGameState();
 
         IPlatform platform = await CreatePlatform();
         IHero hero = CreateHero(platform);
@@ -37,30 +34,15 @@ public sealed class RestartState : IState
             new(platform, platform, hero, StickNull.Default, CherryNull.Default));
     }
 
-    private async UniTask ChangeBackground()
-    {
-        await _camera.ChangeBackgroundAsync();
-    }
+    private UniTask ResetGameState() =>
+        _gameStateResetter.ResetAsync();
 
-    private void ResetCamera()
-    {
-        _camera.RestorePositionToInitial();
-    }
+    private void SwitchToGameHeight() =>
+        _gameWorld.SwitchToGameHeight();
 
-    private void ResetSpawners()
-    {
-        _platformSpawner.DespawnAll();
-        _cherrySpawner.DespawnAll();
-        _stickSpawner.DespawnAll();
-    }
+    private UniTask<IPlatform> CreatePlatform() =>
+        _platformSpawner.CreatePlatformAsync(_camera.Borders.Left, Relative.Left, false);
 
-    private async UniTask<IPlatform> CreatePlatform()
-    {
-        return await _platformSpawner.CreatePlatformAsync(_camera.Borders.Left, Relative.Left, false);
-    }
-
-    private IHero CreateHero(IPlatform platform)
-    {
-        return _heroSpawner.Create(platform.Borders.LeftTop, Relative.Center);
-    }
+    private IHero CreateHero(IPlatform platform) =>
+        _heroSpawner.Create(platform.Borders.LeftTop, Relative.Center);
 }

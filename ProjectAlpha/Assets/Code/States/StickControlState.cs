@@ -1,7 +1,7 @@
-﻿using System.Threading;
-using Code.Services;
+﻿using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 
 namespace Code.States;
 
@@ -11,13 +11,13 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
 
     private readonly StickSpawner _stickSpawner;
     private readonly IInputManager _inputManager;
-    private readonly GameMediator _gameMediator;
+    private readonly GameUIController _gameUIController;
 
-    public StickControlState(StickSpawner stickSpawner, IInputManager inputManager, GameMediator gameMediator)
+    public StickControlState(StickSpawner stickSpawner, IInputManager inputManager, GameUIController gameUIController)
     {
         _stickSpawner = stickSpawner;
         _inputManager = inputManager;
-        _gameMediator = gameMediator;
+        _gameUIController = gameUIController;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)
@@ -50,18 +50,17 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
     private async UniTask IncreaseStick(IStick stick, IHero hero)
     {
         await _inputManager.WaitClick();
+        using CancellationTokenDisposable cts = new();
 
-        CancellationTokenSource cts = new();
         hero.Squatting(cts.Token);
         stick.Increasing(cts.Token);
 
         await _inputManager.WaitClickRelease();
-        cts.Cancel();
     }
 
     private void HandleRedPointHit(IStick stick, IPlatform platform)
     {
         if (stick.IsStickArrowOn(platform.RedPoint))
-            _gameMediator.OnRedPointHit(platform.RedPoint.Borders.Center);
+            _gameUIController.HitRedPoint(platform.RedPoint.Borders.Center);
     }
 }

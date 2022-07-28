@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Code.Services.Game.UI;
 
@@ -13,15 +14,28 @@ public sealed class GameUIController
         _progress = progress;
     }
 
+    public void ShowUI()
+    {
+        Impl().Forget();
+
+        async UniTaskVoid Impl()
+        {
+            _gameUI.ShowScore();
+
+            await UniTask.Delay(1000);
+            _gameUI.ShowHelp();
+        }
+    }
+
+    public void HideUI() =>
+        _gameUI.HideScore();
+
     public void UpdateScore()
     {
         int score = _progress.Session.Score;
         _gameUI.UpdateScore(score);
 
-        if (score == 0) //-1? or <0
-            _gameUI.ShowHelp();
-
-        if (score >= 1)
+        if (score == 1)
             _gameUI.HideHelp();
     }
 
@@ -31,7 +45,7 @@ public sealed class GameUIController
         _gameUI.UpdateCherries(cherries);
     }
 
-    public void OnRedPointHit(Vector2 notificationPosition)
+    public void HitRedPoint(Vector2 notificationPosition)
     {
         _progress.Session.IncreaseScore();
         _gameUI.OnRedPointHit(notificationPosition);
@@ -39,6 +53,7 @@ public sealed class GameUIController
 
     public void ShowGameOver()
     {
+        //earthshake screen
         _progress.Session.IncreaseRestartNumber();
         _gameUI.ShowGameOver();
     }

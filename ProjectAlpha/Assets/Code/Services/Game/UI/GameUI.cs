@@ -32,6 +32,16 @@ public sealed class GameUI : MonoBehaviour //IDisposable
         ShowHelp();
     }
 
+    public void ShowScore()
+    {
+        _changeScoreAnimation.gameObject.SetActive(true); //todo -> canvas
+    }
+
+    public void HideScore()
+    {
+        _changeScoreAnimation.gameObject.SetActive(false); //todo -> canvas
+    }
+
     public void UpdateScore(int score)
     {
         _changeScoreAnimation.Play(score, animate: score != 0);

@@ -2,6 +2,7 @@
 using Code.Services;
 using Code.Services.Game.UI;
 using Code.Services.Monetization;
+using Code.States;
 using UnityEngine;
 using VContainer;
 using Camera = Code.Services.Camera;
@@ -20,7 +21,7 @@ public sealed class SettingsFacade : ScriptableObject
     [SerializeField] private StickSpawner.Settings _stickSpawner;
     [SerializeField] private PlatformSpawner.Settings _platformSpawner;
     [SerializeField] private GameWorld.Settings _gameWorld;
-    [SerializeField] private GameStateMachine.Settings _gameStateMachine;
+    [SerializeField] private GameLoopSettings _gameLoopSettings;
     [SerializeField] private AdsManager.Settings _adsManager;
     [SerializeField] private IAPManager.Settings _iapManager;
     [SerializeField] private Ads.Settings _androidAdsProvider;
@@ -40,7 +41,7 @@ public sealed class SettingsFacade : ScriptableObject
         builder.RegisterInstance(_stickSpawner);
         builder.RegisterInstance(_platformSpawner);
         builder.RegisterInstance(_gameWorld);
-        builder.RegisterInstance(_gameStateMachine);
+        builder.RegisterInstance(_gameLoopSettings);
         builder.RegisterInstance(_adsManager);
         builder.RegisterInstance(_iapManager);
 

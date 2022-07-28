@@ -1,77 +1,56 @@
-﻿using System.Threading;
-using Code.Services;
+﻿using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States;
 
-public sealed class MoveHeroToPlatformState : MoveHeroBaseState, IState<MoveHeroToPlatformState.Arguments>
+public sealed class MoveHeroToPlatformState : IState<MoveHeroToPlatformState.Arguments>
 {
-    private readonly StickSpawner _stickSpawner;
-    private readonly IInputManager _inputManager;
-    private readonly GameMediator _gameMediator;
-    private readonly CancellationToken _token;
+    private readonly HeroMovement _heroMovement;
+    private readonly IProgress _progress;
+    private readonly GameWorld _gameWorld;
+    private readonly GameLoopSettings _settings;
 
-    public readonly record struct Arguments(
-        IPlatform LeftPlatform,
-        IPlatform CurrentPlatform,
-        IHero Hero,
-        IStick Stick,
-        ICherry Cherry);
+    //rename Destination to NextPlatform?
+    public readonly record struct Arguments(IPlatform CurrentPlatform, IPlatform DestinationPlatform, IHero Hero, IStick Stick, ICherry Cherry);
 
-    public MoveHeroToPlatformState(IInputManager inputManager, GameMediator gameMediator, StickSpawner stickSpawner, Camera camera, CancellationToken token, GameStateMachine.Settings settings) :
-        base(gameMediator, camera, settings)
+    public MoveHeroToPlatformState(HeroMovement heroMovement, IProgress progress, GameWorld gameWorld, GameLoopSettings settings)
     {
-        _stickSpawner = stickSpawner;
-        _inputManager = inputManager;
-        _gameMediator = gameMediator;
-        _token = token;
+        _heroMovement = heroMovement;
+        _progress = progress;
+        _gameWorld = gameWorld;
+        _settings = settings;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)
     {
-        (IPlatform leftPlatform, IPlatform currentPlatform, IHero hero, IStick stick, ICherry cherry) = args;
+        (_, IPlatform destinationPlatform, IHero hero, IStick stick, _) = args;
 
-        CancellationTokenSource cts = new();
-        CancellationToken linkedToken = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, _token).Token;
+        HeroMovement.Result result = await _heroMovement.MoveHeroAsync(
+            args.Hero, args.CurrentPlatform, args.DestinationPlatform, args.Cherry, args.Stick,
+            HeroMovement.Destination.PlatformEnd, HeroMovement.HeroFlipOption.DisallowFlippingOnDestinationPlatform);
 
-        HeroFlippingOnClick(hero, leftPlatform, currentPlatform, linkedToken).Forget();
-        UniTask collecting = CollectingCherry(hero, cherry, linkedToken);
-        bool isCollided = await HeroMoving(hero, currentPlatform, linkedToken);
-        cts.Cancel();
-
-        if (isCollided)
+        if (result.IsHeroCollided)
         {
-            await EndGame(hero, stick);
+            stateMachine.Enter<EndGameState, EndGameState.Arguments>(
+                new(hero, stick));
+
             return;
         }
 
-        UpdateCherries(collecting);
-        _gameMediator.IncreaseScore();
+        //collect cherry only if successful
+        if (result.IsCherryCollected)
+            _progress.Persistant.AddCherry();
+
+        _progress.Session.IncreaseScore();
+        SwitchToGameHeight();
+
+        await UniTask.Delay(_settings.DelayBeforeNextRound);
 
         stateMachine.Enter<NextRoundState, NextRoundState.Arguments>(
-            new(currentPlatform, hero));
+            new(destinationPlatform, hero));
     }
 
-    private async UniTaskVoid HeroFlippingOnClick(IHero hero, IPlatform leftPlatform, IPlatform rightPlatform, CancellationToken token)
-    {
-        await foreach (AsyncUnit _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(token))
-        {
-            bool isHeroOnAnyPlatform = hero.Intersect(leftPlatform) || hero.Intersect(rightPlatform);
-            if (isHeroOnAnyPlatform) continue;
-            hero.Flip();
-        }
-    }
-
-    private async UniTask<bool> HeroMoving(IHero hero, IPlatform currentPlatform, CancellationToken linkedToken)
-    {
-        float destinationX = currentPlatform.Borders.Right;
-        destinationX -= _stickSpawner.StickWidth / 2f;
-
-        (bool isCollided, _) = await UniTask.WhenAny(
-            HeroColliding(hero, currentPlatform, linkedToken),
-            HeroMoving(destinationX, hero, linkedToken));
-
-        return isCollided;
-    }
+    private void SwitchToGameHeight() =>
+        _gameWorld.SwitchToGameHeight();
 }

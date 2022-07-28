@@ -7,10 +7,10 @@ namespace Code.Services.Game.UI;
 
 public sealed class PressLeaderboardButton : MonoBehaviour, IPointerClickHandler
 {
-    [Inject] private GameMediator _gameMediator;
+    [Inject] private IGameUIMediator _gameUIMediator;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Assert.IsTrue(_gameMediator != null);
+        Assert.IsTrue(_gameUIMediator != null);
     }
 }

@@ -1,77 +1,62 @@
-﻿using System.Threading;
-using Code.Services;
+﻿using Code.Services;
 using Code.Services.Game.UI;
 using Cysharp.Threading.Tasks;
-using MessagePipe;
 
 namespace Code.States;
 
 public sealed class StartState : IState
 {
-    private readonly Camera _camera;
-    private readonly ISubscriber<Event.GameStart> _gameStartEvent;
+    private readonly GameUIController _gameUIController;
     private readonly GameWorld _gameWorld;
-    private readonly GameMediator _gameMediator;
-    private readonly CancellationToken _token;
     private readonly HeroSpawner _heroSpawner;
-    private readonly ISceneLoader _sceneLoader;
     private readonly PlatformSpawner _platformSpawner;
+    private readonly GameStateResetter _gameStateResetter;
+    private readonly GameStartEventAwaiter _gameStartEventAwaiter;
 
-    public StartState(ISceneLoader sceneLoader, PlatformSpawner platformSpawner, HeroSpawner heroSpawner, Camera camera, ISubscriber<Event.GameStart> gameStartEvent, GameWorld gameWorld, GameMediator gameMediator, CancellationToken token)
+    public StartState(GameUIController gameUIController, GameWorld gameWorld, HeroSpawner heroSpawner, PlatformSpawner platformSpawner, GameStateResetter gameStateResetter, GameStartEventAwaiter gameStartEventAwaiter)
     {
-        _sceneLoader = sceneLoader;
-        _platformSpawner = platformSpawner;
-        _heroSpawner = heroSpawner;
-        _camera = camera;
-        _gameStartEvent = gameStartEvent;
+        _gameUIController = gameUIController;
         _gameWorld = gameWorld;
-        _gameMediator = gameMediator;
-        _token = token;
+        _heroSpawner = heroSpawner;
+        _platformSpawner = platformSpawner;
+        _gameStateResetter = gameStateResetter;
+        _gameStartEventAwaiter = gameStartEventAwaiter;
     }
 
     public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
     {
-        await ChangeBackground();
-
-        SwitchWorldHeight();
-        ResetScore();
+        HideUI();
+        SwitchToMenuHeight();
+        await ResetGameState();
 
         IPlatform menuPlatform = await CreateMenuPlatform();
         IHero hero = CreateHero(menuPlatform);
-        await WaitGameStartEvent();
 
-        stateMachine.Enter<MoveHeroToPlatformState, MoveHeroToPlatformState.Arguments>(
-            new(menuPlatform, menuPlatform, hero, StickNull.Default, CherryNull.Default));
+        await WaitForGameStartEvent();
+        ShowUI();
+
+        stateMachine.Enter<MoveHeroToMenuPlatformState, MoveHeroToMenuPlatformState.Arguments>(
+            new(hero, menuPlatform));
     }
 
-    private UniTask ChangeBackground()
-    {
-        return _camera.ChangeBackgroundAsync();
-    }
-
-    private void SwitchWorldHeight()
-    {
+    private void SwitchToMenuHeight() =>
         _gameWorld.SwitchToMenuHeight();
-    }
 
-    private void ResetScore()
-    {
-        _gameMediator.ResetScore();
-    }
+    private UniTask ResetGameState() =>
+        _gameStateResetter.ResetAsync();
 
-    private UniTask<IPlatform> CreateMenuPlatform()
-    {
-        return _platformSpawner.CreateMenuPlatformAsync();
-    }
+    private UniTask<IPlatform> CreateMenuPlatform() =>
+        _platformSpawner.CreateMenuPlatformAsync();
 
-    private IHero CreateHero(IPlatform menuPlatform)
-    {
-        return _heroSpawner.Create(menuPlatform.Borders.CenterTop, Relative.Left);
-    }
+    private IHero CreateHero(IPlatform menuPlatform) =>
+        _heroSpawner.Create(menuPlatform.Borders.CenterTop, Relative.Left);
 
-    private async UniTask WaitGameStartEvent()
-    {
-        if(_sceneLoader.IsLoaded<MenuScene>())
-           await _gameStartEvent.FirstAsync(_token);
-    }
+    private UniTask WaitForGameStartEvent() =>
+        _gameStartEventAwaiter.Wait();
+
+    private void HideUI() =>
+        _gameUIController.HideUI();
+
+    private void ShowUI() =>
+        _gameUIController.ShowUI();
 }

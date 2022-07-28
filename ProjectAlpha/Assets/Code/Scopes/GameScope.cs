@@ -99,22 +99,27 @@ public sealed class GameScope : Scope
         builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
 
         builder.Register<GameSceneLoader>(Lifetime.Singleton);
-        builder.Register<GameMediator>(Lifetime.Singleton);
+        builder.Register<IGameUIMediator, GameUIMediator>(Lifetime.Singleton);
         builder.Register<GameUIController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
     }
 
     private static void RegisterGameStateMachine(IContainerBuilder builder)
     {
+        builder.Register<HeroMovement>(Lifetime.Singleton);
+        builder.Register<CameraMover>(Lifetime.Singleton);
+
         builder.Register<IExitState, StartState>(Lifetime.Transient);
+        builder.Register<IExitState, MoveHeroToMenuPlatformState>(Lifetime.Transient);
         builder.Register<IExitState, MoveHeroToPlatformState>(Lifetime.Transient);
         builder.Register<IExitState, NextRoundState>(Lifetime.Transient);
         builder.Register<IExitState, StickControlState>(Lifetime.Transient);
         builder.Register<IExitState, RestartState>(Lifetime.Transient);
         builder.Register<IExitState, MoveHeroToGameOverState>(Lifetime.Transient);
+        builder.Register<IExitState, EndGameState>(Lifetime.Transient);
 
         builder.Register<IGameStateMachine, GameStateMachine>(Lifetime.Singleton);
 
-        builder.Register<GameStartEventWaiter>(Lifetime.Singleton);
+        builder.Register<GameStartEventAwaiter>(Lifetime.Singleton);
         builder.Register<GameStateResetter>(Lifetime.Singleton);
         builder.Register<SpawnersResetter>(Lifetime.Singleton);
     }

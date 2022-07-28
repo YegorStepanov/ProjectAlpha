@@ -35,7 +35,7 @@ public sealed class Camera : MonoBehaviour, IEntity
     private void Awake() =>
         _initialPosition = transform.position;
 
-    public void RestorePositionToInitial() =>
+    public void RestoreInitialPosition() =>
         transform.position = _initialPosition;
 
     public UniTask ChangeBackgroundAsync() =>
@@ -44,6 +44,7 @@ public sealed class Camera : MonoBehaviour, IEntity
     public UniTask MoveBackgroundAsync(CancellationToken cancellationToken) =>
         _backgroundChanger.MoveBackgroundAsync(cancellationToken);
 
+    //todo: PunchAsync?
     public UniTask Punch(CancellationToken token) => transform
         .DOPunchPosition(
             _settings.PunchingStrength,

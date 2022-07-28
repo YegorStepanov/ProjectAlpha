@@ -7,24 +7,34 @@ public class SessionProgress : ISessionProgress
     public event Action ScoreChanged;
     public event Action RestartNumberChanged;
 
-    public int Score { get; private set; }
-    public int RestartNumber { get; private set; }
+    private int _score;
+    private int _restartNumber;
 
-    public void IncreaseScore()
+    public int Score
     {
+        get => _score;
+        private set
+        {
+            _score = value;
+            ScoreChanged?.Invoke();
+        }
+    }
+    public int RestartNumber
+    {
+        get => _restartNumber;
+        private set
+        {
+            _restartNumber = value;
+            RestartNumberChanged?.Invoke();
+        }
+    }
+
+    public void IncreaseScore() =>
         Score++;
-        ScoreChanged?.Invoke();
-    }
 
-    public void IncreaseRestartNumber()
-    {
+    public void IncreaseRestartNumber() =>
         RestartNumber++;
-        RestartNumberChanged?.Invoke();
-    }
 
-    public void ResetScore()
-    {
-        Score = -1;
-        ScoreChanged?.Invoke(); //todo
-    }
+    public void ResetScore() =>
+        Score = 0;
 }
