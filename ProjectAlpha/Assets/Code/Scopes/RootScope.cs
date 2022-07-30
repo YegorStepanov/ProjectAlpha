@@ -1,7 +1,6 @@
 ﻿using Code.AddressableAssets;
 using Code.AddressableAssets.Cache;
 using Code.AddressableAssets.Loaders;
-using Code.Addresses;
 using Code.Common;
 using Code.Scopes.EntryPoints;
 using Code.Services.Data;
@@ -27,9 +26,9 @@ public sealed class RootScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        var loadCamera = loader.InstantiateAsync(RootAddress.CameraController, inject: false);
-        var loadGameSettings = loader.LoadAssetAsync(RootAddress.Settings);
-        var loadEventSystem = loader.InstantiateAsync(RootAddress.EventSystem, inject: false);
+        var loadCamera = loader.InstantiateAsync(Address.Infrastructure.CameraController, inject: false);
+        var loadGameSettings = loader.LoadAssetAsync(Address.Infrastructure.Settings);
+        var loadEventSystem = loader.InstantiateAsync(Address.Infrastructure.EventSystem, inject: false);
 
         (_camera, _settingsFacade, _) = await (loadCamera, loadGameSettings, loadEventSystem);
         LoadDevelopmentAssets(loader, _settingsFacade);
@@ -38,7 +37,7 @@ public sealed class RootScope : Scope
     private static void LoadDevelopmentAssets(IAddressablesLoader loader, SettingsFacade settings)
     {
         if (PlatformInfo.IsDevelopment && settings.Development.GraphyInDebug)
-            loader.InstantiateAsync(DebugAddress.Graphy, inject: false).Forget();
+            loader.InstantiateAsync(Address.Development.Graphy, inject: false).Forget();
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)

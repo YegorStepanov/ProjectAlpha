@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprite: {fileID: 7583334913541630921}
-  _redPoint: {fileID: 8497285666100613329}
+  _platformRedPoint: {fileID: 8497285666100613329}
 --- !u!1 &6713335473536499148
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,4 @@
 ﻿using Code.AddressableAssets.Loaders;
-using Code.Addresses;
 using Code.Extensions;
 using Code.Services.UI;
 using Code.Services.UI.Menu;
@@ -16,8 +15,8 @@ public sealed class MenuScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        var loadMediator = loader.LoadAssetAsync(MenuAddress.MenuMediator);
-        var loadMainMenu = loader.LoadAssetAsync(MenuAddress.MainMenu);
+        var loadMediator = loader.LoadAssetAsync(Address.UI.MenuMediator);
+        var loadMainMenu = loader.LoadAssetAsync(Address.UI.MainMenu);
 
         (_menuUIActions, _mainMenuView) = await (loadMediator, loadMainMenu);
     }

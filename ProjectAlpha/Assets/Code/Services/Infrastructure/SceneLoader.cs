@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Code.AddressableAssets;
-using Code.Addresses;
 using Code.Common;
 using Code.Scopes;
 using Cysharp.Threading.Tasks;
@@ -11,7 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using VContainer.Unity;
-using Scene = Code.Addresses.Scene;
+using Scene = Code.Common.Scene;
 
 namespace Code.Services.Infrastructure;
 
@@ -32,24 +31,24 @@ public sealed class SceneLoader : ISceneLoader
 
     public bool IsLoaded<TScene>() where TScene : struct, IScene
     {
-        return _scenes.ContainsKey(Address<TScene>());
+        return _scenes.ContainsKey(GetAddress<TScene>());
     }
 
     public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
     {
-        return LoadCoreAsync(Address<TScene>(), token);
+        return LoadCoreAsync(GetAddress<TScene>(), token);
     }
 
     public async UniTask LoadAsync<TScene>(LifetimeScope parentScope, CancellationToken token)
         where TScene : struct, IScene
     {
         using (LifetimeScope.EnqueueParent(parentScope))
-            await LoadCoreAsync(Address<TScene>(), token);
+            await LoadCoreAsync(GetAddress<TScene>(), token);
     }
 
     public UniTask UnloadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
     {
-        return UnloadCoreAsync(Address<TScene>(), token);
+        return UnloadCoreAsync(GetAddress<TScene>(), token);
     }
 
     private async UniTask LoadCoreAsync(Address<Scene> address, CancellationToken token)
@@ -103,12 +102,12 @@ public sealed class SceneLoader : ISceneLoader
         }
     }
 
-    private static Address<Scene> Address<TScene>() where TScene : struct, IScene => typeof(TScene) switch
+    private static Address<Scene> GetAddress<TScene>() where TScene : struct, IScene => typeof(TScene) switch
     {
-        Type t when t == typeof(BootstrapScene) => SceneAddress.Bootstrap,
-        Type t when t == typeof(MenuScene) => SceneAddress.Menu,
-        Type t when t == typeof(GameScene) => SceneAddress.Game,
-        Type t when t == typeof(MiniGameScene) => SceneAddress.MiniGame,
+        Type t when t == typeof(BootstrapScene) => Address.Scene.Bootstrap,
+        Type t when t == typeof(MenuScene) => Address.Scene.Menu,
+        Type t when t == typeof(GameScene) => Address.Scene.Game,
+        Type t when t == typeof(MiniGameScene) => Address.Scene.MiniGame,
         _ => throw new ArgumentOutOfRangeException(typeof(TScene).FullName)
     };
 

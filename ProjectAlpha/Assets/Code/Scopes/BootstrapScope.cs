@@ -1,5 +1,4 @@
 ﻿using Code.AddressableAssets.Loaders;
-using Code.Addresses;
 using Code.Scopes.EntryPoints;
 using Cysharp.Threading.Tasks;
 using VContainer;
@@ -13,7 +12,7 @@ public sealed class BootstrapScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        _loadingScreen = await loader.LoadAssetAsync(BootstrapAddress.LoadingScreen);
+        _loadingScreen = await loader.LoadAssetAsync(Address.UI.LoadingScreen);
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)

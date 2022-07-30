@@ -1,7 +1,6 @@
 ﻿using System;
 using Code.AddressableAssets;
 using Code.AddressableAssets.Loaders;
-using Code.Addresses;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -74,8 +73,8 @@ public sealed class PanelManager
 
     private static Address<GameObject> GetAddress<TPanel>() where TPanel : struct, IPanel => typeof(TPanel) switch
     {
-        Type t when t == typeof(ShopPanel) => MenuAddress.ShopPanel,
-        Type t when t == typeof(HeroSelectorPanel) => MenuAddress.HeroSelectorPanel,
+        Type t when t == typeof(ShopPanel) => Address.UI.ShopPanel,
+        Type t when t == typeof(HeroSelectorPanel) => Address.UI.HeroSelectorPanel,
         _ => throw new ArgumentOutOfRangeException(typeof(TPanel).FullName)
     };
 }

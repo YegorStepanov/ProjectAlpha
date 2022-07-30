@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Code.AddressableAssets;
 using Code.AddressableAssets.Loaders;
-using Code.Addresses;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -29,11 +28,11 @@ public sealed class BackgroundChanger
 
         _addresses = new[]
         {
-            BackgroundAddress.Background1,
-            BackgroundAddress.Background2,
-            BackgroundAddress.Background3,
-            BackgroundAddress.Background4,
-            BackgroundAddress.Background5,
+            Address.Background.Background1,
+            Address.Background.Background2,
+            Address.Background.Background3,
+            Address.Background.Background4,
+            Address.Background.Background5,
         };
     }
 

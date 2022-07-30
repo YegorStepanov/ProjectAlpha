@@ -11,6 +11,7 @@ using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
+using Scene = UnityEngine.SceneManagement.Scene;
 
 namespace Code.Scopes;
 

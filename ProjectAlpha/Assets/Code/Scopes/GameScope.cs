@@ -1,6 +1,5 @@
 ﻿using Code.AddressableAssets.Loaders;
 using Code.AddressableAssets.Pools.Async;
-using Code.Addresses;
 using Code.Animations.Game;
 using Code.Data.PositionGenerator;
 using Code.Data.WidthGenerator;
@@ -36,22 +35,22 @@ public sealed class GameScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        WidthGeneratorData widthGeneratorData = await loader.LoadAssetAsync(GameAddress.WidthGenerator);
+        WidthGeneratorData widthGeneratorData = await loader.LoadAssetAsync(Address.Data.WidthGenerator);
         _widthGenerator = widthGeneratorData.Create();
 
-        _platformPositionGenerator = await loader.LoadAssetAsync(GameAddress.PlatformPositionGenerator);
-        _cherryPositionGenerator = await loader.LoadAssetAsync(GameAddress.CherryPositionGenerator);
+        _platformPositionGenerator = await loader.LoadAssetAsync(Address.Data.PlatformPositionGenerator);
+        _cherryPositionGenerator = await loader.LoadAssetAsync(Address.Data.CherryPositionGenerator);
 
-        _hero = await loader.LoadAssetAsync(GameAddress.Hero);
+        _hero = await loader.LoadAssetAsync(Address.Entity.Hero);
 
-        _platformPool = loader.CreatePool(GameAddress.Platform, 0, 3, "Platforms");
+        _platformPool = loader.CreatePool(Address.Entity.Platform, 0, 3, "Platforms");
 
-        _platformPool = loader.CreateCyclicPool(GameAddress.Platform, 0, 3, "Platforms");
-        _stickPool = loader.CreateCyclicPool(GameAddress.Stick, 0, 2, "Sticks");
-        _cherryPool = loader.CreateCyclicPool(GameAddress.Cherry, 0, 2, "Cherries");
+        _platformPool = loader.CreateCyclicPool(Address.Entity.Platform, 0, 3, "Platforms");
+        _stickPool = loader.CreateCyclicPool(Address.Entity.Stick, 0, 2, "Sticks");
+        _cherryPool = loader.CreateCyclicPool(Address.Entity.Cherry, 0, 2, "Cherries");
 
-        _gameUIView = await loader.LoadAssetAsync(GameAddress.GameUI);
-        _redPointHitGameAnimation = await loader.LoadAssetAsync(GameAddress.Plus1Notification);
+        _gameUIView = await loader.LoadAssetAsync(Address.UI.GameUI);
+        _redPointHitGameAnimation = await loader.LoadAssetAsync(Address.UI.Plus1Notification);
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)
