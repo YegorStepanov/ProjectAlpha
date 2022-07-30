@@ -1,7 +1,7 @@
-﻿using Code.Services;
+﻿using Code.Services.Entities;
 using UnityEngine;
 
-namespace Code;
+namespace Code.Extensions;
 
 // ReSharper disable once InconsistentNaming
 public static class IEntityExtensions

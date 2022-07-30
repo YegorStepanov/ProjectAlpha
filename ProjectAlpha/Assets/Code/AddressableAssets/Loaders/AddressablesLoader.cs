@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 using Object = UnityEngine.Object;
 
-namespace Code.AddressableAssets;
+namespace Code.AddressableAssets.Loaders;
 
 public class AddressablesLoader : IScopedAddressablesLoader
 {

@@ -1,8 +1,8 @@
 ﻿using Code.AddressableAssets;
-using Code.Services;
+using Code.Services.UI.Menu;
 using UnityEngine;
 
-namespace Code;
+namespace Code.Addresses;
 
 public static class MenuAddress
 {
@@ -10,6 +10,6 @@ public static class MenuAddress
     public static readonly Address<GameObject> ShopPanel = new("Shop Panel");
     public static readonly Address<GameObject> HeroSelectorPanel = new("Hero Selector Panel");
 
-    public static readonly Address<MenuMediator> MenuMediator = new("Menu Mediator");
-    public static readonly Address<MainMenu> MainMenu = new("Main Menu");
+    public static readonly Address<MenuUIActions> MenuMediator = new("Menu Mediator");
+    public static readonly Address<MainMenuView> MainMenu = new("Main Menu");
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Code.AddressableAssets;
+namespace Code.AddressableAssets.Loaders;
 
 // to inject dependencies, it should be Scoped with static instances
 public sealed class GlobalAddressablesLoader : AddressablesLoader, IGlobalAddressablesLoader

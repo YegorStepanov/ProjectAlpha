@@ -1,7 +1,7 @@
 ﻿using Code.AddressableAssets;
 using UnityEngine;
 
-namespace Code;
+namespace Code.Addresses;
 
 public static class BackgroundAddress
 {

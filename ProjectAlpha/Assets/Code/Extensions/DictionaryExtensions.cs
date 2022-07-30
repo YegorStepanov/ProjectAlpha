@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Assertions;
 
-namespace Code;
+namespace Code.Extensions;
 
 public static class DictionaryExtensions
 {

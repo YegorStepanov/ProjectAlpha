@@ -1,4 +1,4 @@
-﻿namespace Code;
+﻿namespace Code.Common;
 
 public enum Relative
 {

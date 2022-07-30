@@ -1,6 +1,10 @@
 ﻿using System.Threading;
 using Code.Services;
-using Code.Services.Game.UI;
+using Code.Services.Entities.Hero;
+using Code.Services.Entities.Stick;
+using Code.Services.Infrastructure;
+using Code.Services.UI.Game;
+using Code.Settings;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States;
@@ -9,14 +13,14 @@ public sealed class EndGameState : IState<EndGameState.Arguments>
 {
     public readonly record struct Arguments(IHero Hero, IStick Stick);
 
-    private readonly Camera _camera;
+    private readonly ICamera _camera1;
     private readonly GameUIController _gameUIController;
-    private readonly GameLoopSettings _settings;
+    private readonly GameSettings _settings;
     private readonly CancellationToken _token;
 
-    public EndGameState(Camera camera, GameUIController gameUIController, GameLoopSettings settings, CancellationToken token)
+    public EndGameState(ICamera camera1, GameUIController gameUIController, GameSettings settings, CancellationToken token)
     {
-        _camera = camera;
+        _camera1 = camera1;
         _gameUIController = gameUIController;
         _settings = settings;
         _token = token;
@@ -39,10 +43,10 @@ public sealed class EndGameState : IState<EndGameState.Arguments>
         UniTask.Delay(delay, cancellationToken: _token);
 
     private UniTask FallHero(IHero hero) =>
-        hero.FallAsync(_camera.Borders.Bot - hero.Borders.Height);
+        hero.FallAsync(_camera1.Borders.Bot - hero.Borders.Height);
 
     private UniTask PunchCamera() =>
-        _camera.Punch(_token);
+        _camera1.Punch(_token);
 
     private void ShowGameOver() =>
         _gameUIController.ShowGameOver();

@@ -1,7 +1,6 @@
 ﻿using Code.AddressableAssets;
-using Code.Services;
 
-namespace Code;
+namespace Code.Addresses;
 
 public static class BootstrapAddress
 {

@@ -2,7 +2,8 @@
 using System.Reflection;
 using System.Threading;
 using Code.AddressableAssets;
-using Code.Infrastructure;
+using Code.AddressableAssets.Loaders;
+using Code.Common;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine.Assertions;
@@ -18,7 +19,7 @@ public abstract class Scope : LifetimeScope
     private AddressablesLoader _loader;
     private CancellationToken _token;
     private bool _isBuilt;
-    private UnityEngine.SceneManagement.Scene _scene;
+    private Scene _scene;
 
     [UsedImplicitly]
     private new async UniTask Awake()

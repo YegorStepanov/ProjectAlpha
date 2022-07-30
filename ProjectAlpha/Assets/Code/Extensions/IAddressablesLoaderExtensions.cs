@@ -1,8 +1,9 @@
 ﻿using Code.AddressableAssets;
-using Code.VContainer;
+using Code.AddressableAssets.Loaders;
+using Code.AddressableAssets.Pools.Async;
 using UnityEngine;
 
-namespace Code;
+namespace Code.Extensions;
 
 // ReSharper disable once InconsistentNaming
 public static class IAddressablesLoaderExtensions

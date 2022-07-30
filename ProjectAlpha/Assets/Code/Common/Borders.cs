@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using UnityEngine;
 
-namespace Code;
+namespace Code.Common;
 
 public readonly record struct Borders(float Top, float Bot, float Left, float Right)
 {

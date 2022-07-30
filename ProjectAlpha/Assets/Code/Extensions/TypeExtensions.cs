@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Code;
+namespace Code.Extensions;
 
 public static class TypeExtensions
 {

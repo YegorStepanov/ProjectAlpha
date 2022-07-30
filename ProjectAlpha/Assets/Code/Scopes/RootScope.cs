@@ -1,19 +1,28 @@
 ﻿using Code.AddressableAssets;
-using Code.Game;
-using Code.Infrastructure;
-using Code.Services;
+using Code.AddressableAssets.Cache;
+using Code.AddressableAssets.Loaders;
+using Code.Addresses;
+using Code.Common;
+using Code.Scopes.EntryPoints;
+using Code.Services.Data;
+using Code.Services.Development;
+using Code.Services.Infrastructure;
 using Code.Services.Monetization;
+using Code.Services.Monetization.Banner;
+using Code.Services.Monetization.FullScreen;
+using Code.Services.Monetization.IAP;
+using Code.Settings;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 using VContainer;
 using VContainer.Unity;
-using Progress = Code.Services.Progress;
+using Progress = Code.Services.Data.Progress;
 
 namespace Code.Scopes;
 
 public sealed class RootScope : Scope
 {
-    private Camera _camera;
+    private ICamera _camera;
     private SettingsFacade _settingsFacade;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
@@ -47,6 +56,8 @@ public sealed class RootScope : Scope
 
         RegisterProgress(builder);
         RegisterMessagePipe(builder);
+
+        builder.RegisterComponentOnNewGameObject<DevelopmentPanel>(Lifetime.Singleton);
 
         builder.RegisterEntryPoint<RootEntryPoint>();
     }

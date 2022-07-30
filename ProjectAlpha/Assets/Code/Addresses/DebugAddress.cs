@@ -1,7 +1,7 @@
 ﻿using Code.AddressableAssets;
 using Tayx.Graphy;
 
-namespace Code;
+namespace Code.Addresses;
 
 public static class DebugAddress
 {

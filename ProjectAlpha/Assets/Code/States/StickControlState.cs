@@ -1,5 +1,10 @@
 ﻿using Code.Services;
-using Code.Services.Game.UI;
+using Code.Services.Entities.Cherry;
+using Code.Services.Entities.Hero;
+using Code.Services.Entities.Platform;
+using Code.Services.Entities.Stick;
+using Code.Services.Infrastructure;
+using Code.Services.UI.Game;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 
@@ -60,7 +65,7 @@ public sealed class StickControlState : IState<StickControlState.Arguments>
 
     private void HandleRedPointHit(IStick stick, IPlatform platform)
     {
-        if (stick.IsStickArrowOn(platform.RedPoint))
-            _gameUIController.HitRedPoint(platform.RedPoint.Borders.Center);
+        if (stick.IsStickArrowOn(platform.PlatformRedPoint))
+            _gameUIController.HitRedPoint(platform.PlatformRedPoint.Borders.Center);
     }
 }

@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using Object = UnityEngine.Object;
 
-namespace Code.AddressableAssets;
+namespace Code.AddressableAssets.Loaders;
 
 public interface IAddressablesLoader : IDisposable
 {

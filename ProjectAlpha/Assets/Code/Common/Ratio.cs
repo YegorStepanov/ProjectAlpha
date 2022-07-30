@@ -1,4 +1,4 @@
-namespace Code;
+namespace Code.Common;
 
 public readonly record struct Ratio(float Min, float Max)
 {

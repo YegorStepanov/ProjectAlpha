@@ -1,9 +1,20 @@
-﻿using Code.AddressableAssets;
+﻿using Code.AddressableAssets.Loaders;
+using Code.AddressableAssets.Pools.Async;
+using Code.Addresses;
 using Code.Animations.Game;
+using Code.Data.PositionGenerator;
+using Code.Data.WidthGenerator;
+using Code.Extensions;
+using Code.Scopes.EntryPoints;
 using Code.Services;
-using Code.Services.Game.UI;
+using Code.Services.Entities.Cherry;
+using Code.Services.Entities.Hero;
+using Code.Services.Entities.Platform;
+using Code.Services.Entities.Stick;
+using Code.Services.Infrastructure;
+using Code.Services.Spawners;
+using Code.Services.UI.Game;
 using Code.States;
-using Code.VContainer;
 using Cysharp.Threading.Tasks;
 using VContainer;
 using VContainer.Unity;
@@ -20,7 +31,7 @@ public sealed class GameScope : Scope
     private IAsyncPool<Platform> _platformPool;
     private IAsyncPool<Stick> _stickPool;
     private IAsyncPool<Cherry> _cherryPool;
-    private GameUI _gameUI;
+    private GameUIView _gameUIView;
     private RedPointHitGameAnimation _redPointHitGameAnimation;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
@@ -39,7 +50,7 @@ public sealed class GameScope : Scope
         _stickPool = loader.CreateCyclicPool(GameAddress.Stick, 0, 2, "Sticks");
         _cherryPool = loader.CreateCyclicPool(GameAddress.Cherry, 0, 2, "Cherries");
 
-        _gameUI = await loader.LoadAssetAsync(GameAddress.GameUI);
+        _gameUIView = await loader.LoadAssetAsync(GameAddress.GameUI);
         _redPointHitGameAnimation = await loader.LoadAssetAsync(GameAddress.Plus1Notification);
     }
 
@@ -93,13 +104,13 @@ public sealed class GameScope : Scope
 
     private void RegisterUI(IContainerBuilder builder)
     {
-        builder.RegisterComponentInNewPrefab(_gameUI, Lifetime.Singleton);
-        builder.InjectGameObject<GameUI>();
+        builder.RegisterComponentInNewPrefab(_gameUIView, Lifetime.Singleton);
+        builder.InjectGameObject<GameUIView>();
 
         builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
 
-        builder.Register<GameSceneLoader>(Lifetime.Singleton);
-        builder.Register<IGameUIMediator, GameUIMediator>(Lifetime.Singleton);
+        builder.Register<IGameSceneNavigator, GameSceneNavigator>(Lifetime.Singleton);
+        builder.Register<IGameUIActions, GameUIActions>(Lifetime.Singleton);
         builder.Register<GameUIController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
     }
 

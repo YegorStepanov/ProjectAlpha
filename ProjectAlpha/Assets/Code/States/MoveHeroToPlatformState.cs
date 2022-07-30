@@ -1,5 +1,10 @@
 ﻿using Code.Services;
-using Code.Services.Game.UI;
+using Code.Services.Data;
+using Code.Services.Entities.Cherry;
+using Code.Services.Entities.Hero;
+using Code.Services.Entities.Platform;
+using Code.Services.Entities.Stick;
+using Code.Settings;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States;
@@ -9,12 +14,12 @@ public sealed class MoveHeroToPlatformState : IState<MoveHeroToPlatformState.Arg
     private readonly HeroMovement _heroMovement;
     private readonly IProgress _progress;
     private readonly GameWorld _gameWorld;
-    private readonly GameLoopSettings _settings;
+    private readonly GameSettings _settings;
 
     //rename Destination to NextPlatform?
     public readonly record struct Arguments(IPlatform CurrentPlatform, IPlatform DestinationPlatform, IHero Hero, IStick Stick, ICherry Cherry);
 
-    public MoveHeroToPlatformState(HeroMovement heroMovement, IProgress progress, GameWorld gameWorld, GameLoopSettings settings)
+    public MoveHeroToPlatformState(HeroMovement heroMovement, IProgress progress, GameWorld gameWorld, GameSettings settings)
     {
         _heroMovement = heroMovement;
         _progress = progress;

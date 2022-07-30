@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Code.Services;
+namespace Code.Services.Data;
 
 public class PersistentProgress : IPersistentProgress
 {

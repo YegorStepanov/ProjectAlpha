@@ -1,18 +1,22 @@
-﻿using Code.Infrastructure;
+﻿using Code.Common;
 using Code.Services;
-using Code.Services.Game.UI;
+using Code.Services.Entities.Cherry;
+using Code.Services.Entities.Hero;
+using Code.Services.Entities.Platform;
+using Code.Services.Entities.Stick;
+using Code.Services.Infrastructure;
 using Code.Services.Monetization;
-using Code.States;
+using Code.Services.Monetization.IAP;
+using Code.Services.Spawners;
 using UnityEngine;
 using VContainer;
-using Camera = Code.Services.Camera;
 
-namespace Code.Game;
+namespace Code.Settings;
 
-[CreateAssetMenu(menuName = "Data/Game Settings")]
+[CreateAssetMenu(menuName = "Data/Settings Facade")]
 public sealed class SettingsFacade : ScriptableObject
 {
-    [SerializeField] private Camera.Settings _camera;
+    [SerializeField] private Camera1.Settings _camera;
     [SerializeField] private Hero.Settings _hero;
     [SerializeField] private Platform.Settings _platform;
     [SerializeField] private Cherry.Settings _cherry;
@@ -21,11 +25,14 @@ public sealed class SettingsFacade : ScriptableObject
     [SerializeField] private StickSpawner.Settings _stickSpawner;
     [SerializeField] private PlatformSpawner.Settings _platformSpawner;
     [SerializeField] private GameWorld.Settings _gameWorld;
-    [SerializeField] private GameLoopSettings _gameLoopSettings;
+
     [SerializeField] private AdsManager.Settings _adsManager;
     [SerializeField] private IAPManager.Settings _iapManager;
-    [SerializeField] private Ads.Settings _androidAdsProvider;
-    [SerializeField] private Ads.Settings _iosAdsProvider;
+    [SerializeField] private AdsSettings _androidAdsProvider;
+    [SerializeField] private AdsSettings _iosAdsProvider;
+
+    [SerializeField] private GameSettings _gameSettings;
+
     [SerializeField] private DevelopmentSettings _developmentSettings;
 
     public DevelopmentSettings Development => _developmentSettings;
@@ -41,7 +48,14 @@ public sealed class SettingsFacade : ScriptableObject
         builder.RegisterInstance(_stickSpawner);
         builder.RegisterInstance(_platformSpawner);
         builder.RegisterInstance(_gameWorld);
-        builder.RegisterInstance(_gameLoopSettings);
+
+        builder.RegisterInstance(_gameSettings);
+
+        RegisterMonetization(builder);
+    }
+
+    private void RegisterMonetization(IContainerBuilder builder)
+    {
         builder.RegisterInstance(_adsManager);
         builder.RegisterInstance(_iapManager);
 

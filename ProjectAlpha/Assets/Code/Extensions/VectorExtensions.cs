@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
+using Code.Common;
 using UnityEngine;
 
-namespace Code;
+namespace Code.Extensions;
 
 public static class VectorExtensions
 {

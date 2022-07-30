@@ -5,7 +5,7 @@ using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Code;
+namespace Code.Extensions;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public static class DOTweenExtensions

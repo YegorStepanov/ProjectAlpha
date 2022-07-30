@@ -1,9 +1,14 @@
 ﻿using Code.AddressableAssets;
 using Code.Animations.Game;
-using Code.Services;
-using Code.Services.Game.UI;
+using Code.Data.PositionGenerator;
+using Code.Data.WidthGenerator;
+using Code.Services.Entities.Cherry;
+using Code.Services.Entities.Hero;
+using Code.Services.Entities.Platform;
+using Code.Services.Entities.Stick;
+using Code.Services.UI.Game;
 
-namespace Code;
+namespace Code.Addresses;
 
 public static class GameAddress
 {
@@ -16,6 +21,6 @@ public static class GameAddress
     public static readonly Address<PlatformPositionGenerator> PlatformPositionGenerator = new("Platform Position Generator");
     public static readonly Address<CherryPositionGenerator> CherryPositionGenerator = new("Cherry Position Generator");
 
-    public static readonly Address<GameUI> GameUI = new("Game UI");
+    public static readonly Address<GameUIView> GameUI = new("Game UI");
     public static readonly Address<RedPointHitGameAnimation> Plus1Notification = new("Plus 1 Notification");
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Unity.IL2CPP.CompilerServices
+namespace Code.Infrastructure.Unity
 {
     /// <summary>
     /// The code generation options available for IL to C++ conversion.

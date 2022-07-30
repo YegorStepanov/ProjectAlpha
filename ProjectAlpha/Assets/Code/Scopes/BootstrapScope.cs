@@ -1,5 +1,6 @@
-﻿using Code.AddressableAssets;
-using Code.Services;
+﻿using Code.AddressableAssets.Loaders;
+using Code.Addresses;
+using Code.Scopes.EntryPoints;
 using Cysharp.Threading.Tasks;
 using VContainer;
 using VContainer.Unity;
@@ -19,6 +20,6 @@ public sealed class BootstrapScope : Scope
     {
         builder.RegisterComponentInNewPrefab(_loadingScreen, Lifetime.Singleton);
 
-        builder.RegisterEntryPoint<BootstrapStart>();
+        builder.RegisterEntryPoint<BootstrapEntryPoint>();
     }
 }

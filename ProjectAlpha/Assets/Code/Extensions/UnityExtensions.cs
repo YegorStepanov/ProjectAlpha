@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Code;
+namespace Code.Extensions;
 
 public static class UnityExtensions
 {

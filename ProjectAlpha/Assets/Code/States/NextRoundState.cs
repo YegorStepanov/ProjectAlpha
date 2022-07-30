@@ -1,8 +1,14 @@
-﻿using Code.Services;
-using Code.Services.Game.UI;
+﻿using Code.Common;
+using Code.Data.PositionGenerator;
+using Code.Extensions;
+using Code.Services;
+using Code.Services.Entities.Cherry;
+using Code.Services.Entities.Hero;
+using Code.Services.Entities.Platform;
+using Code.Services.Infrastructure;
+using Code.Services.Spawners;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using Camera = Code.Services.Camera;
 
 namespace Code.States;
 
@@ -31,7 +37,7 @@ public sealed class NextRoundState : IState<NextRoundState.Arguments>
         IPlatform nextPlatform = await CreatePlatform(nextCameraBorders);
         ICherry nextCherry = await CreateCherry(nextCameraBorders);
 
-        currentPlatform.RedPoint.FadeOutAsync().Forget();
+        currentPlatform.PlatformRedPoint.FadeOutAsync().Forget();
         await _cameraMover.MoveCamera(nextCameraBorders, currentPlatform, nextPlatform, nextCherry);
 
         stateMachine.Enter<StickControlState, StickControlState.Arguments>(
@@ -52,21 +58,21 @@ public sealed class NextRoundState : IState<NextRoundState.Arguments>
 
 public class CameraMover
 {
-    private readonly Camera _camera;
+    private readonly ICamera _camera1;
     private readonly PlatformPositionGenerator _platformPositionGenerator;
     private readonly CherryPositionGenerator _cherryPositionGenerator;
 
-    public CameraMover(Camera camera, PlatformPositionGenerator platformPositionGenerator, CherryPositionGenerator cherryPositionGenerator)
+    public CameraMover(ICamera camera1, PlatformPositionGenerator platformPositionGenerator, CherryPositionGenerator cherryPositionGenerator)
     {
-        _camera = camera;
+        _camera1 = camera1;
         _platformPositionGenerator = platformPositionGenerator;
         _cherryPositionGenerator = cherryPositionGenerator;
     }
 
     public Borders GetNextCameraBorders(IPlatform currentPlatform)
     {
-        Vector2 offset = currentPlatform.Borders.LeftBot - _camera.Borders.LeftBot;
-        return _camera.Borders.Shift(offset);
+        Vector2 offset = currentPlatform.Borders.LeftBot - _camera1.Borders.LeftBot;
+        return _camera1.Borders.Shift(offset);
     }
 
     //destination instead next
@@ -80,7 +86,7 @@ public class CameraMover
             currentPlatform.Borders.Right, platformDestinationX - nextPlatform.Borders.HalfWidth, nextCherry.Borders.Width);
 
         await UniTask.WhenAll(
-            _camera.MoveAsync(nextCameraBorders.Center),
+            _camera1.MoveAsync(nextCameraBorders.Center),
             nextPlatform.MoveAsync(platformDestinationX),
             nextCherry.MoveAsync(cherryDestinationX));
     }

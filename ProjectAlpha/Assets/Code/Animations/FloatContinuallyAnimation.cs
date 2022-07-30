@@ -4,7 +4,7 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Code.UI.Animations;
+namespace Code.Animations;
 
 public sealed class FloatContinuallyAnimation : MonoBehaviour
 {

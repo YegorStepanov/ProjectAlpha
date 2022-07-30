@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Code.Services;
+namespace Code.Services.Data;
 
 public class SessionProgress : ISessionProgress
 {

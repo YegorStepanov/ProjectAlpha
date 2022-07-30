@@ -3,7 +3,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Code;
+namespace Code.Extensions;
 
 public static class VContainerExtensions
 {
