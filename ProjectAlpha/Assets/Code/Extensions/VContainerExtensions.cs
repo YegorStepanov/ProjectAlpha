@@ -26,14 +26,12 @@ public static class VContainerExtensions
     [PublicAPI]
     public static IContainerBuilder InjectGameObject<T>(this IContainerBuilder builder)
     {
-        return builder.RegisterComponentAndInjectGameObject(typeof(T));
+        return builder.InjectGameObject(typeof(T));
     }
 
     [PublicAPI]
     public static IContainerBuilder InjectGameObject<T>(this IContainerBuilder builder, T instance)
     {
-        builder.RegisterComponent(instance);
-
         builder.RegisterBuildCallback(resolver =>
         {
             var resolved = resolver.Resolve<T>();
