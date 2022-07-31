@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Code.AddressableAssets;
 
-public sealed class AddressableComponentPool<TComponent> : AsyncPool<TComponent> where TComponent : Component
+public sealed class AddressablePool<TComponent> : AsyncPool<TComponent> where TComponent : Component
 {
     private readonly Address<TComponent> _address;
     private readonly string _containerName;
@@ -11,7 +11,7 @@ public sealed class AddressableComponentPool<TComponent> : AsyncPool<TComponent>
 
     private Transform _container;
 
-    public AddressableComponentPool(
+    public AddressablePool(
         Address<TComponent> address,
         int initialSize,
         int capacity,

@@ -38,9 +38,9 @@ public sealed class GameScope : Scope
             loader.LoadAssetAsync(Address.UI.GameUI),
             loader.LoadAssetAsync(Address.UI.RedPointHitAnimation));
 
-        _platformPool = loader.CreateCyclicPool(Address.Entity.Platform, 0, 3, "Platforms");
-        _stickPool = loader.CreateCyclicPool(Address.Entity.Stick, 0, 2, "Sticks");
-        _cherryPool = loader.CreateCyclicPool(Address.Entity.Cherry, 0, 2, "Cherries");
+        _platformPool = loader.CreateAsyncCyclicPool(Address.Entity.Platform, 0, 3, "Platforms");
+        _stickPool = loader.CreateAsyncCyclicPool(Address.Entity.Stick, 0, 2, "Sticks");
+        _cherryPool = loader.CreateAsyncCyclicPool(Address.Entity.Cherry, 0, 2, "Cherries");
 
         (WidthGeneratorData widthGeneratorData,
             _platformPositionGenerator,

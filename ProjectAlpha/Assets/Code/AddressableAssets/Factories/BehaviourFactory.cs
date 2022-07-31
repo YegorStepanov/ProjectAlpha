@@ -4,7 +4,6 @@ using VContainer.Unity;
 
 namespace Code.AddressableAssets;
 
-//todo: remove full folder?
 public abstract class BehaviourFactory<TValue> : IFactory<TValue> where TValue : Object
 {
     private readonly ICreator _creator;
@@ -15,18 +14,19 @@ public abstract class BehaviourFactory<TValue> : IFactory<TValue> where TValue :
 
     private Transform _container;
 
-    protected BehaviourFactory(ICreator creator, IObjectResolver resolver, TValue prefab, InstanceName name, ParentName parentName)
+    protected BehaviourFactory(ICreator creator, IObjectResolver resolver, TValue prefab, string name, string parentName)
     {
         _creator = creator;
         _resolver = resolver;
         _prefab = prefab;
-        _name = name.Name;
-        _containerName = parentName.Name;
+        _name = name;
+        _containerName = parentName;
     }
 
     public TValue Create()
     {
-        _container ??= _creator.Instantiate(_containerName).transform;
+        if (_container == null)
+            _container = _creator.Instantiate(_containerName).transform;
 
         TValue instance = Object.Instantiate(_prefab, _container);
         instance.name = _name;

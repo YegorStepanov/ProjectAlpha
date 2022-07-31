@@ -6,19 +6,19 @@ namespace Code.Extensions;
 // ReSharper disable once InconsistentNaming
 public static class IAddressablesLoaderExtensions
 {
-    public static IAsyncPool<T> CreatePool<T>(
+    public static IAsyncPool<T> CreateAsyncPool<T>(
         this IAddressablesLoader loader, Address<T> address, int initialSize, int capacity, string containerName)
         where T : Component
     {
-        AddressableComponentPool<T> pool = new(address, initialSize, capacity, containerName, loader);
+        AddressablePool<T> pool = new(address, initialSize, capacity, containerName, loader);
         return pool;
     }
 
-    public static IAsyncPool<T> CreateCyclicPool<T>(
+    public static IAsyncPool<T> CreateAsyncCyclicPool<T>(
         this IAddressablesLoader loader, Address<T> address, int initialSize, int capacity, string containerName)
         where T : Component
     {
-        IAsyncPool<T> pool = CreatePool(loader, address, initialSize, capacity, containerName);
+        IAsyncPool<T> pool = CreateAsyncPool(loader, address, initialSize, capacity, containerName);
         return new RecyclablePool<T>(pool);
     }
 }
