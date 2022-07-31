@@ -1,4 +1,4 @@
-﻿namespace Code.Settings;
+﻿namespace Code;
 
 [System.Serializable]
 public class DevelopmentSettings

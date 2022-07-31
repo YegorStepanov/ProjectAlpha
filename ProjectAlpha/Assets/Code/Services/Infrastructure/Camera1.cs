@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using Code.AddressableAssets.Loaders;
+using Code.AddressableAssets;
 using Code.Common;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
@@ -30,8 +30,6 @@ public sealed class Camera1 : MonoBehaviour, ICamera
     public void Construct(IScopedAddressablesLoader loader, IRandomizer randomizer, Settings settings)
     {
         _settings = settings;
-        //it should be null, isn't?
-        Debug.Log("Camera Construct");
         _backgroundChanger = new BackgroundChanger(loader, randomizer, _backgroundImage);
     }
 
@@ -40,7 +38,6 @@ public sealed class Camera1 : MonoBehaviour, ICamera
 
     public void RestoreInitialPosition()
     {
-        Debug.Log("IsRestoreCamera null: " + (transform == null));
         transform.position = _initialPosition;
     }
 

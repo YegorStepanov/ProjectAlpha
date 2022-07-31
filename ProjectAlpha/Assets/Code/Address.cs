@@ -2,14 +2,9 @@
 using Code.Animations.Game;
 using Code.Data.PositionGenerator;
 using Code.Data.WidthGenerator;
-using Code.Services.Entities.Cherry;
-using Code.Services.Entities.Hero;
-using Code.Services.Entities.Platform;
-using Code.Services.Entities.Stick;
+using Code.Services.Entities;
 using Code.Services.Infrastructure;
-using Code.Services.UI.Game;
-using Code.Services.UI.Menu;
-using Code.Settings;
+using Code.Services.UI;
 using Tayx.Graphy;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -45,13 +40,13 @@ public static class Address
     public static class UI
     {
         public static readonly Address<GameUIView> GameUI = new("Game UI");
-        public static readonly Address<RedPointHitGameAnimation> Plus1Notification = new("Plus 1 Notification");
+        public static readonly Address<RedPointHitGameAnimation> RedPointHitAnimation = new("Plus 1 Notification");
 
         public static readonly Address<GameObject> ShopPanel = new("Shop Panel");
         public static readonly Address<GameObject> HeroSelectorPanel = new("Hero Selector Panel");
 
-        public static readonly Address<MenuUIActions> MenuMediator = new("Menu Mediator");
-        public static readonly Address<MainMenuView> MainMenu = new("Main Menu");
+        public static readonly Address<MenuUIActions> MenuUIActions = new("Menu Mediator");
+        public static readonly Address<MainMenuView> MainMenuView = new("Main Menu");
 
         public static readonly Address<LoadingScreen> LoadingScreen = new("LoadingScreen");
     }

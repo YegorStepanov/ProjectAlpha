@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -15,24 +16,54 @@ public static class VContainerExtensions
     }
 
     [PublicAPI]
-    public static IContainerBuilder InjectGameObject<T>(this IContainerBuilder builder) where T : Component
+    public static IContainerBuilder RegisterComponentAndInjectGameObject<T>(this IContainerBuilder builder, T instance)
     {
+        builder.RegisterComponent(instance);
+        builder.InjectGameObject(instance);
+        return builder;
+    }
+
+    [PublicAPI]
+    public static IContainerBuilder InjectGameObject<T>(this IContainerBuilder builder)
+    {
+        return builder.RegisterComponentAndInjectGameObject(typeof(T));
+    }
+
+    [PublicAPI]
+    public static IContainerBuilder InjectGameObject<T>(this IContainerBuilder builder, T instance)
+    {
+        builder.RegisterComponent(instance);
+
         builder.RegisterBuildCallback(resolver =>
         {
-            var instance = resolver.Resolve<T>();
-            resolver.InjectGameObject(instance.gameObject);
+            var resolved = resolver.Resolve<T>();
+
+            if (resolved is not Component component)
+                throw new ArgumentException($"The type must be a component, actual type is {resolved.GetType().Name}");
+
+            resolver.InjectGameObject(component.gameObject);
         });
 
         return builder;
     }
 
     [PublicAPI]
-    public static IContainerBuilder Inject<T>(this IContainerBuilder builder) where T : Component
+    public static IContainerBuilder Inject<T>(this IContainerBuilder builder)
+    {
+        return builder.Inject(typeof(T));
+    }
+
+    [PublicAPI]
+    public static IContainerBuilder Inject<T>(this IContainerBuilder builder, T instance)
     {
         builder.RegisterBuildCallback(resolver =>
         {
-            var instance = resolver.Resolve<T>();
-            resolver.Inject(instance);
+            var resolved = resolver.Resolve<T>();
+
+            if (resolved is not Component component)
+                throw new ArgumentException($"The type must be a component, actual type is {resolved.GetType().Name}");
+
+            resolver.Inject(component);
         });
 
         return builder;

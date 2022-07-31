@@ -2,7 +2,7 @@
 using VContainer;
 using VContainer.Unity;
 
-namespace Code.AddressableAssets.Factories;
+namespace Code.AddressableAssets;
 
 //todo: remove full folder?
 public abstract class BehaviourFactory<TValue> : IFactory<TValue> where TValue : Object

@@ -1,9 +1,8 @@
 ﻿using Code.Common;
 using Code.Services;
-using Code.Services.Entities.Hero;
-using Code.Services.Entities.Platform;
+using Code.Services.Entities;
 using Code.Services.Spawners;
-using Code.Services.UI.Game;
+using Code.Services.UI;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States;

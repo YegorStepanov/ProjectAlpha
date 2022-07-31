@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Entities.Cherry;
+namespace Code.Services.Entities;
 
 public interface ICherryAnimations
 {

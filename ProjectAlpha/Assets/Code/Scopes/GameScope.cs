@@ -1,18 +1,13 @@
-﻿using Code.AddressableAssets.Loaders;
-using Code.AddressableAssets.Pools.Async;
+﻿using Code.AddressableAssets;
 using Code.Animations.Game;
 using Code.Data.PositionGenerator;
 using Code.Data.WidthGenerator;
 using Code.Extensions;
-using Code.Scopes.EntryPoints;
 using Code.Services;
-using Code.Services.Entities.Cherry;
-using Code.Services.Entities.Hero;
-using Code.Services.Entities.Platform;
-using Code.Services.Entities.Stick;
+using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.Spawners;
-using Code.Services.UI.Game;
+using Code.Services.UI;
 using Code.States;
 using Cysharp.Threading.Tasks;
 using VContainer;
@@ -35,28 +30,30 @@ public sealed class GameScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        WidthGeneratorData widthGeneratorData = await loader.LoadAssetAsync(Address.Data.WidthGenerator);
-        _widthGenerator = widthGeneratorData.Create();
-
-        _platformPositionGenerator = await loader.LoadAssetAsync(Address.Data.PlatformPositionGenerator);
-        _cherryPositionGenerator = await loader.LoadAssetAsync(Address.Data.CherryPositionGenerator);
-
-        _hero = await loader.LoadAssetAsync(Address.Entity.Hero);
-
-        _platformPool = loader.CreatePool(Address.Entity.Platform, 0, 3, "Platforms");
+        var tasks = UniTask.WhenAll(
+            loader.LoadAssetAsync(Address.Data.WidthGenerator),
+            loader.LoadAssetAsync(Address.Data.PlatformPositionGenerator),
+            loader.LoadAssetAsync(Address.Data.CherryPositionGenerator),
+            loader.LoadAssetAsync(Address.Entity.Hero),
+            loader.LoadAssetAsync(Address.UI.GameUI),
+            loader.LoadAssetAsync(Address.UI.RedPointHitAnimation));
 
         _platformPool = loader.CreateCyclicPool(Address.Entity.Platform, 0, 3, "Platforms");
         _stickPool = loader.CreateCyclicPool(Address.Entity.Stick, 0, 2, "Sticks");
         _cherryPool = loader.CreateCyclicPool(Address.Entity.Cherry, 0, 2, "Cherries");
 
-        _gameUIView = await loader.LoadAssetAsync(Address.UI.GameUI);
-        _redPointHitGameAnimation = await loader.LoadAssetAsync(Address.UI.Plus1Notification);
+        (WidthGeneratorData widthGeneratorData,
+            _platformPositionGenerator,
+            _cherryPositionGenerator,
+            _hero,
+            _gameUIView,
+            _redPointHitGameAnimation) = await tasks;
+
+        _widthGenerator = widthGeneratorData.Create();
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)
     {
-        builder.Register<GameWorld>(Lifetime.Singleton); //move to
-
         RegisterHero(builder);
         RegisterPlatform(builder);
         RegisterStick(builder);
@@ -64,6 +61,8 @@ public sealed class GameScope : Scope
 
         RegisterUI(builder);
         RegisterGameStateMachine(builder);
+
+        RegisterGameServices(builder);
 
         builder.RegisterEntryPoint<GameEntryPoint>();
     }
@@ -104,7 +103,7 @@ public sealed class GameScope : Scope
     private void RegisterUI(IContainerBuilder builder)
     {
         builder.RegisterComponentInNewPrefab(_gameUIView, Lifetime.Singleton);
-        builder.InjectGameObject<GameUIView>();
+        builder.InjectGameObject(_gameUIView);
 
         builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
 
@@ -115,22 +114,25 @@ public sealed class GameScope : Scope
 
     private static void RegisterGameStateMachine(IContainerBuilder builder)
     {
-        builder.Register<HeroMovement>(Lifetime.Singleton);
-        builder.Register<CameraMover>(Lifetime.Singleton);
-
-        builder.Register<IExitState, StartState>(Lifetime.Transient);
-        builder.Register<IExitState, MoveHeroToMenuPlatformState>(Lifetime.Transient);
-        builder.Register<IExitState, MoveHeroToPlatformState>(Lifetime.Transient);
-        builder.Register<IExitState, NextRoundState>(Lifetime.Transient);
-        builder.Register<IExitState, StickControlState>(Lifetime.Transient);
-        builder.Register<IExitState, RestartState>(Lifetime.Transient);
-        builder.Register<IExitState, MoveHeroToGameOverState>(Lifetime.Transient);
-        builder.Register<IExitState, EndGameState>(Lifetime.Transient);
+        builder.Register<IExitState, StartState>(Lifetime.Singleton);
+        builder.Register<IExitState, MoveHeroToMenuPlatformState>(Lifetime.Singleton);
+        builder.Register<IExitState, MoveHeroToPlatformState>(Lifetime.Singleton);
+        builder.Register<IExitState, NextRoundState>(Lifetime.Singleton);
+        builder.Register<IExitState, StickControlState>(Lifetime.Singleton);
+        builder.Register<IExitState, RestartState>(Lifetime.Singleton);
+        builder.Register<IExitState, MoveHeroToGameOverState>(Lifetime.Singleton);
+        builder.Register<IExitState, EndGameState>(Lifetime.Singleton);
 
         builder.Register<IGameStateMachine, GameStateMachine>(Lifetime.Singleton);
+    }
 
+    private static void RegisterGameServices(IContainerBuilder builder)
+    {
+        builder.Register<GameWorld>(Lifetime.Singleton);
         builder.Register<GameStartEventAwaiter>(Lifetime.Singleton);
         builder.Register<GameStateResetter>(Lifetime.Singleton);
         builder.Register<SpawnersResetter>(Lifetime.Singleton);
+        builder.Register<HeroMovement>(Lifetime.Singleton);
+        builder.Register<CameraMover>(Lifetime.Singleton);
     }
 }

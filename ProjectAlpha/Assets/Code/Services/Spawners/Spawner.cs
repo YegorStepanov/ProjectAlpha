@@ -1,4 +1,4 @@
-﻿using Code.AddressableAssets.Pools.Async;
+﻿using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 
 namespace Code.Services.Spawners;

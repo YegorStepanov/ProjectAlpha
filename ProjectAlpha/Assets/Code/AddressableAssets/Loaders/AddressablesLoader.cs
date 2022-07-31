@@ -6,7 +6,7 @@ using UnityEngine;
 using VContainer;
 using Object = UnityEngine.Object;
 
-namespace Code.AddressableAssets.Loaders;
+namespace Code.AddressableAssets;
 
 public class AddressablesLoader : IScopedAddressablesLoader
 {

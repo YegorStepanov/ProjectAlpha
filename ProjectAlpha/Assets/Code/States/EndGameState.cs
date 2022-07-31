@@ -1,10 +1,8 @@
 ﻿using System.Threading;
 using Code.Services;
-using Code.Services.Entities.Hero;
-using Code.Services.Entities.Stick;
+using Code.Services.Entities;
 using Code.Services.Infrastructure;
-using Code.Services.UI.Game;
-using Code.Settings;
+using Code.Services.UI;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States;

@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Code.AddressableAssets.Pools.Async;
+namespace Code.AddressableAssets;
 
 public interface IAsyncPool<T>
 {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading;
-using Code.Services.Monetization.Banner;
-using Code.Services.Monetization.FullScreen;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Advertisements;

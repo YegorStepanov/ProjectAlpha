@@ -1,6 +1,6 @@
-﻿using Code.AddressableAssets.Pools.Async;
+﻿using Code.AddressableAssets;
 using Code.Common;
-using Code.Services.Entities.Cherry;
+using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Cysharp.Threading.Tasks;
 using UnityEngine;

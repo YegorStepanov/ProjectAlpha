@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using VContainer;
 
-namespace Code.Services.Entities.Platform;
+namespace Code.Services.Entities;
 
 public sealed class PlatformRedPoint : SpriteEntity, IPlatformRedPoint
 {

@@ -21,9 +21,9 @@ public sealed class GameStartEventAwaiter
 
     public async UniTask Wait()
     {
-        //workaround for the Editor
+        //workaround for Editor
         //when the menu scene is not loaded (i.e. the game is started from GameScene)
-        if (_sceneLoader.IsLoaded<MenuScene>())
+        if (_sceneLoader.IsLoaded(Address.Scene.Menu))
             await _gameStartEvent.FirstAsync(_token);
     }
 }

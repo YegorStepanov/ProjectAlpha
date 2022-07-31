@@ -1,5 +1,5 @@
 ﻿using Code.Common;
-using Code.Services.Entities.Hero;
+using Code.Services.Entities;
 using UnityEngine;
 
 namespace Code.Services.Spawners;

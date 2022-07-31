@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using Code.AddressableAssets;
-using Code.AddressableAssets.Loaders;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;

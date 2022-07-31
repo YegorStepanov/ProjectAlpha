@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Code.Services.UI.Menu;
+namespace Code.Services.UI;
 
-public sealed class MainMenuView : MonoBehaviour
+public sealed class MainMenuView : MonoBehaviour, IMainMenuView
 {
     [SerializeField] private GameObject _soundOn;
     [SerializeField] private GameObject _soundOff;
@@ -10,15 +10,15 @@ public sealed class MainMenuView : MonoBehaviour
     private void Awake() =>
         EnableSound();
 
-    private void EnableSound()
-    {
-        _soundOn.SetActive(true);
-        _soundOff.SetActive(false);
-    }
-
     public void ToggleSound()
     {
         _soundOn.SetActive(!_soundOn.activeSelf);
         _soundOff.SetActive(!_soundOff.activeSelf);
+    }
+
+    private void EnableSound()
+    {
+        _soundOn.SetActive(true);
+        _soundOff.SetActive(false);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Object = UnityEngine.Object;
 
-namespace Code.AddressableAssets.Cache;
+namespace Code.AddressableAssets;
 
 public class AddressablesCache : IAddressablesCache, IDisposable
 {

@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 
-namespace Code.Services.Entities.Hero;
+namespace Code.Services.Entities;
 
 public sealed class Hero : SpriteEntity, IHero
 {

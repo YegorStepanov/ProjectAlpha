@@ -1,4 +1,4 @@
-﻿using Code.Services.Entities.Stick;
+﻿using Code.Services.Entities;
 
 namespace Code.Services.Spawners;
 

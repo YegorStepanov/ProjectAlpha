@@ -1,6 +1,6 @@
 ﻿using UnityEngine.Purchasing;
 
-namespace Code.Services.Monetization.IAP;
+namespace Code.Services.Monetization;
 
 public interface IIAPManager
 {

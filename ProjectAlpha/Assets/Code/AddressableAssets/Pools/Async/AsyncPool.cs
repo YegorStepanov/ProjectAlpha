@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.AddressableAssets.Pools.Async;
+namespace Code.AddressableAssets;
 
 public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
 {

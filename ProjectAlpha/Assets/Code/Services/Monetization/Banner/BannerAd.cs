@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading;
 using Code.Common;
-using Code.Settings;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Advertisements;
 
-namespace Code.Services.Monetization.Banner;
+namespace Code.Services.Monetization;
 
 public class BannerAd : IDisposable
 {

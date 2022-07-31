@@ -1,13 +1,13 @@
-﻿using Code.Services.UI.Menu;
+﻿using Code.Services.UI;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using VContainer;
 
-namespace Code.UI.Actions.Menu;
+namespace Code.UI.Actions;
 
 public sealed class Purchase : MonoBehaviour
 {
-    [Inject] private MenuUIActions _menu;
+    [Inject] private IMenuUIActions _menu;
 
     public void PurchaseComplete(Product product) =>
         _menu.PurchaseComplete(product);

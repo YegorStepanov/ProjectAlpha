@@ -2,13 +2,13 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 
-namespace Code.Services.Entities.Platform;
+namespace Code.Services.Entities;
 
 public sealed class Platform : SpriteEntity, IPlatform
 {
     [SerializeField] private PlatformRedPoint _platformRedPoint;
-    private Settings _settings;
     private IPlatformAnimations _animations;
+    private Settings _settings;
 
     public IPlatformRedPoint PlatformRedPoint => _platformRedPoint;
 

@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.UI.Game;
+namespace Code.Services.UI;
 
 public sealed class GameUIController
 {

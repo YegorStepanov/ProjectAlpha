@@ -1,10 +1,9 @@
 ﻿using System.Threading;
-using Code.Settings;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-namespace Code.Services.Monetization.FullScreen;
+namespace Code.Services.Monetization;
 
 public class AdInitializer : IUnityAdsInitializationListener
 {

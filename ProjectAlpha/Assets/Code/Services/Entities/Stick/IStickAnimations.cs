@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Entities.Stick;
+namespace Code.Services.Entities;
 
 public interface IStickAnimations
 {

@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Code.Services.Entities.Hero;
+namespace Code.Services.Entities;
 
 public class HeroAnimations : IHeroAnimations
 {

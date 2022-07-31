@@ -1,8 +1,7 @@
-﻿using Code.AddressableAssets.Loaders;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.AddressableAssets.Pools.Async;
+namespace Code.AddressableAssets;
 
 public sealed class AddressableComponentPool<TComponent> : AsyncPool<TComponent> where TComponent : Component
 {

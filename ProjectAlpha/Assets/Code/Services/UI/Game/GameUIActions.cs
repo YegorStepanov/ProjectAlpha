@@ -3,7 +3,7 @@ using Code.States;
 using UnityEngine.iOS;
 using VContainer;
 
-namespace Code.Services.UI.Game;
+namespace Code.Services.UI;
 
 public sealed class GameUIActions : IGameUIActions
 {

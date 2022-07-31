@@ -1,4 +1,4 @@
-﻿namespace Code.Services.UI.Game;
+﻿namespace Code.Services.UI;
 
 public interface IGameUIActions
 {

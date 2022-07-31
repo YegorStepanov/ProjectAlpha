@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using Code.AddressableAssets;
-using Code.AddressableAssets.Loaders;
 using Cysharp.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;

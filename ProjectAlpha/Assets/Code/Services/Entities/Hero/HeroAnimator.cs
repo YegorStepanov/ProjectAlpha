@@ -4,7 +4,7 @@ using Code.Animations;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Entities.Hero;
+namespace Code.Services.Entities;
 
 public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
 {

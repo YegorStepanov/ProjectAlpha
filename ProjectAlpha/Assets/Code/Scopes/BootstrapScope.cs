@@ -1,5 +1,4 @@
-﻿using Code.AddressableAssets.Loaders;
-using Code.Scopes.EntryPoints;
+﻿using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using VContainer;
 using VContainer.Unity;

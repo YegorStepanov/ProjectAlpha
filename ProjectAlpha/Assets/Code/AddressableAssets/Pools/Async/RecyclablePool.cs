@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-namespace Code.AddressableAssets.Pools.Async;
+namespace Code.AddressableAssets;
 
 //it will be the decorator when VContainer adds support for it
 public sealed class RecyclablePool<T> : IAsyncPool<T>

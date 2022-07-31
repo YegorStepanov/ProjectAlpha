@@ -1,9 +1,9 @@
-﻿using Code.AddressableAssets.Pools.Async;
+﻿using Code.AddressableAssets;
 using Code.Services.Spawners;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Entities.Stick;
+namespace Code.Services.Entities;
 
 public sealed class StickSpawner : Spawner<Stick>
 {

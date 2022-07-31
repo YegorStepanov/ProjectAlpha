@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using VContainer.Unity;
 
-namespace Code.AddressableAssets.Pools;
+namespace Code.AddressableAssets;
 
 public abstract class BehaviourPool<TValue> : Pool<TValue> where TValue : Object
 {

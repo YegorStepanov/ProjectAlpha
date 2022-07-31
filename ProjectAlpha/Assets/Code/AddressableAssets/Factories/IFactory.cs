@@ -1,4 +1,4 @@
-﻿namespace Code.AddressableAssets.Factories;
+﻿namespace Code.AddressableAssets;
 
 public interface IFactory<out TValue> //perf?
 {

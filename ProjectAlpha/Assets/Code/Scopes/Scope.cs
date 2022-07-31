@@ -2,12 +2,10 @@
 using System.Reflection;
 using System.Threading;
 using Code.AddressableAssets;
-using Code.AddressableAssets.Loaders;
 using Code.Common;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine.Assertions;
-using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
@@ -19,25 +17,24 @@ public abstract class Scope : LifetimeScope
 {
     private AddressablesLoader _loader;
     private CancellationToken _token;
-    private bool _isBuilt;
-    private Scene _scene;
+    //private Scene _scene;
+
+    public bool IsBuilt { get; private set; }
 
     [UsedImplicitly]
     private new async UniTask Awake()
     {
         _token = this.GetCancellationTokenOnDestroy();
         AssertAutoRunIsDisabled();
+
         await InitRoot();
         SetParentScope();
         await BuildAsync();
     }
 
-    public async UniTask WaitForBuild(SceneInstance scene)
+    public async UniTask WaitForBuild()
     {
-        //VContainer issue, it spawns new gameobjects in the active scene
-        _scene = scene.Scene;
-
-        while (!_isBuilt)
+        while (!IsBuilt)
             await UniTask.Yield(_token);
     }
 
@@ -60,10 +57,15 @@ public abstract class Scope : LifetimeScope
 
     private async UniTask BuildAsync()
     {
+        //VContainer issue, it spawns new gameobjects in the active scene
+        Scene scene = gameObject.scene;
+
         await PreloadScopeAsync();
-        SetActiveScene();
+
+        SetScene(scene);
         Build();
-        _isBuilt = true;
+
+        IsBuilt = true;
     }
 
     private async UniTask PreloadScopeAsync()
@@ -72,10 +74,10 @@ public abstract class Scope : LifetimeScope
         await PreloadAsync(_loader);
     }
 
-    private void SetActiveScene()
+    private static void SetScene(Scene scene)
     {
-        if (_scene.IsValid())
-            SceneManager.SetActiveScene(_scene);
+        if (scene.IsValid())
+            SceneManager.SetActiveScene(scene);
     }
 
     protected override void OnDestroy()

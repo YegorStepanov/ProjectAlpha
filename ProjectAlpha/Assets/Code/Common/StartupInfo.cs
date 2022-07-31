@@ -3,23 +3,13 @@ using UnityEngine.SceneManagement;
 
 namespace Code.Common;
 
-//todo helpers namespace?
 public static class StartupInfo
 {
-    //public static bool IsGameScene { get; private set; }
-    //public static bool IsBootstrapScene { get; private set; }
-    //public static bool IsBootstrapper { get; private set; }
-
     public static string StartupSceneName { get; private set; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    public static void Init()
+    private static void Init()
     {
         StartupSceneName = SceneManager.GetActiveScene().name;
-        Debug.Log("StartUpScene: " + StartupSceneName);
-
-        //IsGameScene = StartupSceneName == SceneAddress.Game.Key;
-        //IsBootstrapScene = StartupSceneName == SceneAddress.Bootstrap.Key;
-        //IsBootstrapper = StartupSceneName == "Bootstrapper";
     }
 }

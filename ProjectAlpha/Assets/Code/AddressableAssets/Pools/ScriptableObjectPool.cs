@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using VContainer.Unity;
 
-namespace Code.AddressableAssets.Pools;
+namespace Code.AddressableAssets;
 
 public class ScriptableObjectPool<TValue> : BehaviourPool<TValue> where TValue : ScriptableObject
 {

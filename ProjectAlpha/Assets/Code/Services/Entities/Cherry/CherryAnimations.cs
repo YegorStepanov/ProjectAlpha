@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Code.Services.Entities.Cherry;
+namespace Code.Services.Entities;
 
 public class CherryAnimations : ICherryAnimations
 {

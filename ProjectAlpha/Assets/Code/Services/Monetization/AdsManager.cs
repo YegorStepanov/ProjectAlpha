@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using Code.Services.Data;
-using Code.Services.Monetization.FullScreen;
 using Cysharp.Threading.Tasks;
 
 namespace Code.Services.Monetization;

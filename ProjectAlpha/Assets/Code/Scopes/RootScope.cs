@@ -1,16 +1,9 @@
 ﻿using Code.AddressableAssets;
-using Code.AddressableAssets.Cache;
-using Code.AddressableAssets.Loaders;
 using Code.Common;
-using Code.Scopes.EntryPoints;
 using Code.Services.Data;
 using Code.Services.Development;
 using Code.Services.Infrastructure;
 using Code.Services.Monetization;
-using Code.Services.Monetization.Banner;
-using Code.Services.Monetization.FullScreen;
-using Code.Services.Monetization.IAP;
-using Code.Settings;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 using VContainer;
@@ -26,11 +19,11 @@ public sealed class RootScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        var loadCamera = loader.InstantiateAsync(Address.Infrastructure.CameraController, inject: false);
-        var loadGameSettings = loader.LoadAssetAsync(Address.Infrastructure.Settings);
-        var loadEventSystem = loader.InstantiateAsync(Address.Infrastructure.EventSystem, inject: false);
+        (_camera, _settingsFacade, _) = await (
+            loader.InstantiateAsync(Address.Infrastructure.CameraController, inject: false),
+            loader.LoadAssetAsync(Address.Infrastructure.Settings),
+            loader.InstantiateAsync(Address.Infrastructure.EventSystem, inject: false));
 
-        (_camera, _settingsFacade, _) = await (loadCamera, loadGameSettings, loadEventSystem);
         LoadDevelopmentAssets(loader, _settingsFacade);
     }
 
@@ -45,7 +38,7 @@ public sealed class RootScope : Scope
         RegisterSettings(builder);
         RegisterCamera(builder);
 
-        builder.Register<IInputManager, InputManager>(Lifetime.Singleton);
+        RegisterInput(builder);
         builder.Register<IRandomizer, Randomizer>(Lifetime.Singleton);
 
         RegisterSceneLoader(builder);
@@ -55,25 +48,9 @@ public sealed class RootScope : Scope
 
         RegisterProgress(builder);
         RegisterMessagePipe(builder);
-
-        builder.RegisterComponentOnNewGameObject<DevelopmentPanel>(Lifetime.Singleton);
+        RegisterDevelopment(builder);
 
         builder.RegisterEntryPoint<RootEntryPoint>();
-    }
-
-    private static void RegisterProgress(IContainerBuilder builder)
-    {
-        builder.Register<IPersistentProgress, PersistentProgress>(Lifetime.Singleton);
-        builder.Register<ISessionProgress, SessionProgress>(Lifetime.Singleton);
-        builder.Register<IProgress, Progress>(Lifetime.Singleton);
-    }
-
-    private static void RegisterMessagePipe(IContainerBuilder builder)
-    {
-        var options = builder.RegisterMessagePipe();
-        // Setup GlobalMessagePipe to enable diagnostics window and global function
-        builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
-        builder.RegisterMessageBroker<Event.GameStart>(options);
     }
 
     private void RegisterSettings(IContainerBuilder builder)
@@ -86,9 +63,14 @@ public sealed class RootScope : Scope
         builder.RegisterComponent(_camera);
     }
 
+    private static void RegisterInput(IContainerBuilder builder)
+    {
+        builder.Register<IInputManager, InputManager>(Lifetime.Singleton);
+    }
+
     private static void RegisterSceneLoader(IContainerBuilder builder)
     {
-        builder.RegisterInstance<ISceneLoader>(SceneLoader.Instance);
+        builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
     }
 
     private static void RegisterLoaders(IContainerBuilder builder)
@@ -115,5 +97,26 @@ public sealed class RootScope : Scope
     private static void RegisterIAP(IContainerBuilder builder)
     {
         builder.Register<IIAPManager, IAPManager>(Lifetime.Singleton);
+    }
+
+    private static void RegisterProgress(IContainerBuilder builder)
+    {
+        builder.Register<IPersistentProgress, PersistentProgress>(Lifetime.Singleton);
+        builder.Register<ISessionProgress, SessionProgress>(Lifetime.Singleton);
+        builder.Register<IProgress, Progress>(Lifetime.Singleton);
+    }
+
+    private static void RegisterMessagePipe(IContainerBuilder builder)
+    {
+        var options = builder.RegisterMessagePipe();
+        // Setup GlobalMessagePipe to enable diagnostics window and global function
+        builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
+        builder.RegisterMessageBroker<Event.GameStart>(options);
+    }
+
+    private static void RegisterDevelopment(IContainerBuilder builder)
+    {
+        if(PlatformInfo.IsDevelopment)
+            builder.RegisterComponentOnNewGameObject<DevelopmentPanel>(Lifetime.Singleton);
     }
 }

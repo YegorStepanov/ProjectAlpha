@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 
-namespace Code.Services.Monetization.FullScreen;
+namespace Code.Services.Monetization;
 
 public abstract class FullScreenAd
 {

@@ -1,4 +1,4 @@
-namespace Code.Services.Entities.Hero;
+namespace Code.Services.Entities;
 
 public enum HeroAnimatorState
 {

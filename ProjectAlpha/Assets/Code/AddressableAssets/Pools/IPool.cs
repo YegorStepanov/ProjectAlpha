@@ -1,4 +1,4 @@
-﻿namespace Code.AddressableAssets.Pools;
+﻿namespace Code.AddressableAssets;
 
 public interface IPool<TValue>
 {

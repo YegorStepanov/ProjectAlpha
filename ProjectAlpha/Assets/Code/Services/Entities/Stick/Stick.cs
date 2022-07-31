@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
 
-namespace Code.Services.Entities.Stick;
+namespace Code.Services.Entities;
 
 public sealed class Stick : SpriteEntity, IStick
 {

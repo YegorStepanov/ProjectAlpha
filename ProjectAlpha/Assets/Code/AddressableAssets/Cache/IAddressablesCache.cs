@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.AddressableAssets.Cache;
+namespace Code.AddressableAssets;
 
 public interface IAddressablesCache
 {

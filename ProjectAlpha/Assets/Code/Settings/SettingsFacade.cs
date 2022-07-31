@@ -1,17 +1,13 @@
 ﻿using Code.Common;
 using Code.Services;
-using Code.Services.Entities.Cherry;
-using Code.Services.Entities.Hero;
-using Code.Services.Entities.Platform;
-using Code.Services.Entities.Stick;
+using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.Monetization;
-using Code.Services.Monetization.IAP;
 using Code.Services.Spawners;
 using UnityEngine;
 using VContainer;
 
-namespace Code.Settings;
+namespace Code;
 
 [CreateAssetMenu(menuName = "Data/Settings Facade")]
 public sealed class SettingsFacade : ScriptableObject

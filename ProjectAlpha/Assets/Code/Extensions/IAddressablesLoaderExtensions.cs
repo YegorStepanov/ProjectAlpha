@@ -1,6 +1,4 @@
 ﻿using Code.AddressableAssets;
-using Code.AddressableAssets.Loaders;
-using Code.AddressableAssets.Pools.Async;
 using UnityEngine;
 
 namespace Code.Extensions;

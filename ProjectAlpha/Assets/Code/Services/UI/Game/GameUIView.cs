@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 
-namespace Code.Services.UI.Game;
+namespace Code.Services.UI;
 //change
 
 public sealed class GameUIView : MonoBehaviour

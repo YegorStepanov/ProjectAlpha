@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using Code.AddressableAssets;
@@ -19,57 +18,50 @@ public sealed class SceneLoader : ISceneLoader
     private readonly Dictionary<Address<Scene>, List<SceneInstance>> _scenes = new();
     private readonly List<GameObject> _tempRootGameObjects = new(32);
 
-    public static SceneLoader Instance { get; private set; }
+    public bool IsLoaded(Address<Scene> scene) =>
+        _scenes.ContainsKey(scene);
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    private static void Init()
-    {
-        Instance = new SceneLoader();
-    }
+    public UniTask LoadAsync(Address<Scene> scene, CancellationToken token) =>
+        LoadImpl(scene, token);
 
-    private SceneLoader() { }
-
-    public bool IsLoaded<TScene>() where TScene : struct, IScene
-    {
-        return _scenes.ContainsKey(GetAddress<TScene>());
-    }
-
-    public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
-    {
-        return LoadCoreAsync(GetAddress<TScene>(), token);
-    }
-
-    public async UniTask LoadAsync<TScene>(LifetimeScope parentScope, CancellationToken token)
-        where TScene : struct, IScene
+    public async UniTask LoadAsync(Address<Scene> scene, LifetimeScope parentScope, CancellationToken token)
     {
         using (LifetimeScope.EnqueueParent(parentScope))
-            await LoadCoreAsync(GetAddress<TScene>(), token);
+            await LoadImpl(scene, token);
     }
 
-    public UniTask UnloadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
-    {
-        return UnloadCoreAsync(GetAddress<TScene>(), token);
-    }
+    public UniTask UnloadAsync(Address<Scene> scene, CancellationToken token) =>
+        UnloadImpl(scene, token);
 
-    private async UniTask LoadCoreAsync(Address<Scene> address, CancellationToken token)
+    private async UniTask LoadImpl(Address<Scene> address, CancellationToken token)
     {
         SceneInstance scene = await Addressables.LoadSceneAsync(address.Key, LoadSceneMode.Additive)
             .WithCancellation(token);
 
         PushScene(address, scene);
-
         Scope scope = GetScope(scene);
-        await scope.WaitForBuild(scene);
+
+        await scope.WaitForBuild();
     }
 
     private void PushScene(Address<Scene> address, SceneInstance scene)
     {
-        // _scenes.Add(address, scene);
-
         if (_scenes.TryGetValue(address, out List<SceneInstance> list))
             list.Add(scene);
         else
             _scenes.Add(address, new List<SceneInstance> { scene });
+    }
+
+    private UniTask UnloadImpl(Address<Scene> address, CancellationToken token)
+    {
+        if (TryPopScene(address, out SceneInstance scene))
+            return Addressables.UnloadSceneAsync(scene).WithCancellation(token);
+
+        if (address.Key == StartupInfo.StartupSceneName)
+            return SceneManager.UnloadSceneAsync(StartupInfo.StartupSceneName).WithCancellation(token);
+
+        Debug.LogError($"Trying unload unknown scene: {address.Key}");
+        return UniTask.CompletedTask;
     }
 
     private bool TryPopScene(Address<Scene> address, out SceneInstance scene)
@@ -89,28 +81,6 @@ public sealed class SceneLoader : ISceneLoader
         return false;
     }
 
-    private async UniTask UnloadCoreAsync(Address<Scene> address, CancellationToken token)
-    {
-        if (TryPopScene(address, out SceneInstance scene))
-        {
-            await Addressables.UnloadSceneAsync(scene).WithCancellation(token);
-        }
-        else
-        {
-            //todo: find a better solution
-            await SceneManager.UnloadSceneAsync(StartupInfo.StartupSceneName); //StartupSceneInfo.SceneName or address.Key
-        }
-    }
-
-    private static Address<Scene> GetAddress<TScene>() where TScene : struct, IScene => typeof(TScene) switch
-    {
-        Type t when t == typeof(BootstrapScene) => Address.Scene.Bootstrap,
-        Type t when t == typeof(MenuScene) => Address.Scene.Menu,
-        Type t when t == typeof(GameScene) => Address.Scene.Game,
-        Type t when t == typeof(MiniGameScene) => Address.Scene.MiniGame,
-        _ => throw new ArgumentOutOfRangeException(typeof(TScene).FullName)
-    };
-
     private Scope GetScope(SceneInstance scene)
     {
         scene.Scene.GetRootGameObjects(_tempRootGameObjects);
@@ -122,13 +92,3 @@ public sealed class SceneLoader : ISceneLoader
         return scope;
     }
 }
-
-public interface IScene { }
-
-public struct BootstrapScene : IScene { }
-
-public struct MenuScene : IScene { }
-
-public struct GameScene : IScene { }
-
-public struct MiniGameScene : IScene { }

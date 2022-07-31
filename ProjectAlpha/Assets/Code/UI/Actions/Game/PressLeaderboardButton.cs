@@ -1,10 +1,10 @@
-﻿using Code.Services.UI.Game;
+﻿using Code.Services.UI;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using VContainer;
 
-namespace Code.UI.Actions.Game;
+namespace Code.UI.Actions;
 
 public sealed class PressLeaderboardButton : MonoBehaviour, IPointerClickHandler
 {

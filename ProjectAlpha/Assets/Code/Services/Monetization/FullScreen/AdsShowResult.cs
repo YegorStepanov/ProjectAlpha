@@ -1,4 +1,4 @@
-﻿namespace Code.Services.Monetization.FullScreen;
+﻿namespace Code.Services.Monetization;
 
 public enum AdsShowResult
 {

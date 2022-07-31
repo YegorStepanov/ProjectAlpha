@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Purchasing;
 
-namespace Code.Services.Monetization.IAP;
+namespace Code.Services.Monetization;
 
 public class IAPManager : IIAPManager
 {

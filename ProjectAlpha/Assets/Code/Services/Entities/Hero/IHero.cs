@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 
-namespace Code.Services.Entities.Hero;
+namespace Code.Services.Entities;
 
 public interface IHero : IEntity
 {

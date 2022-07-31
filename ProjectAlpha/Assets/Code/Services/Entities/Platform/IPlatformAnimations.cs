@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Entities.Platform;
+namespace Code.Services.Entities;
 
 public interface IPlatformAnimations
 {

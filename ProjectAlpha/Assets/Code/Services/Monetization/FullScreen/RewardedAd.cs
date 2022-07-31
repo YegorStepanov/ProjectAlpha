@@ -1,6 +1,4 @@
-﻿using Code.Settings;
-
-namespace Code.Services.Monetization.FullScreen;
+﻿namespace Code.Services.Monetization;
 
 public class RewardedAd : FullScreenAd
 {

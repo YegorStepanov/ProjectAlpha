@@ -1,5 +1,4 @@
 ﻿using Code.Services.UI;
-using Code.Services.UI.Menu;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
@@ -9,7 +8,7 @@ namespace Code.Services.Development;
 public sealed class DevelopmentPanel : MonoBehaviour
 {
     [Inject] private IObjectResolver _resolver;
-    private MenuUIActions MenuUIActions => _resolver.Resolve<MenuUIActions>();
+    private IMenuUIActions MenuUIActions => _resolver.Resolve<IMenuUIActions>();
     private PanelManager PanelManager => _resolver.Resolve<PanelManager>();
 
     [Button] public void CloseScene() => MenuUIActions.CloseScene();
