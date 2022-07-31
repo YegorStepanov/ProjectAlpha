@@ -35,7 +35,7 @@
         "UnityEditor.TestRunner",
         "UnityEditor.UI",
         "UnityEngine.TestRunner",
-        "UnityEngine.UI",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [
         "Editor"
