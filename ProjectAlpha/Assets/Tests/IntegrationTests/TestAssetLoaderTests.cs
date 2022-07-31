@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.TestTools;
 
-namespace Tests;
+namespace Code.IntegrationTests;
 
 public sealed class TestAssetLoaderTests
 {
     private AddressableTestFixture _tester;
-    
+
     [SetUp]
     public void SetUp()
     {
@@ -34,7 +34,7 @@ public sealed class TestAssetLoaderTests
     {
         var go = await _tester.GameObject.LoadAsset();
         Addressables.Release(go);
-        
+
         var asset = await _tester.Asset.LoadAsset();
         Addressables.Release(asset);
     });
@@ -51,7 +51,7 @@ public sealed class TestAssetLoaderTests
     {
         var go = await _tester.GameObject.LoadAssetHandle();
         Addressables.Release(go);
-        
+
         var asset = await _tester.Asset.LoadAssetHandle();
         Addressables.Release(asset);
     });
@@ -70,10 +70,10 @@ public sealed class TestAssetLoaderTests
     {
         var go = await _tester.GameObject.Instantiate();
         Addressables.ReleaseInstance(go);
-        
+
         var component = await _tester.MonoBehaviour.Instantiate();
         Addressables.ReleaseInstance(component);
-        
+
         // var monoBehaviour = await _tester.MonoBehaviour.Instantiate();
         // Addressables.ReleaseInstance(monoBehaviour);
     });
@@ -92,10 +92,10 @@ public sealed class TestAssetLoaderTests
     {
         var go = await _tester.GameObject.InstantiateHandle();
         Addressables.Release(go);
-        
+
         var component = await _tester.MonoBehaviour.InstantiateHandle();
         Addressables.Release(component);
-        
+
         // var monoBehaviour = await _tester.MonoBehaviour.InstantiateHandle();
         // Addressables.Release(monoBehaviour);
     });

@@ -5,7 +5,7 @@ namespace Code;
 [System.Serializable]
 public class GameSettings
 {
-    //todo: InspectorName not working, use Odin isntead
+    //todo: InspectorName not working, use Odin instead
     [SerializeField, InspectorName("DelayBeforeNextRound (s)")]
     private float DelayBeforeNextRound_Seconds = 0.1f;
     [SerializeField, InspectorName("DelayBeforeEndGame (s)")]

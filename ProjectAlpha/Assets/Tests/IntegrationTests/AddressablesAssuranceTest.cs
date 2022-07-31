@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.TestTools;
 
-namespace Tests;
+namespace Code.IntegrationTests;
 
 // Asset can be released by instance!
 // Addressables.LoadAsset("x"), then Addressables.Instantiate("x") == 2 ref counts
@@ -16,7 +16,7 @@ public sealed class AddressablesAssuranceTest
     //public void Ini() =>
     //    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-    
+
     [UnitySetUp]
     public IEnumerator Init() => UniTask.ToCoroutine(async () =>
     {

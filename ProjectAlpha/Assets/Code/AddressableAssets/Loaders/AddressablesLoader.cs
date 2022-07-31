@@ -61,7 +61,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
             GameObject prefab = await LoadAssetTAsync(address.As<GameObject>());
 
             if (!prefab.TryGetComponent(out T component))
-                Debug.LogError("No component of type " + typeof(T).Name + " found on prefab " + prefab.name);
+                Debug.LogError($"No component of type {typeof(T).Name} found on prefab {prefab.name}");
 
             return component;
         }
@@ -110,7 +110,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
     {
         _isDisposed = true;
 
-        foreach (var loader in _typeToHandleStorage.Values)
+        foreach (object loader in _typeToHandleStorage.Values)
             ((IDisposable)loader).Dispose();
 
         _typeToHandleStorage.Clear();

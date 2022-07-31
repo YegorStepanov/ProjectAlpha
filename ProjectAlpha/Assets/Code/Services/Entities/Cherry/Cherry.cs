@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using VContainer;
 
 namespace Code.Services.Entities;
@@ -9,7 +10,7 @@ public sealed class Cherry : SpriteEntity, ICherry
     private ICherryPickHandler _pickHandler;
     private Settings _settings;
 
-    [Inject]
+    [Inject, UsedImplicitly]
     private void Construct(ICherryAnimations animations, ICherryPickHandler pickHandler, Settings settings)
     {
         _animations = animations;

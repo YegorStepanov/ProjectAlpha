@@ -33,6 +33,7 @@ public class AdInitializer : IUnityAdsInitializationListener
     }
 
     void IUnityAdsInitializationListener.OnInitializationComplete() => IsInitialized = true;
+
     void IUnityAdsInitializationListener.OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
         Debug.LogError($"Initialization failed: error={error}, message={message}");

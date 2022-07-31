@@ -5,6 +5,7 @@ using Code.Data.WidthGenerator;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.UI;
+using Code.UI;
 using Tayx.Graphy;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -20,7 +21,6 @@ public static class Address
         public static readonly Address<SceneObj> Bootstrap = new("Bootstrap");
         public static readonly Address<SceneObj> Menu = new("Menu");
         public static readonly Address<SceneObj> Game = new("Game");
-        public static readonly Address<SceneObj> MiniGame = new("MiniGame");
     }
 
     public static class Infrastructure

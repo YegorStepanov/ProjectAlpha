@@ -13,14 +13,12 @@ public sealed class NextRoundState : IState<NextRoundState.Arguments>
     private readonly CameraMover _cameraMover;
     private readonly PlatformSpawner _platformSpawner;
     private readonly CherrySpawner _cherrySpawner;
-    private readonly GameWorld _gameWorld;
 
-    public NextRoundState(CameraMover cameraMover, PlatformSpawner platformSpawner, CherrySpawner cherrySpawner, GameWorld gameWorld)
+    public NextRoundState(CameraMover cameraMover, PlatformSpawner platformSpawner, CherrySpawner cherrySpawner)
     {
         _cameraMover = cameraMover;
         _platformSpawner = platformSpawner;
         _cherrySpawner = cherrySpawner;
-        _gameWorld = gameWorld;
     }
 
     public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)

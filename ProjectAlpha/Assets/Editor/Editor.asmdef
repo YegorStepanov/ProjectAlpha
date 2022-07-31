@@ -12,9 +12,6 @@
         "UniTask.TextMeshPro",
         "Unity.Addressables",
         "Unity.Addressables.Editor",
-        "Unity.Burst",
-        "Unity.Burst.CodeGen",
-        "Unity.Burst.Editor",
         "Unity.InputSystem",
         "Unity.Mathematics",
         "Unity.Mathematics.Editor",
@@ -39,10 +36,6 @@
         "UnityEditor.UI",
         "UnityEngine.TestRunner",
         "UnityEngine.UI",
-        "Zenject",
-        "Zenject-Editor",
-        "Zenject-PoolMonitor-Editor",
-        "Zenject-ReflectionBaking-Editor"
     ],
     "includePlatforms": [
         "Editor"

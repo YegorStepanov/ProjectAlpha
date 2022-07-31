@@ -3,7 +3,7 @@ using Code.Extensions;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Tests.UnitTests.Extensions;
+namespace Code.UnitTests;
 
 public sealed class BordersExtensionsTests
 {

@@ -1,6 +1,6 @@
 {
     "name": "Tests",
-    "rootNamespace": "",
+    "rootNamespace": "Code",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
@@ -11,8 +11,6 @@
         "UniTask.Linq",
         "UniTask.TextMeshPro",
         "Unity.Addressables",
-        "Unity.Burst",
-        "Unity.Burst.CodeGen",
         "Unity.InputSystem",
         "Unity.InputSystem.TestFramework",
         "Unity.Mathematics",

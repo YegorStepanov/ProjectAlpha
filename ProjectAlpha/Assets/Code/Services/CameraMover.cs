@@ -6,7 +6,7 @@ using Code.Services.Infrastructure;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.States;
+namespace Code.Services;
 
 public class CameraMover
 {

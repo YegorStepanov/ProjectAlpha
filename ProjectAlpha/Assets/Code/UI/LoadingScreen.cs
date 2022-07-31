@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Code;
+namespace Code.UI;
 
 public sealed class LoadingScreen : MonoBehaviour
 {

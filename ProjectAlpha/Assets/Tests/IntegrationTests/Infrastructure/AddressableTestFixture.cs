@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.TestTools;
 
-namespace Tests;
+namespace Code.IntegrationTests;
 
 public class AddressableTestFixture: IDisposable
 {
@@ -16,10 +16,9 @@ public class AddressableTestFixture: IDisposable
     private static readonly Address<Platform> monoBehaviourAddress = new("Platform");
     private static readonly Address<Sprite> assetAddress = new("Background 1");
 
-    public Address<GameObject> GameObjectAddress => gameObjectAddress;
-    public Address<Platform> MonoBehaviourAddress => monoBehaviourAddress;
-    public Address<Sprite> AssetAddress => assetAddress;
-
+    protected Address<GameObject> GameObjectAddress => gameObjectAddress;
+    protected Address<Platform> MonoBehaviourAddress => monoBehaviourAddress;
+    protected Address<Sprite> AssetAddress => assetAddress;
 
     public ITestGameObjectLoader<GameObject> GameObject { get; } = new TestAssetLoader<GameObject>(gameObjectAddress);
     public ITestComponentLoader<Platform> MonoBehaviour { get; } =  new TestAssetLoader<Platform>(monoBehaviourAddress);

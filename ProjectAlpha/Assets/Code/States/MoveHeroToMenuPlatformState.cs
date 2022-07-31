@@ -10,7 +10,7 @@ public sealed class MoveHeroToMenuPlatformState : IState<MoveHeroToMenuPlatformS
 
     public readonly record struct Arguments(IHero Hero, IPlatform MenuPlatform);
 
-    public MoveHeroToMenuPlatformState(HeroMovement heroMovement) => 
+    public MoveHeroToMenuPlatformState(HeroMovement heroMovement) =>
         _heroMovement = heroMovement;
 
     public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)

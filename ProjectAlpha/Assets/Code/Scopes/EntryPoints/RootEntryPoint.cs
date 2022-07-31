@@ -1,7 +1,6 @@
 ﻿using System;
 using Code.Services.Data;
 using Code.Services.Development;
-using Code.Services.Infrastructure;
 using Code.Services.Monetization;
 using VContainer.Unity;
 
@@ -12,7 +11,7 @@ public class RootEntryPoint : IInitializable, IDisposable, IStartable
     private readonly IProgress _progress;
     private readonly AdsManager _adsManager;
 
-    public RootEntryPoint(IProgress progress, AdsManager adsManager, DevelopmentPanel developmentPanel, ICamera camera1)
+    public RootEntryPoint(IProgress progress, AdsManager adsManager, DevelopmentPanel developmentPanel)
     {
         _progress = progress;
         _adsManager = adsManager;

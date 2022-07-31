@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
 
-namespace Tests;
+namespace Code.IntegrationTests;
 
 public interface ITestAssetLoader<T>: IDisposable where T : Object
 {

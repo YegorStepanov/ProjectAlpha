@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Tests;
+namespace Code.IntegrationTests;
 
 public sealed class TestAssetLoader<T> : ITestGameObjectLoader<T> where T : Object
 {
@@ -22,25 +22,25 @@ public sealed class TestAssetLoader<T> : ITestGameObjectLoader<T> where T : Obje
     public void Dispose()
     {
         //remove additional checks?
-        
+
         foreach (var asset in _loadGameObjectAsset)
         {
             if (asset.IsValid())
                 Addressables.Release(asset);
         }
-        
+
         foreach (var handle in _loadGameObjectAssetHandle)
         {
             if (handle.IsValid())
                 Addressables.Release(handle);
         }
-        
+
         foreach (var go in _instantiateGameObject)
         {
             if (go != null)
                 Addressables.Release(go);
         }
-        
+
         foreach (var handle in _instantiateGameObjectHandle)
         {
             if (handle.IsValid())
@@ -52,7 +52,7 @@ public sealed class TestAssetLoader<T> : ITestGameObjectLoader<T> where T : Obje
     {
         var asset = Addressables.LoadAssetAsync<T>(_address.Key);
         _loadGameObjectAsset.Add(asset);
-        
+
         return await asset;
     }
 
@@ -60,7 +60,7 @@ public sealed class TestAssetLoader<T> : ITestGameObjectLoader<T> where T : Obje
     {
         var handle = Addressables.LoadAssetAsync<T>(_address.Key);
         _loadGameObjectAssetHandle.Add(handle);
-        
+
         await handle;
         return handle;
     }
@@ -69,7 +69,7 @@ public sealed class TestAssetLoader<T> : ITestGameObjectLoader<T> where T : Obje
     {
         var go = await Addressables.InstantiateAsync(_address.Key);
         _instantiateGameObject.Add(go);
-        
+
         return go;
     }
 
@@ -77,7 +77,7 @@ public sealed class TestAssetLoader<T> : ITestGameObjectLoader<T> where T : Obje
     {
         var handle = Addressables.InstantiateAsync(_address.Key, trackHandle: false);
         _instantiateGameObjectHandle.Add(handle);
-        
+
         await handle;
         return handle;
     }

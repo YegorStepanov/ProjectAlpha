@@ -31,8 +31,8 @@ public readonly record struct Borders(float Top, float Bot, float Left, float Ri
 
     private bool PrintMembers(StringBuilder builder)
     {
-        builder.Append(LeftTop);
-        builder.Append(RightBot);
+        builder.Append(LeftTop.ToString());
+        builder.Append(RightBot.ToString());
         return true;
     }
 }

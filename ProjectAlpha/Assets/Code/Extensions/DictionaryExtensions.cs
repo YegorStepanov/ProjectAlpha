@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.Assertions;
+using UnityEngine;
 
 namespace Code.Extensions;
 
@@ -13,7 +13,9 @@ public static class DictionaryExtensions
 
     public static TValue Pop<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
     {
-        Assert.IsTrue(dictionary.ContainsKey(key), "Key: " + key);
+        if(dictionary.ContainsKey(key))
+            Debug.LogError($"The dictionary does not contain key:{key}");
+
         TValue value = dictionary[key];
         dictionary.Remove(key);
         return value;

@@ -25,7 +25,7 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
 
         if (!CanBeSpawned)
         {
-            Debug.LogWarning("Incorrect spawn index: " + _activeCount);
+            Debug.LogWarning($"Incorrect spawn index: {_activeCount}");
             return default;
         }
 
@@ -45,7 +45,7 @@ public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
 
         if (!IsIndexCorrectForDespawn())
         {
-            Debug.LogWarning("Incorrect despawn index: " + _activeCount);
+            Debug.LogWarning($"Incorrect despawn index: {_activeCount}");
             return;
         }
 

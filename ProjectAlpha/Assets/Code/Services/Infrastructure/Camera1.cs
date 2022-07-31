@@ -4,6 +4,7 @@ using Code.Common;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,8 +27,8 @@ public sealed class Camera1 : MonoBehaviour, ICamera
 
     private Vector3 CameraPosition => _baseCamera.transform.position;
 
-    [Inject]
-    public void Construct(IScopedAddressablesLoader loader, IRandomizer randomizer, Settings settings)
+    [Inject, UsedImplicitly]
+    private void Construct(IScopedAddressablesLoader loader, IRandomizer randomizer, Settings settings)
     {
         _settings = settings;
         _backgroundChanger = new BackgroundChanger(loader, randomizer, _backgroundImage);

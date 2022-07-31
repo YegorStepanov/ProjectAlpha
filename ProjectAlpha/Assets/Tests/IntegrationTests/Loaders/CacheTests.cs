@@ -7,7 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.TestTools;
 
-namespace Tests
+namespace Code.IntegrationTests
 {
     public sealed class CacheTests
     {

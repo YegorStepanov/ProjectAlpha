@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
 
-namespace Tests;
+namespace Code.IntegrationTests;
 
 public interface ITestComponentLoader<T>: IDisposable where T : Object
 {

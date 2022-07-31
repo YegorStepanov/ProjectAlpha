@@ -49,9 +49,6 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
 
         AsyncReactiveProperty<HeroAnimatorState> state = GetState(layerIndex);
 
-        //sometimes the new state can be set in this frame
-        Debug.Log("Before " + Time.frameCount + "  " + state.Value);
-
         var newState = HeroAnimatorState.None;
         while (!token.IsCancellationRequested)
         {
@@ -59,8 +56,6 @@ public sealed class HeroAnimator : MonoBehaviour, IAnimationStateReader
 
             newState = await state.WaitAsync(token);
         }
-
-        Debug.Log("After " + Time.frameCount + "  " + state.Value);
     }
 
     private static HeroAnimatorState GetStateFromHash(int stateHash)

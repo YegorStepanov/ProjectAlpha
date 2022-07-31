@@ -1,6 +1,7 @@
 using System.Threading;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
@@ -14,8 +15,8 @@ public sealed class Stick : SpriteEntity, IStick
     private Settings _settings;
     private IStickAnimations _animations;
 
-    [Inject]
-    public void Construct(IStickAnimations animations, Settings settings)
+    [Inject, UsedImplicitly]
+    private void Construct(IStickAnimations animations, Settings settings)
     {
         _animations = animations;
         _settings = settings;

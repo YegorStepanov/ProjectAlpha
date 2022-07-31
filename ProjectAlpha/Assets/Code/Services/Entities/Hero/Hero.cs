@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
@@ -14,8 +15,8 @@ public sealed class Hero : SpriteEntity, IHero
 
     public bool IsFlipped => transform.localScale.y < 0;
 
-    [Inject]
-    public void Construct(IHeroAnimations animations, Settings settings)
+    [Inject, UsedImplicitly]
+    private void Construct(IHeroAnimations animations, Settings settings)
     {
         _animations = animations;
         _settings = settings;
@@ -54,7 +55,6 @@ public sealed class Hero : SpriteEntity, IHero
     [System.Serializable]
     public class Settings
     {
-        public float HandOffset = 0.25f;
         public float MovementSpeed = 5f;
         public float FallingSpeed = 30f;
         public float SquatSpeed = 5f;

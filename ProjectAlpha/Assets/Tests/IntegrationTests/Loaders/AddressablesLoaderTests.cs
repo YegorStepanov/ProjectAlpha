@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.TestTools;
 
-namespace Tests;
+namespace Code.IntegrationTests;
 
 public sealed class AddressablesLoaderTests : AddressableTestFixture
 {

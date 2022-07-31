@@ -42,11 +42,9 @@ public sealed class HandleStorage<TAsset> : IDisposable where TAsset : Object
     public void RemoveAsset(TAsset asset)
     {
         if (_isDisposed) return;
+        if (asset == null) return;
 
-        if (asset is not TAsset assetT)
-            throw new ArgumentException($"{nameof(asset)} is not {typeof(TAsset)}");
-
-        HandleData<TAsset> data = FindHandleData(assetT);
+        HandleData<TAsset> data = FindHandleData(asset);
         RemoveHandleData(data);
     }
 
@@ -65,13 +63,11 @@ public sealed class HandleStorage<TAsset> : IDisposable where TAsset : Object
     public bool ContainsAsset(TAsset asset)
     {
         if (_isDisposed) return false;
-
-        if (asset is not TAsset assetT)
-            throw new ArgumentException($"{nameof(asset)} is not {typeof(TAsset)}");
+        if (asset == null) return false;
 
         foreach (HandleData<TAsset> data in _handleData)
         {
-            if (data.Asset == assetT)
+            if (data.Asset == asset)
                 return true;
         }
 
@@ -96,7 +92,7 @@ public sealed class HandleStorage<TAsset> : IDisposable where TAsset : Object
     {
         _isDisposed = true;
 
-        foreach (var pair in _handleData)
+        foreach (HandleData<TAsset> pair in _handleData)
             Addressables.Release(pair.Handle);
 
         _handleData.Clear();

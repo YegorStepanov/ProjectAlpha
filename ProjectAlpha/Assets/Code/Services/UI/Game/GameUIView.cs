@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using Code.Animations.Game;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
 namespace Code.Services.UI;
-//change
 
 public sealed class GameUIView : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public sealed class GameUIView : MonoBehaviour
     private RedPointHitGameAnimation _redPointHitGameAnimation;
     private CancellationToken _token;
 
-    [Inject]
+    [Inject, UsedImplicitly]
     private void Construct(RedPointHitGameAnimation redPointHitGameAnimation, CancellationToken token)
     {
         _redPointHitGameAnimation = redPointHitGameAnimation;

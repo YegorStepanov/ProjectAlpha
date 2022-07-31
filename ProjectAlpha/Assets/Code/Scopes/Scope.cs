@@ -17,7 +17,6 @@ public abstract class Scope : LifetimeScope
 {
     private AddressablesLoader _loader;
     private CancellationToken _token;
-    //private Scene _scene;
 
     public bool IsBuilt { get; private set; }
 

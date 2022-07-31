@@ -17,7 +17,7 @@ public sealed class BackgroundChanger
 
     private Texture2D _spriteAsset;
 
-    private int lastIndex = -1;
+    private int _lastIndex = -1;
 
     public BackgroundChanger(IScopedAddressablesLoader loader, IRandomizer randomizer, RawImage image)
     {
@@ -55,11 +55,11 @@ public sealed class BackgroundChanger
 
     private Address<Texture2D> GetRandomBackground()
     {
-        lastIndex = GetNextIndex();
-        return _addresses[lastIndex];
+        _lastIndex = GetNextIndex();
+        return _addresses[_lastIndex];
     }
 
-    private int GetNextIndex() => lastIndex == -1
+    private int GetNextIndex() => _lastIndex == -1
         ? _randomizer.Next(_addresses.Length)
-        : _randomizer.NextExcept(_addresses.Length, lastIndex);
+        : _randomizer.NextExcept(_addresses.Length, _lastIndex);
 }

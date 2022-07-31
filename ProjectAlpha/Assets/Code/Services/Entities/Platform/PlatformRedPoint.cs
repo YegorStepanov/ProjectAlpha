@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using VContainer;
 
 namespace Code.Services.Entities;
@@ -8,8 +9,8 @@ public sealed class PlatformRedPoint : SpriteEntity, IPlatformRedPoint
     private IPlatformAnimations _animations;
     private Platform.Settings _settings;
 
-    [Inject]
-    public void Construct(IPlatformAnimations animations, Platform.Settings settings)
+    [Inject, UsedImplicitly]
+    private void Construct(IPlatformAnimations animations, Platform.Settings settings)
     {
         _animations = animations;
         _settings = settings;
