@@ -5,6 +5,7 @@ using Code.AddressableAssets;
 using Code.Common;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using VContainer;
@@ -15,74 +16,15 @@ namespace Code.Scopes;
 
 public abstract class Scope : LifetimeScope
 {
-    private AddressablesLoader _loader;
+    private IAddressablesLoader _loader;
     private CancellationToken _token;
 
     public bool IsBuilt { get; private set; }
-
-    [UsedImplicitly]
-    private new async UniTask Awake()
-    {
-        _token = this.GetCancellationTokenOnDestroy();
-        AssertAutoRunIsDisabled();
-
-        await InitRoot();
-        SetParentScope();
-        await BuildAsync();
-    }
 
     public async UniTask WaitForBuild()
     {
         while (!IsBuilt)
             await UniTask.Yield(_token);
-    }
-
-    private static UniTask InitRoot()
-    {
-        if (VContainerSettings.Instance.RootLifetimeScope is Scope rootScope)
-        {
-            bool isRootCreated = rootScope.Container != null;
-            if (!isRootCreated)
-                return rootScope.BuildAsync();
-        }
-
-        return UniTask.CompletedTask;
-    }
-
-    private void SetParentScope()
-    {
-        base.Awake();
-    }
-
-    private async UniTask BuildAsync()
-    {
-        //VContainer issue, it spawns new gameobjects in the active scene
-        Scene scene = gameObject.scene;
-
-        await PreloadScopeAsync();
-
-        SetScene(scene);
-        Build();
-
-        IsBuilt = true;
-    }
-
-    private async UniTask PreloadScopeAsync()
-    {
-        _loader = new AddressablesLoader(new Creator(this));
-        await PreloadAsync(_loader);
-    }
-
-    private static void SetScene(Scene scene)
-    {
-        if (scene.IsValid())
-            SceneManager.SetActiveScene(scene);
-    }
-
-    protected override void OnDestroy()
-    {
-        _loader?.Dispose();
-        base.OnDestroy();
     }
 
     protected override void Configure(IContainerBuilder builder)
@@ -92,8 +34,68 @@ public abstract class Scope : LifetimeScope
     }
 
     protected abstract void ConfigureServices(IContainerBuilder builder);
-
     protected abstract UniTask PreloadAsync(IAddressablesLoader loader);
+
+    protected sealed override void OnDestroy()
+    {
+        _loader?.Dispose();
+        base.OnDestroy();
+    }
+
+    [UsedImplicitly]
+    private new async UniTask Awake()
+    {
+        AssertAutoRunIsDisabled();
+
+        _token = this.GetCancellationTokenOnDestroy();
+
+        await InitializeRoot();
+        SetParentScope();
+        await BuildAsync();
+    }
+
+    private static async UniTask InitializeRoot()
+    {
+        if (VContainerSettings.Instance.RootLifetimeScope == null)
+            return;
+
+        if (VContainerSettings.Instance.RootLifetimeScope is not Scope rootScope)
+        {
+            Debug.LogWarning("RootScope should be Scope type instead LifetimeScope");
+            return;
+        }
+
+        if (!IsScopeCreated(rootScope))
+            await rootScope.BuildAsync();
+
+        static bool IsScopeCreated(Scope scope) =>
+            scope.Container != null;
+    }
+
+    private void SetParentScope() =>
+        base.Awake();
+
+    private async UniTask BuildAsync()
+    {
+        //We cannot set active scene here
+        _loader = new AddressablesLoader(new Creator(this));
+        await PreloadAsync(_loader);
+
+        //A root scene is not real scene
+        if (!IsRoot)
+        {
+            Scene scene = gameObject.scene;
+
+            while (!scene.isLoaded)
+                await UniTask.Yield(_token);
+
+            //VContainer spawns new gameobjects in the active scene
+            SceneManager.SetActiveScene(scene);
+        }
+
+        Build();
+        IsBuilt = true;
+    }
 
     private void AssertAutoRunIsDisabled()
     {
