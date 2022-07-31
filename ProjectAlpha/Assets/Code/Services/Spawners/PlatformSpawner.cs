@@ -1,6 +1,6 @@
 ﻿using Code.AddressableAssets;
 using Code.Common;
-using Code.Data.WidthGenerator;
+using Code.Data;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Cysharp.Threading.Tasks;
@@ -12,15 +12,15 @@ public sealed class PlatformSpawner : Spawner<Platform>
 {
     private readonly ICamera _camera1;
     private readonly Settings _settings;
-    private readonly IWidthGenerator _widthGenerator;
+    private readonly IPlatformWidthGenerator _platformWidthGenerator;
     private readonly GameWorld _gameWorld;
 
-    public PlatformSpawner(IAsyncPool<Platform> pool, ICamera camera1, Settings settings, IWidthGenerator widthGenerator, GameWorld gameWorld)
+    public PlatformSpawner(IAsyncPool<Platform> pool, ICamera camera1, Settings settings, IPlatformWidthGenerator platformWidthGenerator, GameWorld gameWorld)
         : base(pool)
     {
         _camera1 = camera1;
         _settings = settings;
-        _widthGenerator = widthGenerator;
+        _platformWidthGenerator = platformWidthGenerator;
         _gameWorld = gameWorld;
     }
 
@@ -33,7 +33,7 @@ public sealed class PlatformSpawner : Spawner<Platform>
 
     public UniTask<IPlatform> CreatePlatformAsync(float posX, Relative relative, bool redPointEnabled = true)
     {
-        float width = _widthGenerator.NextWidth();
+        float width = _platformWidthGenerator.NextWidth();
         return CreateAsync(posX, width, relative, redPointEnabled);
     }
 

@@ -99,7 +99,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
             return;
         }
 
-        // for the LoadAssetAsync<Component/GameObject>() case:
+        //For the LoadAssetAsync<Component/GameObject>() case:
         ReleaseT(instance);
 
         if (!go.IsPrefab())

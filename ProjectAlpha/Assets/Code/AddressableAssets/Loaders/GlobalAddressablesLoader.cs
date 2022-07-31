@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Code.AddressableAssets;
 
-// to inject dependencies, it should be Scoped with static instances
+//To inject dependencies, it should be Scoped with static instances
 public sealed class GlobalAddressablesLoader : AddressablesLoader, IGlobalAddressablesLoader
 {
     private static readonly Dictionary<Type, object> TypeToHandleStorage = new();

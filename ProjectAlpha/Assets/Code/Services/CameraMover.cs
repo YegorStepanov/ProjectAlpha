@@ -1,5 +1,5 @@
 ﻿using Code.Common;
-using Code.Data.PositionGenerator;
+using Code.Data;
 using Code.Extensions;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
@@ -27,7 +27,7 @@ public class CameraMover
         return _camera1.Borders.Shift(offset);
     }
 
-    //destination instead next
+    //todo: destination instead next
     public async UniTask MoveCamera(Borders nextCameraBorders, IPlatform currentPlatform, IPlatform nextPlatform, ICherry nextCherry)
     {
         //split to MoveEntities/MovePlatformAndCherry?

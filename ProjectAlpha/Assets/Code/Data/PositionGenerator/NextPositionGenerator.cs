@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using UnityEngine;
 
-namespace Code.Data.PositionGenerator;
+namespace Code.Data;
 
 public abstract class PositionGenerator : ScriptableObject
 {

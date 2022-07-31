@@ -1,10 +1,10 @@
 ﻿using Code.Common;
 using UnityEngine;
 
-namespace Code.Data.WidthGenerator;
+namespace Code.Data;
 
-[CreateAssetMenu(menuName = "Data/Width Generator/Percentage", fileName = "Width Generator (Percentage)")]
-public sealed class PercentageWidthGeneratorData : WidthGeneratorData
+[CreateAssetMenu(menuName = "Data/Platform Width Generator/Percentage", fileName = "Platform Width Generator (Percentage)")]
+public sealed class PercentagePlatformWidthGeneratorData : PlatformWidthGeneratorData
 {
     [Min(0f)]
     public float MinWidth = 0.25f;
@@ -20,16 +20,16 @@ public sealed class PercentageWidthGeneratorData : WidthGeneratorData
     [Min(0f)]
     public float MaxThreshold = 2f;
 
-    public override IWidthGenerator Create() => new PercentageWidthGenerator(this);
+    public override IPlatformWidthGenerator Create() => new PercentagePlatformWidthGenerator(this);
 }
 
-public sealed class PercentageWidthGenerator : IWidthGenerator
+public sealed class PercentagePlatformWidthGenerator : IPlatformWidthGenerator
 {
-    private readonly PercentageWidthGeneratorData _data;
+    private readonly PercentagePlatformWidthGeneratorData _data;
 
     private Ratio _currentRatio = new(1f, 1f);
 
-    public PercentageWidthGenerator(PercentageWidthGeneratorData data) =>
+    public PercentagePlatformWidthGenerator(PercentagePlatformWidthGeneratorData data) =>
         _data = data;
 
     public float NextWidth()

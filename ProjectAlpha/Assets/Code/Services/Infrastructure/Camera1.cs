@@ -12,7 +12,6 @@ using VContainer;
 
 namespace Code.Services.Infrastructure;
 
-//todo: Construct to private
 [RequireComponent(typeof(Camera))]
 public sealed class Camera1 : MonoBehaviour, ICamera
 {

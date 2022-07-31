@@ -1,7 +1,6 @@
 ﻿using Code.AddressableAssets;
 using Code.Animations.Game;
-using Code.Data.PositionGenerator;
-using Code.Data.WidthGenerator;
+using Code.Data;
 using Code.Extensions;
 using Code.Services;
 using Code.Services.Entities;
@@ -17,7 +16,7 @@ namespace Code.Scopes;
 
 public sealed class GameScope : Scope
 {
-    private IWidthGenerator _widthGenerator;
+    private IPlatformWidthGenerator _platformWidthGenerator;
     private PlatformPositionGenerator _platformPositionGenerator;
     private CherryPositionGenerator _cherryPositionGenerator;
 
@@ -42,14 +41,14 @@ public sealed class GameScope : Scope
         _stickPool = loader.CreateAsyncCyclicPool(Address.Entity.Stick, 0, 2, "Sticks");
         _cherryPool = loader.CreateAsyncCyclicPool(Address.Entity.Cherry, 0, 2, "Cherries");
 
-        (WidthGeneratorData widthGeneratorData,
+        (PlatformWidthGeneratorData widthGeneratorData,
             _platformPositionGenerator,
             _cherryPositionGenerator,
             _hero,
             _gameUIView,
             _redPointHitGameAnimation) = await tasks;
 
-        _widthGenerator = widthGeneratorData.Create();
+        _platformWidthGenerator = widthGeneratorData.Create();
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)
@@ -80,7 +79,7 @@ public sealed class GameScope : Scope
         builder.Register<IPlatformAnimations, PlatformAnimations>(Lifetime.Singleton);
         builder.Register<PlatformSpawner>(Lifetime.Singleton);
 
-        builder.RegisterInstance(_widthGenerator);
+        builder.RegisterInstance(_platformWidthGenerator);
         builder.RegisterInstance(_platformPositionGenerator);
     }
 

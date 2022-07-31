@@ -1,7 +1,6 @@
 ﻿using Code.AddressableAssets;
 using Code.Animations.Game;
-using Code.Data.PositionGenerator;
-using Code.Data.WidthGenerator;
+using Code.Data;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.UI;
@@ -17,7 +16,7 @@ public static class Address
 {
     public static class Scene
     {
-        //Scene name and address must match
+        //note: scene name and address must match
         public static readonly Address<SceneObj> Bootstrap = new("Bootstrap");
         public static readonly Address<SceneObj> Menu = new("Menu");
         public static readonly Address<SceneObj> Game = new("Game");
@@ -32,7 +31,7 @@ public static class Address
 
     public static class Data
     {
-        public static readonly Address<WidthGeneratorData> WidthGenerator = new("Width Generator");
+        public static readonly Address<PlatformWidthGeneratorData> WidthGenerator = new("Width Generator");
         public static readonly Address<PlatformPositionGenerator> PlatformPositionGenerator = new("Platform Position Generator");
         public static readonly Address<CherryPositionGenerator> CherryPositionGenerator = new("Cherry Position Generator");
     }

@@ -109,7 +109,7 @@ public sealed class RootScope : Scope
     private static void RegisterMessagePipe(IContainerBuilder builder)
     {
         MessagePipeOptions options = builder.RegisterMessagePipe();
-        // Setup GlobalMessagePipe to enable diagnostics window and global function
+        //Setup GlobalMessagePipe to enable diagnostics window and global function
         builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
         builder.RegisterMessageBroker<Event.GameStart>(options);
     }
