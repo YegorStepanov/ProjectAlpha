@@ -24,12 +24,15 @@ public sealed class AddressablePool<TComponent> : AsyncPool<TComponent> where TC
         _loader = loader;
     }
 
-    protected override UniTask<TComponent> CreateAsync()
+    protected override async UniTask<TComponent> CreateAsync()
     {
         if (_container == null)
             _container = _loader.Creator.Instantiate(_containerName).transform;
 
-        return _loader.InstantiateAsync(_address);
+        TComponent instance = await _loader.InstantiateAsync(_address);
+        instance.transform.parent = _container;
+
+        return instance;
     }
 
     protected override void OnSpawned(TComponent instance) =>
