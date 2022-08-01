@@ -8,7 +8,7 @@ namespace Code.Extensions;
 public static class IAddressablesLoaderExtensions
 {
     [PublicAPI]
-    public static IAsyncPool<T> CreateAsyncPool<T>(
+    public static IAsyncPool<T> CreateAddressablePool<T>(
         this IAddressablesLoader loader, Address<T> address, int initialSize, int capacity)
         where T : Component
     {
@@ -16,11 +16,11 @@ public static class IAddressablesLoaderExtensions
         return pool;
     }
 
-    public static IAsyncPool<T> CreateAsyncCyclicPool<T>(
+    public static IAsyncPool<T> CreateRecyclableAddressablePool<T>(
         this IAddressablesLoader loader, Address<T> address, int initialSize, int capacity)
         where T : Component
     {
-        IAsyncPool<T> pool = CreateAsyncPool(loader, address, initialSize, capacity);
+        IAsyncPool<T> pool = CreateAddressablePool(loader, address, initialSize, capacity);
         return new RecyclablePool<T>(pool);
     }
 }
