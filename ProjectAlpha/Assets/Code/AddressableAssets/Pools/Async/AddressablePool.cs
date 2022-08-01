@@ -5,29 +5,24 @@ namespace Code.AddressableAssets;
 
 public sealed class AddressablePool<TComponent> : AsyncPool<TComponent> where TComponent : Component
 {
+    private const string ContainerPostfix = " Pool";
+
     private readonly Address<TComponent> _address;
-    private readonly string _containerName;
     private readonly IAddressablesLoader _loader;
 
     private Transform _container;
 
-    public AddressablePool(
-        Address<TComponent> address,
-        int initialSize,
-        int capacity,
-        string containerName,
-        IAddressablesLoader loader)
+    public AddressablePool(Address<TComponent> address, int initialSize, int capacity, IAddressablesLoader loader)
         : base(initialSize, capacity)
     {
         _address = address;
-        _containerName = containerName;
         _loader = loader;
     }
 
     protected override async UniTask<TComponent> CreateAsync()
     {
         if (_container == null)
-            _container = _loader.Creator.Instantiate(_containerName).transform;
+            _container = _loader.Creator.Instantiate(_address.Key + ContainerPostfix).transform;
 
         TComponent instance = await _loader.InstantiateAsync(_address);
         instance.transform.parent = _container;
