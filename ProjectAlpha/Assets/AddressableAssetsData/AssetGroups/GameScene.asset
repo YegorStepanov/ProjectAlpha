@@ -18,17 +18,12 @@ MonoBehaviour:
   m_GUID: b9589272a42ed8a48bbbe5db5f1ee39f
   m_SerializeEntries:
   - m_GUID: 5fa24f25a64961841b12b4a0d76e006b
-    m_Address: Hero
+    m_Address: Hero1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3ea69cc0d2aed544ba54096713982892
-    m_Address: Platform
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b80f0c540a3902d45af719ecd6365d12
-    m_Address: Stick
+  - m_GUID: 1804d14bedf9be647940c874e2b3cf0a
+    m_Address: Cherry
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -37,8 +32,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1804d14bedf9be647940c874e2b3cf0a
-    m_Address: Cherry
+  - m_GUID: b80f0c540a3902d45af719ecd6365d12
+    m_Address: Stick
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ea69cc0d2aed544ba54096713982892
+    m_Address: Platform
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 627586a40da83744aa56e116fbec45a6
+    m_Address: Hero2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37e4e6a968cd8dc469cb13d578217c54
+    m_Address: Hero3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e427df734719f4498edb44cc7b70525
+    m_Address: Hero4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

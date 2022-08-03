@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4643182333985580212}
   - component: {fileID: 7825313209476326174}
   - component: {fileID: 8386370208138354543}
+  - component: {fileID: 43250702393381026}
   m_Layer: 5
   m_Name: Hero Card
   m_TagString: Untagged
@@ -78,6 +79,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &43250702393381026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109850810269182571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7463c7b3e2144433b72749562a4c5bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heroIndex: 0
+  _unlockPrice: 0
+  _lockedPanel: {fileID: 5182825938121908318}
+  _unlockPriceText: {fileID: 2477079709089068561}
 --- !u!1 &3538422440946437269
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,3 +311,27 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6964401397492215330}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5182825938121908318 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2831531162456690300, guid: 60ce0173dd3463d4a8f5fbb886f33cc3,
+    type: 3}
+  m_PrefabInstance: {fileID: 6964401397492215330}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2477079709089068561 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4811776188233357363, guid: 60ce0173dd3463d4a8f5fbb886f33cc3,
+    type: 3}
+  m_PrefabInstance: {fileID: 6964401397492215330}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

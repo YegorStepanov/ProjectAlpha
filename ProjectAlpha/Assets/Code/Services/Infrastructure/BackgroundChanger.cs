@@ -25,7 +25,7 @@ public sealed class BackgroundChanger
         _randomizer = randomizer;
         _image = image;
 
-        _addresses = new[]
+        _addresses = new[] //todo: move to rootscope
         {
             Address.Background.Background1,
             Address.Background.Background2,

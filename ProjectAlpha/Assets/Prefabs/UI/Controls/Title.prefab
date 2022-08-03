@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2415118097490479751}
   - component: {fileID: 2340002616888192845}
+  - component: {fileID: 1802274118087030478}
   - component: {fileID: 8166852010027785661}
   m_Layer: 5
   m_Name: Cherry Count
@@ -45,6 +46,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1153623178982152763}
   m_CullTransparentMesh: 1
+--- !u!114 &1802274118087030478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153623178982152763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55563801c7e14e588401122526844cb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8166852010027785661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,7 +78,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 999
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e1930317dac7d67438565e25f95d68e3, type: 2}
   m_sharedMaterial: {fileID: -1456718530229462775, guid: e1930317dac7d67438565e25f95d68e3,

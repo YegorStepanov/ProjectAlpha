@@ -29,11 +29,13 @@ public sealed class GameScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
+        Address<Hero> hero = Parent.Container.Resolve<HeroSelector>().GetSelectedHero();
+
         var tasks = UniTask.WhenAll(
             loader.LoadAssetAsync(Address.Data.WidthGenerator),
             loader.LoadAssetAsync(Address.Data.PlatformPositionGenerator),
             loader.LoadAssetAsync(Address.Data.CherryPositionGenerator),
-            loader.LoadAssetAsync(Address.Entity.Hero),
+            loader.LoadAssetAsync(hero),
             loader.LoadAssetAsync(Address.UI.GameUI),
             loader.LoadAssetAsync(Address.UI.RedPointHitAnimation));
 

@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897450452941569842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.27, y: 0.223, z: 0}
+  m_LocalPosition: {x: -0.33, y: 0.378, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7556093348331721979}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 5356967763264502493}
   - component: {fileID: 3297609430544055006}
   m_Layer: 0
-  m_Name: Hero
+  m_Name: Hero4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -171,7 +171,7 @@ Animator:
   m_GameObject: {fileID: 4541651906634453139}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 596dc6fd655cd5f449ab500f8c166340, type: 2}
+  m_Controller: {fileID: 9100000, guid: e949e42f40ab9e7418275f261d9a0b42, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -265,7 +265,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2d0a5360d4bc4604a8cf00c5f1287174, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2a596340e940a6c4195eb178d259623a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

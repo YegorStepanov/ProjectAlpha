@@ -1,11 +1,15 @@
-﻿using Code.AddressableAssets;
+﻿using System.Collections.Generic;
+using Code.AddressableAssets;
 using Code.Common;
+using Code.Extensions;
 using Code.Services.Data;
 using Code.Services.Development;
+using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.Monetization;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Progress = Code.Services.Data.Progress;
@@ -35,6 +39,15 @@ public sealed class RootScope : Scope
 
     protected override void ConfigureServices(IContainerBuilder builder)
     {
+        builder.Register<HeroSelector>(Lifetime.Singleton);
+        builder.RegisterInstance<IReadOnlyList<Address<Hero>>>(new[]
+        {
+            Address.Entity.Hero.Hero1,
+            Address.Entity.Hero.Hero2,
+            Address.Entity.Hero.Hero3,
+            Address.Entity.Hero.Hero4,
+        });
+
         RegisterSettings(builder);
         RegisterCamera(builder);
 

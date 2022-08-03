@@ -385,6 +385,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4361004081115649274}
     m_Modifications:
+    - target: {fileID: 43250702393381026, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: _heroIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 43250702393381026, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: _unlockPrice
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 109850810269182571, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
         type: 3}
       propertyPath: m_Name
@@ -645,10 +655,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6006982898522137921}
     m_Modifications:
+    - target: {fileID: 43250702393381026, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: _heroIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 109850810269182571, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
         type: 3}
       propertyPath: m_Name
       value: Hero1 Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 109850810269182571, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1263625930039284189, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2477079709089068561, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4643182333985580212, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
         type: 3}
@@ -1518,6 +1548,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4361004081115649274}
     m_Modifications:
+    - target: {fileID: 43250702393381026, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: _heroIndex
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 43250702393381026, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: _unlockPrice
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 109850810269182571, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
         type: 3}
       propertyPath: m_Name
@@ -1653,6 +1693,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6006982898522137921}
     m_Modifications:
+    - target: {fileID: 43250702393381026, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: _heroIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 43250702393381026, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
+        type: 3}
+      propertyPath: _unlockPrice
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 109850810269182571, guid: 11dc3f851ae91924e83a4bd9d111a5b6,
         type: 3}
       propertyPath: m_Name

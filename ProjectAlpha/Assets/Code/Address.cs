@@ -9,6 +9,7 @@ using Tayx.Graphy;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using SceneObj = Code.Common.Scene;
+using HeroObj = Code.Services.Entities.Hero;
 
 namespace Code;
 
@@ -52,7 +53,14 @@ public static class Address
 
     public static class Entity
     {
-        public static readonly Address<Hero> Hero = new("Hero");
+        public static class Hero
+        {
+            public static readonly Address<HeroObj> Hero1 = new("Hero1");
+            public static readonly Address<HeroObj> Hero2 = new("Hero2");
+            public static readonly Address<HeroObj> Hero3 = new("Hero3");
+            public static readonly Address<HeroObj> Hero4 = new("Hero4");
+        }
+
         public static readonly Address<Stick> Stick = new("Stick");
         public static readonly Address<Platform> Platform = new("Platform");
         public static readonly Address<Cherry> Cherry = new("Cherry");
