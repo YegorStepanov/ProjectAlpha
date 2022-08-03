@@ -22,14 +22,14 @@ public sealed class GameEntryPoint : IInitializable, IDisposable, IStartable
 
     void IInitializable.Initialize()
     {
-        _progress.Session.ScoreChanged += _gameUIController.UpdateScore;
-        _progress.Persistant.CherriesChanged += _gameUIController.UpdateCherries;
+        _progress.Session.Score.Changed += _gameUIController.UpdateScore;
+        _progress.Persistant.Cherries.Changed += _gameUIController.UpdateCherries;
     }
 
     void IDisposable.Dispose()
     {
-        _progress.Session.ScoreChanged -= _gameUIController.UpdateScore;
-        _progress.Persistant.CherriesChanged -= _gameUIController.UpdateCherries;
+        _progress.Session.Score.Changed -= _gameUIController.UpdateScore;
+        _progress.Persistant.Cherries.Changed -= _gameUIController.UpdateCherries;
     }
 
     void IStartable.Start()

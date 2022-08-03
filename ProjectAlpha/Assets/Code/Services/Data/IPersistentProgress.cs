@@ -1,19 +1,17 @@
-﻿using System;
-
-namespace Code.Services.Data;
+﻿namespace Code.Services.Data;
 
 public interface IPersistentProgress
 {
-    event Action CherriesChanged;
-    event Action AdsEnabledChanged;
+    ObservedValue<int> Cherries { get; }
+    ObservedValue<bool> IsAdsEnabled { get; }
+    ObservedValue<int> SelectedHeroIndex { get; }
 
-    int Cherries { get; }
-    bool AdsEnabled { get; }
-
-    void RestoreProgressFromDisk();
-
-    void AddCherry();
     void AddCherries(int count);
     void EnableAds();
     void DisableAds();
+
+    //refactor it
+    void UnlockHero(int heroIndex);
+    bool IsHeroLocked(int heroIndex);
+    void SetSelectedHero(int heroIndex);
 }

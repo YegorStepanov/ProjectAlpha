@@ -1,60 +1,57 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Code.Services.Data;
 
 public class PersistentProgress : IPersistentProgress
 {
-    private const string CherriesKey = "Cherries";
-    private const string AdsEnabledKey = "AdsEnabled";
+    private readonly PersistentValueWriter<int> _cherries = PersistentValueFactory.CreateInt(0, "Cherries");
+    private readonly PersistentValueWriter<bool> _isAdsEnabled = PersistentValueFactory.CreateBool(true, "AdsEnabled");
+    private readonly PersistentValueWriter<int> _selectedHeroIndex = PersistentValueFactory.CreateInt(1, "SelectedHeroIndex");
+    private readonly PersistentValueWriter<bool> _isHero1Locked = PersistentValueFactory.CreateBool(false, "Hero1Locked");
+    private readonly PersistentValueWriter<bool> _isHero2Locked = PersistentValueFactory.CreateBool(true, "Hero2Locked");
+    private readonly PersistentValueWriter<bool> _isHero3Locked = PersistentValueFactory.CreateBool(true, "Hero3Locked");
+    private readonly PersistentValueWriter<bool> _isHero4Locked = PersistentValueFactory.CreateBool(true, "Hero4Locked");
 
-    public event Action CherriesChanged;
-    public event Action AdsEnabledChanged;
+    public ObservedValue<int> Cherries => _cherries;
+    public ObservedValue<bool> IsAdsEnabled => _isAdsEnabled;
+    public ObservedValue<int> SelectedHeroIndex => _selectedHeroIndex;
+    public ObservedValue<bool> IsHero1Locked => _isHero1Locked;
+    public ObservedValue<bool> IsHero2Locked => _isHero2Locked;
+    public ObservedValue<bool> IsHero3Locked => _isHero3Locked;
+    public ObservedValue<bool> IsHero4Locked => _isHero4Locked;
 
-    public int Cherries { get; private set; }
-    public bool AdsEnabled { get; private set; }
+    public void AddCherries(int count) => _cherries.Value += count;
+    public void EnableAds() => _isAdsEnabled.Value = true;
+    public void DisableAds() => _isAdsEnabled.Value = false;
 
-    public void RestoreProgressFromDisk()
+    public void SetSelectedHeroTo1() => _selectedHeroIndex.Value = 1;
+    public void SetSelectedHeroTo2() => _selectedHeroIndex.Value = 2;
+    public void SetSelectedHeroTo3() => _selectedHeroIndex.Value = 3;
+    public void SetSelectedHeroTo4() => _selectedHeroIndex.Value = 4;
+
+    public void UnlockHero1() => _isHero1Locked.Value = false;
+    public void UnlockHero2() => _isHero2Locked.Value = false;
+    public void UnlockHero3() => _isHero3Locked.Value = false;
+    public void UnlockHero4() => _isHero4Locked.Value = false;
+
+    //Refactor it!
+    public void UnlockHero(int heroIndex) => GetIsHeroLocked(heroIndex).Value = false;
+    public bool IsHeroLocked(int heroIndex) => GetIsHeroLocked(heroIndex).Value;
+
+    public void SetSelectedHero(int heroIndex)
     {
-        Cherries = LoadCherries();
-        AdsEnabled = LoadAdsEnabled();
+        if (heroIndex is 1 or 2 or 3 or 4)
+            _selectedHeroIndex.Value = heroIndex;
+        else
+            throw new ArgumentOutOfRangeException($"Index is out of the array. Index={heroIndex} length=4");
     }
 
-    public void AddCherry()
+    private PersistentValueWriter<bool> GetIsHeroLocked(int index) => index switch
     {
-        AddCherries(1);
-    }
-
-    public void AddCherries(int count)
-    {
-        Cherries += count;
-        SaveCherries(Cherries);
-        CherriesChanged?.Invoke();
-    }
-
-    public void EnableAds()
-    {
-        AdsEnabled = true;
-        SaveAdsEnabled(AdsEnabled);
-        AdsEnabledChanged?.Invoke();
-    }
-
-    public void DisableAds()
-    {
-        AdsEnabled = false;
-        SaveAdsEnabled(AdsEnabled);
-        AdsEnabledChanged?.Invoke();
-    }
-
-    private static int LoadCherries() =>
-        PlayerPrefs.GetInt(CherriesKey, 0);
-
-    private static void SaveCherries(int value) =>
-        PlayerPrefs.SetInt(CherriesKey, value);
-
-    private static bool LoadAdsEnabled() =>
-        PlayerPrefs.GetInt(AdsEnabledKey, 0) == 0;
-
-    private static void SaveAdsEnabled(bool value) =>
-        PlayerPrefs.SetInt(AdsEnabledKey, value ? 0 : 1);
+        1 => _isHero1Locked,
+        2 => _isHero2Locked,
+        3 => _isHero3Locked,
+        4 => _isHero4Locked,
+        _ => throw new ArgumentOutOfRangeException(nameof(index), index, null)
+    };
 }

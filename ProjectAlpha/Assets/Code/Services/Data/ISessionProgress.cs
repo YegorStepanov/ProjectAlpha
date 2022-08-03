@@ -1,14 +1,9 @@
-﻿using System;
-
-namespace Code.Services.Data;
+﻿namespace Code.Services.Data;
 
 public interface ISessionProgress
 {
-    event Action ScoreChanged;
-    event Action RestartNumberChanged;
-
-    int Score { get; }
-    int RestartNumber { get; }
+    ObservedValue<int> Score { get; }
+    ObservedValue<int> RestartNumber { get; }
 
     void IncreaseScore();
     void IncreaseRestartNumber();

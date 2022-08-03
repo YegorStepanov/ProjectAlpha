@@ -11,7 +11,7 @@ public sealed class AdsManager
     private readonly Settings _settings;
     private readonly CancellationToken _token;
 
-    private bool AdsEnabled => _progress.Persistant.AdsEnabled;
+    private bool IsAdsEnabled => _progress.Persistant.IsAdsEnabled;
 
     public AdsManager(IAds ads, IProgress progress, Settings settings, CancellationToken token)
     {
@@ -27,7 +27,7 @@ public sealed class AdsManager
 
         async UniTaskVoid Impl()
         {
-            if (AdsEnabled)
+            if (IsAdsEnabled)
                 await _ads.ShowBannerAsync(_token);
             else
                 await _ads.HideBannerAsync(_token);
@@ -40,7 +40,7 @@ public sealed class AdsManager
 
         async UniTaskVoid Impl()
         {
-            if (!AdsEnabled) return;
+            if (!IsAdsEnabled) return;
 
             int restartNumber = _progress.Session.RestartNumber;
             if (restartNumber % _settings.ShowAdsAfterRestartNumber == 0)

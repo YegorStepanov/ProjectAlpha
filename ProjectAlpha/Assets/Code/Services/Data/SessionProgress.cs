@@ -1,40 +1,14 @@
-﻿using System;
-
-namespace Code.Services.Data;
+﻿namespace Code.Services.Data;
 
 public class SessionProgress : ISessionProgress
 {
-    public event Action ScoreChanged;
-    public event Action RestartNumberChanged;
+    private readonly ObservedValueWriter<int> _score = new(0);
+    private readonly ObservedValueWriter<int> _restartNumber = new(0);
 
-    private int _score;
-    private int _restartNumber;
+    public ObservedValue<int> Score => _score;
+    public ObservedValue<int> RestartNumber => _restartNumber;
 
-    public int Score
-    {
-        get => _score;
-        private set
-        {
-            _score = value;
-            ScoreChanged?.Invoke();
-        }
-    }
-    public int RestartNumber
-    {
-        get => _restartNumber;
-        private set
-        {
-            _restartNumber = value;
-            RestartNumberChanged?.Invoke();
-        }
-    }
-
-    public void IncreaseScore() =>
-        Score++;
-
-    public void IncreaseRestartNumber() =>
-        RestartNumber++;
-
-    public void ResetScore() =>
-        Score = 0;
+    public void IncreaseScore() => _score.Value++;
+    public void IncreaseRestartNumber() => _restartNumber.Value++;
+    public void ResetScore() => _score.Value = 0;
 }

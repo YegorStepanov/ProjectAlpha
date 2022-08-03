@@ -41,7 +41,7 @@ public sealed class MoveHeroToPlatformState : IState<MoveHeroToPlatformState.Arg
 
         //collect cherry only if successful
         if (result.IsCherryCollected)
-            _progress.Persistant.AddCherry();
+            _progress.Persistant.AddCherries(1);
 
         _progress.Session.IncreaseScore();
         SwitchToGameHeight();

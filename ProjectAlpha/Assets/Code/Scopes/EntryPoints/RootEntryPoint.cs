@@ -1,6 +1,5 @@
 ﻿using System;
 using Code.Services.Data;
-using Code.Services.Development;
 using Code.Services.Monetization;
 using VContainer.Unity;
 
@@ -11,25 +10,22 @@ public class RootEntryPoint : IInitializable, IDisposable, IStartable
     private readonly IProgress _progress;
     private readonly AdsManager _adsManager;
 
-    public RootEntryPoint(IProgress progress, AdsManager adsManager, DevelopmentPanel developmentPanel)
+    public RootEntryPoint(IProgress progress, AdsManager adsManager)
     {
         _progress = progress;
         _adsManager = adsManager;
-        _ = developmentPanel;
     }
 
     void IInitializable.Initialize()
     {
-        _progress.Persistant.RestoreProgressFromDisk();
-
-        _progress.Persistant.AdsEnabledChanged += _adsManager.ShowBannerIfNeeded;
-        _progress.Session.RestartNumberChanged += _adsManager.ShowInterstitialAdIfNeeded;
+        _progress.Persistant.IsAdsEnabled.Changed += _adsManager.ShowBannerIfNeeded;
+        _progress.Session.RestartNumber.Changed += _adsManager.ShowInterstitialAdIfNeeded;
     }
 
     void IDisposable.Dispose()
     {
-        _progress.Persistant.AdsEnabledChanged -= _adsManager.ShowBannerIfNeeded;
-        _progress.Session.RestartNumberChanged -= _adsManager.ShowInterstitialAdIfNeeded;
+        _progress.Persistant.IsAdsEnabled.Changed -= _adsManager.ShowBannerIfNeeded;
+        _progress.Session.RestartNumber.Changed -= _adsManager.ShowInterstitialAdIfNeeded;
     }
 
     void IStartable.Start()
