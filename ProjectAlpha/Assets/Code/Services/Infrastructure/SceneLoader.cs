@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Code.AddressableAssets;
@@ -18,20 +19,30 @@ public sealed class SceneLoader : ISceneLoader
     private readonly Dictionary<Address<Scene>, List<SceneInstance>> _scenes = new();
     private readonly List<GameObject> _tempRootGameObjects = new(32);
 
-    public bool IsLoaded(Address<Scene> scene) =>
-        _scenes.ContainsKey(scene);
-
-    public UniTask LoadAsync(Address<Scene> scene, CancellationToken token) =>
-        LoadImpl(scene, token);
-
-    public async UniTask LoadAsync(Address<Scene> scene, LifetimeScope parentScope, CancellationToken token)
+    public bool IsLoaded<TScene>() where TScene : struct, IScene
     {
+        Address<Scene> scene = GetAddress<TScene>();
+        return _scenes.ContainsKey(scene);
+    }
+
+    public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
+    {
+        Address<Scene> scene = GetAddress<TScene>();
+        return LoadImpl(scene, token);
+    }
+
+    public async UniTask LoadAsync<TScene>(LifetimeScope parentScope, CancellationToken token) where TScene : struct, IScene
+    {
+        Address<Scene> scene = GetAddress<TScene>();
         using (LifetimeScope.EnqueueParent(parentScope))
             await LoadImpl(scene, token);
     }
 
-    public UniTask UnloadAsync(Address<Scene> scene, CancellationToken token) =>
-        UnloadImpl(scene, token);
+    public UniTask UnloadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
+    {
+        Address<Scene> scene = GetAddress<TScene>();
+        return UnloadImpl(scene, token);
+    }
 
     private async UniTask LoadImpl(Address<Scene> address, CancellationToken token)
     {
@@ -91,4 +102,20 @@ public sealed class SceneLoader : ISceneLoader
 
         return scope;
     }
+
+    private static Address<Scene> GetAddress<TScene>() where TScene : struct, IScene => typeof(TScene) switch
+    {
+        Type t when t == typeof(BootstrapScene) => Address.Scene.Bootstrap,
+        Type t when t == typeof(MenuScene) => Address.Scene.Menu,
+        Type t when t == typeof(GameScene) => Address.Scene.Game,
+        _ => throw new ArgumentOutOfRangeException(typeof(TScene).FullName)
+    };
 }
+
+public interface IScene { }
+
+public struct BootstrapScene : IScene { }
+
+public struct MenuScene : IScene { }
+
+public struct GameScene : IScene { }

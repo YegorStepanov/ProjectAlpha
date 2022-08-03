@@ -24,7 +24,7 @@ public sealed class MenuUIFacade : MonoBehaviour, IMenuUIFacade
     public void Open<TPanel>() where TPanel : struct, IPanel => _panelManager.Show<TPanel>();
     public void Close<TPanel>() where TPanel : struct, IPanel => _panelManager.Hide<TPanel>();
 
-    public void CloseScene() => _sceneLoader.UnloadAsync(Address.Scene.Menu, _token);
+    public void CloseScene() => _sceneLoader.UnloadAsync<MenuScene>(_token);
     public void ToggleSound() => _mainMenuView.ToggleSound();
     public void EnableAds() => _progress.Persistant.EnableAds();
     public void DisableAds() => _progress.Persistant.DisableAds();

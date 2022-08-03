@@ -21,10 +21,10 @@ public sealed class BootstrapEntryPoint : IAsyncStartable
     {
         _loadingScreen.Show();
 
-        await _sceneLoader.LoadAsync(Address.Scene.Game, token);
-        await _sceneLoader.LoadAsync(Address.Scene.Menu,token);
+        await _sceneLoader.LoadAsync<GameScene>(token);
+        await _sceneLoader.LoadAsync<MenuScene>(token);
 
         await _loadingScreen.FadeOutAsync();
-        await _sceneLoader.UnloadAsync(Address.Scene.Bootstrap, token);
+        await _sceneLoader.UnloadAsync<BootstrapScene>(token);
     }
 }

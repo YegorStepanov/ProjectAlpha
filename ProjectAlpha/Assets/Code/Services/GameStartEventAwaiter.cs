@@ -23,7 +23,7 @@ public sealed class GameStartEventAwaiter
     {
         //workaround for Editor
         //when the menu scene is not loaded (i.e. the game is started from GameScene)
-        if (_sceneLoader.IsLoaded(Address.Scene.Menu))
+        if (_sceneLoader.IsLoaded<MenuScene>())
             await _gameStartEvent.FirstAsync(_token);
     }
 }

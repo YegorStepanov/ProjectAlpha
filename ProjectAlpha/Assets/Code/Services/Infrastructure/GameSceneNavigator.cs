@@ -20,9 +20,9 @@ public class GameSceneNavigator : IGameSceneNavigator
     private async UniTaskVoid NavigateToMenuImpl()
     {
         //todo: replace it to menuScene
-        await _sceneLoader.LoadAsync(Address.Scene.Bootstrap, _token); //it should be black fade out, not red
+        await _sceneLoader.LoadAsync<BootstrapScene>(_token); //it should be black fade out, not red
         // await _sceneLoader.LoadAsync<MenuScene>(_token);
-        await _sceneLoader.UnloadAsync(Address.Scene.Game, _token);
+        await _sceneLoader.UnloadAsync<GameScene>(_token);
         // await _sceneLoader.LoadAsync<GameScene>(default);
     }
 }
