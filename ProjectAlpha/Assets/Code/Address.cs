@@ -9,8 +9,8 @@ using Code.UI;
 using Tayx.Graphy;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using SceneObj = Code.Common.Scene;
-using HeroObj = Code.Services.Entities.Hero;
+using SceneType = Code.Common.Scene;
+using HeroComponent = Code.Services.Entities.Hero;
 
 namespace Code;
 
@@ -19,9 +19,9 @@ public static class Address
     public static class Scene
     {
         //note: scene name and address must match
-        public static readonly Address<SceneObj> Bootstrap = new("Bootstrap");
-        public static readonly Address<SceneObj> Menu = new("Menu");
-        public static readonly Address<SceneObj> Game = new("Game");
+        public static readonly Address<SceneType> Bootstrap = new("Bootstrap");
+        public static readonly Address<SceneType> Menu = new("Menu");
+        public static readonly Address<SceneType> Game = new("Game");
     }
 
     public static class Infrastructure
@@ -56,10 +56,10 @@ public static class Address
     {
         public static class Hero
         {
-            public static readonly Address<HeroObj> Hero1 = new("Hero1");
-            public static readonly Address<HeroObj> Hero2 = new("Hero2");
-            public static readonly Address<HeroObj> Hero3 = new("Hero3");
-            public static readonly Address<HeroObj> Hero4 = new("Hero4");
+            public static readonly Address<HeroComponent> Hero1 = new("Hero1");
+            public static readonly Address<HeroComponent> Hero2 = new("Hero2");
+            public static readonly Address<HeroComponent> Hero3 = new("Hero3");
+            public static readonly Address<HeroComponent> Hero4 = new("Hero4");
         }
 
         public static readonly Address<Stick> Stick = new("Stick");

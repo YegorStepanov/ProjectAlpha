@@ -6,5 +6,5 @@ namespace Code.UI.Components;
 public sealed class ToggleRestoreIAP : MonoBehaviour
 {
     private void Awake() =>
-        gameObject.SetActive(PlatformInfo.IsIAPButtonSupported); //todo
+        gameObject.SetActive(PlatformInfo.IsIAPButtonSupported);
 }
