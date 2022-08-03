@@ -1,6 +1,7 @@
 ﻿using Code.AddressableAssets;
 using Code.Animations.Game;
 using Code.Data;
+using Code.Services.Development;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.UI;
@@ -78,5 +79,6 @@ public static class Address
     public static class Development
     {
         public static readonly Address<GraphyManager> Graphy = new("Graphy");
+        public static readonly Address<DevelopmentPanel> Panel = new("Development Panel");
     }
 }

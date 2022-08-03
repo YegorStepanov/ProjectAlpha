@@ -1,47 +1,41 @@
-﻿using Code.Services.UI;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
-using VContainer;
 
 namespace Code.Services.Development;
 
 public sealed class DevelopmentPanel : MonoBehaviour
 {
-    [Inject] private IObjectResolver _resolver;
-    private IMenuUIActions MenuUIActions => _resolver.Resolve<IMenuUIActions>();
-    private PanelManager PanelManager => _resolver.Resolve<PanelManager>();
+    [ShowInInspector] private DevelopmentRootPanel _rootPanel;
+    [ShowInInspector] private DevelopmentMenuPanel _menuPanel;
 
-    [Button] public void CloseScene() => MenuUIActions.CloseScene();
-    [Button] public void ToggleSound() => MenuUIActions.ToggleSound();
-    [Button] public void EnableAds() => MenuUIActions.EnableAds();
-    [Button] public void DisableAds() => MenuUIActions.DisableAds();
-    [Button] public void ShowRewardedAd() => MenuUIActions.ShowRewardedAd();
+    public void Bind(DevelopmentRootPanel rootPanel) =>
+        BindPanel(ref rootPanel, ref _rootPanel);
 
-#if UNITY_EDITOR
-    [BoxGroup("Shop Panel")]
-    [HorizontalGroup("Shop Panel/b")]
-    [Button("Show"), EnableIf("$PanelManager != null")]
-    private void ShowShopPanel() => MenuUIActions.Open<ShopPanel>();
+    public void Bind(DevelopmentMenuPanel menuPanel) =>
+        BindPanel(ref menuPanel, ref _menuPanel);
 
-    [HorizontalGroup("Shop Panel/b")]
-    [Button("Hide"), EnableIf("$PanelManager != null")]
-    private void HideShopPanel() => MenuUIActions.Close<ShopPanel>();
+    public void Unbind(DevelopmentRootPanel rootPanel) =>
+        UnbindPanel(ref rootPanel, ref _rootPanel);
 
-    [HorizontalGroup("Shop Panel/b")]
-    [Button("Unload"), EnableIf("$PanelManager != null")]
-    private void UnloadShopPanel() => PanelManager.Unload<ShopPanel>();
+    public void Unbind(DevelopmentMenuPanel menuPanel) =>
+        UnbindPanel(ref menuPanel, ref _menuPanel);
 
-    [BoxGroup("Hero Selector Panel")]
-    [HorizontalGroup("Hero Selector Panel/b")]
-    [Button("Show"), EnableIf("$PanelManager != null")]
-    private void ShowHeroSelectorPanel() => MenuUIActions.Open<HeroSelectorPanel>();
+    private void BindPanel<T>(ref T panel, ref T field) where T : class
+    {
+        if (field is not null)
+            Debug.LogWarning($"{typeof(T).Name} is not null", this);
 
-    [HorizontalGroup("Hero Selector Panel/b")]
-    [Button("Hide"), EnableIf("$PanelManager != null")]
-    private void HideHeroSelectorPanel() => MenuUIActions.Close<HeroSelectorPanel>();
+        field = panel;
+    }
 
-    [HorizontalGroup("Hero Selector Panel/b")]
-    [Button("Unload"), EnableIf("$PanelManager != null")]
-    private void UnloadHeroSelectorPanel() => PanelManager.Unload<HeroSelectorPanel>();
-#endif
+    private void UnbindPanel<T>(ref T panel, ref T field) where T : class
+    {
+        if (field is null)
+            Debug.LogWarning($"{typeof(T).Name} is null", this);
+
+        if (field == panel)
+            Debug.LogWarning($"Assigned the same object of {typeof(T).Name} type", this);
+
+        field = null;
+    }
 }

@@ -12,6 +12,7 @@ using MessagePipe;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using Event = Code.Common.Event;
 using Progress = Code.Services.Data.Progress;
 
 namespace Code.Scopes;
@@ -20,6 +21,7 @@ public sealed class RootScope : Scope
 {
     private ICamera _camera;
     private SettingsFacade _settingsFacade;
+    private DevelopmentPanel _developmentPanel;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
@@ -28,13 +30,19 @@ public sealed class RootScope : Scope
             loader.LoadAssetAsync(Address.Infrastructure.Settings),
             loader.InstantiateAsync(Address.Infrastructure.EventSystem, inject: false));
 
-        LoadDevelopmentAssets(loader, _settingsFacade);
+        await LoadDevelopmentAssets(loader, _settingsFacade);
     }
 
-    private static void LoadDevelopmentAssets(IAddressablesLoader loader, SettingsFacade settings)
+    private async UniTask LoadDevelopmentAssets(IAddressablesLoader loader, SettingsFacade settings)
     {
         if (PlatformInfo.IsDevelopment && settings.Development.GraphyInDebug)
             loader.InstantiateAsync(Address.Development.Graphy, inject: false).Forget();
+
+        if (PlatformInfo.IsDevelopment)
+        {
+            _developmentPanel = await loader.InstantiateAsync(Address.Development.Panel, inject: false);
+            Debug.Log(_developmentPanel == null);
+        }
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)
@@ -127,9 +135,12 @@ public sealed class RootScope : Scope
         builder.RegisterMessageBroker<Event.GameStart>(options);
     }
 
-    private static void RegisterDevelopment(IContainerBuilder builder)
+    private void RegisterDevelopment(IContainerBuilder builder)
     {
-        if(PlatformInfo.IsDevelopment)
-            builder.RegisterComponentOnNewGameObject<DevelopmentPanel>(Lifetime.Singleton);
+        if (PlatformInfo.IsDevelopment)
+        {
+            builder.RegisterNonLazy<DevelopmentRootPanel>(Lifetime.Singleton);
+            builder.RegisterComponentAndInjectGameObject(_developmentPanel);
+        }
     }
 }

@@ -19,18 +19,12 @@ public class HeroSelector
 
     public Address<Hero> GetSelectedHero()
     {
-        //todo:
         int index = _progress.Persistant.SelectedHeroIndex;
-        index--; //!
+        index--;
 
         if (index < 0 || index >= _addresses.Count)
             Debug.LogError($"Index is out of array. Index={index} length={_addresses.Count}");
 
         return _addresses[index];
-    }
-
-    public void SetSelectedHero(int index)
-    {
-        _progress.Persistant.SetSelectedHero(index);
     }
 }
