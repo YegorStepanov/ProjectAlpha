@@ -109,7 +109,7 @@ public sealed class GameScope : Scope
         builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
 
         builder.Register<IGameSceneNavigator, GameSceneNavigator>(Lifetime.Singleton);
-        builder.Register<IGameUIActions, GameUIActions>(Lifetime.Singleton);
+        builder.Register<IGameUIFacade, GameUIFacade>(Lifetime.Singleton);
         builder.Register<GameUIController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
     }
 

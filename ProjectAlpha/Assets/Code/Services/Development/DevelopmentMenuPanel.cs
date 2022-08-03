@@ -6,13 +6,13 @@ namespace Code.Services.Development;
 
 public sealed class DevelopmentMenuPanel : IDisposable
 {
-    private readonly IMenuUIActions _menuUIActions;
+    private readonly IMenuUIFacade _menuUIFacade;
     private readonly PanelManager _panelManager;
     private readonly DevelopmentPanel _panel;
 
-    public DevelopmentMenuPanel(DevelopmentPanel panel, IMenuUIActions menuUIActions, PanelManager panelManager)
+    public DevelopmentMenuPanel(DevelopmentPanel panel, IMenuUIFacade menuUIFacade, PanelManager panelManager)
     {
-        _menuUIActions = menuUIActions;
+        _menuUIFacade = menuUIFacade;
         _panelManager = panelManager;
         _panel = panel;
         _panel.Bind(this);
@@ -21,21 +21,21 @@ public sealed class DevelopmentMenuPanel : IDisposable
     public void Dispose() =>
         _panel.Unbind(this);
 
-    [Button] public void CloseScene() => _menuUIActions.CloseScene();
-    [Button] public void ToggleSound() => _menuUIActions.ToggleSound();
-    [Button] public void EnableAds() => _menuUIActions.EnableAds();
-    [Button] public void DisableAds() => _menuUIActions.DisableAds();
-    [Button] public void ShowRewardedAd() => _menuUIActions.ShowRewardedAd();
+    [Button] public void CloseScene() => _menuUIFacade.CloseScene();
+    [Button] public void ToggleSound() => _menuUIFacade.ToggleSound();
+    [Button] public void EnableAds() => _menuUIFacade.EnableAds();
+    [Button] public void DisableAds() => _menuUIFacade.DisableAds();
+    [Button] public void ShowRewardedAd() => _menuUIFacade.ShowRewardedAd();
 
 #if UNITY_EDITOR
     [BoxGroup("Shop Panel")]
     [HorizontalGroup("Shop Panel/b")]
     [Button("Show"), HideIf("_menuUIActions", null)]
-    private void ShowShopPanel() => _menuUIActions.Open<ShopPanel>();
+    private void ShowShopPanel() => _menuUIFacade.Open<ShopPanel>();
 
     [HorizontalGroup("Shop Panel/b")]
     [Button("Hide"), HideIf("_menuUIActions", null)]
-    private void HideShopPanel() => _menuUIActions.Close<ShopPanel>();
+    private void HideShopPanel() => _menuUIFacade.Close<ShopPanel>();
 
     [HorizontalGroup("Shop Panel/b")]
     [Button("Unload"), HideIf("_panelManager", null)]
@@ -44,11 +44,11 @@ public sealed class DevelopmentMenuPanel : IDisposable
     [BoxGroup("Hero Selector Panel")]
     [HorizontalGroup("Hero Selector Panel/b")]
     [Button("Show"), HideIf("_menuUIActions", null)]
-    private void ShowHeroSelectorPanel() => _menuUIActions.Open<HeroSelectorPanel>();
+    private void ShowHeroSelectorPanel() => _menuUIFacade.Open<HeroSelectorPanel>();
 
     [HorizontalGroup("Hero Selector Panel/b")]
     [Button("Hide"), HideIf("_menuUIActions", null)]
-    private void HideHeroSelectorPanel() => _menuUIActions.Close<HeroSelectorPanel>();
+    private void HideHeroSelectorPanel() => _menuUIFacade.Close<HeroSelectorPanel>();
 
     [HorizontalGroup("Hero Selector Panel/b")]
     [Button("Unload"), HideIf("_panelManager", null)]

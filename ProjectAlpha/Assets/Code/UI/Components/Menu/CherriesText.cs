@@ -3,13 +3,12 @@ using TMPro;
 using UnityEngine;
 using VContainer;
 
-namespace Code.UI.Actions;
+namespace Code.UI.Components;
 
 [RequireComponent(typeof(TextMeshProUGUI))]
 public sealed class CherriesText : MonoBehaviour
 {
     [Inject] private IProgress _progress;
-
     private TextMeshProUGUI _text;
 
     private void Awake() =>

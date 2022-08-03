@@ -2,7 +2,7 @@
 
 namespace Code.Services.UI;
 
-public interface IMenuUIActions
+public interface IMenuUIFacade
 {
     void Open<TPanel>() where TPanel : struct, IPanel;
     void Close<TPanel>() where TPanel : struct, IPanel;

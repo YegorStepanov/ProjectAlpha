@@ -1,6 +1,6 @@
 ﻿namespace Code.Services.UI;
 
-public interface IGameUIActions
+public interface IGameUIFacade
 {
     void RequestStoreReview();
     void HideGameOver();

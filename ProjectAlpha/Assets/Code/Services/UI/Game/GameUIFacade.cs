@@ -5,7 +5,7 @@ using VContainer;
 
 namespace Code.Services.UI;
 
-public sealed class GameUIActions : IGameUIActions
+public sealed class GameUIFacade : IGameUIFacade
 {
     [Inject] private GameUIController _gameUIController;
     [Inject] private IGameSceneNavigator _gameSceneNavigator;

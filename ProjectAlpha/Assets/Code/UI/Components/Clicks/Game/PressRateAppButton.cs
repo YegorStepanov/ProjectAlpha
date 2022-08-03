@@ -3,14 +3,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer;
 
-namespace Code.UI.Actions;
+namespace Code.UI.Components;
 
 public sealed class PressRateAppButton : MonoBehaviour, IPointerClickHandler
 {
-    [Inject] private IGameUIActions _gameUIActions;
+    [Inject] private IGameUIFacade _gameUIFacade;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        _gameUIActions.RequestStoreReview();
+        _gameUIFacade.RequestStoreReview();
     }
 }

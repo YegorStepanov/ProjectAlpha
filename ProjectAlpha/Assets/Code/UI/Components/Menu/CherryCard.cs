@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using VContainer;
 
-namespace Code.UI.Actions;
+namespace Code.UI.Components;
 
 public sealed class CherryCard : MonoBehaviour, IPointerClickHandler
 {

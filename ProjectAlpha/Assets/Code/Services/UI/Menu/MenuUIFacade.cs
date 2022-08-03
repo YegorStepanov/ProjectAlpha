@@ -10,7 +10,7 @@ using Event = Code.Common.Event;
 
 namespace Code.Services.UI;
 
-public sealed class MenuUIActions : MonoBehaviour, IMenuUIActions
+public sealed class MenuUIFacade : MonoBehaviour, IMenuUIFacade
 {
     [Inject] private IMainMenuView _mainMenuView;
     [Inject] private PanelManager _panelManager;

@@ -46,7 +46,7 @@ public static class Address
         public static readonly Address<GameObject> ShopPanel = new("Shop Panel");
         public static readonly Address<GameObject> HeroSelectorPanel = new("Hero Selector Panel");
 
-        public static readonly Address<MenuUIActions> MenuUIActions = new("Menu Mediator");
+        public static readonly Address<MenuUIFacade> MenuUIActions = new("Menu Mediator");
         public static readonly Address<MainMenuView> MainMenuView = new("Main Menu");
 
         public static readonly Address<LoadingScreen> LoadingScreen = new("LoadingScreen");

@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 using VContainer;
 
-namespace Code.UI.Actions;
+namespace Code.UI.Components;
 
 public sealed class Purchase : MonoBehaviour
 {
-    [Inject] private IMenuUIActions _menu;
+    [Inject] private IMenuUIFacade _menu;
 
     public void PurchaseComplete(Product product) =>
         _menu.PurchaseComplete(product);

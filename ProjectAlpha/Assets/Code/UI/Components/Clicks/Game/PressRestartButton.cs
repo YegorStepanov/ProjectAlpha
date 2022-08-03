@@ -3,16 +3,16 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer;
 
-namespace Code.UI.Actions;
+namespace Code.UI.Components;
 
 public sealed class PressRestartButton : MonoBehaviour, IPointerClickHandler
 {
-    [Inject] private IGameUIActions _gameUIActions;
+    [Inject] private IGameUIFacade _gameUIFacade;
 
     public void OnPointerClick(PointerEventData eventData)
     {
         //Restarter.FastRestart()?
-        _gameUIActions.HideGameOver();
-        _gameUIActions.Restart();
+        _gameUIFacade.HideGameOver();
+        _gameUIFacade.Restart();
     }
 }
