@@ -9,10 +9,6 @@ public sealed class PressRestartButton : MonoBehaviour, IPointerClickHandler
 {
     [Inject] private IGameUIFacade _gameUIFacade;
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        //Restarter.FastRestart()?
-        _gameUIFacade.HideGameOver();
+    public void OnPointerClick(PointerEventData eventData) =>
         _gameUIFacade.Restart();
-    }
 }

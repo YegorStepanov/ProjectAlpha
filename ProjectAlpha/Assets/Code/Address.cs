@@ -49,7 +49,7 @@ public static class Address
         public static readonly Address<MenuUIFacade> MenuUIActions = new("Menu Mediator");
         public static readonly Address<MainMenuView> MainMenuView = new("Main Menu");
 
-        public static readonly Address<LoadingScreen> LoadingScreen = new("LoadingScreen");
+        public static readonly Address<LoadingScreen> TransitionLoadingScreen = new("Transition Loading Screen");
     }
 
     public static class Entity

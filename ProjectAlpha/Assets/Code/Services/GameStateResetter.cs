@@ -1,8 +1,6 @@
-﻿using Code.Common;
-using Code.Services.Data;
+﻿using Code.Services.Data;
 using Code.Services.Infrastructure;
 using Code.Services.Spawners;
-using Cysharp.Threading.Tasks;
 
 namespace Code.Services;
 
@@ -19,14 +17,10 @@ public sealed class GameStateResetter
         _progress = progress;
     }
 
-    public async UniTask ResetAsync()
+    public void ResetState()
     {
-        await using UniTaskDisposable _ = ChangeBackground();
         _camera1.RestoreInitialPosition();
         _spawnersResetter.DespawnAll();
         _progress.Session.ResetScore();
     }
-
-    private UniTask ChangeBackground() =>
-        _camera1.ChangeBackgroundAsync();
 }

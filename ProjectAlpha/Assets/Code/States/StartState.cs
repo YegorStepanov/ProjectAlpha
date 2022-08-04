@@ -28,15 +28,17 @@ public sealed class StartState : IState
 
     public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
     {
-        HideUI();
+        _gameUIController.HideGameOver();
+        _gameUIController.HideScore();
+
         SwitchToMenuHeight();
-        await ResetGameState();
+        ResetGameState();
 
         IPlatform menuPlatform = await CreateMenuPlatform();
         IHero hero = CreateHero(menuPlatform);
 
         await WaitForGameStartEvent();
-        ShowUI();
+        _gameUIController.ShowUI();
 
         stateMachine.Enter<MoveHeroToMenuPlatformState, MoveHeroToMenuPlatformState.Arguments>(
             new(hero, menuPlatform));
@@ -45,8 +47,8 @@ public sealed class StartState : IState
     private void SwitchToMenuHeight() =>
         _gameWorld.SwitchToMenuHeight();
 
-    private UniTask ResetGameState() =>
-        _gameStateResetter.ResetAsync();
+    private void ResetGameState() =>
+        _gameStateResetter.ResetState();
 
     private UniTask<IPlatform> CreateMenuPlatform() =>
         _platformSpawner.CreateMenuPlatformAsync();
@@ -56,10 +58,4 @@ public sealed class StartState : IState
 
     private UniTask WaitForGameStartEvent() =>
         _gameStartEventAwaiter.Wait();
-
-    private void HideUI() =>
-        _gameUIController.HideUI();
-
-    private void ShowUI() =>
-        _gameUIController.ShowUI();
 }

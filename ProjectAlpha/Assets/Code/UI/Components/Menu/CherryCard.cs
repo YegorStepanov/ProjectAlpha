@@ -1,5 +1,5 @@
 ﻿using Code.Services.Data;
-using Code.Services.UI;
+using Code.Services.Navigators;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,7 +16,7 @@ public sealed class CherryCard : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshProUGUI _unlockPriceText;
 
     [Inject] private IProgress _progress;
-    [Inject] private PanelManager _panelManager;
+    [Inject] private IMenuSceneNavigator _sceneNavigator;
 
     private bool IsHeroLocked => _progress.Persistant.IsHeroLocked(_heroIndex);
 
@@ -30,7 +30,7 @@ public sealed class CherryCard : MonoBehaviour, IPointerClickHandler
         else
         {
             SelectHero();
-            _panelManager.Hide<HeroSelectorPanel>();
+            ReloadMenu();
         }
     }
 
@@ -54,4 +54,7 @@ public sealed class CherryCard : MonoBehaviour, IPointerClickHandler
         if (IsHeroLocked)
             _unlockPriceText.text = _unlockPrice.ToString();
     }
+
+    private void ReloadMenu() =>
+        _sceneNavigator.RestartMenuScene();
 }

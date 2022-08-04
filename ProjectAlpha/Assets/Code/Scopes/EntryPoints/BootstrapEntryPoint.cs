@@ -1,30 +1,15 @@
-﻿using System.Threading;
-using Code.Services.Infrastructure;
-using Code.UI;
-using Cysharp.Threading.Tasks;
+﻿using Code.Services.Navigators;
 using VContainer.Unity;
 
 namespace Code.Scopes;
 
-public sealed class BootstrapEntryPoint : IAsyncStartable
+public sealed class BootstrapEntryPoint : IStartable
 {
-    private readonly ISceneLoader _sceneLoader;
-    private readonly LoadingScreen _loadingScreen;
+    private readonly IBootstrapSceneNavigator _sceneNavigator;
 
-    public BootstrapEntryPoint(ISceneLoader sceneLoader, LoadingScreen loadingScreen)
-    {
-        _sceneLoader = sceneLoader;
-        _loadingScreen = loadingScreen;
-    }
+    public BootstrapEntryPoint(IBootstrapSceneNavigator sceneNavigator) =>
+        _sceneNavigator = sceneNavigator;
 
-    async UniTask IAsyncStartable.StartAsync(CancellationToken token)
-    {
-        _loadingScreen.Show();
-
-        await _sceneLoader.LoadAsync<GameScene>(token);
-        await _sceneLoader.LoadAsync<MenuScene>(token);
-
-        await _loadingScreen.FadeOutAsync();
-        await _sceneLoader.UnloadAsync<BootstrapScene>(token);
-    }
+    void IStartable.Start() =>
+        _sceneNavigator.NavigateToMenuAndGameScenes();
 }

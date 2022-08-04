@@ -28,12 +28,17 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 204094d8c8689d14dbecd9570afef851
-    m_Address: LoadingScreen
+    m_Address: Transition Loading Screen
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2884972968652d44ab58a653f57aba4d
     m_Address: Main Menu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75b284238fa308449a021534abca4cf2
+    m_Address: Boot Loading Screen
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

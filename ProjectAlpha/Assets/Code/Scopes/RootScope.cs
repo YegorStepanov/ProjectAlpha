@@ -7,6 +7,7 @@ using Code.Services.Development;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.Monetization;
+using Code.UI;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 using UnityEngine;
@@ -22,12 +23,14 @@ public sealed class RootScope : Scope
     private ICamera _camera;
     private SettingsFacade _settingsFacade;
     private DevelopmentPanel _developmentPanel;
+    private ILoadingScreen _loadingScreen;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        (_camera, _settingsFacade, _) = await (
+        (_camera, _settingsFacade, _loadingScreen, _) = await (
             loader.InstantiateAsync(Address.Infrastructure.CameraController, inject: false),
             loader.LoadAssetAsync(Address.Infrastructure.Settings),
+            loader.InstantiateAsync(Address.UI.TransitionLoadingScreen, inject: false),
             loader.InstantiateAsync(Address.Infrastructure.EventSystem, inject: false));
 
         await LoadDevelopmentAssets(loader, _settingsFacade);
@@ -70,6 +73,7 @@ public sealed class RootScope : Scope
         RegisterProgress(builder);
         RegisterMessagePipe(builder);
         RegisterDevelopment(builder);
+        RegisterLoadingScreen(builder);
 
         builder.RegisterEntryPoint<RootEntryPoint>();
     }
@@ -142,5 +146,10 @@ public sealed class RootScope : Scope
             builder.RegisterNonLazy<DevelopmentRootPanel>(Lifetime.Singleton);
             builder.RegisterComponentAndInjectGameObject(_developmentPanel);
         }
+    }
+
+    private void RegisterLoadingScreen(IContainerBuilder builder)
+    {
+        builder.RegisterInstance(_loadingScreen);
     }
 }

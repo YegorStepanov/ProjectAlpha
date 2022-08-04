@@ -2,6 +2,7 @@
 using Code.Common;
 using Code.Extensions;
 using Code.Services.Development;
+using Code.Services.Navigators;
 using Code.Services.UI;
 using Cysharp.Threading.Tasks;
 using VContainer;
@@ -27,11 +28,17 @@ public sealed class MenuScope : Scope
 
         builder.Register<PanelManager>(Lifetime.Singleton);
         RegisterDevelopment(builder);
+        RegisterNavigator(builder);
     }
 
     private static void RegisterDevelopment(IContainerBuilder builder)
     {
-        if(PlatformInfo.IsDevelopment)
+        if (PlatformInfo.IsDevelopment)
             builder.RegisterNonLazy<DevelopmentMenuPanel>(Lifetime.Singleton);
+    }
+
+    private static void RegisterNavigator(IContainerBuilder builder)
+    {
+        builder.Register<IMenuSceneNavigator, MenuSceneNavigator>(Lifetime.Singleton);
     }
 }

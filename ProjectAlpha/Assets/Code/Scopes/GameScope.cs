@@ -1,10 +1,12 @@
 ﻿using Code.AddressableAssets;
 using Code.Animations.Game;
+using Code.Common;
 using Code.Data;
 using Code.Extensions;
 using Code.Services;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
+using Code.Services.Navigators;
 using Code.Services.Spawners;
 using Code.Services.UI;
 using Code.States;
@@ -29,6 +31,7 @@ public sealed class GameScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
+        await using UniTaskDisposable _ = Parent.Container.Resolve<ICamera>().ChangeBackgroundAsync();
         Address<Hero> hero = Parent.Container.Resolve<HeroSelector>().GetSelectedHero();
 
         var tasks = UniTask.WhenAll(
@@ -66,6 +69,8 @@ public sealed class GameScope : Scope
         RegisterGameServices(builder);
 
         builder.RegisterEntryPoint<GameEntryPoint>();
+
+        builder.Register<IGameSceneNavigator, GameSceneNavigator>(Lifetime.Singleton);
     }
 
     private void RegisterHero(IContainerBuilder builder)
@@ -108,7 +113,6 @@ public sealed class GameScope : Scope
 
         builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
 
-        builder.Register<IGameSceneNavigator, GameSceneNavigator>(Lifetime.Singleton);
         builder.Register<IGameUIFacade, GameUIFacade>(Lifetime.Singleton);
         builder.Register<GameUIController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
     }

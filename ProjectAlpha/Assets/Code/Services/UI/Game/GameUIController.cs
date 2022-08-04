@@ -28,7 +28,7 @@ public sealed class GameUIController
         }
     }
 
-    public void HideUI() =>
+    public void HideScore() =>
         _gameUIView.HideScore();
 
     public void UpdateScore()

@@ -1,6 +1,8 @@
 ﻿using Code.AddressableAssets;
+using Code.Services.Navigators;
 using Code.UI;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -8,17 +10,16 @@ namespace Code.Scopes;
 
 public sealed class BootstrapScope : Scope
 {
-    private LoadingScreen _loadingScreen;
+    [SerializeField] private LoadingScreen _bootLoadingScreen;
 
-    protected override async UniTask PreloadAsync(IAddressablesLoader loader)
-    {
-        _loadingScreen = await loader.LoadAssetAsync(Address.UI.LoadingScreen);
-    }
+    protected override  UniTask PreloadAsync(IAddressablesLoader loader) =>
+        UniTask.CompletedTask;
 
     protected override void ConfigureServices(IContainerBuilder builder)
     {
-        builder.RegisterComponentInNewPrefab(_loadingScreen, Lifetime.Singleton);
+        builder.RegisterInstance<ILoadingScreen>(_bootLoadingScreen);
 
+        builder.Register<IBootstrapSceneNavigator, BootstrapSceneNavigator>(Lifetime.Singleton);
         builder.RegisterEntryPoint<BootstrapEntryPoint>();
     }
 }

@@ -1,5 +1,4 @@
-﻿using Code.Services.Infrastructure;
-using Code.States;
+﻿using Code.Services.Navigators;
 using UnityEngine.iOS;
 using VContainer;
 
@@ -8,11 +7,9 @@ namespace Code.Services.UI;
 public sealed class GameUIFacade : IGameUIFacade
 {
     [Inject] private GameUIController _gameUIController;
-    [Inject] private IGameSceneNavigator _gameSceneNavigator;
-    [Inject] private IGameStateMachine _gameStateMachine;
+    [Inject] private IGameSceneNavigator _sceneNavigator;
 
     public void RequestStoreReview() => Device.RequestStoreReview();
-    public void HideGameOver() => _gameUIController.HideGameOver();
-    public void LoadMenu() => _gameSceneNavigator.NavigateToMenu();
-    public void Restart() => _gameStateMachine.Enter<RestartState>(); //black fade out
+    public void LoadMenu() => _sceneNavigator.NavigateToMenuScene();
+    public void Restart() => _sceneNavigator.RestartGameScene();
 }

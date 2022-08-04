@@ -3,6 +3,7 @@ using Code.Services;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.Spawners;
+using Code.Services.UI;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States;
@@ -14,21 +15,25 @@ public sealed class RestartState : IState
     private readonly PlatformSpawner _platformSpawner;
     private readonly ICamera _camera1;
     private readonly HeroSpawner _heroSpawner;
+    private readonly GameUIController _gameUIController;
 
     public RestartState(GameWorld gameWorld,
-        GameStateResetter gameStateResetter, PlatformSpawner platformSpawner, ICamera camera1, HeroSpawner heroSpawner)
+        GameStateResetter gameStateResetter, PlatformSpawner platformSpawner, ICamera camera1, HeroSpawner heroSpawner, GameUIController gameUIController)
     {
         _gameWorld = gameWorld;
         _gameStateResetter = gameStateResetter;
         _platformSpawner = platformSpawner;
         _camera1 = camera1;
         _heroSpawner = heroSpawner;
+        _gameUIController = gameUIController;
     }
 
     public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
     {
+        _gameUIController.HideGameOver();
+
         SwitchToGameHeight();
-        await ResetGameState();
+        ResetGameState();
 
         IPlatform platform = await CreatePlatform();
         IHero hero = CreateHero(platform);
@@ -37,8 +42,8 @@ public sealed class RestartState : IState
             new(platform, platform, hero, StickNull.Default, CherryNull.Default));
     }
 
-    private UniTask ResetGameState() =>
-        _gameStateResetter.ResetAsync();
+    private void ResetGameState() =>
+        _gameStateResetter.ResetState();
 
     private void SwitchToGameHeight() =>
         _gameWorld.SwitchToGameHeight();

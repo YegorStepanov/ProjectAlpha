@@ -18,6 +18,10 @@ public sealed class SceneLoader : ISceneLoader
 {
     private readonly Dictionary<Address<Scene>, List<SceneInstance>> _scenes = new();
     private readonly List<GameObject> _tempRootGameObjects = new(32);
+    private readonly CancellationToken _token;
+
+    public SceneLoader(CancellationToken token) =>
+        _token = token;
 
     public bool IsLoaded<TScene>() where TScene : struct, IScene
     {
@@ -25,29 +29,29 @@ public sealed class SceneLoader : ISceneLoader
         return _scenes.ContainsKey(scene);
     }
 
-    public UniTask LoadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
+    public UniTask LoadAsync<TScene>() where TScene : struct, IScene
     {
         Address<Scene> scene = GetAddress<TScene>();
-        return LoadImpl(scene, token);
+        return LoadImpl(scene);
     }
 
-    public async UniTask LoadAsync<TScene>(LifetimeScope parentScope, CancellationToken token) where TScene : struct, IScene
+    public async UniTask LoadAsync<TScene>(LifetimeScope parentScope) where TScene : struct, IScene
     {
         Address<Scene> scene = GetAddress<TScene>();
         using (LifetimeScope.EnqueueParent(parentScope))
-            await LoadImpl(scene, token);
+            await LoadImpl(scene);
     }
 
-    public UniTask UnloadAsync<TScene>(CancellationToken token) where TScene : struct, IScene
+    public UniTask UnloadAsync<TScene>() where TScene : struct, IScene
     {
         Address<Scene> scene = GetAddress<TScene>();
-        return UnloadImpl(scene, token);
+        return UnloadImpl(scene);
     }
 
-    private async UniTask LoadImpl(Address<Scene> address, CancellationToken token)
+    private async UniTask LoadImpl(Address<Scene> address)
     {
         SceneInstance scene = await Addressables.LoadSceneAsync(address.Key, LoadSceneMode.Additive)
-            .WithCancellation(token);
+            .WithCancellation(_token);
 
         PushScene(address, scene);
         Scope scope = GetScope(scene);
@@ -63,13 +67,13 @@ public sealed class SceneLoader : ISceneLoader
             _scenes.Add(address, new List<SceneInstance> { scene });
     }
 
-    private UniTask UnloadImpl(Address<Scene> address, CancellationToken token)
+    private UniTask UnloadImpl(Address<Scene> address)
     {
         if (TryPopScene(address, out SceneInstance scene))
-            return Addressables.UnloadSceneAsync(scene).WithCancellation(token);
+            return Addressables.UnloadSceneAsync(scene).WithCancellation(_token);
 
         if (address.Key == StartupInfo.StartupSceneName)
-            return SceneManager.UnloadSceneAsync(StartupInfo.StartupSceneName).WithCancellation(token);
+            return SceneManager.UnloadSceneAsync(StartupInfo.StartupSceneName).WithCancellation(_token);
 
         Debug.LogError($"Trying unload unknown scene: {address.Key}");
         return UniTask.CompletedTask;
