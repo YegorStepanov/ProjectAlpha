@@ -7,7 +7,7 @@ namespace Code.Services.Infrastructure;
 
 public interface ICamera : IEntity
 {
-    public void RestoreInitialPosition();
+    public void RestoreInitialPosX();
     UniTask ChangeBackgroundAsync();
     UniTask MoveBackgroundAsync(CancellationToken cancellationToken);
     UniTask Punch(CancellationToken token);

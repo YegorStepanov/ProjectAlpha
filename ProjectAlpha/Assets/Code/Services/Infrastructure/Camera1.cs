@@ -36,10 +36,8 @@ public sealed class Camera1 : MonoBehaviour, ICamera
     private void Awake() =>
         _initialPosition = transform.position;
 
-    public void RestoreInitialPosition()
-    {
-        transform.position = _initialPosition;
-    }
+    public void RestoreInitialPosX() =>
+        transform.position = transform.position.WithX(_initialPosition.x);
 
     public UniTask ChangeBackgroundAsync() =>
         _backgroundChanger.ChangeToRandomBackgroundAsync();

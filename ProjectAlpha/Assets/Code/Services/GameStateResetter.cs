@@ -19,7 +19,7 @@ public sealed class GameStateResetter
 
     public void ResetState()
     {
-        _camera1.RestoreInitialPosition();
+        _camera1.RestoreInitialPosX();
         _spawnersResetter.DespawnAll();
         _progress.Session.ResetScore();
     }
