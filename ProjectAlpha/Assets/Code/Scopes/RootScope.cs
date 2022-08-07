@@ -10,10 +10,8 @@ using Code.Services.Monetization;
 using Code.UI;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using Event = Code.Common.Event;
 using Progress = Code.Services.Data.Progress;
 
 namespace Code.Scopes;
@@ -42,10 +40,7 @@ public sealed class RootScope : Scope
             loader.InstantiateAsync(Address.Development.Graphy, inject: false).Forget();
 
         if (PlatformInfo.IsDevelopment)
-        {
             _developmentPanel = await loader.InstantiateAsync(Address.Development.Panel, inject: false);
-            Debug.Log(_developmentPanel == null);
-        }
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)
