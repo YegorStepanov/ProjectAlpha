@@ -13,10 +13,10 @@ public static class ICameraExtensions
             camera.ViewportToWorldPosY(viewportPosition.y));
 
     public static float ViewportToWorldPosX<T>(this T camera, float viewportPosX) where T : ICamera =>
-        camera.Borders.Left * camera.ViewportToWorldWidth(viewportPosX);
+        camera.Borders.Left + camera.ViewportToWorldWidth(viewportPosX);
 
     public static float ViewportToWorldPosY<T>(this T camera, float viewportPosY) where T : ICamera =>
-        camera.Borders.Bot * camera.ViewportToWorldHeight(viewportPosY);
+        camera.Borders.Bot + camera.ViewportToWorldHeight(viewportPosY);
 
     public static Vector2 ViewportToWorldSize<T>(this T camera, Vector2 viewportSize) where T : ICamera =>
         new(camera.ViewportToWorldWidth(viewportSize.x),
