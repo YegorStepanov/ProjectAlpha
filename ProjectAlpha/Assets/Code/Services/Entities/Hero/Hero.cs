@@ -1,4 +1,5 @@
 using System.Threading;
+using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -6,7 +7,7 @@ using VContainer;
 
 namespace Code.Services.Entities;
 
-public sealed class Hero : SpriteEntity, IHero
+public sealed class Hero : SlicedSpriteEntity, IHero
 {
     [SerializeField] private HeroAnimator _animator;
 
@@ -24,7 +25,7 @@ public sealed class Hero : SpriteEntity, IHero
 
     public void ResetState()
     {
-        if(IsFlipped)
+        if (IsFlipped)
             Flip();
     }
 
@@ -39,7 +40,7 @@ public sealed class Hero : SpriteEntity, IHero
     public void Squatting(CancellationToken token) =>
         _animations.Squatting(transform, _settings.SquatOffset, _settings.SquatSpeed, token);
 
-    public  UniTask FallAsync(float destinationY) =>
+    public UniTask FallAsync(float destinationY) =>
         _animations.Fall(transform, destinationY, _settings.FallingSpeed, DestroyToken);
 
     public UniTask KickAsync() =>
@@ -48,8 +49,12 @@ public sealed class Hero : SpriteEntity, IHero
     public void Flip()
     {
         Vector3 scale = transform.localScale;
+
         scale.y *= -1;
         transform.localScale = scale;
+
+        float sign = Mathf.Sign(scale.y);
+        transform.position = transform.position.ShiftY(sign * Borders.Height);
     }
 
     [System.Serializable]

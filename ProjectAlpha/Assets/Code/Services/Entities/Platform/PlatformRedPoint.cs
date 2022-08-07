@@ -4,7 +4,7 @@ using VContainer;
 
 namespace Code.Services.Entities;
 
-public sealed class PlatformRedPoint : SpriteEntity, IPlatformRedPoint
+public sealed class PlatformRedPoint : SlicedSpriteEntity, IPlatformRedPoint
 {
     private IPlatformAnimations _animations;
     private Platform.Settings _settings;

@@ -8,7 +8,7 @@ using VContainer;
 
 namespace Code.Services.Entities;
 
-public sealed class Stick : SpriteEntity, IStick
+public sealed class Stick : SimpleSpriteEntity, IStick
 {
     [SerializeField] private Transform _arrow;
 

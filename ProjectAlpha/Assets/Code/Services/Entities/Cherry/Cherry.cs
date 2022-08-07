@@ -4,7 +4,7 @@ using VContainer;
 
 namespace Code.Services.Entities;
 
-public sealed class Cherry : SpriteEntity, ICherry
+public sealed class Cherry : SimpleSpriteEntity, ICherry
 {
     private ICherryAnimations _animations;
     private ICherryPickHandler _pickHandler;

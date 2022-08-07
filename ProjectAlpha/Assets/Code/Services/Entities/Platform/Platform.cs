@@ -1,3 +1,4 @@
+using Code.Common;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -5,7 +6,7 @@ using VContainer;
 
 namespace Code.Services.Entities;
 
-public sealed class Platform : SpriteEntity, IPlatform
+public sealed class Platform : SlicedSpriteEntity, IPlatform
 {
     [SerializeField] private PlatformRedPoint _platformRedPoint;
     private IPlatformAnimations _animations;
@@ -22,6 +23,12 @@ public sealed class Platform : SpriteEntity, IPlatform
 
     public UniTask MoveAsync(float destinationX) =>
         _animations.Move(transform, destinationX, _settings.MovementSpeed, DestroyToken);
+
+    public override void SetSize(Vector2 worldSize)
+    {
+        base.SetSize(worldSize);
+        _platformRedPoint.SetPosition(Borders.CenterTop, Relative.Top);
+    }
 
     [System.Serializable]
     public class Settings
