@@ -18,7 +18,6 @@ public sealed class Camera1 : MonoBehaviour, ICamera
     [Required, SerializeField] private RawImage _backgroundImage;
 
     private BackgroundChanger _backgroundChanger;
-    private Vector3 _initialPosition;
     private Settings _settings;
 
     public Borders Borders => UpdateBorders();
@@ -32,11 +31,8 @@ public sealed class Camera1 : MonoBehaviour, ICamera
         _backgroundChanger = new BackgroundChanger(loader, randomizer, _backgroundImage);
     }
 
-    private void Awake() => //to Progress!
-        _initialPosition = transform.position;
-
-    public void RestoreInitialPosX() => //to Progress!
-        transform.position = transform.position.WithX(_initialPosition.x);
+    public void SetPosition(Vector2 position) =>
+        transform.position = transform.position.WithXY(position);
 
     public UniTask ChangeBackgroundAsync() =>
         _backgroundChanger.ChangeToRandomBackgroundAsync();

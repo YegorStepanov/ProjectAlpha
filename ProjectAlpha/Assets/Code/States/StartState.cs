@@ -1,6 +1,7 @@
 ﻿using Code.Common;
 using Code.Services;
 using Code.Services.Entities;
+using Code.Services.Infrastructure;
 using Code.Services.Spawners;
 using Code.Services.UI;
 using Cysharp.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace Code.States;
 
 public sealed class StartState : IState
 {
+    private readonly ICameraRestorer _cameraRestorer;
     private readonly GameUIController _gameUIController;
     private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
@@ -17,6 +19,7 @@ public sealed class StartState : IState
     private readonly GameHeightFactory _gameHeightFactory;
 
     public StartState(
+        ICameraRestorer cameraRestorer,
         GameUIController gameUIController,
         HeroSpawner heroSpawner,
         PlatformSpawner platformSpawner,
@@ -24,6 +27,7 @@ public sealed class StartState : IState
         GameStartEventAwaiter gameStartEventAwaiter,
         GameHeightFactory gameHeightFactory)
     {
+        _cameraRestorer = cameraRestorer;
         _gameUIController = gameUIController;
         _heroSpawner = heroSpawner;
         _platformSpawner = platformSpawner;
@@ -34,6 +38,7 @@ public sealed class StartState : IState
 
     public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
     {
+        _cameraRestorer.RestorePosition();
         _gameUIController.HideGameOver();
         _gameUIController.HideScore();
 

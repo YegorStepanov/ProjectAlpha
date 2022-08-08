@@ -139,5 +139,6 @@ public sealed class GameScope : Scope
         builder.Register<GameStateResetter>(Lifetime.Singleton);
         builder.Register<SpawnersResetter>(Lifetime.Singleton);
         builder.Register<HeroMovement>(Lifetime.Singleton);
+        builder.Register<ICameraRestorer, CameraRestorer>(Lifetime.Singleton).As<IStartable>();
     }
 }
