@@ -21,9 +21,9 @@ public sealed class GameStartEventAwaiter
 
     public async UniTask Wait()
     {
-        //workaround for Editor
-        //when the menu scene is not loaded (i.e. the game is started from GameScene)
-        if (_sceneLoader.IsLoaded<MenuScene>())
+        //Skip awaiting when menu/bootstrap is not loaded,
+        //a workaround for Editor, when the game is started from GameScene:
+        if (_sceneLoader.IsLoaded<MenuScene>() || _sceneLoader.IsLoaded<BootstrapScene>())
             await _gameStartEvent.FirstAsync(_token);
     }
 }

@@ -10,20 +10,26 @@ namespace Code.States;
 public sealed class StartState : IState
 {
     private readonly GameUIController _gameUIController;
-    private readonly GameWorld _gameWorld;
     private readonly HeroSpawner _heroSpawner;
     private readonly PlatformSpawner _platformSpawner;
     private readonly GameStateResetter _gameStateResetter;
     private readonly GameStartEventAwaiter _gameStartEventAwaiter;
+    private readonly GameHeightFactory _gameHeightFactory;
 
-    public StartState(GameUIController gameUIController, GameWorld gameWorld, HeroSpawner heroSpawner, PlatformSpawner platformSpawner, GameStateResetter gameStateResetter, GameStartEventAwaiter gameStartEventAwaiter)
+    public StartState(
+        GameUIController gameUIController,
+        HeroSpawner heroSpawner,
+        PlatformSpawner platformSpawner,
+        GameStateResetter gameStateResetter,
+        GameStartEventAwaiter gameStartEventAwaiter,
+        GameHeightFactory gameHeightFactory)
     {
         _gameUIController = gameUIController;
-        _gameWorld = gameWorld;
         _heroSpawner = heroSpawner;
         _platformSpawner = platformSpawner;
         _gameStateResetter = gameStateResetter;
         _gameStartEventAwaiter = gameStartEventAwaiter;
+        _gameHeightFactory = gameHeightFactory;
     }
 
     public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
@@ -31,31 +37,16 @@ public sealed class StartState : IState
         _gameUIController.HideGameOver();
         _gameUIController.HideScore();
 
-        SwitchToMenuHeight();
-        ResetGameState();
-
-        IPlatform menuPlatform = await CreateMenuPlatform();
-        IHero hero = CreateHero(menuPlatform);
-
-        await WaitForGameStartEvent();
-        _gameUIController.ShowUI();
-
-        stateMachine.Enter<MoveHeroToMenuPlatformState, MoveHeroToMenuPlatformState.Arguments>(
-            new(hero, menuPlatform));
-    }
-
-    private void SwitchToMenuHeight() =>
-        _gameWorld.SwitchToMenuHeight();
-
-    private void ResetGameState() =>
         _gameStateResetter.ResetState();
 
-    private UniTask<IPlatform> CreateMenuPlatform() =>
-        _platformSpawner.CreateMenuPlatformAsync();
+        GameHeight gameHeight = _gameHeightFactory.CreateStartHeight();
+        IPlatform platform = await _platformSpawner.CreateMenuPlatformAsync(gameHeight.PositionY, gameHeight.Height);
+        IHero hero = _heroSpawner.Create(platform.Borders.CenterTop, Relative.Bot);
 
-    private IHero CreateHero(IPlatform menuPlatform) =>
-        _heroSpawner.Create(menuPlatform.Borders.CenterTop, Relative.Left);
+        await _gameStartEventAwaiter.Wait();
+        _gameUIController.ShowUI();
 
-    private UniTask WaitForGameStartEvent() =>
-        _gameStartEventAwaiter.Wait();
+        stateMachine.Enter<HeroMovementToStartPlatformState, GameData>(
+            new GameData(hero, platform, platform, CherryNull.Default, StickNull.Default, gameHeight));
+    }
 }

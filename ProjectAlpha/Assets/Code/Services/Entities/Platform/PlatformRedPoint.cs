@@ -16,7 +16,7 @@ public sealed class PlatformRedPoint : SlicedSpriteEntity, IPlatformRedPoint
         _settings = settings;
     }
 
-    public void Toggle(bool enable) =>
+    public void ToggleVisibility(bool enable) =>
         _sprite.color = _sprite.color with { a = enable ? 1 : 0 };
 
     public UniTask FadeOutAsync() =>

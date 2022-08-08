@@ -9,36 +9,30 @@ namespace Code.Services.Spawners;
 
 public sealed class CherrySpawner : Spawner<Cherry>, ICherryPickHandler
 {
-    private readonly GameWorld _gameWorld;
     private readonly IRandomizer _randomizer;
-    private readonly Settings _settings;
-    private readonly CherryNull _cherryNull = new();
+    private readonly GameSettings _settings;
 
-    public CherrySpawner(IAsyncPool<Cherry> pool, GameWorld gameWorld, IRandomizer randomizer, Settings settings)
+    public CherrySpawner(IAsyncPool<Cherry> pool, IRandomizer randomizer, GameSettings settings)
         : base(pool)
     {
-        _gameWorld = gameWorld;
         _randomizer = randomizer;
         _settings = settings;
     }
 
-    public async UniTask<ICherry> CreateAsync(float posX, Relative relative)
+    public async UniTask<ICherry> CreateAsync(Vector2 position, Relative relative)
     {
         if (_randomizer.NextProbability() > _settings.CherryChance)
-            return _cherryNull;
+            return CherryNull.Default;
 
+        return await Create(position, relative);
+    }
+
+    private async UniTask<ICherry> Create(Vector2 position, Relative relative)
+    {
         Cherry cherry = await SpawnAsync();
-
-        cherry.SetPosition(new Vector2(posX, _gameWorld.CurrentPositionY), relative);
+        cherry.SetPosition(position, relative);
         return cherry;
     }
 
     void ICherryPickHandler.OnCherryPicked(Cherry cherry) => Despawn(cherry);
-
-    [System.Serializable]
-    public class Settings
-    {
-        [Range(0, 1)]
-        public float CherryChance = 0.1f;
-    }
 }

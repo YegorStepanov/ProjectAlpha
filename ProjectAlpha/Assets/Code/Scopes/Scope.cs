@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Threading;
 using Code.AddressableAssets;
-using Code.Common;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -10,7 +9,6 @@ using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
-using Scene = UnityEngine.SceneManagement.Scene;
 
 namespace Code.Scopes;
 

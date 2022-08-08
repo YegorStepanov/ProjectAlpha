@@ -25,79 +25,82 @@ public class HeroMovement
         _token = token;
     }
 
-    public UniTask<Result> MoveHeroAsync(IHero hero, IPlatform currentPlatform, IPlatform destinationPlatform,
-        Destination destination, HeroFlipOption heroFlipOption)
+    public UniTask<(bool IsHeroCollided, bool IsCherryCollected)> MoveHeroToNextPlatformAsync(
+        GameData data, bool canHeroFlipsOnNextPlatform)
     {
-        return MoveHeroAsync(hero, currentPlatform, destinationPlatform, CherryNull.Default, StickNull.Default, destination, heroFlipOption);
+        float destinationX = data.NextPlatform.Borders.Right - _stickSpawner.StickWidth - data.Hero.Borders.HalfWidth;
+        return MoveHero(destinationX, data, canHeroFlipsOnNextPlatform);
     }
 
-    public async UniTask<Result> MoveHeroAsync(IHero hero, IPlatform currentPlatform, IPlatform destinationPlatform, ICherry cherry, IStick stick,
-        Destination destination, HeroFlipOption heroFlipOption)
+    public UniTask<(bool IsHeroCollided, bool IsCherryCollected)> MoveHeroToStickEndAsync(GameData data, bool canHeroFlipsOnNextPlatform)
     {
+        float destinationX = data.Stick.Borders.Right + data.Hero.Borders.HalfWidth;
+        return MoveHero(destinationX, data, canHeroFlipsOnNextPlatform);
+    }
+
+    private async UniTask<(bool IsHeroCollided, bool IsCherryCollected)> MoveHero(float destinationX, GameData data, bool canHeroFlipsOnNextPlatform)
+    {
+        await UniTask.Delay(_settings.DelayBeforeHeroMovement, cancellationToken: _token);
+
         using LinkedCancellationTokenSourceDisposable cts = new(_token);
-        CancellationToken token = cts.Token;
+        CancellationToken stopToken = cts.Token;
 
-        float destinationX = GetDestinationX(hero, destinationPlatform, stick, destination);
-        await Delay(token);
-        return await MoveHeroAsync(hero, currentPlatform, destinationPlatform, cherry, destinationX, heroFlipOption, token);
+        (bool isHeroCollided, bool isCherryCollected) =
+            await MoveHero(destinationX, data.Hero, data.CurrentPlatform, data.NextPlatform, data.Cherry, canHeroFlipsOnNextPlatform, stopToken);
+
+        return (isHeroCollided, isCherryCollected);
     }
 
-    private float GetDestinationX(IHero hero, IPlatform destinationPlatform, IStick stick, Destination destination) =>
-        destination == Destination.PlatformEnd
-            ? destinationPlatform.Borders.Right - _stickSpawner.StickWidth
-            : stick.Borders.Right + hero.Borders.HalfWidth;
-
-    private UniTask Delay(CancellationToken token) =>
-        UniTask.Delay(_settings.DelayBeforeHeroMovement, cancellationToken: token);
-
-    private async UniTask<Result> MoveHeroAsync(IHero hero, IPlatform currentPlatform, IPlatform destinationPlatform, ICherry cherry,
-        float destinationX, HeroFlipOption heroFlipOption, CancellationToken token)
+    private async UniTask<Result> MoveHero(
+        float destinationX, IHero hero, IPlatform currentPlatform, IPlatform nextPlatform, ICherry cherry,
+        bool canHeroFlipsOnNextPlatform, CancellationToken stopToken)
     {
-        MoveBackground(token);
-        FlipHeroOnClick(hero, currentPlatform, destinationPlatform, heroFlipOption, token);
-        UniTask pickCherry = PickCherry(hero, cherry, token);
+        MoveBackground();
+        FlippingHeroOnClick(hero, currentPlatform, nextPlatform, canHeroFlipsOnNextPlatform, stopToken);
+        UniTask pickingCherry = PickingCherry(hero, cherry, stopToken);
 
-        UniTask checkCollidingHero = CheckCollidingHero(hero, destinationPlatform, token);
-        UniTask moveHero = hero.MoveAsync(destinationX, token);
-        int index = await UniTask.WhenAny(checkCollidingHero, moveHero);
+        int index = await UniTask.WhenAny(
+            CheckingIsHeroCollided(hero, nextPlatform, stopToken),
+            hero.MoveAsync(destinationX, stopToken));
 
-        return new Result(IsHeroCollided(), IsCherryCollected(pickCherry));
-
-        bool IsHeroCollided() => index == 0;
-        static bool IsCherryCollected(UniTask pickCherry) => pickCherry.Status == UniTaskStatus.Succeeded;
+        return new Result(
+            IsHeroCollided: index == 0,
+            IsCherryCollected: pickingCherry.Status == UniTaskStatus.Succeeded);
     }
 
-    private void MoveBackground(CancellationToken token) =>
-        _camera1.MoveBackgroundAsync(token).Forget();
+    private void MoveBackground() =>
+        _camera1.MoveBackgroundAsync().Forget();
 
-    private static async UniTask CheckCollidingHero(IHero hero, IPlatform platform, CancellationToken token)
+    private static async UniTask CheckingIsHeroCollided(IHero hero, IPlatform nextPlatform, CancellationToken stopToken)
     {
-        while (!token.IsCancellationRequested)
+        while (!stopToken.IsCancellationRequested)
         {
-            if (hero.Intersect(platform) && hero.IsFlipped)
+            if (hero.Intersect(nextPlatform) && hero.IsFlipped)
                 return;
 
-            await UniTask.Yield(token);
+            await UniTask.Yield(stopToken);
         }
     }
 
-    private void FlipHeroOnClick(IHero hero, IPlatform leftPlatform, IPlatform rightPlatform, HeroFlipOption strategy, CancellationToken token) =>
-        FlipHeroOnClickImpl(hero, leftPlatform, rightPlatform, strategy, token).Forget();
-
-    private async UniTaskVoid FlipHeroOnClickImpl(IHero hero, IPlatform leftPlatform, IPlatform rightPlatform, HeroFlipOption strategy, CancellationToken token)
+    private void FlippingHeroOnClick(IHero hero, IPlatform currentPlatform, IPlatform nextPlatform, bool canHeroFlipsOnNextPlatform, CancellationToken stopToken)
     {
-        await foreach (AsyncUnit _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(token))
-        {
-            bool canBeFlipped = strategy == HeroFlipOption.AllowFlippingOnDestinationPlatform
-                ? !hero.Intersect(leftPlatform)
-                : !hero.Intersect(leftPlatform) && !hero.Intersect(rightPlatform);
+        Impl().Forget();
 
-            if (canBeFlipped)
-                hero.Flip();
+        async UniTaskVoid Impl()
+        {
+            await foreach (AsyncUnit _ in _inputManager.OnClickAsAsyncEnumerable().WithCancellation(stopToken))
+            {
+                bool canBeFlipped = canHeroFlipsOnNextPlatform
+                    ? !hero.Intersect(currentPlatform)
+                    : !hero.Intersect(currentPlatform) && !hero.Intersect(nextPlatform);
+
+                if (canBeFlipped)
+                    hero.Flip();
+            }
         }
     }
 
-    private static async UniTask PickCherry(IHero hero, ICherry cherry, CancellationToken token)
+    private static async UniTask PickingCherry(IHero hero, ICherry cherry, CancellationToken token)
     {
         await foreach (AsyncUnit _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(token))
         {
@@ -109,17 +112,5 @@ public class HeroMovement
         }
     }
 
-    public readonly record struct Result(bool IsHeroCollided, bool IsCherryCollected);
-
-    public enum Destination
-    {
-        StickEnd,
-        PlatformEnd,
-    }
-
-    public enum HeroFlipOption
-    {
-        DisallowFlippingOnDestinationPlatform,
-        AllowFlippingOnDestinationPlatform
-    }
+    private readonly record struct Result(bool IsHeroCollided, bool IsCherryCollected);
 }

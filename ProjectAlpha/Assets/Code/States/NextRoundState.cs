@@ -1,49 +1,55 @@
 ﻿using Code.Common;
+using Code.Extensions;
 using Code.Services;
 using Code.Services.Entities;
+using Code.Services.Infrastructure;
 using Code.Services.Spawners;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Code.States;
 
-public sealed class NextRoundState : IState<NextRoundState.Arguments>
+public sealed class NextRoundState : IState<GameData>
 {
-    public readonly record struct Arguments(IPlatform CurrentPlatform, IHero Hero);
-
-    private readonly CameraMover _cameraMover;
     private readonly PlatformSpawner _platformSpawner;
     private readonly CherrySpawner _cherrySpawner;
+    private readonly ICamera _camera;
 
-    public NextRoundState(CameraMover cameraMover, PlatformSpawner platformSpawner, CherrySpawner cherrySpawner)
+    public NextRoundState(PlatformSpawner platformSpawner, CherrySpawner cherrySpawner, ICamera camera)
     {
-        _cameraMover = cameraMover;
         _platformSpawner = platformSpawner;
         _cherrySpawner = cherrySpawner;
+        _camera = camera;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)
+    public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
     {
-        (IPlatform currentPlatform, IHero hero) = args;
+        Borders nextCameraBorders = GetNextCameraBorders(data.NextPlatform);
 
-        Borders nextCameraBorders = GetNextCameraBorders(currentPlatform);
-        IPlatform nextPlatform = await CreatePlatform(nextCameraBorders);
-        ICherry nextCherry = await CreateCherry(nextCameraBorders);
+        Vector2 position = new(nextCameraBorders.Right, data.GameHeight.PositionY);
+        (IPlatform nextPlatform, ICherry nextCherry) = await CreatePlatformAndCherry(position, data.GameHeight.Height);
 
-        currentPlatform.PlatformRedPoint.FadeOutAsync().Forget();
-        await _cameraMover.MoveCamera(nextCameraBorders, currentPlatform, nextPlatform, nextCherry);
+        GameData nextData = data with
+        {
+            CurrentPlatform = data.NextPlatform,
+            NextPlatform = nextPlatform,
+            Cherry = nextCherry
+        };
 
-        stateMachine.Enter<StickControlState, StickControlState.Arguments>(
-            new(currentPlatform, nextPlatform, hero, nextCherry));
+        stateMachine.Enter<WorldMovementState, (GameData, Vector2)>((nextData, nextCameraBorders.Center));
     }
 
-    private Borders GetNextCameraBorders(IPlatform currentPlatform)
+    private Borders GetNextCameraBorders(IPlatform nextPlatform)
     {
-        return _cameraMover.GetNextCameraBorders(currentPlatform);
+        Vector2 offset = nextPlatform.Borders.LeftBot - _camera.Borders.LeftBot;
+        return _camera.Borders.Shift(offset);
     }
 
-    private UniTask<IPlatform> CreatePlatform(Borders nextCameraBorders) =>
-        _platformSpawner.CreatePlatformAsync(nextCameraBorders.Right, Relative.Left);
+    private UniTask<(IPlatform nextPlatform, ICherry nextCherry)> CreatePlatformAndCherry(Vector2 position, float height)
+    {
+        UniTask<IPlatform> nextPlatform = _platformSpawner.CreateGamePlatformAsync(position, height);
+        UniTask<ICherry> nextCherry = _cherrySpawner.CreateAsync(position, Relative.RightTop);
 
-    private UniTask<ICherry> CreateCherry(Borders nextCameraBorders) =>
-        _cherrySpawner.CreateAsync(nextCameraBorders.Right, Relative.RightTop);
+        return UniTask.WhenAll(nextPlatform, nextCherry);
+    }
 }

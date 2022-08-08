@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Code.AddressableAssets;
+﻿using Code.AddressableAssets;
 using Code.Common;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
@@ -33,26 +32,23 @@ public sealed class Camera1 : MonoBehaviour, ICamera
         _backgroundChanger = new BackgroundChanger(loader, randomizer, _backgroundImage);
     }
 
-    private void Awake() =>
+    private void Awake() => //to Progress!
         _initialPosition = transform.position;
 
-    public void RestoreInitialPosX() =>
+    public void RestoreInitialPosX() => //to Progress!
         transform.position = transform.position.WithX(_initialPosition.x);
 
     public UniTask ChangeBackgroundAsync() =>
         _backgroundChanger.ChangeToRandomBackgroundAsync();
 
-    public UniTask MoveBackgroundAsync(CancellationToken cancellationToken) =>
-        _backgroundChanger.MoveBackgroundAsync(cancellationToken);
+    public UniTask MoveBackgroundAsync() =>
+        _backgroundChanger.MoveBackgroundAsync();
 
-    //todo: PunchAsync?
-    public UniTask Punch(CancellationToken token) => transform
-        .DOPunchPosition(
-            _settings.PunchingStrength,
-            _settings.PunchingDuration,
-            _settings.PunchingVibrato,
-            _settings.PunchingElasticity)
-        .WithCancellation(token);
+    public async UniTask PunchAsync() => await transform.DOPunchPosition(
+        _settings.PunchingStrength,
+        _settings.PunchingDuration,
+        _settings.PunchingVibrato,
+        _settings.PunchingElasticity);
 
     //
     // void IInitializable.Initialize()

@@ -1,22 +1,37 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace Code;
 
 [System.Serializable]
-public class GameSettings
+public sealed class GameSettings
 {
-    //todo: InspectorName not working, use Odin instead
-    [SerializeField, InspectorName("DelayBeforeNextRound (s)")]
-    private float DelayBeforeNextRound_Seconds = 0.1f;
-    [SerializeField, InspectorName("DelayBeforeEndGame (s)")]
-    private float DelayBeforeEndGame_Seconds = 0.3f;
-    [SerializeField, InspectorName("DelayBeforeHeroMovement (s)")]
-    private float DelayBeforeHeroMovement_Seconds = 0.2f;
-    [SerializeField, InspectorName("DelayBeforeFalling (s)")]
-    private float DelayBeforeFalling_Seconds = 0.1f;
+    [SerializeField, LabelText("DelayBeforeNextRound (s)")]
+    private float _delayBeforeNextRound = 0.1f;
+    [SerializeField, LabelText("DelayBeforeEndGame (s)")]
+    private float _delayBeforeEndGame = 0.3f;
+    [SerializeField, LabelText("DelayBeforeHeroMovement (s)")]
+    private float _delayBeforeHeroMovement = 0.2f;
+    [SerializeField, LabelText("DelayBeforeFalling (s)")]
+    [Space]
+    private float _delayBeforeFalling = 0.1f;
+    [SerializeField, LabelText("DelayBeforeFalling (s)")]
+    private float _delayBeforeRotatingStickDown = 0.1f;
 
-    public int DelayBeforeNextRound => (int)(DelayBeforeNextRound_Seconds * 1000);
-    public int DelayBeforeEndGame => (int)(DelayBeforeEndGame_Seconds * 1000);
-    public int DelayBeforeHeroMovement => (int)(DelayBeforeHeroMovement_Seconds * 1000);
-    public int DelayBeforeFalling => (int)(DelayBeforeFalling_Seconds * 1000);
+    public float ViewportMenuPlatformPositionX = 0.5f;
+    public float MenuPlatformWidth = 2f;
+    [MinValue(0), MaxValue(1)]
+    public float ViewportHeight = 0.2f;
+    [Space]
+    [MinValue(-1), MaxValue(1)]
+    public float ViewportCameraMovementYOnGameStart = 0.1f; //bug when value < 0
+
+    [Range(0, 1)]
+    public float CherryChance = 0.1f;
+
+    public int DelayAfterHeroMovementToPlatform => (int)(_delayBeforeNextRound * 1000);
+    public int DelayBeforeEndGameInEndGame => (int)(_delayBeforeEndGame * 1000);
+    public int DelayBeforeHeroMovement => (int)(_delayBeforeHeroMovement * 1000);
+    public int DelayBeforeFallingInEndGame => (int)(_delayBeforeFalling * 1000);
+    public int DelayBeforeRotatingStickDownInEndGame => (int)(_delayBeforeRotatingStickDown * 1000);
 }

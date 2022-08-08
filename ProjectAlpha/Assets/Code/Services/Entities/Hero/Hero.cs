@@ -36,9 +36,8 @@ public sealed class Hero : SlicedSpriteEntity, IHero
         _animator.PlayStay();
     }
 
-    //rename to SquatAsync with stopToken
-    public void Squatting(CancellationToken token) =>
-        _animations.Squatting(transform, _settings.SquatOffset, _settings.SquatSpeed, token);
+    public void Squatting(CancellationToken stopToken) =>
+        _animations.Squatting(transform, _settings.SquatOffset, _settings.SquatSpeed, stopToken);
 
     public UniTask FallAsync(float destinationY) =>
         _animations.Fall(transform, destinationY, _settings.FallingSpeed, DestroyToken);

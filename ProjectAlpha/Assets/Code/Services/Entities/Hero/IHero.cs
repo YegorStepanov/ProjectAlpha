@@ -9,6 +9,6 @@ public interface IHero : IEntity
     UniTask MoveAsync(float destinationX, CancellationToken token);
     UniTask FallAsync(float destinationY);
     UniTask KickAsync();
-    void Squatting(CancellationToken token);
+    void Squatting(CancellationToken stopToken);
     void Flip();
 }

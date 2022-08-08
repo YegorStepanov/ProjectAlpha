@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Code.Services.Entities;
+﻿using Code.Services.Entities;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -9,11 +8,7 @@ public interface ICamera : IEntity
 {
     public void RestoreInitialPosX();
     UniTask ChangeBackgroundAsync();
-    UniTask MoveBackgroundAsync(CancellationToken cancellationToken);
-    UniTask Punch(CancellationToken token);
+    UniTask MoveBackgroundAsync();
+    UniTask PunchAsync();
     UniTask MoveAsync(Vector2 destination);
-    //todo:
-    Vector2 ViewportToWorldPosition(Vector2 viewportPosition);
-    float ViewportToWorldPositionX(float viewportPosX);
-    float ViewportToWorldPositionY(float viewportPosY);
 }

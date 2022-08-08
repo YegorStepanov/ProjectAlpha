@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Common;
+namespace Code;
 
 public static class PlatformInfo
 {

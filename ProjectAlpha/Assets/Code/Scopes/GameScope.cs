@@ -120,12 +120,13 @@ public sealed class GameScope : Scope
     private static void RegisterGameStateMachine(IContainerBuilder builder)
     {
         builder.Register<IExitState, StartState>(Lifetime.Singleton);
-        builder.Register<IExitState, MoveHeroToMenuPlatformState>(Lifetime.Singleton);
-        builder.Register<IExitState, MoveHeroToPlatformState>(Lifetime.Singleton);
+        builder.Register<IExitState, HeroMovementToStartPlatformState>(Lifetime.Singleton);
+        builder.Register<IExitState, HeroMovementToPlatformState>(Lifetime.Singleton);
         builder.Register<IExitState, NextRoundState>(Lifetime.Singleton);
+        builder.Register<IExitState, WorldMovementState>(Lifetime.Singleton);
         builder.Register<IExitState, StickControlState>(Lifetime.Singleton);
         builder.Register<IExitState, RestartState>(Lifetime.Singleton);
-        builder.Register<IExitState, MoveHeroToGameOverState>(Lifetime.Singleton);
+        builder.Register<IExitState, HeroMovementToEndGameState>(Lifetime.Singleton);
         builder.Register<IExitState, EndGameState>(Lifetime.Singleton);
 
         builder.Register<IGameStateMachine, GameStateMachine>(Lifetime.Singleton);
@@ -133,11 +134,10 @@ public sealed class GameScope : Scope
 
     private static void RegisterGameServices(IContainerBuilder builder)
     {
-        builder.Register<GameWorld>(Lifetime.Singleton);
+        builder.Register<GameHeightFactory>(Lifetime.Singleton);
         builder.Register<GameStartEventAwaiter>(Lifetime.Singleton);
         builder.Register<GameStateResetter>(Lifetime.Singleton);
         builder.Register<SpawnersResetter>(Lifetime.Singleton);
         builder.Register<HeroMovement>(Lifetime.Singleton);
-        builder.Register<CameraMover>(Lifetime.Singleton);
     }
 }

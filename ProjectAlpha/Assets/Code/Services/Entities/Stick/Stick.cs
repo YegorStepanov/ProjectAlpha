@@ -31,8 +31,8 @@ public sealed class Stick : SimpleSpriteEntity, IStick
     public bool IsStickArrowOn(IEntity entity) =>
         entity.Borders.Inside(_arrow.position);
 
-    public void Increasing(CancellationToken token) =>
-        _animations.Increasing(transform, _settings.IncreaseSpeed, token);
+    public void Increasing(CancellationToken stopToken) =>
+        _animations.Increasing(transform, _settings.IncreaseSpeed, stopToken);
 
     public UniTask RotateAsync() =>
         _animations.Rotate(transform, _settings.EndRotation, _settings.RotationTime, _settings.RotationDelay, DestroyToken);

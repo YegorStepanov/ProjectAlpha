@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Code.Common;
+namespace Code;
 
 public static class StartupInfo
 {

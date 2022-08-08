@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Code.Services;
+﻿using Code.Services;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.UI;
@@ -7,45 +6,39 @@ using Cysharp.Threading.Tasks;
 
 namespace Code.States;
 
-public sealed class EndGameState : IState<EndGameState.Arguments>
+public sealed class EndGameState : IState<GameData>
 {
-    public readonly record struct Arguments(IHero Hero, IStick Stick);
-
-    private readonly ICamera _camera1;
+    private readonly ICamera _camera;
     private readonly GameUIController _gameUIController;
     private readonly GameSettings _settings;
-    private readonly CancellationToken _token;
 
-    public EndGameState(ICamera camera1, GameUIController gameUIController, GameSettings settings, CancellationToken token)
+    public EndGameState(
+        ICamera camera,
+        GameUIController gameUIController,
+        GameSettings settings)
     {
-        _camera1 = camera1;
+        _camera = camera;
         _gameUIController = gameUIController;
         _settings = settings;
-        _token = token;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)
+    public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
     {
-        RotateStickDown(args.Stick);
-        await Delay(_settings.DelayBeforeFalling);
-        await FallHero(args.Hero);
-        await Delay(_settings.DelayBeforeEndGame);
-        await PunchCamera();
-        ShowGameOver();
+        await Delay(_settings.DelayBeforeRotatingStickDownInEndGame);
+        RotateStickDown(data.Stick);
+        await Delay(_settings.DelayBeforeFallingInEndGame);
+        await FallHero(data.Hero);
+        await Delay(_settings.DelayBeforeEndGameInEndGame);
+        await _camera.PunchAsync();
+        _gameUIController.ShowGameOver();
     }
 
     private static void RotateStickDown(IStick stick) =>
         stick.RotateDownAsync().Forget();
 
-    private UniTask Delay(int delay) =>
-        UniTask.Delay(delay, cancellationToken: _token);
-
     private UniTask FallHero(IHero hero) =>
-        hero.FallAsync(_camera1.Borders.Bot - hero.Borders.Height);
+        hero.FallAsync(_camera.Borders.Bot - hero.Borders.Height);
 
-    private UniTask PunchCamera() =>
-        _camera1.Punch(_token);
-
-    private void ShowGameOver() =>
-        _gameUIController.ShowGameOver();
+    private static UniTask Delay(int delay) =>
+        UniTask.Delay(delay);
 }

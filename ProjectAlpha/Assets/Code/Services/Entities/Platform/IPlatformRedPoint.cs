@@ -4,6 +4,6 @@ namespace Code.Services.Entities;
 
 public interface IPlatformRedPoint : IEntity
 {
-    void Toggle(bool enable);
+    void ToggleVisibility(bool enable);
     UniTask FadeOutAsync();
 }

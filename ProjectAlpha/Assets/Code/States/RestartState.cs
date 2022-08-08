@@ -1,7 +1,6 @@
 ﻿using Code.Common;
 using Code.Services;
 using Code.Services.Entities;
-using Code.Services.Infrastructure;
 using Code.Services.Spawners;
 using Code.Services.UI;
 using Cysharp.Threading.Tasks;
@@ -10,47 +9,36 @@ namespace Code.States;
 
 public sealed class RestartState : IState
 {
-    private readonly GameWorld _gameWorld;
     private readonly GameStateResetter _gameStateResetter;
-    private readonly PlatformSpawner _platformSpawner;
-    private readonly ICamera _camera1;
     private readonly HeroSpawner _heroSpawner;
     private readonly GameUIController _gameUIController;
+    private readonly GameHeightFactory _gameHeightFactory;
+    private readonly PlatformSpawner _platformSpawner;
 
-    public RestartState(GameWorld gameWorld,
-        GameStateResetter gameStateResetter, PlatformSpawner platformSpawner, ICamera camera1, HeroSpawner heroSpawner, GameUIController gameUIController)
+    public RestartState(
+        GameStateResetter gameStateResetter,
+        HeroSpawner heroSpawner,
+        GameUIController gameUIController,
+        GameHeightFactory gameHeightFactory,
+        PlatformSpawner platformSpawner)
     {
-        _gameWorld = gameWorld;
         _gameStateResetter = gameStateResetter;
-        _platformSpawner = platformSpawner;
-        _camera1 = camera1;
         _heroSpawner = heroSpawner;
         _gameUIController = gameUIController;
+        _gameHeightFactory = gameHeightFactory;
+        _platformSpawner = platformSpawner;
     }
 
     public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
     {
         _gameUIController.HideGameOver();
-
-        SwitchToGameHeight();
-        ResetGameState();
-
-        IPlatform platform = await CreatePlatform();
-        IHero hero = CreateHero(platform);
-
-        stateMachine.Enter<MoveHeroToPlatformState, MoveHeroToPlatformState.Arguments>(
-            new(platform, platform, hero, StickNull.Default, CherryNull.Default));
-    }
-
-    private void ResetGameState() =>
         _gameStateResetter.ResetState();
 
-    private void SwitchToGameHeight() =>
-        _gameWorld.SwitchToGameHeight();
+        GameHeight gameHeight = _gameHeightFactory.CreateRestartHeight();
+        IPlatform platform = await _platformSpawner.CreateRestartPlatformAsync(gameHeight.PositionY, gameHeight.Height);
+        IHero hero = _heroSpawner.Create(platform.Borders.LeftTop, Relative.Bot);
 
-    private UniTask<IPlatform> CreatePlatform() =>
-        _platformSpawner.CreatePlatformAsync(_camera1.Borders.Left, Relative.Left, false);
-
-    private IHero CreateHero(IPlatform platform) =>
-        _heroSpawner.Create(platform.Borders.LeftTop, Relative.Center);
+        stateMachine.Enter<HeroMovementToPlatformState, GameData>(
+            new GameData(hero, platform, platform, CherryNull.Default, StickNull.Default, gameHeight));
+    }
 }

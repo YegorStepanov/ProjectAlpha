@@ -18,10 +18,8 @@ MonoBehaviour:
     PunchingVibrato: 20
     PunchingElasticity: 0
   _hero:
-    HandOffset: 0.05
     MovementSpeed: 4
     FallingSpeed: 30
-    FallingDelay: 0.1
     SquatSpeed: 0.8
     SquatOffset: 0.1
   _platform:
@@ -39,19 +37,15 @@ MonoBehaviour:
     EndDownRotation: {x: 0, y: 0, z: -180}
   _stickSpawner:
     StickWidth: 0.04
-  _platformSpawner:
-    ViewportMenuPlatformPositionX: 0.5
-    MenuPlatformWidth: 2
-  _gameWorld:
-    ViewportMenuPositionY: 0.2
-    ViewportGamePositionY: 0.3
-  _gameStateMachine:
-    DelayBeforeNextState: 0.1
-    DelayBeforeEndGame: 0.3
-    DelayBeforeHeroMovement: 0.2
+  _creationData:
+    ViewportGameHeight: 0.2
+    ViewportCameraMovementYOnGameStart: 0.1
   _adsManager:
     ShowAdsAfterRestartNumber: 3
     CherriesForWatchingRewardedAds: 5
+  _iapManager:
+    CherryPayoutType: 1
+    NoAdsId: com.code.disable_ads
   _androidAdsProvider:
     GameId: 4791421
     InterstitialId: Interstitial_Android

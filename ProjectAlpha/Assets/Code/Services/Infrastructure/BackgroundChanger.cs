@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Code.AddressableAssets;
+﻿using Code.AddressableAssets;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -47,11 +46,11 @@ public sealed class BackgroundChanger
         _spriteAsset = texture;
     }
 
-    public UniTask MoveBackgroundAsync(CancellationToken token) => _image
+    public UniTask MoveBackgroundAsync() => _image
         .DOMoveUVX(1f, 0.05f)
         .SetRelative()
         .SetSpeedBased()
-        .WithCancellation(token);
+        .ToUniTask();
 
     private Address<Texture2D> GetRandomBackground()
     {

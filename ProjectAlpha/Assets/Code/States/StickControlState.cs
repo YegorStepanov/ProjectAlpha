@@ -7,46 +7,42 @@ using MessagePipe;
 
 namespace Code.States;
 
-public sealed class StickControlState : IState<StickControlState.Arguments>
+public sealed class StickControlState : IState<GameData>
 {
-    public readonly record struct Arguments(IPlatform CurrentPlatform, IPlatform NextPlatform, IHero Hero, ICherry Cherry);
-
     private readonly StickSpawner _stickSpawner;
     private readonly IInputManager _inputManager;
     private readonly GameUIController _gameUIController;
 
-    public StickControlState(StickSpawner stickSpawner, IInputManager inputManager, GameUIController gameUIController)
+    public StickControlState(
+        StickSpawner stickSpawner,
+        IInputManager inputManager,
+        GameUIController gameUIController)
     {
         _stickSpawner = stickSpawner;
         _inputManager = inputManager;
         _gameUIController = gameUIController;
     }
 
-    public async UniTaskVoid EnterAsync(Arguments args, IGameStateMachine stateMachine)
+    public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
     {
-        (IPlatform currentPlatform, IPlatform nextPlatform, IHero hero, ICherry cherry) = args;
+        IStick nextStick = await _stickSpawner.CreateAsync(data.CurrentPlatform.Borders.RightTop);
+        await ControlStick(nextStick, data.Hero, data.NextPlatform);
 
-        IStick stick = await CreateStick(currentPlatform);
+        GameData nextData = data with { Stick = nextStick };
+
+        if (nextStick.IsStickArrowOn(data.NextPlatform))
+            stateMachine.Enter<HeroMovementToPlatformState, GameData>(nextData);
+        else
+            stateMachine.Enter<HeroMovementToEndGameState, GameData>(nextData);
+    }
+
+    private async UniTask<IStick> ControlStick(IStick stick, IHero hero, IPlatform nextPlatform)
+    {
         await IncreaseStick(stick, hero);
         await hero.KickAsync();
         await stick.RotateAsync();
         HandleRedPointHit(stick, nextPlatform);
-
-        if (stick.IsStickArrowOn(nextPlatform))
-        {
-            stateMachine.Enter<MoveHeroToPlatformState, MoveHeroToPlatformState.Arguments>(
-                new(currentPlatform, nextPlatform, hero, stick, cherry));
-        }
-        else
-        {
-            stateMachine.Enter<MoveHeroToGameOverState, MoveHeroToGameOverState.Arguments>(
-                new(currentPlatform, nextPlatform, hero, stick, cherry));
-        }
-    }
-
-    private UniTask<IStick> CreateStick(IPlatform platform)
-    {
-        return _stickSpawner.CreateAsync(platform.Borders.RightTop);
+        return stick;
     }
 
     private async UniTask IncreaseStick(IStick stick, IHero hero)

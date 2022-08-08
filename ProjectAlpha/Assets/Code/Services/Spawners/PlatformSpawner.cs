@@ -1,6 +1,7 @@
 ﻿using Code.AddressableAssets;
 using Code.Common;
 using Code.Data;
+using Code.Extensions;
 using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Cysharp.Threading.Tasks;
@@ -10,53 +11,45 @@ namespace Code.Services.Spawners;
 
 public sealed class PlatformSpawner : Spawner<Platform>
 {
-    private readonly ICamera _camera1;
-    private readonly Settings _settings;
-    private readonly IPlatformWidthGenerator _platformWidthGenerator;
-    private readonly GameWorld _gameWorld;
+    private readonly IPlatformWidthGenerator _widthGenerator;
+    private readonly ICamera _camera;
+    private readonly GameSettings _settings;
 
-    public PlatformSpawner(IAsyncPool<Platform> pool, ICamera camera1, Settings settings, IPlatformWidthGenerator platformWidthGenerator, GameWorld gameWorld)
-        : base(pool)
+    public PlatformSpawner(IAsyncPool<Platform> pool, IPlatformWidthGenerator widthGenerator, ICamera camera, GameSettings settings) : base(pool)
     {
-        _camera1 = camera1;
+        _widthGenerator = widthGenerator;
+        _camera = camera;
         _settings = settings;
-        _platformWidthGenerator = platformWidthGenerator;
-        _gameWorld = gameWorld;
     }
 
-    public UniTask<IPlatform> CreateMenuPlatformAsync()
+    public UniTask<IPlatform> CreateMenuPlatformAsync(float positionY, float height)
     {
-        float width = _settings.MenuPlatformWidth;
-        float posX = _camera1.ViewportToWorldPositionX(_settings.ViewportMenuPlatformPositionX);
-        return CreateAsync(posX, width, Relative.Center, false);
+        float positionX = _camera.ViewportToWorldPosX(_settings.ViewportMenuPlatformPositionX);
+
+        Vector2 position = new(positionX, positionY);
+        Vector2 size = new(_settings.MenuPlatformWidth, height);
+        return CreateAsync(position, size, Relative.Top, false);
     }
 
-    public UniTask<IPlatform> CreatePlatformAsync(float posX, Relative relative, bool redPointEnabled = true)
+    public UniTask<IPlatform> CreateRestartPlatformAsync(float positionY, float height)
     {
-        float width = _platformWidthGenerator.NextWidth();
-        return CreateAsync(posX, width, relative, redPointEnabled);
+        Vector2 position = new(_camera.Borders.Left, positionY);
+        Vector2 size = new(_widthGenerator.NextWidth(), height);
+        return CreateAsync(position, size, Relative.LeftTop, false);
     }
 
-    private UniTask<IPlatform> CreateAsync(float posX, float width, Relative relative, bool redPointEnabled)
+    public UniTask<IPlatform> CreateGamePlatformAsync(Vector2 position, float height)
     {
-        Vector2 position = new(posX, _gameWorld.CurrentPositionY);
-        Vector2 size = new(width, _gameWorld.PlatformHeight);
-        return CreateAsync(position, size, relative, redPointEnabled);
+        Vector2 size = new(_widthGenerator.NextWidth(), height);
+        return CreateAsync(position, size, Relative.LeftTop, true);
     }
 
-    private async UniTask<IPlatform> CreateAsync(Vector2 position, Vector2 size, Relative relative, bool redPointEnabled)
+    private async UniTask<IPlatform> CreateAsync(Vector2 position, Vector2 size, Relative relative, bool isRedPointEnable)
     {
         Platform platform = await SpawnAsync();
         platform.SetSize(size);
         platform.SetPosition(position, relative);
-        platform.PlatformRedPoint.Toggle(redPointEnabled);
+        platform.PlatformRedPoint.ToggleVisibility(isRedPointEnable);
         return platform;
-    }
-
-    [System.Serializable]
-    public class Settings
-    {
-        public float ViewportMenuPlatformPositionX = 0.5f;
-        public float MenuPlatformWidth = 2f;
     }
 }

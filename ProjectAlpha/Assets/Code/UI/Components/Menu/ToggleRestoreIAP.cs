@@ -1,5 +1,4 @@
-﻿using Code.Common;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Code.UI.Components;
 
