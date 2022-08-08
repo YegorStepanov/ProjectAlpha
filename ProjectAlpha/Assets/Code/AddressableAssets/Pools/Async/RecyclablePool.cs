@@ -7,7 +7,7 @@ namespace Code.AddressableAssets;
 public sealed class RecyclablePool<T> : IAsyncPool<T>
 {
     private readonly IAsyncPool<T> _pool;
-    private readonly List<T> _cachedValues;
+    private readonly List<T> _cachedItems;
     private int _cacheIndex;
 
     public int Capacity { get; }
@@ -16,7 +16,7 @@ public sealed class RecyclablePool<T> : IAsyncPool<T>
     public RecyclablePool(IAsyncPool<T> pool)
     {
         _pool = pool;
-        _cachedValues = new List<T>(_pool.Capacity);
+        _cachedItems = new List<T>(_pool.Capacity);
         Capacity = _pool.Capacity;
     }
 
@@ -32,32 +32,32 @@ public sealed class RecyclablePool<T> : IAsyncPool<T>
 
     public void DespawnAll()
     {
-        foreach (T value in _cachedValues)
-            _pool.Despawn(value);
+        foreach (T item in _cachedItems)
+            _pool.Despawn(item);
 
         _cacheIndex = 0;
-        _cachedValues.Clear();
+        _cachedItems.Clear();
     }
 
     private async UniTask<T> SpawnFromPool()
     {
-        T stick = await _pool.SpawnAsync();
-        _cachedValues.Add(stick);
-        return stick;
+        T item = await _pool.SpawnAsync();
+        _cachedItems.Add(item);
+        return item;
     }
 
     private T GetFromCache()
     {
-        T stick = _cachedValues[_cacheIndex];
-        _cacheIndex = (_cacheIndex + 1) % _cachedValues.Count;
-        return stick;
+        T item = _cachedItems[_cacheIndex];
+        _cacheIndex = (_cacheIndex + 1) % _cachedItems.Count;
+        return item;
     }
 
     private void TryRemoveFromCache(T value)
     {
-        int index = _cachedValues.IndexOf(value);
+        int index = _cachedItems.IndexOf(value);
         if (index == -1) return;
-        _cachedValues.RemoveAt(index);
+        _cachedItems.RemoveAt(index);
 
         if (_cacheIndex > 0 && index > _cacheIndex)
             _cacheIndex--;
