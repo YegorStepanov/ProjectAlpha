@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e228327ea4e426c9d074f4d69ba518d, type: 3}
   m_Name: Position Generator (Cherry)
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   _mode: 0
   _leftOffset: 0.2
   _rightOffset: 0.2

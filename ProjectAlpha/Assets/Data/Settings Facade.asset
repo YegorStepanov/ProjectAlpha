@@ -27,8 +27,6 @@ MonoBehaviour:
     FadeOutRedPointSpeed: 0.3
   _cherry:
     MovementSpeed: 10
-  _cherrySpawner:
-    CherryChance: 0.5
   _stick:
     IncreaseSpeed: 25
     RotationTime: 0.35
@@ -37,9 +35,6 @@ MonoBehaviour:
     EndDownRotation: {x: 0, y: 0, z: -180}
   _stickSpawner:
     StickWidth: 0.04
-  _creationData:
-    ViewportGameHeight: 0.2
-    ViewportCameraMovementYOnGameStart: 0.1
   _adsManager:
     ShowAdsAfterRestartNumber: 3
     CherriesForWatchingRewardedAds: 5
@@ -56,5 +51,16 @@ MonoBehaviour:
     InterstitialId: Interstitial_iOS
     RewardedId: Rewarded_iOS
     BannerId: Banner_iOS
+  _gameSettings:
+    _delayBeforeNextRound: 0.1
+    _delayBeforeEndGame: 0.3
+    _delayBeforeHeroMovement: 0.2
+    _delayBeforeFalling: 0.1
+    _delayBeforeRotatingStickDown: 0.1
+    ViewportMenuPlatformPositionX: 0.5
+    MenuPlatformWidth: 2
+    ViewportHeight: 0.2
+    ViewportCameraMovementYOnGameStart: 0.1
+    CherryChance: 1
   _developmentSettings:
     GraphyInDebug: 0
