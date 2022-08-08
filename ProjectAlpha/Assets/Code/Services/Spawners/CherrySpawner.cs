@@ -19,12 +19,12 @@ public sealed class CherrySpawner : Spawner<Cherry>, ICherryPickHandler
         _settings = settings;
     }
 
-    public async UniTask<ICherry> CreateAsync(Vector2 position, Relative relative)
+    public UniTask<ICherry> CreateAsync(Vector2 position, Relative relative)
     {
         if (_randomizer.NextProbability() > _settings.CherryChance)
-            return CherryNull.Default;
+            return UniTask.FromResult<ICherry>(CherryNull.Default);
 
-        return await Create(position, relative);
+        return Create(position, relative);
     }
 
     private async UniTask<ICherry> Create(Vector2 position, Relative relative)
