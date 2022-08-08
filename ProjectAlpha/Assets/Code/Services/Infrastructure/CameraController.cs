@@ -27,7 +27,7 @@ public sealed class CameraController : MonoBehaviour, ICamera
         _settings = settings;
 
     public void SetPosition(Vector2 position) =>
-        transform.position = transform.position.WithXY(position);
+        transform.position = position.WithZ(transform.position.z);
 
     public async UniTask PunchAsync() => await transform.DOPunchPosition(
         _settings.PunchingStrength,

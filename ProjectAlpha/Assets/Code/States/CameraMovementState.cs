@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace Code.States;
 
-public sealed class WorldMovementState : IState<(GameData Data, Vector2 CameraDestination)>
+public sealed class CameraMovementState : IState<(GameData Data, Vector2 CameraDestination)>
 {
     private readonly ICamera _camera;
     private readonly PlatformPositionGenerator _platformPositionGenerator;
     private readonly CherryPositionGenerator _cherryPositionGenerator;
 
-    public WorldMovementState(
+    public CameraMovementState(
         ICamera camera,
         PlatformPositionGenerator platformPositionGenerator,
         CherryPositionGenerator cherryPositionGenerator)
@@ -33,7 +33,7 @@ public sealed class WorldMovementState : IState<(GameData Data, Vector2 CameraDe
             MoveCamera(cameraDestination),
             MovePlatformWithCherry(cameraDestination, data.CurrentPlatform, data.NextPlatform, data.Cherry));
 
-        stateMachine.Enter<StickControlState, GameData>(data);
+        stateMachine.Enter<EntitiesMovementState, GameData>(data);
     }
 
     private UniTask MoveCamera(Vector2 cameraDestination) =>

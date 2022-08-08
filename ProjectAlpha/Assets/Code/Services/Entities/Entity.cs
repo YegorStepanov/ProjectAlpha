@@ -15,8 +15,12 @@ public abstract class Entity : MonoBehaviour, IEntity
     protected virtual void Awake() =>
         DestroyToken = this.GetCancellationTokenOnDestroy();
 
-    public void SetPosition(Vector2 position, Relative relative = Relative.Center) =>
-        transform.position = position.Shift(Borders, relative);
+    //todo:
+    public virtual void SetPosition(Vector2 position) =>
+        transform.position = position.WithZ(transform.position.z);
+
+    public void SetPosition(Vector2 position, Relative relative) =>
+        transform.position = position.Shift(Borders, relative).WithZ(transform.position.z);
 
     public void SetWidth(float width) =>
         transform.localScale = transform.localScale.WithX(width / Borders.Width);

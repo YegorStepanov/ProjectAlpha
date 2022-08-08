@@ -14,4 +14,7 @@ public static class IEntityExtensions
 
     public static bool Contains<T1>(this T1 entity, Vector2 point) where T1 : IEntity =>
         entity.Borders.Inside(point);
+
+    public static void ShiftPosition<T1>(this T1 entity, Vector2 distance) where T1 : IEntity =>
+        entity.SetPosition(entity.Borders.Center + distance);
 }

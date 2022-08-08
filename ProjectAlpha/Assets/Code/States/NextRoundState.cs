@@ -36,7 +36,7 @@ public sealed class NextRoundState : IState<GameData>
             Cherry = nextCherry
         };
 
-        stateMachine.Enter<WorldMovementState, (GameData, Vector2)>((nextData, nextCameraBorders.Center));
+        stateMachine.Enter<CameraMovementState, (GameData, Vector2)>((nextData, nextCameraBorders.Center));
     }
 
     private Borders GetNextCameraBorders(IPlatform nextPlatform)

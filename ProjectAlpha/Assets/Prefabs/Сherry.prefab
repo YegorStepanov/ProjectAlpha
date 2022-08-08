@@ -43,9 +43,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fee54f32b1014e74b2d3ccae212ed88a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _transform: {fileID: 5556461390882412268}
+  m_Name:
+  m_EditorClassIdentifier:
   _sprite: {fileID: 4450341412904034427}
 --- !u!114 &1230593007632038818
 MonoBehaviour:
@@ -57,8 +56,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b06dc37fb6d4073b375d1dfa0f5a3ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   _transform: {fileID: 5556461390882412268}
   _hoveringRange: 0.05
   _duration: 2

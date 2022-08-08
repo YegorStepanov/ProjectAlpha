@@ -123,7 +123,8 @@ public sealed class GameScope : Scope
         builder.Register<IExitState, HeroMovementToStartPlatformState>(Lifetime.Singleton);
         builder.Register<IExitState, HeroMovementToPlatformState>(Lifetime.Singleton);
         builder.Register<IExitState, NextRoundState>(Lifetime.Singleton);
-        builder.Register<IExitState, WorldMovementState>(Lifetime.Singleton);
+        builder.Register<IExitState, CameraMovementState>(Lifetime.Singleton);
+        builder.Register<IExitState, EntitiesMovementState>(Lifetime.Singleton);
         builder.Register<IExitState, StickControlState>(Lifetime.Singleton);
         builder.Register<IExitState, RestartState>(Lifetime.Singleton);
         builder.Register<IExitState, HeroMovementToEndGameState>(Lifetime.Singleton);
@@ -138,6 +139,7 @@ public sealed class GameScope : Scope
         builder.Register<GameStartEventAwaiter>(Lifetime.Singleton);
         builder.Register<GameStateResetter>(Lifetime.Singleton);
         builder.Register<SpawnersResetter>(Lifetime.Singleton);
+        builder.Register<SpawnersItemsMover>(Lifetime.Singleton);
         builder.Register<HeroMovement>(Lifetime.Singleton);
         builder.Register<ICameraRestorer, CameraRestorer>(Lifetime.Singleton).As<IStartable>();
     }

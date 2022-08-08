@@ -8,7 +8,6 @@ namespace Code.Services.Infrastructure;
 public interface ICamera : IEntity
 {
     RawImage BackgroundImage { get; }
-    void SetPosition(Vector2 position);
     UniTask PunchAsync();
     UniTask MoveAsync(Vector2 destination);
 }

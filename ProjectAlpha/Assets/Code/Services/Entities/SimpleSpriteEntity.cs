@@ -13,6 +13,13 @@ public abstract class SimpleSpriteEntity : Entity
     private void OnValidate() =>
         Debug.Assert(_sprite.drawMode == SpriteDrawMode.Simple, $"{name}: Sprite is sliced or tiled, use {nameof(SlicedSpriteEntity)} instead");
 
+    //todo:
+    public override void SetPosition(Vector2 position)
+    {
+        Vector2 borderTransformOffset = Borders.Center - (Vector2)transform.position;
+        transform.position = position - borderTransformOffset;
+    }
+
     public void SetSize(Vector2 worldSize)
     {
         Vector2 scaledAABB = _sprite.bounds.size;
