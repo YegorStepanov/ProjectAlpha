@@ -1,5 +1,4 @@
-﻿using Code.AddressableAssets;
-using Code.Common;
+﻿using Code.Common;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -12,7 +11,7 @@ using VContainer;
 namespace Code.Services.Infrastructure;
 
 [RequireComponent(typeof(Camera))]
-public sealed class Camera1 : MonoBehaviour, ICamera
+public sealed class CameraController : MonoBehaviour, ICamera
 {
     [Required, SerializeField] private Camera _baseCamera;
     [Required, SerializeField] private RawImage _backgroundImage;
@@ -20,25 +19,15 @@ public sealed class Camera1 : MonoBehaviour, ICamera
     private BackgroundChanger _backgroundChanger;
     private Settings _settings;
 
+    public RawImage BackgroundImage => _backgroundImage;
     public Borders Borders => UpdateBorders();
 
-    private Vector3 CameraPosition => _baseCamera.transform.position;
-
     [Inject, UsedImplicitly]
-    private void Construct(IScopedAddressablesLoader loader, IRandomizer randomizer, Settings settings)
-    {
+    private void Construct(Settings settings) =>
         _settings = settings;
-        _backgroundChanger = new BackgroundChanger(loader, randomizer, _backgroundImage);
-    }
 
     public void SetPosition(Vector2 position) =>
         transform.position = transform.position.WithXY(position);
-
-    public UniTask ChangeBackgroundAsync() =>
-        _backgroundChanger.ChangeToRandomBackgroundAsync();
-
-    public UniTask MoveBackgroundAsync() =>
-        _backgroundChanger.MoveBackgroundAsync();
 
     public async UniTask PunchAsync() => await transform.DOPunchPosition(
         _settings.PunchingStrength,
@@ -57,11 +46,10 @@ public sealed class Camera1 : MonoBehaviour, ICamera
     //     // screenSizeChecker.OnScreenResized -= UpdateBorders;
     // }
 
-    public async UniTask MoveAsync(Vector2 destination) =>
-        await MoveAsync(destination.WithZ(CameraPosition.z));
-
-    private async UniTask MoveAsync(Vector3 destination) =>
-        await _baseCamera.transform.DOMove(destination, 7f).SetSpeedBased();
+    public UniTask MoveAsync(Vector2 destination) => _baseCamera.transform
+        .DOMove(_baseCamera.transform.position.WithXY(destination), 7f)
+        .SetSpeedBased()
+        .ToUniTask();
 
     private Borders UpdateBorders()
     {

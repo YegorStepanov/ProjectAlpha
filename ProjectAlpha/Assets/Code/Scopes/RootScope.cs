@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Code.AddressableAssets;
-using Code.Common;
 using Code.Extensions;
 using Code.Services.Data;
 using Code.Services.Development;
@@ -10,8 +9,10 @@ using Code.Services.Monetization;
 using Code.UI;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using Event = Code.Common.Event;
 using Progress = Code.Services.Data.Progress;
 
 namespace Code.Scopes;
@@ -71,6 +72,15 @@ public sealed class RootScope : Scope
         RegisterLoadingScreen(builder);
 
         builder.RegisterEntryPoint<RootEntryPoint>();
+        builder.Register<BackgroundChanger>(Lifetime.Singleton).WithParameter<IReadOnlyList<Address<Texture2D>>>(
+            new List<Address<Texture2D>>
+            {
+                Address.Background.Background1,
+                Address.Background.Background2,
+                Address.Background.Background3,
+                Address.Background.Background4,
+                Address.Background.Background5,
+            });
     }
 
     private void RegisterSettings(IContainerBuilder builder)

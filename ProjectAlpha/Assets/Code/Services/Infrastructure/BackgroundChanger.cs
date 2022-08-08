@@ -1,4 +1,6 @@
-﻿using Code.AddressableAssets;
+﻿using System.Collections.Generic;
+using System.Threading;
+using Code.AddressableAssets;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -9,7 +11,7 @@ namespace Code.Services.Infrastructure;
 
 public sealed class BackgroundChanger
 {
-    private readonly Address<Texture2D>[] _addresses;
+    private readonly IReadOnlyList<Address<Texture2D>> _backgrounds;
     private readonly RawImage _image;
     private readonly IScopedAddressablesLoader _loader;
     private readonly IRandomizer _randomizer;
@@ -18,23 +20,19 @@ public sealed class BackgroundChanger
 
     private int _lastIndex = -1;
 
-    public BackgroundChanger(IScopedAddressablesLoader loader, IRandomizer randomizer, RawImage image)
+    public BackgroundChanger(
+        IReadOnlyList<Address<Texture2D>> backgrounds,
+        IScopedAddressablesLoader loader,
+        IRandomizer randomizer,
+        ICamera camera)
     {
+        _backgrounds = backgrounds;
         _loader = loader;
         _randomizer = randomizer;
-        _image = image;
-
-        _addresses = new[] //todo: move to rootscope
-        {
-            Address.Background.Background1,
-            Address.Background.Background2,
-            Address.Background.Background3,
-            Address.Background.Background4,
-            Address.Background.Background5,
-        };
+        _image = camera.BackgroundImage;
     }
 
-    public async UniTask ChangeToRandomBackgroundAsync()
+    public async UniTask ChangeBackgroundAsync()
     {
         if (_spriteAsset != null)
             _loader.Release(_spriteAsset);
@@ -46,19 +44,19 @@ public sealed class BackgroundChanger
         _spriteAsset = texture;
     }
 
-    public UniTask MoveBackgroundAsync() => _image
+    public UniTask MoveBackgroundAsync(CancellationToken stopToken) => _image
         .DOMoveUVX(1f, 0.05f)
         .SetRelative()
         .SetSpeedBased()
-        .ToUniTask();
+        .WithCancellation(stopToken);
 
     private Address<Texture2D> GetRandomBackground()
     {
         _lastIndex = GetNextIndex();
-        return _addresses[_lastIndex];
+        return _backgrounds[_lastIndex];
     }
 
     private int GetNextIndex() => _lastIndex == -1
-        ? _randomizer.Next(_addresses.Length)
-        : _randomizer.NextExcept(_addresses.Length, _lastIndex);
+        ? _randomizer.Next(_backgrounds.Count)
+        : _randomizer.NextExcept(_backgrounds.Count, _lastIndex);
 }

@@ -26,7 +26,7 @@ public static class Address
 
     public static class Infrastructure
     {
-        public static readonly Address<Camera1> CameraController = new("Camera");
+        public static readonly Address<CameraController> CameraController = new("Camera");
         public static readonly Address<SettingsFacade> Settings = new("Settings Facade");
         public static readonly Address<EventSystem> EventSystem = new("EventSystem");
     }

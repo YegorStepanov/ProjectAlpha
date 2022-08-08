@@ -9,7 +9,7 @@ namespace Code;
 [CreateAssetMenu(menuName = "Data/Settings Facade")]
 public sealed class SettingsFacade : ScriptableObject
 {
-    [SerializeField] private Camera1.Settings _camera;
+    [SerializeField] private CameraController.Settings _camera;
     [SerializeField] private Hero.Settings _hero;
     [SerializeField] private Platform.Settings _platform;
     [SerializeField] private Cherry.Settings _cherry;

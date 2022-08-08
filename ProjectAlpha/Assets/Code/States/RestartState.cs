@@ -11,6 +11,7 @@ namespace Code.States;
 public sealed class RestartState : IState
 {
     private readonly ICameraRestorer _cameraRestorer;
+    private readonly BackgroundChanger _backgroundChanger;
     private readonly GameStateResetter _gameStateResetter;
     private readonly HeroSpawner _heroSpawner;
     private readonly GameUIController _gameUIController;
@@ -19,6 +20,7 @@ public sealed class RestartState : IState
 
     public RestartState(
         ICameraRestorer cameraRestorer,
+        BackgroundChanger backgroundChanger,
         GameStateResetter gameStateResetter,
         HeroSpawner heroSpawner,
         GameUIController gameUIController,
@@ -26,6 +28,7 @@ public sealed class RestartState : IState
         PlatformSpawner platformSpawner)
     {
         _cameraRestorer = cameraRestorer;
+        _backgroundChanger = backgroundChanger;
         _gameStateResetter = gameStateResetter;
         _heroSpawner = heroSpawner;
         _gameUIController = gameUIController;
@@ -35,6 +38,7 @@ public sealed class RestartState : IState
 
     public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
     {
+        await _backgroundChanger.ChangeBackgroundAsync();
         _cameraRestorer.RestorePositionX();
         _gameUIController.HideGameOver();
         _gameStateResetter.ResetState();

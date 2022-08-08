@@ -31,7 +31,7 @@ public sealed class GameScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        await using UniTaskDisposable _ = Parent.Container.Resolve<ICamera>().ChangeBackgroundAsync();
+        await using UniTaskDisposable _ = Parent.Container.Resolve<BackgroundChanger>().ChangeBackgroundAsync();
         Address<Hero> hero = Parent.Container.Resolve<HeroSelector>().GetSelectedHero();
 
         var tasks = UniTask.WhenAll(

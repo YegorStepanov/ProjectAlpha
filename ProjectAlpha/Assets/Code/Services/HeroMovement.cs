@@ -11,15 +11,15 @@ namespace Code.Services;
 public class HeroMovement
 {
     private readonly IInputManager _inputManager;
-    private readonly ICamera _camera1;
+    private readonly BackgroundChanger _backgroundChanger;
     private readonly StickSpawner _stickSpawner;
     private readonly GameSettings _settings;
     private readonly CancellationToken _token;
 
-    public HeroMovement(IInputManager inputManager, ICamera camera1, StickSpawner stickSpawner, GameSettings settings, CancellationToken token)
+    public HeroMovement(IInputManager inputManager, BackgroundChanger backgroundChanger, StickSpawner stickSpawner, GameSettings settings, CancellationToken token)
     {
         _inputManager = inputManager;
-        _camera1 = camera1;
+        _backgroundChanger = backgroundChanger;
         _stickSpawner = stickSpawner;
         _settings = settings;
         _token = token;
@@ -55,7 +55,7 @@ public class HeroMovement
         float destinationX, IHero hero, IPlatform currentPlatform, IPlatform nextPlatform, ICherry cherry,
         bool canHeroFlipsOnNextPlatform, CancellationToken stopToken)
     {
-        MoveBackground();
+        MoveBackground(stopToken);
         FlippingHeroOnClick(hero, currentPlatform, nextPlatform, canHeroFlipsOnNextPlatform, stopToken);
         UniTask pickingCherry = PickingCherry(hero, cherry, stopToken);
 
@@ -68,8 +68,8 @@ public class HeroMovement
             IsCherryCollected: pickingCherry.Status == UniTaskStatus.Succeeded);
     }
 
-    private void MoveBackground() =>
-        _camera1.MoveBackgroundAsync().Forget();
+    private void MoveBackground(CancellationToken stopToken) =>
+        _backgroundChanger.MoveBackgroundAsync(stopToken).Forget();
 
     private static async UniTask CheckingIsHeroCollided(IHero hero, IPlatform nextPlatform, CancellationToken stopToken)
     {
