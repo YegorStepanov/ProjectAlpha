@@ -23,8 +23,8 @@ public sealed class BootstrapSceneNavigator : IBootstrapSceneNavigator
         {
             await _loadingScreen.FadeInAsync();
 
-            await _sceneLoader.LoadAsync<GameScene>();
             await _sceneLoader.LoadAsync<MenuScene>();
+            await _sceneLoader.LoadAsync<GameScene>();
 
             await _loadingScreen.FadeOutAsync();
             await _sceneLoader.UnloadAsync<BootstrapScene>();
