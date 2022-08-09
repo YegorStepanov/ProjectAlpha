@@ -28,8 +28,8 @@ public sealed class GameSettings
     public float MenuPlatformWidth = 2f;
     [MinValue(0), MaxValue(1)]
     public float ViewportHeight = 0.2f;
-    [MinValue(-1), MaxValue(1)]
-    public float ViewportCameraMovementYOnGameStart = 0.1f; //bug when value < 0
+    [MinValue(0), MaxValue(1)]
+    public float ViewportCameraMovementYOnGameStart = 0.1f;
 
     [Space]
     [Range(0, 1)]
