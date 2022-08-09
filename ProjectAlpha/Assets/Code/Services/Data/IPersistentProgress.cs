@@ -10,7 +10,6 @@ public interface IPersistentProgress
     void EnableAds();
     void DisableAds();
 
-    //refactor it
     void UnlockHero(int heroIndex);
     bool IsHeroLocked(int heroIndex);
     void SetSelectedHero(int heroIndex);

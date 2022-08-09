@@ -15,26 +15,11 @@ public class PersistentProgress : IPersistentProgress
     public ObservedValue<int> Cherries => _cherries;
     public ObservedValue<bool> IsAdsEnabled => _isAdsEnabled;
     public ObservedValue<int> SelectedHeroIndex => _selectedHeroIndex;
-    public ObservedValue<bool> IsHero1Locked => _isHero1Locked;
-    public ObservedValue<bool> IsHero2Locked => _isHero2Locked;
-    public ObservedValue<bool> IsHero3Locked => _isHero3Locked;
-    public ObservedValue<bool> IsHero4Locked => _isHero4Locked;
 
     public void AddCherries(int count) => _cherries.Value += count;
     public void EnableAds() => _isAdsEnabled.Value = true;
     public void DisableAds() => _isAdsEnabled.Value = false;
 
-    public void SetSelectedHeroTo1() => _selectedHeroIndex.Value = 1;
-    public void SetSelectedHeroTo2() => _selectedHeroIndex.Value = 2;
-    public void SetSelectedHeroTo3() => _selectedHeroIndex.Value = 3;
-    public void SetSelectedHeroTo4() => _selectedHeroIndex.Value = 4;
-
-    public void UnlockHero1() => _isHero1Locked.Value = false;
-    public void UnlockHero2() => _isHero2Locked.Value = false;
-    public void UnlockHero3() => _isHero3Locked.Value = false;
-    public void UnlockHero4() => _isHero4Locked.Value = false;
-
-    //Refactor it!
     public void UnlockHero(int heroIndex) => GetIsHeroLocked(heroIndex).Value = false;
     public bool IsHeroLocked(int heroIndex) => GetIsHeroLocked(heroIndex).Value;
 
