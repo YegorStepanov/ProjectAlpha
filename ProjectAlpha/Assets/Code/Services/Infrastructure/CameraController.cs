@@ -16,7 +16,6 @@ public sealed class CameraController : MonoBehaviour, ICamera
     [Required, SerializeField] private Camera _baseCamera;
     [Required, SerializeField] private RawImage _backgroundImage;
 
-    private BackgroundChanger _backgroundChanger;
     private Settings _settings;
 
     public RawImage BackgroundImage => _backgroundImage;
