@@ -5,8 +5,8 @@ namespace Code.Services.Development;
 
 public sealed class DevelopmentPanel : MonoBehaviour
 {
-    [ShowInInspector] private DevelopmentRootPanel _rootPanel;
-    [ShowInInspector] private DevelopmentMenuPanel _menuPanel;
+    [ShowInInspector, HideInEditorMode] private DevelopmentRootPanel _rootPanel;
+    [ShowInInspector, HideInEditorMode] private DevelopmentMenuPanel _menuPanel;
 
     public void Bind(DevelopmentRootPanel rootPanel) =>
         BindPanel(ref rootPanel, ref _rootPanel);
