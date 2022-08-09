@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Code.Services.Entities;
 
-public abstract class Entity : MonoBehaviour, IEntity
+public abstract class Entity : MonoBehaviour, IEntity, IPositionShifter
 {
     protected CancellationToken DestroyToken;
 
@@ -15,9 +15,8 @@ public abstract class Entity : MonoBehaviour, IEntity
     protected virtual void Awake() =>
         DestroyToken = this.GetCancellationTokenOnDestroy();
 
-    //todo:
-    public virtual void SetPosition(Vector2 position) =>
-        transform.position = position.WithZ(transform.position.z);
+    public void ShiftPosition(Vector2 distance) =>
+        transform.position = transform.position.ShiftXY(distance);
 
     public void SetPosition(Vector2 position, Relative relative) =>
         transform.position = position.Shift(Borders, relative).WithZ(transform.position.z);

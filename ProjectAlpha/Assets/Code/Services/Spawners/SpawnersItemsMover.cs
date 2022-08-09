@@ -1,5 +1,4 @@
-﻿using Code.Extensions;
-using Code.Services.Entities;
+﻿using Code.Services.Entities;
 using UnityEngine;
 
 namespace Code.Services.Spawners;
@@ -23,14 +22,19 @@ public sealed class SpawnersItemsMover
         ShiftActiveItems<CherrySpawner, Cherry>(_cherrySpawner, distance);
         ShiftActiveItems<StickSpawner, Stick>(_stickSpawner, distance);
 
-        hero.ShiftPosition(distance);
+        ((IPositionShifter)hero).ShiftPosition(distance);
     }
 
-    private static void ShiftActiveItems<TSpawner, TEntity>(TSpawner spawner, Vector2 distance)
-        where TSpawner : Spawner<TEntity>
-        where TEntity : IEntity
+    private static void ShiftActiveItems<TSpawner, TShifter>(TSpawner spawner, Vector2 distance)
+        where TSpawner : Spawner<TShifter>
+        where TShifter : IPositionShifter
     {
-        foreach (TEntity entity in spawner.ActiveItems)
-            entity.ShiftPosition(distance);
+        // Reduce allocations: ActiveItems enumerator is a class, not struct
+        // ReSharper disable once ForCanBeConvertedToForeach
+        for (int index = 0; index < spawner.ActiveItems.Count; index++)
+        {
+            TShifter shifter = spawner.ActiveItems[index];
+            shifter.ShiftPosition(distance);
+        }
     }
 }

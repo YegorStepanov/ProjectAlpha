@@ -1,4 +1,5 @@
 ﻿using Code.AddressableAssets;
+using Code.Common;
 using Code.Services.Spawners;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -19,7 +20,7 @@ public sealed class StickSpawner : Spawner<Stick>
         Stick stick = await SpawnAsync();
         stick.ResetStick();
 
-        stick.SetPosition(position);
+        stick.SetPosition(position, Relative.Center);
         stick.SetWidth(_settings.StickWidth);
         return stick;
     }
