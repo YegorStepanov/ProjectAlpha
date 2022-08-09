@@ -19,19 +19,16 @@ public sealed class EntitiesMovementState : IState<GameData>
         _spawnersItemsMover = spawnersItemsMover;
     }
 
-    public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
+    public UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
     {
-        //todo: if !settings return
-
-        await UniTask.Delay(1000);
-
         Vector2 oldPosition = _camera.Borders.Center;
         _cameraRestorer.RestorePositionX();
         Vector2 newPosition = _camera.Borders.Center;
 
         Vector2 delta = newPosition - oldPosition;
-        _spawnersItemsMover.ShiftPosition(delta, data.Hero);
+        _spawnersItemsMover.ShiftPosition(delta);
 
         stateMachine.Enter<StickControlState, GameData>(data);
+        return new UniTaskVoid();
     }
 }

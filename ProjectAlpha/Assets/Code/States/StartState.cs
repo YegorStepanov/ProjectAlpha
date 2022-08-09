@@ -46,7 +46,7 @@ public sealed class StartState : IState
 
         GameHeight gameHeight = _gameHeightFactory.CreateStartHeight();
         IPlatform platform = await _platformSpawner.CreateMenuPlatformAsync(gameHeight.PositionY, gameHeight.Height);
-        IHero hero = _heroSpawner.Create(platform.Borders.CenterTop, Relative.Bot);
+        IHero hero = await _heroSpawner.CreateAsync(platform.Borders.CenterTop, Relative.Bot);
 
         await _gameStartEventAwaiter.Wait();
         _gameUIController.ShowUI();

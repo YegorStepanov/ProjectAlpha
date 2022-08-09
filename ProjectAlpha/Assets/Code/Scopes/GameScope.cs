@@ -22,7 +22,7 @@ public sealed class GameScope : Scope
     private PlatformPositionGenerator _platformPositionGenerator;
     private CherryPositionGenerator _cherryPositionGenerator;
 
-    private Hero _hero;
+    private IAsyncPool<Hero> _heroPool;
     private IAsyncPool<Platform> _platformPool;
     private IAsyncPool<Stick> _stickPool;
     private IAsyncPool<Cherry> _cherryPool;
@@ -32,16 +32,16 @@ public sealed class GameScope : Scope
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
         await using UniTaskDisposable _ = Parent.Container.Resolve<BackgroundChanger>().ChangeBackgroundAsync();
-        Address<Hero> hero = Parent.Container.Resolve<HeroSelector>().GetSelectedHero();
 
         var tasks = UniTask.WhenAll(
             loader.LoadAssetAsync(Address.Data.WidthGenerator),
             loader.LoadAssetAsync(Address.Data.PlatformPositionGenerator),
             loader.LoadAssetAsync(Address.Data.CherryPositionGenerator),
-            loader.LoadAssetAsync(hero),
             loader.LoadAssetAsync(Address.UI.GameUI),
             loader.LoadAssetAsync(Address.UI.RedPointHitAnimation));
 
+        Address<Hero> hero = Parent.Container.Resolve<HeroSelector>().GetSelectedHero();
+        _heroPool = loader.CreateRecyclableAddressablePool(hero, 1, 1);
         _platformPool = loader.CreateRecyclableAddressablePool(Address.Entity.Platform, 0, 3);
         _stickPool = loader.CreateRecyclableAddressablePool(Address.Entity.Stick, 0, 2);
         _cherryPool = loader.CreateRecyclableAddressablePool(Address.Entity.Cherry, 0, 2);
@@ -49,7 +49,6 @@ public sealed class GameScope : Scope
         (PlatformWidthGeneratorData widthGeneratorData,
             _platformPositionGenerator,
             _cherryPositionGenerator,
-            _hero,
             _gameUIView,
             _redPointHitGameAnimation) = await tasks;
 
@@ -75,7 +74,7 @@ public sealed class GameScope : Scope
 
     private void RegisterHero(IContainerBuilder builder)
     {
-        builder.RegisterComponentInNewPrefab(_hero, Lifetime.Singleton);
+        builder.RegisterInstance(_heroPool);
         builder.Register<IHeroAnimations, HeroAnimations>(Lifetime.Singleton);
         builder.Register<HeroSpawner>(Lifetime.Singleton);
     }

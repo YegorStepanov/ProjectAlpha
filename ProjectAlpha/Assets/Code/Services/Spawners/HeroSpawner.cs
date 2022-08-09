@@ -1,21 +1,26 @@
-﻿using Code.Common;
+﻿using Code.AddressableAssets;
+using Code.Common;
 using Code.Services.Entities;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Code.Services.Spawners;
 
-public sealed class HeroSpawner
+public sealed class HeroSpawner : Spawner<Hero>
 {
-    private readonly Hero _hero;
+    public HeroSpawner(IAsyncPool<Hero> pool) : base(pool) { }
 
-    public HeroSpawner(Hero hero) =>
-        _hero = hero;
-
-    public IHero Create(Vector2 position, Relative relative)
+    public async UniTask<IHero> CreateAsync(Vector2 position, Relative relative)
     {
-        //mb replace it to array with Length=1 like another spawners?
-        _hero.ResetState();
-        _hero.SetPosition(position, relative);
-        return _hero;
+        Hero hero = await SpawnAsync();
+        FlipUp(hero);
+        hero.SetPosition(position, relative);
+        return hero;
+    }
+
+    private static void FlipUp(Hero hero)
+    {
+        if (hero.IsFlipped)
+            hero.Flip();
     }
 }

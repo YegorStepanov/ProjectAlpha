@@ -23,12 +23,6 @@ public sealed class Hero : SlicedSpriteEntity, IHero
         _settings = settings;
     }
 
-    public void ResetState()
-    {
-        if (IsFlipped)
-            Flip();
-    }
-
     public async UniTask MoveAsync(float destinationX, CancellationToken token)
     {
         _animator.PlayMove();

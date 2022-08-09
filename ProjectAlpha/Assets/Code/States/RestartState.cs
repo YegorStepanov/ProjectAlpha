@@ -45,7 +45,7 @@ public sealed class RestartState : IState
 
         GameHeight gameHeight = _gameHeightFactory.CreateRestartHeight();
         IPlatform platform = await _platformSpawner.CreateRestartPlatformAsync(gameHeight.PositionY, gameHeight.Height);
-        IHero hero = _heroSpawner.Create(platform.Borders.LeftTop, Relative.Bot);
+        IHero hero = await _heroSpawner.CreateAsync(platform.Borders.LeftTop, Relative.Bot);
 
         stateMachine.Enter<HeroMovementToPlatformState, GameData>(
             new GameData(hero, platform, platform, CherryNull.Default, StickNull.Default, gameHeight));
