@@ -19,7 +19,6 @@ public sealed class Creator : ICreator
             return gameObject;
         }
 
-        //mb we can manipulate the temp?
         GameObject temp = new();
         GameObject gameObjectInScopeScene = Object.Instantiate(temp, _scope.transform);
 
