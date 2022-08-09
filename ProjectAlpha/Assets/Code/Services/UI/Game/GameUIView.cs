@@ -9,6 +9,7 @@ namespace Code.Services.UI;
 
 public sealed class GameUIView : MonoBehaviour
 {
+    [SerializeField] private Canvas _changeScoreCanvas;
     [SerializeField] private ChangeScoreAnimation _changeScoreAnimation;
     [SerializeField] private ChangeCherriesAnimation _changeCherriesAnimation;
     [SerializeField] private ShowStartHelpAnimation _showStartHelpAnimation;
@@ -33,12 +34,12 @@ public sealed class GameUIView : MonoBehaviour
 
     public void ShowScore()
     {
-        _changeScoreAnimation.gameObject.SetActive(true); //todo -> canvas
+        _changeScoreCanvas.enabled = true;
     }
 
     public void HideScore()
     {
-        _changeScoreAnimation.gameObject.SetActive(false); //todo -> canvas
+        _changeScoreCanvas.enabled = false;
     }
 
     public void UpdateScore(int score)
@@ -64,8 +65,8 @@ public sealed class GameUIView : MonoBehaviour
         _showStartHelpAnimation.HideAsync(_token).Forget();
 
     public void ShowGameOver() =>
-        _gameOverCanvas.gameObject.SetActive(true);
+        _gameOverCanvas.enabled = true;
 
     public void HideGameOver() =>
-        _gameOverCanvas.gameObject.SetActive(false);
+        _gameOverCanvas.enabled = false;
 }

@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 3359577629297796891}
   - component: {fileID: 2527593085196425485}
   m_Layer: 5
-  m_Name: Help_text
+  m_Name: Help Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2427,7 +2427,7 @@ GameObject:
   - component: {fileID: 5915844590022266463}
   - component: {fileID: 7941540011402246750}
   m_Layer: 5
-  m_Name: Perfect_text
+  m_Name: Perfect Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3326,6 +3326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b2a6b963f241679eaa9b3f856d3efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _changeScoreCanvas: {fileID: 8688325341245462339}
   _changeScoreAnimation: {fileID: 2509292982854048036}
   _changeCherriesAnimation: {fileID: 8918922966082015808}
   _showStartHelpAnimation: {fileID: 5793693781013400221}
