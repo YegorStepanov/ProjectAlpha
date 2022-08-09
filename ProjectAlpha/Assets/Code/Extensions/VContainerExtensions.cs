@@ -1,5 +1,4 @@
 ﻿using System;
-using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -8,7 +7,6 @@ namespace Code.Extensions;
 
 public static class VContainerExtensions
 {
-    [PublicAPI]
     public static IContainerBuilder RegisterComponentAndInjectGameObject<T>(this IContainerBuilder builder, T instance)
     {
         builder.RegisterComponent(instance);
@@ -16,13 +14,11 @@ public static class VContainerExtensions
         return builder;
     }
 
-    [PublicAPI]
     public static IContainerBuilder InjectGameObject<T>(this IContainerBuilder builder)
     {
         return builder.InjectGameObject(typeof(T));
     }
 
-    [PublicAPI]
     public static IContainerBuilder InjectGameObject<T>(this IContainerBuilder builder, T instance)
     {
         builder.RegisterBuildCallback(resolver =>
@@ -38,7 +34,6 @@ public static class VContainerExtensions
         return builder;
     }
 
-    [PublicAPI]
     public static IContainerBuilder Inject<T>(this IContainerBuilder builder)
     {
         builder.RegisterBuildCallback(resolver =>
@@ -54,7 +49,6 @@ public static class VContainerExtensions
         return builder;
     }
 
-    [PublicAPI]
     public static IContainerBuilder Inject<T>(this IContainerBuilder builder, T instance)
     {
         return builder.Inject<T>();

@@ -1,9 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Code.Extensions;
+﻿namespace Code.Extensions;
 
 public static class UnityExtensions
 {
-    [SuppressMessage("ReSharper", "CompareNonConstrainedGenericWithNull")]
+    // ReSharper disable once CompareNonConstrainedGenericWithNull
     public static bool IsUnityNull<T>(this T obj) => obj == null || obj.Equals(null);
 }

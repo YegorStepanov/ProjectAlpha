@@ -15,12 +15,7 @@ public static class DOTweenExtensions
     {
         TweenerCore<Vector2, Vector2, VectorOptions> t = DOTween.To(
             () => target.uvRect.position,
-            position =>
-            {
-                Rect rect = target.uvRect;
-                rect.position = position;
-                target.uvRect = rect;
-            },
+            position => target.uvRect = target.uvRect with { position = position },
             endOffset,
             duration);
 
@@ -33,12 +28,7 @@ public static class DOTweenExtensions
     {
         TweenerCore<float, float, FloatOptions> t = DOTween.To(
             () => target.uvRect.x,
-            x =>
-            {
-                Rect rect = target.uvRect;
-                rect.x = x;
-                target.uvRect = rect;
-            },
+            x => target.uvRect = target.uvRect with { x = x },
             endValue,
             duration);
 
@@ -51,12 +41,7 @@ public static class DOTweenExtensions
     {
         TweenerCore<float, float, FloatOptions> t = DOTween.To(
             () => target.uvRect.y,
-            y =>
-            {
-                Rect rect = target.uvRect;
-                rect.y = y;
-                target.uvRect = rect;
-            },
+            y => target.uvRect = target.uvRect with { y = y },
             endValue,
             duration);
 

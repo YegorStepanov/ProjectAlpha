@@ -1,10 +1,8 @@
 ﻿using Code.Services.Infrastructure;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Code.Extensions;
 
-[PublicAPI]
 // ReSharper disable once InconsistentNaming
 public static class ICameraExtensions
 {

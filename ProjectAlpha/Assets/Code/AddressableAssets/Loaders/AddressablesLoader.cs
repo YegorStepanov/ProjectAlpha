@@ -91,9 +91,9 @@ public class AddressablesLoader : IScopedAddressablesLoader
             return;
         }
 
-        if (_instanceToPrefab.ContainsKey(go))
+        if (_instanceToPrefab.TryGetValue(go, out GameObject prefab))
         {
-            GameObject prefab = _instanceToPrefab.Pop(go);
+            _instanceToPrefab.Remove(go);
             ReleaseT(prefab);
             Object.Destroy(instance);
             return;
