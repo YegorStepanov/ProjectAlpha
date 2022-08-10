@@ -65,13 +65,11 @@ public sealed class GameScope : Scope
         RegisterCherry(builder);
 
         RegisterUI(builder);
-        RegisterGameStateMachine(builder);
+        RegisterGameStates(builder);
 
         RegisterGameServices(builder);
 
         builder.RegisterEntryPoint<GameEntryPoint>();
-
-        builder.Register<IGameSceneNavigator, GameSceneNavigator>(Lifetime.Singleton);
     }
 
     private void RegisterHero(IContainerBuilder builder)
@@ -116,7 +114,7 @@ public sealed class GameScope : Scope
         builder.Register<GameUIController>(Lifetime.Singleton);
     }
 
-    private static void RegisterGameStateMachine(IContainerBuilder builder)
+    private static void RegisterGameStates(IContainerBuilder builder)
     {
         builder.Register<IExitState, StartState>(Lifetime.Singleton);
         builder.Register<IExitState, HeroMovementToStartPlatformState>(Lifetime.Singleton);
@@ -141,5 +139,6 @@ public sealed class GameScope : Scope
         builder.Register<SpawnersItemsMover>(Lifetime.Singleton);
         builder.Register<HeroMovement>(Lifetime.Singleton);
         builder.Register<ICameraRestorer, CameraRestorer>(Lifetime.Singleton).As<IStartable>();
+        builder.Register<IGameSceneNavigator, GameSceneNavigator>(Lifetime.Singleton);
     }
 }
