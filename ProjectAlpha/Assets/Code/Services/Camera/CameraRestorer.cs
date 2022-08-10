@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using VContainer.Unity;
 
-namespace Code.Services.Infrastructure;
+namespace Code.Services;
 
 public sealed class CameraRestorer : IStartable, ICameraRestorer
 {

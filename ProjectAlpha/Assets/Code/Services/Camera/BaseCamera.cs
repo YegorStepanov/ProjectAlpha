@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
 
-namespace Code.Services.Infrastructure;
+namespace Code.Services;
 
 [RequireComponent(typeof(Camera))]
 public sealed class BaseCamera : MonoBehaviour, ICamera

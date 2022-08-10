@@ -1,9 +1,9 @@
 ﻿using Code.AddressableAssets;
 using Code.Animations.Game;
 using Code.Data;
+using Code.Services;
 using Code.Services.Development;
 using Code.Services.Entities;
-using Code.Services.Infrastructure;
 using Code.Services.UI;
 using Code.UI;
 using Tayx.Graphy;

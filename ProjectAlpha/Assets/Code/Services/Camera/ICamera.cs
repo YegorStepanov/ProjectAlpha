@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Infrastructure;
+namespace Code.Services;
 
 public interface ICamera : IEntity
 {

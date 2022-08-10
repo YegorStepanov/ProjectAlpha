@@ -2,6 +2,7 @@
 using System.Threading;
 using Code.AddressableAssets;
 using Code.Extensions;
+using Code.Services.Infrastructure;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
@@ -9,7 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace Code.Services.Infrastructure;
+namespace Code.Services;
 
 public sealed class CameraBackground : MonoBehaviour
 {

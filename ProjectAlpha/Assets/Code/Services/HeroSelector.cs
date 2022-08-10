@@ -4,7 +4,7 @@ using Code.Services.Data;
 using Code.Services.Entities;
 using UnityEngine;
 
-namespace Code.Services.Infrastructure;
+namespace Code.Services;
 
 public class HeroSelector
 {

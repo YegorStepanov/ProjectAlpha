@@ -1,4 +1,4 @@
-﻿namespace Code.Services.Infrastructure;
+﻿namespace Code.Services;
 
 public interface ICameraRestorer
 {
