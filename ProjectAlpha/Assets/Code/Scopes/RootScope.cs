@@ -12,6 +12,7 @@ using Cysharp.Threading.Tasks;
 using MessagePipe;
 using VContainer;
 using VContainer.Unity;
+using IInjector = Code.AddressableAssets.IInjector;
 using Progress = Code.Services.Data.Progress;
 
 namespace Code.Scopes;
@@ -27,11 +28,11 @@ public sealed class RootScope : Scope
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
         (_camera, _cameraBackground, _settingsFacade, _loadingScreen, var a) = await (
-            loader.InstantiateAsync(Address.Infrastructure.CameraController, inject: false),
-            loader.InstantiateAsync(Address.Infrastructure.CameraBackground, inject: false),
+            loader.InstantiateAsync(Address.Infrastructure.CameraController),
+            loader.InstantiateAsync(Address.Infrastructure.CameraBackground),
             loader.LoadAssetAsync(Address.Infrastructure.Settings),
-            loader.InstantiateAsync(Address.UI.TransitionLoadingScreen, inject: false),
-            loader.InstantiateAsync(Address.Infrastructure.EventSystem, inject: false));
+            loader.InstantiateAsync(Address.UI.TransitionLoadingScreen),
+            loader.InstantiateAsync(Address.Infrastructure.EventSystem));
 
         await LoadDevelopmentAssets(loader, _settingsFacade);
     }
@@ -39,10 +40,10 @@ public sealed class RootScope : Scope
     private async UniTask LoadDevelopmentAssets(IAddressablesLoader loader, SettingsFacade settings)
     {
         if (PlatformInfo.IsDevelopment && settings.Development.GraphyInDebug)
-            loader.InstantiateAsync(Address.Development.Graphy, inject: false).Forget();
+            loader.InstantiateAsync(Address.Development.Graphy).Forget();
 
         if (PlatformInfo.IsDevelopment)
-            _developmentPanel = await loader.InstantiateAsync(Address.Development.Panel, inject: false);
+            _developmentPanel = await loader.InstantiateAsync(Address.Development.Panel);
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)
@@ -103,6 +104,7 @@ public sealed class RootScope : Scope
     private static void RegisterAddressableLoaders(IContainerBuilder builder)
     {
         builder.Register<ICreator, Creator>(Lifetime.Scoped);
+        builder.Register<IInjector, Injector>(Lifetime.Scoped);
         builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
         builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);
         builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);

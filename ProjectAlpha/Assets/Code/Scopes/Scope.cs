@@ -76,7 +76,7 @@ public abstract class Scope : LifetimeScope
     private async UniTask BuildAsync()
     {
         //We cannot set active scene here
-        _loader = new AddressablesLoader(new Creator(this));
+        _loader = new AddressablesLoader(new Creator(this), new Injector(this));
         await PreloadAsync(_loader);
 
         //A root scene is not real scene

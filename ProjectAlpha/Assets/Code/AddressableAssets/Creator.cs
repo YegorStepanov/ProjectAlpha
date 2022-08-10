@@ -11,24 +11,15 @@ public sealed class Creator : ICreator
     public Creator(LifetimeScope scope) =>
         _scope = scope;
 
-    public GameObject Instantiate(string name)
-    {
-        return _scope.IsRoot
+    public GameObject Instantiate(string name) =>
+        _scope.IsRoot
             ? CreateInRootScene(_emptyGameObject, name)
             : CreateInScopeScene(_emptyGameObject, name);
-    }
 
-    public GameObject Instantiate(GameObject prefab, bool inject)
-    {
-        GameObject instance = _scope.IsRoot
+    public GameObject Instantiate(GameObject prefab) =>
+        _scope.IsRoot
             ? CreateInRootScene(prefab, prefab.name)
             : CreateInScopeScene(prefab, prefab.name);
-
-        if (inject)
-            Inject(instance);
-
-        return instance;
-    }
 
     private static GameObject CreateInRootScene(GameObject prefab, string name)
     {
@@ -44,13 +35,5 @@ public sealed class Creator : ICreator
         instance.transform.SetParent(null);
         instance.name = name;
         return instance;
-    }
-
-    private void Inject(GameObject instance)
-    {
-        if (_scope.Container == null)
-            Debug.LogError("scope.Container is null");
-        else
-            _scope.Container.InjectGameObject(instance);
     }
 }

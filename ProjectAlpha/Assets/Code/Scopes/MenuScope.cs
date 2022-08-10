@@ -16,8 +16,8 @@ public sealed class MenuScope : Scope
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
         (_menuUIFacade, _mainMenuView) = await (
-            loader.InstantiateAsync(Address.UI.MenuUIActions, inject: false),
-            loader.InstantiateAsync(Address.UI.MainMenuView, inject: false));
+            loader.InstantiateAsync(Address.UI.MenuUIActions),
+            loader.InstantiateAsync(Address.UI.MainMenuView));
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)

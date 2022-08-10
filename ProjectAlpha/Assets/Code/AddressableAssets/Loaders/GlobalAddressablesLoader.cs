@@ -10,6 +10,6 @@ public sealed class GlobalAddressablesLoader : AddressablesLoader, IGlobalAddres
     private static readonly Dictionary<Type, object> TypeToHandleStorage = new();
     private static readonly Dictionary<GameObject, GameObject> InstanceToPrefab = new();
 
-    public GlobalAddressablesLoader(ICreator creator) :
-        base(creator, TypeToHandleStorage, InstanceToPrefab) { }
+    public GlobalAddressablesLoader(ICreator creator, IInjector injector) :
+        base(creator, injector, TypeToHandleStorage, InstanceToPrefab) { }
 }

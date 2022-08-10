@@ -13,24 +13,33 @@ public class AddressablesLoader : IScopedAddressablesLoader
     private readonly Dictionary<Type, object> _typeToHandleStorage;
     private readonly Dictionary<GameObject, GameObject> _instanceToPrefab;
     private bool _isDisposed;
+    private readonly IInjector _injector;
 
     public ICreator Creator { get; }
 
     [Inject]
-    public AddressablesLoader(ICreator creator) :
-        this(creator, new(), new()) { }
+    public AddressablesLoader(ICreator creator, IInjector injector) :
+        this(creator, injector, new(), new()) { }
 
     private protected AddressablesLoader(
         ICreator creator,
+        IInjector injector,
         Dictionary<Type, object> typeToHandleStorage,
         Dictionary<GameObject, GameObject> instanceToPrefab)
     {
+        _injector = injector;
         Creator = creator;
         _typeToHandleStorage = typeToHandleStorage;
         _instanceToPrefab = instanceToPrefab;
     }
 
-    public async UniTask<T> InstantiateAsync<T>(Address<T> address, bool inject = true)
+    public UniTask<T> InstantiateAsync<T>(Address<T> address) where T : Object =>
+        InstantiateAsync(address, false);
+
+    public UniTask<T> InstantiateInjectedAsync<T>(Address<T> address) where T : Object =>
+        InstantiateAsync(address, true);
+
+    private async UniTask<T> InstantiateAsync<T>(Address<T> address, bool inject)
         where T : Object
     {
         if (_isDisposed) return null;
@@ -43,8 +52,11 @@ public class AddressablesLoader : IScopedAddressablesLoader
 
         GameObject prefab = await LoadAssetTAsync(address.As<GameObject>());
 
-        GameObject instance = Creator.Instantiate(prefab, inject);
+        GameObject instance = Creator.Instantiate(prefab);
         _instanceToPrefab[instance] = prefab;
+
+        if (inject)
+            _injector.InjectGameObject(instance);
 
         if (IsComponent<T>())
             return instance.GetComponent<T>();
