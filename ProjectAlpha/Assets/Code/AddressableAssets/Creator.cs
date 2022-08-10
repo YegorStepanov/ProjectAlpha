@@ -13,26 +13,16 @@ public sealed class Creator : ICreator
 
     public GameObject Instantiate(string name)
     {
-        if (_scope.IsRoot)
-        {
-            GameObject gameObject = new(name);
-            Object.DontDestroyOnLoad(gameObject);
-            return gameObject;
-        }
-
-        GameObject instance = Object.Instantiate(_emptyGameObject, _scope.transform);
-
-        Transform t = instance.transform;
-        t.SetParent(null);
-        t.name = name;
-
-        return instance;
+        return _scope.IsRoot
+            ? CreateInRootScene(_emptyGameObject, name)
+            : CreateInScopeScene(_emptyGameObject, name);
     }
 
     public GameObject Instantiate(GameObject prefab, bool inject)
     {
-        GameObject instance = InstantiateInScopeScene(prefab);
-        instance.name = prefab.name;
+        GameObject instance = _scope.IsRoot
+            ? CreateInRootScene(prefab, prefab.name)
+            : CreateInScopeScene(prefab, prefab.name);
 
         if (inject)
             Inject(instance);
@@ -40,20 +30,20 @@ public sealed class Creator : ICreator
         return instance;
     }
 
-    private GameObject InstantiateInScopeScene(GameObject prefab)
+    private static GameObject CreateInRootScene(GameObject prefab, string name)
     {
-        if (_scope.IsRoot)
-        {
-            GameObject instance = Object.Instantiate(prefab);
-            Object.DontDestroyOnLoad(instance);
-            return instance;
-        }
-        else
-        {
-            GameObject instance = Object.Instantiate(prefab, _scope.transform);
-            instance.transform.SetParent(null);
-            return instance;
-        }
+        GameObject instance = Object.Instantiate(prefab);
+        Object.DontDestroyOnLoad(instance);
+        instance.name = name;
+        return instance;
+    }
+
+    private GameObject CreateInScopeScene(GameObject prefab, string name)
+    {
+        GameObject instance = Object.Instantiate(prefab, _scope.transform);
+        instance.transform.SetParent(null);
+        instance.name = name;
+        return instance;
     }
 
     private void Inject(GameObject instance)
