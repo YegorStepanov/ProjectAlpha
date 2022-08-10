@@ -15,12 +15,9 @@ public sealed class Randomizer : IRandomizer
 
     public int NextExcept(int minInclusive, int maxExclusive, int exclude)
     {
-        if (exclude < minInclusive || exclude >= maxExclusive)
-            Debug.LogError($"Exclude is out of range: exclude={exclude} minInclusive={minInclusive} maxExclusive={maxExclusive}");
-
         int value = Random.Range(minInclusive, maxExclusive - 1);
 
-        if (value >= exclude)
+        if (exclude >= 0 && value >= exclude)
             value++;
 
         return value;
