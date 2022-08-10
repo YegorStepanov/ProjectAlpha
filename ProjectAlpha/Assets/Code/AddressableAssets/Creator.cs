@@ -6,6 +6,7 @@ namespace Code.AddressableAssets;
 public sealed class Creator : ICreator
 {
     private readonly LifetimeScope _scope;
+    private readonly GameObject _emptyGameObject = new();
 
     public Creator(LifetimeScope scope) =>
         _scope = scope;
@@ -19,15 +20,13 @@ public sealed class Creator : ICreator
             return gameObject;
         }
 
-        GameObject temp = new();
-        GameObject gameObjectInScopeScene = Object.Instantiate(temp, _scope.transform);
+        GameObject instance = Object.Instantiate(_emptyGameObject, _scope.transform);
 
-        Transform t = gameObjectInScopeScene.transform;
+        Transform t = instance.transform;
         t.SetParent(null);
         t.name = name;
 
-        Object.Destroy(temp);
-        return gameObjectInScopeScene;
+        return instance;
     }
 
     public GameObject Instantiate(GameObject prefab, bool inject)
