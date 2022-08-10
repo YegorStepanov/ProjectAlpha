@@ -72,15 +72,6 @@ public sealed class RootScope : Scope
         RegisterLoadingScreen(builder);
 
         builder.RegisterEntryPoint<RootEntryPoint>();
-        builder.Register<BackgroundChanger>(Lifetime.Singleton).WithParameter<IReadOnlyList<Address<Texture2D>>>(
-            new List<Address<Texture2D>>
-            {
-                Address.Background.Background1,
-                Address.Background.Background2,
-                Address.Background.Background3,
-                Address.Background.Background4,
-                Address.Background.Background5,
-            });
     }
 
     private void RegisterSettings(IContainerBuilder builder)
@@ -91,6 +82,18 @@ public sealed class RootScope : Scope
     private void RegisterCamera(IContainerBuilder builder)
     {
         builder.RegisterComponent(_camera);
+
+        builder.RegisterInstance(_camera.Background);
+        builder.Inject(_camera.Background);
+        builder.RegisterInstance<IReadOnlyList<Address<Texture2D>>>(
+            new List<Address<Texture2D>>
+            {
+                Address.Background.Background1,
+                Address.Background.Background2,
+                Address.Background.Background3,
+                Address.Background.Background4,
+                Address.Background.Background5,
+            });
     }
 
     private static void RegisterInput(IContainerBuilder builder)

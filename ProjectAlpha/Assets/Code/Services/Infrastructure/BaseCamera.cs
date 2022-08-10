@@ -5,7 +5,6 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.UI;
 using VContainer;
 
 namespace Code.Services.Infrastructure;
@@ -13,9 +12,7 @@ namespace Code.Services.Infrastructure;
 [RequireComponent(typeof(Camera))]
 public sealed class BaseCamera : MonoBehaviour, ICamera
 {
-    //todo:
-    [Required, SerializeField] private RawImage _backgroundImage;
-    public RawImage BackgroundImage => _backgroundImage;
+    [Required, SerializeField] private CameraBackground _backgroundImage;
 
     private Settings _settings;
 
@@ -23,6 +20,7 @@ public sealed class BaseCamera : MonoBehaviour, ICamera
     private Vector2 _size;
 
     public Borders Borders { get; private set; }
+    public CameraBackground Background => _backgroundImage;
 
     [Inject, UsedImplicitly]
     private void Construct(Settings settings) =>

@@ -11,15 +11,15 @@ namespace Code.Services;
 public class HeroMovement
 {
     private readonly IInputManager _inputManager;
-    private readonly BackgroundChanger _backgroundChanger;
+    private readonly CameraBackground _cameraBackground;
     private readonly StickSpawner _stickSpawner;
     private readonly GameSettings _settings;
     private readonly CancellationToken _token;
 
-    public HeroMovement(IInputManager inputManager, BackgroundChanger backgroundChanger, StickSpawner stickSpawner, GameSettings settings, CancellationToken token)
+    public HeroMovement(IInputManager inputManager, CameraBackground cameraBackground, StickSpawner stickSpawner, GameSettings settings, CancellationToken token)
     {
         _inputManager = inputManager;
-        _backgroundChanger = backgroundChanger;
+        _cameraBackground = cameraBackground;
         _stickSpawner = stickSpawner;
         _settings = settings;
         _token = token;
@@ -69,7 +69,7 @@ public class HeroMovement
     }
 
     private void MoveBackground(CancellationToken stopToken) =>
-        _backgroundChanger.MoveBackgroundAsync(stopToken).Forget();
+        _cameraBackground.MoveBackgroundAsync(stopToken).Forget();
 
     private static async UniTask CheckingIsHeroCollided(IHero hero, IPlatform nextPlatform, CancellationToken stopToken)
     {
