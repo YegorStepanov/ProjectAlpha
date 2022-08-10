@@ -32,13 +32,15 @@ public class HeroMovement
         return MoveHero(destinationX, data, canHeroFlipsOnNextPlatform);
     }
 
-    public UniTask<(bool IsHeroCollided, bool IsCherryCollected)> MoveHeroToStickEndAsync(GameData data, bool canHeroFlipsOnNextPlatform)
+    public UniTask<(bool IsHeroCollided, bool IsCherryCollected)> MoveHeroToStickEndAsync(
+        GameData data, bool canHeroFlipsOnNextPlatform)
     {
         float destinationX = data.Stick.Borders.Right + data.Hero.Borders.HalfWidth;
         return MoveHero(destinationX, data, canHeroFlipsOnNextPlatform);
     }
 
-    private async UniTask<(bool IsHeroCollided, bool IsCherryCollected)> MoveHero(float destinationX, GameData data, bool canHeroFlipsOnNextPlatform)
+    private async UniTask<(bool IsHeroCollided, bool IsCherryCollected)> MoveHero(
+        float destinationX, GameData data, bool canHeroFlipsOnNextPlatform)
     {
         await UniTask.Delay(_settings.DelayBeforeHeroMovement, cancellationToken: _token);
 
