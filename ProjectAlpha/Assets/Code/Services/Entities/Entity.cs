@@ -20,7 +20,4 @@ public abstract class Entity : MonoBehaviour, IEntity, IPositionShifter
 
     public void SetPosition(Vector2 position, Relative relative) =>
         transform.position = position.Shift(Borders, relative).WithZ(transform.position.z);
-
-    public void SetWidth(float width) =>
-        transform.localScale = transform.localScale.WithX(width / Borders.Width);
 }

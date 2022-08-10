@@ -19,4 +19,7 @@ public abstract class SimpleSpriteEntity : Entity
         Vector2 spriteSize = scaledAABB / _sprite.transform.localScale;
         _sprite.transform.localScale = worldSize / spriteSize;
     }
+
+    public void SetWidth(float width) =>
+        transform.localScale = transform.localScale.WithX(width / Borders.Width);
 }
