@@ -30,22 +30,25 @@ public sealed class GameScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        await using UniTaskDisposable _ = Parent.Container.Resolve<CameraBackground>().ChangeBackgroundAsync();
+        await using UniTaskDisposable _ = Parent.Container.Resolve<CameraBackground>()
+            .ChangeBackgroundAsync();
 
         var tasks = UniTask.WhenAll(
             loader.LoadAssetAsync(Address.Data.WidthGenerator),
             loader.LoadAssetAsync(Address.Data.PlatformPositionGenerator),
             loader.LoadAssetAsync(Address.Data.CherryPositionGenerator),
-            loader.LoadAssetAsync(Address.UI.GameUI),
-            loader.LoadAssetAsync(Address.UI.RedPointHitAnimation));
+            loader.InstantiateAsync(Address.UI.GameUI, false),
+            loader.InstantiateAsync(Address.UI.RedPointHitAnimation, false));
 
-        Address<Hero> hero = Parent.Container.Resolve<HeroSelector>().GetSelectedHero();
+        Address<Hero> hero = Parent.Container.Resolve<HeroSelector>()
+            .GetSelectedHero();
+
         _heroPool = loader.CreateRecyclableAddressablePool(hero, 1, 1);
         _platformPool = loader.CreateRecyclableAddressablePool(Address.Entity.Platform, 0, 3);
         _stickPool = loader.CreateRecyclableAddressablePool(Address.Entity.Stick, 0, 2);
         _cherryPool = loader.CreateRecyclableAddressablePool(Address.Entity.Cherry, 0, 2);
 
-        (PlatformWidthGeneratorData widthGeneratorData,
+        (var widthGeneratorData,
             _platformPositionGenerator,
             _cherryPositionGenerator,
             _gameUIView,
@@ -99,20 +102,18 @@ public sealed class GameScope : Scope
     {
         builder.RegisterInstance(_cherryPool);
         builder.Register<ICherryAnimations, CherryAnimations>(Lifetime.Singleton);
-        builder.Register<CherrySpawner>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+        builder.Register<CherrySpawner>(Lifetime.Singleton).As<ICherryPickHandler>().AsSelf();
 
         builder.RegisterInstance(_cherryPositionGenerator);
     }
 
     private void RegisterUI(IContainerBuilder builder)
     {
-        builder.RegisterComponentInNewPrefab(_gameUIView, Lifetime.Singleton);
-        builder.InjectGameObject(_gameUIView);
-
-        builder.RegisterComponentInNewPrefab(_redPointHitGameAnimation, Lifetime.Singleton);
+        builder.RegisterComponentAndInjectGameObject(_gameUIView);
+        builder.RegisterComponent(_redPointHitGameAnimation);
 
         builder.Register<IGameUIFacade, GameUIFacade>(Lifetime.Singleton);
-        builder.Register<GameUIController>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+        builder.Register<GameUIController>(Lifetime.Singleton);
     }
 
     private static void RegisterGameStateMachine(IContainerBuilder builder)

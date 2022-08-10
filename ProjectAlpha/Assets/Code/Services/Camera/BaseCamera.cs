@@ -3,7 +3,6 @@ using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using JetBrains.Annotations;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
 
@@ -12,15 +11,12 @@ namespace Code.Services;
 [RequireComponent(typeof(Camera))]
 public sealed class BaseCamera : MonoBehaviour, ICamera
 {
-    [Required, SerializeField] private CameraBackground _backgroundImage;
-
     private Settings _settings;
 
     private Camera _camera;
     private Vector2 _size;
 
     public Borders Borders { get; private set; }
-    public CameraBackground Background => _backgroundImage;
 
     [Inject, UsedImplicitly]
     private void Construct(Settings settings) =>

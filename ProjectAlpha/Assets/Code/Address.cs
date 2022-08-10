@@ -1,4 +1,5 @@
-﻿using Code.AddressableAssets;
+﻿using System.Collections.Generic;
+using Code.AddressableAssets;
 using Code.Animations.Game;
 using Code.Data;
 using Code.Services;
@@ -10,7 +11,7 @@ using Tayx.Graphy;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using SceneType = Code.Common.Scene;
-using HeroComponent = Code.Services.Entities.Hero;
+using HeroType = Code.Services.Entities.Hero;
 
 namespace Code;
 
@@ -27,6 +28,7 @@ public static class Address
     public static class Infrastructure
     {
         public static readonly Address<BaseCamera> CameraController = new("Camera");
+        public static readonly Address<CameraBackground> CameraBackground = new("Camera Background");
         public static readonly Address<SettingsFacade> Settings = new("Settings Facade");
         public static readonly Address<EventSystem> EventSystem = new("EventSystem");
     }
@@ -56,10 +58,13 @@ public static class Address
     {
         public static class Hero
         {
-            public static readonly Address<HeroComponent> Hero1 = new("Hero1");
-            public static readonly Address<HeroComponent> Hero2 = new("Hero2");
-            public static readonly Address<HeroComponent> Hero3 = new("Hero3");
-            public static readonly Address<HeroComponent> Hero4 = new("Hero4");
+            public static readonly Address<HeroType> Hero1 = new("Hero1");
+            public static readonly Address<HeroType> Hero2 = new("Hero2");
+            public static readonly Address<HeroType> Hero3 = new("Hero3");
+            public static readonly Address<HeroType> Hero4 = new("Hero4");
+
+            public static readonly IReadOnlyList<Address<HeroType>> All =
+                new[] { Hero1, Hero2, Hero3, Hero4 };
         }
 
         public static readonly Address<Stick> Stick = new("Stick");
@@ -74,6 +79,9 @@ public static class Address
         public static readonly Address<Texture2D> Background3 = new("Background 3");
         public static readonly Address<Texture2D> Background4 = new("Background 4");
         public static readonly Address<Texture2D> Background5 = new("Background 5");
+
+        public static readonly IReadOnlyList<Address<Texture2D>> All = new[]
+            { Background1, Background2, Background3, Background4, Background5 };
     }
 
     public static class Development

@@ -1,6 +1,8 @@
 ﻿using System;
+using Code.Services;
 using Code.Services.Data;
 using Code.Services.Monetization;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace Code.Scopes;
@@ -9,11 +11,15 @@ public class RootEntryPoint : IInitializable, IDisposable, IStartable
 {
     private readonly IProgress _progress;
     private readonly AdsManager _adsManager;
+    private readonly ICamera _camera;
+    private readonly CameraBackground _cameraBackground;
 
-    public RootEntryPoint(IProgress progress, AdsManager adsManager)
+    public RootEntryPoint(IProgress progress, AdsManager adsManager, ICamera camera, CameraBackground cameraBackground)
     {
         _progress = progress;
         _adsManager = adsManager;
+        _camera = camera;
+        _cameraBackground = cameraBackground;
     }
 
     void IInitializable.Initialize()
@@ -31,5 +37,16 @@ public class RootEntryPoint : IInitializable, IDisposable, IStartable
     void IStartable.Start()
     {
         _adsManager.ShowBannerIfNeeded();
+
+        BindBackgroundToCamera();
+    }
+
+    private void BindBackgroundToCamera()
+    {
+        var camera = (MonoBehaviour)_camera;
+        var background = (MonoBehaviour)_cameraBackground;
+
+        background.transform.parent = camera.transform;
+        background.GetComponent<Canvas>().worldCamera = camera.GetComponent<Camera>();
     }
 }

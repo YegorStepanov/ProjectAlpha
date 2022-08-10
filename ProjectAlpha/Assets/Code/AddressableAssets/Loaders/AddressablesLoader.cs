@@ -37,7 +37,7 @@ public class AddressablesLoader : IScopedAddressablesLoader
 
         if (!IsComponent<T>() && !IsGameObject<T>())
         {
-            Debug.LogWarning("<T> must be a Component or MonoBehaviour, use LoadAssetAsync<T> instead");
+            Debug.LogWarning($"{typeof(T).Name} must be a Component or MonoBehaviour, use LoadAssetAsync<T> instead");
             return await LoadAssetAsync(address);
         }
 

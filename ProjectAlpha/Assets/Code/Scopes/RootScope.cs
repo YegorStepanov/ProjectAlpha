@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using Code.AddressableAssets;
+using Code.Common;
 using Code.Extensions;
 using Code.Services;
 using Code.Services.Data;
 using Code.Services.Development;
-using Code.Services.Entities;
 using Code.Services.Infrastructure;
 using Code.Services.Monetization;
 using Code.UI;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using Event = Code.Common.Event;
 using Progress = Code.Services.Data.Progress;
 
 namespace Code.Scopes;
@@ -22,14 +19,16 @@ namespace Code.Scopes;
 public sealed class RootScope : Scope
 {
     private ICamera _camera;
+    private CameraBackground _cameraBackground;
     private SettingsFacade _settingsFacade;
     private DevelopmentPanel _developmentPanel;
     private ILoadingScreen _loadingScreen;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        (_camera, _settingsFacade, _loadingScreen, var a) = await (
+        (_camera, _cameraBackground, _settingsFacade, _loadingScreen, var a) = await (
             loader.InstantiateAsync(Address.Infrastructure.CameraController, inject: false),
+            loader.InstantiateAsync(Address.Infrastructure.CameraBackground, inject: false),
             loader.LoadAssetAsync(Address.Infrastructure.Settings),
             loader.InstantiateAsync(Address.UI.TransitionLoadingScreen, inject: false),
             loader.InstantiateAsync(Address.Infrastructure.EventSystem, inject: false));
@@ -75,25 +74,7 @@ public sealed class RootScope : Scope
     private void RegisterCamera(IContainerBuilder builder)
     {
         builder.RegisterComponent(_camera);
-        builder.RegisterComponent(_camera.Background).WithParameter((IReadOnlyList<Address<Texture2D>>)new[]
-        {
-            Address.Background.Background1,
-            Address.Background.Background2,
-            Address.Background.Background3,
-            Address.Background.Background4,
-            Address.Background.Background5,
-        });
-        //builder.Inject(_camera.Background);
-
-        builder.RegisterInstance<IReadOnlyList<Address<Texture2D>>>(
-            new List<Address<Texture2D>>
-            {
-                Address.Background.Background1,
-                Address.Background.Background2,
-                Address.Background.Background3,
-                Address.Background.Background4,
-                Address.Background.Background5,
-            });
+        builder.RegisterComponent(_cameraBackground).WithParameter(Address.Background.All);
     }
 
     private static void RegisterProgress(IContainerBuilder builder)
@@ -134,13 +115,7 @@ public sealed class RootScope : Scope
 
     private static void RegisterHeroSelector(IContainerBuilder builder)
     {
-        builder.Register<HeroSelector>(Lifetime.Singleton).WithParameter((IReadOnlyList<Address<Hero>>)new[]
-        {
-            Address.Entity.Hero.Hero1,
-            Address.Entity.Hero.Hero2,
-            Address.Entity.Hero.Hero3,
-            Address.Entity.Hero.Hero4,
-        });
+        builder.Register<HeroSelector>(Lifetime.Singleton).WithParameter(Address.Entity.Hero.All);
     }
 
     private static void RegisterAds(IContainerBuilder builder)
