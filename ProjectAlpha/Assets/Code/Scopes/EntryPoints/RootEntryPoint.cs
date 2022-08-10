@@ -46,7 +46,7 @@ public class RootEntryPoint : IInitializable, IDisposable, IStartable
         var camera = (MonoBehaviour)_camera;
         var background = (MonoBehaviour)_cameraBackground;
 
-        background.transform.parent = camera.transform;
+        background.transform.SetParent(camera.transform, true);
         background.GetComponent<Canvas>().worldCamera = camera.GetComponent<Camera>();
     }
 }
