@@ -6,13 +6,20 @@ namespace Code.Services.Entities;
 
 public abstract class SlicedSpriteEntity : Entity
 {
-    [SerializeField] protected SpriteRenderer _sprite;
+    [SerializeField] private SpriteRenderer _sprite;
 
     public override Borders Borders => _sprite.bounds.AsBorders();
+    protected SpriteRenderer SpriteRenderer => _sprite;
 
-    private void OnValidate() =>
+    protected virtual void OnValidate()
+    {
+        Debug.Assert(_sprite != null, $"_sprite == null for {name} of type {GetType()}");
         Debug.Assert(_sprite.drawMode != SpriteDrawMode.Simple, $"{name}: Sprite is simple, use {nameof(SimpleSpriteEntity)} instead");
+    }
 
-    public virtual void SetSize(Vector2 worldSize) =>
+    protected void SetSpriteSize(Vector2 worldSize) =>
         _sprite.size = worldSize;
+
+    protected void SetSpriteAlpha(float alpha) =>
+        _sprite.color = _sprite.color with { a = alpha };
 }

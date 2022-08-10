@@ -24,9 +24,9 @@ public sealed class Platform : SlicedSpriteEntity, IPlatform
     public UniTask MoveAsync(float destinationX) =>
         _animations.Move(transform, destinationX, _settings.MovementSpeed, DestroyToken);
 
-    public override void SetSize(Vector2 worldSize)
+    public void SetSize(Vector2 worldSize)
     {
-        base.SetSize(worldSize);
+        SetSpriteSize(worldSize);
         _platformRedPoint.SetPosition(Borders.CenterTop, Relative.Top);
     }
 

@@ -6,12 +6,15 @@ namespace Code.Services.Entities;
 
 public abstract class SimpleSpriteEntity : Entity
 {
-    [SerializeField] protected SpriteRenderer _sprite;
+    [SerializeField] private SpriteRenderer _sprite;
 
     public override Borders Borders => _sprite.bounds.AsBorders();
 
-    private void OnValidate() =>
+    protected virtual void OnValidate()
+    {
+        Debug.Assert(_sprite != null, $"_sprite == null for {name} of type {GetType()}");
         Debug.Assert(_sprite.drawMode == SpriteDrawMode.Simple, $"{name}: Sprite is sliced or tiled, use {nameof(SlicedSpriteEntity)} instead");
+    }
 
     public void SetSize(Vector2 worldSize)
     {
