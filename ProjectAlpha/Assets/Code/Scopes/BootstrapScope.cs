@@ -12,7 +12,7 @@ public sealed class BootstrapScope : Scope
 {
     [SerializeField] private LoadingScreen _bootLoadingScreen;
 
-    protected override  UniTask PreloadAsync(IAddressablesLoader loader) =>
+    protected override UniTask PreloadAsync(IAddressablesLoader loader) =>
         UniTask.CompletedTask;
 
     protected override void ConfigureServices(IContainerBuilder builder)
