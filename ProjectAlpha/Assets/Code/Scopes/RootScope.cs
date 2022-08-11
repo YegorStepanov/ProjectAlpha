@@ -96,7 +96,7 @@ public sealed class RootScope : Scope
     {
         if (PlatformInfo.IsDevelopment)
         {
-            builder.RegisterNonLazy<DevelopmentRootPanel>(Lifetime.Singleton);
+            builder.RegisterNonLazy<RootDevelopmentPanelPart>(Lifetime.Singleton);
             builder.RegisterComponentAndInjectGameObject(_developmentPanel);
         }
     }
