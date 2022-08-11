@@ -18,12 +18,27 @@ MonoBehaviour:
   m_GUID: eaf6739527c74d44a8f919775daffc3e
   m_SerializeEntries:
   - m_GUID: 69de5ab077db35d458c1786c5826fd40
-    m_Address: Width Generator (Game)
+    m_Address: Width Generator
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a38e6610dbc16a5439540d0618443f39
-    m_Address: Width Generator
+    m_Address: Width Generator (Dev)
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 11a93d2ff20e6ce438e25c086bc0269c
+    m_Address: Platform Position Generator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bf5b1d2379dcec4dbd61eaae64eee72
+    m_Address: Cherry Position Generator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b23838d16aa5f5741859bfeed0b40a4a
+    m_Address: Settings Facade
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

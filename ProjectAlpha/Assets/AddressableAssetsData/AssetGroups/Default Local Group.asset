@@ -16,47 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 57425a48cdf3d6143bf7e3a7bf225b50
-  m_SerializeEntries:
-  - m_GUID: b46ffd07204d6c64e9ca1c1187026450
-    m_Address: Background Canvas
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3a8dbb0d2d7fb644eaeabfa916e6a350
-    m_Address: Menu Mediator
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1f5e776577a0b434daee098a71170962
-    m_Address: EventSystem
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ae65f7adffdc9dd46bd589930a2264aa
-    m_Address: Game UI
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 11a93d2ff20e6ce438e25c086bc0269c
-    m_Address: Platform Position Generator
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1bf5b1d2379dcec4dbd61eaae64eee72
-    m_Address: Cherry Position Generator
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: da24fc6f9a3a08e49b01ae2ae7b61fc7
-    m_Address: Development Panel
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 06166ca7d54e3334daafdd54b3c81de2
-    m_Address: Camera Background
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 0f4399c1e47a2f541b59e585801a7440, type: 2}
   m_SchemaSet:

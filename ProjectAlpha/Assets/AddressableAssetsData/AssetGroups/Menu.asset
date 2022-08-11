@@ -27,8 +27,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 204094d8c8689d14dbecd9570afef851
-    m_Address: Transition Loading Screen
+  - m_GUID: 3a8dbb0d2d7fb644eaeabfa916e6a350
+    m_Address: Menu Mediator
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
