@@ -25,6 +25,9 @@ public sealed class DevelopmentPanel : MonoBehaviour
         if (field is not null)
             Debug.LogWarning($"{typeof(T).Name} is not null", this);
 
+        if (field == panel)
+            Debug.LogWarning($"Assigned the same object of {typeof(T).Name} type", this);
+
         field = panel;
     }
 
@@ -33,8 +36,8 @@ public sealed class DevelopmentPanel : MonoBehaviour
         if (field is null)
             Debug.LogWarning($"{typeof(T).Name} is null", this);
 
-        if (field == panel)
-            Debug.LogWarning($"Assigned the same object of {typeof(T).Name} type", this);
+        if (field != panel)
+            Debug.LogWarning($"Unassigned the different object of {typeof(T).Name} type", this);
 
         field = null;
     }
