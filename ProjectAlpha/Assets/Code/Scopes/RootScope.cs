@@ -27,7 +27,7 @@ public sealed class RootScope : Scope
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
-        (_camera, _cameraBackground, _settingsFacade, _loadingScreen, var a) = await (
+        (_camera, _cameraBackground, _settingsFacade, _loadingScreen, _) = await (
             loader.InstantiateAsync(Address.Infrastructure.CameraController),
             loader.InstantiateAsync(Address.Infrastructure.CameraBackground),
             loader.LoadAssetAsync(Address.Infrastructure.Settings),
