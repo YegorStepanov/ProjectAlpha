@@ -398,6 +398,16 @@ PrefabInstance:
       propertyPath: m_text
       value: SHOP
       objectReference: {fileID: 0}
+    - target: {fileID: 6065243033066950011, guid: 72ca7ccdb3469b44d9a88ce3305a0ed0,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6065243033066950011, guid: 72ca7ccdb3469b44d9a88ce3305a0ed0,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableEntryReference.m_KeyId
+      value: 21095937125281792
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72ca7ccdb3469b44d9a88ce3305a0ed0, type: 3}
 --- !u!224 &3279356744934139441 stripped
@@ -1317,7 +1327,12 @@ PrefabInstance:
     - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
         type: 3}
       propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.size
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0]
+      value: Unity.Localization UnityEngine.Localization.PropertyVariants.TrackedProperties.LocalizedStringProperty
       objectReference: {fileID: 0}
     - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
         type: 3}
@@ -1332,6 +1347,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
         type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_PropertyPath
+      value: m_text
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
       propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[1].m_PropertyPath
       value: m_sharedMaterial
       objectReference: {fileID: 0}
@@ -1339,6 +1359,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[1].m_VariantData.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_FallbackState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_WaitForCompletion
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
         type: 3}
@@ -1350,6 +1380,26 @@ PrefabInstance:
       propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[1].m_VariantData.Array.data[1].value
       value: 
       objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_LocalVariables.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableEntryReference.m_Key
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableEntryReference.m_KeyId
+      value: 21095392926920704
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableReference.m_TableCollectionName
+      value: GUID:4ebbbaaba1a9e1449831a2d6c080ef47
+      objectReference: {fileID: 0}
     - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
         type: 3}
       propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[1].m_VariantData.Array.data[0].localeIdentifier.m_Code
@@ -1730,13 +1780,48 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
         type: 3}
-      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableEntryReference.m_KeyId
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0]
+      value: Unity.Localization UnityEngine.Localization.PropertyVariants.TrackedProperties.LocalizedStringProperty
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_PropertyPath
+      value: m_text
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_FallbackState
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
         type: 3}
-      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableReference.m_TableCollectionName
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_WaitForCompletion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_LocalVariables.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableEntryReference.m_Key
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableEntryReference.m_KeyId
+      value: 21095227168026624
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731406127496593819, guid: 544026286eda80e49bf1635af93ceb41,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableReference.m_TableCollectionName
+      value: GUID:4ebbbaaba1a9e1449831a2d6c080ef47
       objectReference: {fileID: 0}
     - target: {fileID: 3399750840393343331, guid: 544026286eda80e49bf1635af93ceb41,
         type: 3}

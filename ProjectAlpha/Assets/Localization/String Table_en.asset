@@ -35,7 +35,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2696478126080
-    m_Localized: HEROES
+    m_Localized: SHOP
     m_Metadata:
       m_Items: []
   - m_Id: 12580389056512
@@ -70,6 +70,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 14211080572039168
     m_Localized: BUTTON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21094939262611456
+    m_Localized: DISABLE CHERR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21095227168026624
+    m_Localized: RESTORE IN-APP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21095392926920704
+    m_Localized: DISABLE FRUITS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21095937125281792
+    m_Localized: SHOP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21096022949130240
+    m_Localized: HEROES
     m_Metadata:
       m_Items: []
   references:

@@ -158,23 +158,8 @@ MonoBehaviour:
       data:
         m_Target: {fileID: 3889818211761959040}
         m_TrackedProperties:
-          items:
-          - id: 1
+          items: []
         m_UpdateType: 0
-    00000001:
-      type: {class: LocalizedStringProperty, ns: UnityEngine.Localization.PropertyVariants.TrackedProperties,
-        asm: Unity.Localization}
-      data:
-        m_Localized:
-          m_TableReference:
-            m_TableCollectionName: GUID:4ebbbaaba1a9e1449831a2d6c080ef47
-          m_TableEntryReference:
-            m_KeyId: 14211080572039168
-            m_Key: 
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        m_PropertyPath: m_text
 --- !u!1 &5815059976969257340
 GameObject:
   m_ObjectHideFlags: 0

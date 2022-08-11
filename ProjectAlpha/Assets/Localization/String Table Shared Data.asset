@@ -69,6 +69,29 @@ MonoBehaviour:
     m_Key: Orange Button/Canvas (Environment)/Orange Button/Text
     m_Metadata:
       m_Items: []
+  - m_Id: 21094939262611456
+    m_Key: Hero Shop Canvas/Hero Shop Canvas/Panel/Scroll Rect/Layout Group/Disable
+      Fruits/Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21095227168026624
+    m_Key: Hero Shop Canvas/Hero Shop Canvas/Panel/Scroll Rect/Layout Group/Restore
+      In-App/Text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21095392926920704
+    m_Key: Hero Shop Canvas/Hero Shop Canvas/Panel/Scroll Rect/Layout Group/Disable
+      Fruits/Text 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21095937125281792
+    m_Key: 'Hero Shop Canvas/Hero Shop Canvas/Panel/Title/Text '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21096022949130240
+    m_Key: 'Hero Selector Canvas/Hero Selector Canvas/Panel/Title/Text '
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

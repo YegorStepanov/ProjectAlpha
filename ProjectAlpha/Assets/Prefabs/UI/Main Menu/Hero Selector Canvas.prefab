@@ -370,6 +370,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6065243033066950011, guid: 72ca7ccdb3469b44d9a88ce3305a0ed0,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6065243033066950011, guid: 72ca7ccdb3469b44d9a88ce3305a0ed0,
+        type: 3}
+      propertyPath: m_TrackedObjects.Array.data[0].m_TrackedProperties.items.Array.data[0].m_Localized.m_TableEntryReference.m_KeyId
+      value: 21096022949130240
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72ca7ccdb3469b44d9a88ce3305a0ed0, type: 3}
 --- !u!224 &2881016393981604411 stripped
