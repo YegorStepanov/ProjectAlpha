@@ -33,7 +33,7 @@ public sealed class PlatformSpawner : Spawner<Platform>
     public UniTask<IPlatform> CreateRestartPlatformAsync(float positionY, float height)
     {
         Vector2 position = new(_camera.Borders.Left, positionY);
-        Vector2 size = new(_widthGenerator.NextWidth(), height);
+        Vector2 size = new(_settings.MenuPlatformWidth, height);
         return CreateAsync(position, size, Relative.LeftTop, false);
     }
 
