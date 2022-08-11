@@ -26,7 +26,7 @@ public sealed class GameScope : Scope
     private IAsyncPool<Stick> _stickPool;
     private IAsyncPool<Cherry> _cherryPool;
     private GameUIView _gameUIView;
-    private RedPointHitGameAnimation _redPointHitGameAnimation;
+    private RedPointHitGameAnimation _redPointHitNotification;
 
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
@@ -38,7 +38,7 @@ public sealed class GameScope : Scope
             loader.LoadAssetAsync(Address.Data.PlatformPositionGenerator),
             loader.LoadAssetAsync(Address.Data.CherryPositionGenerator),
             loader.InstantiateAsync(Address.UI.GameUI),
-            loader.InstantiateAsync(Address.UI.RedPointHitAnimation));
+            loader.InstantiateAsync(Address.UI.RedPointHitNotification));
 
         Address<Hero> hero = Parent.Container.Resolve<HeroSelector>()
             .GetSelectedHero();
@@ -52,7 +52,7 @@ public sealed class GameScope : Scope
             _platformPositionGenerator,
             _cherryPositionGenerator,
             _gameUIView,
-            _redPointHitGameAnimation) = await tasks;
+            _redPointHitNotification) = await tasks;
 
         _platformWidthGenerator = widthGeneratorData.Create();
     }
@@ -108,7 +108,7 @@ public sealed class GameScope : Scope
     private void RegisterUI(IContainerBuilder builder)
     {
         builder.RegisterComponentAndInjectGameObject(_gameUIView);
-        builder.RegisterComponent(_redPointHitGameAnimation);
+        builder.RegisterComponent(_redPointHitNotification);
 
         builder.Register<IGameUIFacade, GameUIFacade>(Lifetime.Singleton);
         builder.Register<GameUIController>(Lifetime.Singleton);

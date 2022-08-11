@@ -43,7 +43,7 @@ public static class Address
     public static class UI
     {
         public static readonly Address<GameUIView> GameUI = new("Game UI");
-        public static readonly Address<RedPointHitGameAnimation> RedPointHitAnimation = new("Plus 1 Notification");
+        public static readonly Address<RedPointHitGameAnimation> RedPointHitNotification = new("Red Point Hit Notification");
 
         public static readonly Address<GameObject> ShopPanel = new("Shop Panel");
         public static readonly Address<GameObject> HeroSelectorPanel = new("Hero Selector Panel");

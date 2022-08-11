@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 699009102249905048}
   - component: {fileID: -4908271395123242108}
   m_Layer: 0
-  m_Name: Plus1
+  m_Name: Red Point Hit Notification
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

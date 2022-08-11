@@ -23,7 +23,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 837fb0e48c34d5b41b7d61c4764924ec
-    m_Address: Plus 1 Notification
+    m_Address: Red Point Hit Notification
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
