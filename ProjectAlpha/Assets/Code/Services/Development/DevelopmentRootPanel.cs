@@ -23,6 +23,6 @@ public sealed class DevelopmentRootPanel : IDisposable
     [Button]
     public void ClearData() => PlayerPrefs.DeleteAll();
 
-    [Button, HideIf("@_progress == null")]
+    [Button]
     public void Add5Cherries() => _progress.Persistant.AddCherries(5);
 }
