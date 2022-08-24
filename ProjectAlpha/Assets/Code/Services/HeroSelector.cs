@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Code.Services;
 
-public class HeroSelector
+public sealed class HeroSelector
 {
     private readonly IReadOnlyList<Address<Hero>> _addresses;
     private readonly IProgress _progress;
