@@ -22,7 +22,7 @@ public sealed class AddressablePool<TComponent> : AsyncPool<TComponent> where TC
     protected override async UniTask<TComponent> CreateAsync()
     {
         if (_container == null)
-            _container = _loader.Creator.Instantiate(_address.Key + ContainerPostfix).transform;
+            _container = _loader.Creator.InstantiateEmpty(_address.Key + ContainerPostfix).transform;
 
         TComponent instance = await _loader.InstantiateInjectedAsync(_address);
         instance.transform.parent = _container;

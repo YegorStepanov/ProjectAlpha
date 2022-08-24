@@ -1,39 +1,202 @@
 ﻿using UnityEngine;
+using VContainer;
 using VContainer.Unity;
 
 namespace Code.AddressableAssets;
 
-public sealed class Creator : ICreator
+public sealed class CreatorWithLazyResolver : ICreator
 {
-    private readonly LifetimeScope _scope;
-    private readonly GameObject _emptyGameObject = new();
+    private readonly Creator _creator;
 
-    public Creator(LifetimeScope scope) =>
-        _scope = scope;
+    public IObjectResolver Resolver { get; set; }
 
-    public GameObject Instantiate(string name) =>
-        _scope.IsRoot
-            ? CreateInRootScene(_emptyGameObject, name)
-            : CreateInScopeScene(_emptyGameObject, name);
-
-    public GameObject Instantiate(GameObject prefab) =>
-        _scope.IsRoot
-            ? CreateInRootScene(prefab, prefab.name)
-            : CreateInScopeScene(prefab, prefab.name);
-
-    private static GameObject CreateInRootScene(GameObject prefab, string name)
+    public CreatorWithLazyResolver(LifetimeScope scope)
     {
-        GameObject instance = Object.Instantiate(prefab);
-        Object.DontDestroyOnLoad(instance);
-        instance.name = name;
+        _creator = new Creator(scope);
+    }
+
+    public GameObject InstantiateEmpty(string name)
+    {
+        return _creator.InstantiateEmpty(name);
+    }
+
+    public T Instantiate<T>(T prefab) where T : Object
+    {
+        T instance = _creator.InstantiateNoInject(prefab);
+        InjectUnityEngineObject(instance);
         return instance;
     }
 
-    private GameObject CreateInScopeScene(GameObject prefab, string name)
+    public T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation) where T : Object
     {
-        GameObject instance = Object.Instantiate(prefab, _scope.transform);
-        instance.transform.SetParent(null);
-        instance.name = name;
+        T instance = _creator.InstantiateNoInject(prefab, position, rotation);
+        InjectUnityEngineObject(instance);
         return instance;
+    }
+
+    public T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent) where T : Object
+    {
+        T instance = _creator.InstantiateNoInject(prefab, position, rotation, parent);
+        InjectUnityEngineObject(instance);
+        return instance;
+    }
+
+    public T Instantiate<T>(T prefab, Transform parent, bool worldPositionStays = false) where T : Object
+    {
+        T instance = _creator.InstantiateNoInject(prefab, parent, worldPositionStays);
+        InjectUnityEngineObject(instance);
+        return instance;
+    }
+
+    public T InstantiateNoInject<T>(T prefab) where T : Object
+    {
+        return _creator.InstantiateNoInject(prefab);
+    }
+
+    public T InstantiateNoInject<T>(T prefab, Vector3 position, Quaternion rotation) where T : Object
+    {
+        return _creator.InstantiateNoInject(prefab, position, rotation);
+    }
+
+    public T InstantiateNoInject<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent) where T : Object
+    {
+        return _creator.InstantiateNoInject(prefab, position, rotation, parent);
+    }
+
+    public T InstantiateNoInject<T>(T prefab, Transform parent, bool worldPositionStays = false) where T : Object
+    {
+        return _creator.InstantiateNoInject(prefab, parent, worldPositionStays);
+    }
+
+    private void InjectUnityEngineObject<T>(T instance) where T : UnityEngine.Object
+    {
+        IObjectResolver resolver = Resolver;
+
+        Debug.Assert(resolver != null);
+
+        if (instance is GameObject gameObject)
+            resolver.InjectGameObject(gameObject);
+        else
+            resolver.Inject(instance);
+    }
+}
+
+public sealed class Creator : ICreator
+{
+    private readonly LifetimeScope _scope;
+    private readonly Transform _scopeTransform;
+    private readonly IObjectResolver _resolver;
+
+    public Creator(LifetimeScope scope)
+    {
+        _scope = scope;
+        _scopeTransform = scope.transform;
+        _resolver = scope.Container;
+        // Debug.Log("scope=" + (_scope != null) + " resolver=" + (_resolver != null) + " transform=" + (_scope.transform != null));
+    }
+
+    public GameObject InstantiateEmpty(string name)
+    {
+        var instance = new GameObject();
+
+        var t = instance.transform;
+        t.parent = _scopeTransform;
+        t.parent = null;
+
+        return instance;
+    }
+
+    public T Instantiate<T>(T prefab) where T : Object
+    {
+        T instance = InstantiateNoInject(prefab);
+        InjectUnityEngineObject(_resolver, instance);
+        return instance;
+    }
+
+    public T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation) where T : Object
+    {
+        T instance = InstantiateNoInject(prefab, position, rotation);
+        InjectUnityEngineObject(_resolver, instance);
+        return instance;
+    }
+
+    public T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent) where T : Object
+    {
+        T instance = InstantiateNoInject(prefab, position, rotation, parent);
+        InjectUnityEngineObject(_resolver, instance);
+        return instance;
+    }
+
+    public T Instantiate<T>(T prefab, Transform parent, bool worldPositionStays = false) where T : Object
+    {
+        T instance = InstantiateNoInject(prefab, parent, worldPositionStays);
+        InjectUnityEngineObject(_resolver, instance);
+        return instance;
+    }
+
+    public T InstantiateNoInject<T>(T prefab) where T : Object
+    {
+        T instance;
+        if (_scope.IsRoot)
+        {
+            instance = UnityEngine.Object.Instantiate(prefab);
+            UnityEngine.Object.DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            instance = UnityEngine.Object.Instantiate(prefab, _scopeTransform);
+            ResetParent(instance);
+        }
+
+        return instance;
+    }
+
+    public T InstantiateNoInject<T>(T prefab, Vector3 position, Quaternion rotation) where T : Object
+    {
+        T instance;
+        if (_scope.IsRoot)
+        {
+            instance = UnityEngine.Object.Instantiate(prefab, position, rotation);
+            UnityEngine.Object.DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            instance = UnityEngine.Object.Instantiate(prefab, position, rotation, _scopeTransform);
+            ResetParent(instance);
+        }
+
+        return instance;
+    }
+
+    public T InstantiateNoInject<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent) where T : Object
+    {
+        return UnityEngine.Object.Instantiate(prefab, position, rotation, parent);
+    }
+
+    public T InstantiateNoInject<T>(T prefab, Transform parent, bool worldPositionStays = false) where T : Object
+    {
+        return UnityEngine.Object.Instantiate(prefab, parent, worldPositionStays);
+    }
+
+    private static void InjectUnityEngineObject<T>(IObjectResolver resolver, T instance) where T : UnityEngine.Object
+    {
+        if (instance is GameObject gameObject)
+            resolver.InjectGameObject(gameObject);
+        else
+            resolver.Inject(instance);
+    }
+
+    //TODO worldPositionStays
+    private static void ResetParent<T>(T instance) where T : UnityEngine.Object
+    {
+        switch (instance)
+        {
+            case Component component:
+                component.transform.SetParent(null);
+                break;
+            case GameObject gameObject:
+                gameObject.transform.SetParent(null);
+                break;
+        }
     }
 }

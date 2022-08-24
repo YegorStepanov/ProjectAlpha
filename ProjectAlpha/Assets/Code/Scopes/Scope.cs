@@ -75,7 +75,8 @@ public abstract class Scope : LifetimeScope
     private async UniTask BuildAsync()
     {
         //We cannot set active scene here
-        _loader = new AddressablesLoader(new Creator(this), new Injector(this));
+        var creator = new CreatorWithLazyResolver(this);
+        _loader = new AddressablesLoader(creator);
         await PreloadAsync(_loader);
 
         //A root scene is not real scene
@@ -91,6 +92,7 @@ public abstract class Scope : LifetimeScope
         }
 
         Build();
+        creator.Resolver = Container;
         IsBuilt = true;
     }
 

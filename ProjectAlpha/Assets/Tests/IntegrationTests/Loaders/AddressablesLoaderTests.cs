@@ -19,7 +19,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     [UnityTest]
     public IEnumerator Loader_loads_and_releases_the_assets() => UniTask.ToCoroutine(async () =>
     {
-        using var loader = new AddressablesLoader(new FakeCreator(),new FakeInjector());
+        using var loader = new AddressablesLoader(new FakeCreator());
 
         var prefab = await loader.LoadAssetAsync(GameObjectAddress);
 
@@ -37,7 +37,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     [UnityTest]
     public IEnumerator Loader_instantiate_and_release_the_assets() => UniTask.ToCoroutine(async () =>
     {
-        using var loader = new AddressablesLoader(new FakeCreator(), new FakeInjector());
+        using var loader = new AddressablesLoader(new FakeCreator());
 
         var prefab = await loader.InstantiateAsync(GameObjectAddress);
 
@@ -55,7 +55,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     [UnityTest]
     public IEnumerator Loader_is_disposed() => UniTask.ToCoroutine(async () =>
     {
-        using var loader = new AddressablesLoader(new FakeCreator(),new FakeInjector());
+        using var loader = new AddressablesLoader(new FakeCreator());
 
         var prefab = await loader.InstantiateAsync(GameObjectAddress);
 
@@ -67,7 +67,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     [UnityTest]
     public IEnumerator Loader_returns_null_after_dispose() => UniTask.ToCoroutine(async () =>
     {
-        using var loader = new AddressablesLoader(new FakeCreator(),new FakeInjector());
+        using var loader = new AddressablesLoader(new FakeCreator());
         loader.Dispose();
 
         Assert.That(await loader.InstantiateAsync(GameObjectAddress), Is.Null);
@@ -83,13 +83,49 @@ public sealed class FakeCreator : ICreator
     public GameObject Instantiate(string name) => new(name);
 
     public GameObject Instantiate(GameObject prefab) => Object.Instantiate(prefab);
-}
 
-public sealed class FakeInjector : IInjector
-{
-    public void Inject(object instance) =>
+    public GameObject InstantiateEmpty(string name)
+    {
         throw new System.NotImplementedException();
+    }
 
-    public void InjectGameObject(GameObject gameObject) =>
+    public T Instantiate<T>(T prefab) where T : Object
+    {
         throw new System.NotImplementedException();
+    }
+
+    public T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation) where T : Object
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent) where T : Object
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public T Instantiate<T>(T prefab, Transform parent, bool worldPositionStays = false) where T : Object
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public T InstantiateNoInject<T>(T prefab) where T : Object
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public T InstantiateNoInject<T>(T prefab, Vector3 position, Quaternion rotation) where T : Object
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public T InstantiateNoInject<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent) where T : Object
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public T InstantiateNoInject<T>(T prefab, Transform parent, bool worldPositionStays = false) where T : Object
+    {
+        throw new System.NotImplementedException();
+    }
 }
