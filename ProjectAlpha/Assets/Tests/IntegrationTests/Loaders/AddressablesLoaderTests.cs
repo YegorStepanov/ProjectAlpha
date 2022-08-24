@@ -39,13 +39,13 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     {
         using var loader = new AddressablesLoader(new FakeCreator());
 
-        var prefab = await loader.InstantiateAsync(GameObjectAddress);
+        var prefab = await loader.InstantiateNoInjectAsync(GameObjectAddress);
 
         Assert.That(loader.IsLoaded(prefab), Is.True);
         loader.Release(prefab);
         Assert.That(loader.IsLoaded(prefab), Is.False);
 
-        var monoBehaviour = await loader.InstantiateAsync(MonoBehaviourAddress);
+        var monoBehaviour = await loader.InstantiateNoInjectAsync(MonoBehaviourAddress);
 
         Assert.That(loader.IsLoaded(monoBehaviour), Is.True);
         loader.Release(monoBehaviour);
@@ -57,7 +57,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     {
         using var loader = new AddressablesLoader(new FakeCreator());
 
-        var prefab = await loader.InstantiateAsync(GameObjectAddress);
+        var prefab = await loader.InstantiateNoInjectAsync(GameObjectAddress);
 
         Assert.That(loader.IsLoaded(prefab), Is.True);
         loader.Dispose();
@@ -70,8 +70,8 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
         using var loader = new AddressablesLoader(new FakeCreator());
         loader.Dispose();
 
-        Assert.That(await loader.InstantiateAsync(GameObjectAddress), Is.Null);
-        Assert.That(await loader.InstantiateAsync(MonoBehaviourAddress), Is.Null);
+        Assert.That(await loader.InstantiateNoInjectAsync(GameObjectAddress), Is.Null);
+        Assert.That(await loader.InstantiateNoInjectAsync(MonoBehaviourAddress), Is.Null);
 
         Assert.That(await loader.LoadAssetAsync(GameObjectAddress), Is.Null);
         Assert.That(await loader.LoadAssetAsync(AssetAddress), Is.Null);

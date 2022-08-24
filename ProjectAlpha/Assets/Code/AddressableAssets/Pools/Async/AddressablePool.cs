@@ -24,7 +24,7 @@ public sealed class AddressablePool<TComponent> : AsyncPool<TComponent> where TC
         if (_container == null)
             _container = _loader.Creator.InstantiateEmpty(_address.Key + ContainerPostfix).transform;
 
-        TComponent instance = await _loader.InstantiateInjectedAsync(_address);
+        TComponent instance = await _loader.InstantiateAsync(_address);
         instance.transform.parent = _container;
 
         return instance;

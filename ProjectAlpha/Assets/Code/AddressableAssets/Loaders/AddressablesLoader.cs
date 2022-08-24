@@ -31,10 +31,10 @@ public class AddressablesLoader : IScopedAddressablesLoader
     }
 
     public UniTask<T> InstantiateAsync<T>(Address<T> address) where T : Object =>
-        InstantiateAsync(address, false);
-
-    public UniTask<T> InstantiateInjectedAsync<T>(Address<T> address) where T : Object =>
         InstantiateAsync(address, true);
+
+    public UniTask<T> InstantiateNoInjectAsync<T>(Address<T> address) where T : Object =>
+        InstantiateAsync(address, false);
 
     private async UniTask<T> InstantiateAsync<T>(Address<T> address, bool inject)
         where T : Object

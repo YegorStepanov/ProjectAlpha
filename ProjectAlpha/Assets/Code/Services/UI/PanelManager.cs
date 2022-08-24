@@ -42,7 +42,7 @@ public sealed class PanelManager
     private async UniTask<GameObject> GetOrCreatePanelAsync(GameObject panel, Address<GameObject> address)
     {
         if (panel == null)
-            panel = await _loader.InstantiateInjectedAsync(address);
+            panel = await _loader.InstantiateAsync(address);
 
         panel.SetActive(true);
         return panel;

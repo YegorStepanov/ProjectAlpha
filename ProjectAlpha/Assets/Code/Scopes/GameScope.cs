@@ -37,8 +37,8 @@ public sealed class GameScope : Scope
             loader.LoadAssetAsync(Address.Data.WidthGenerator),
             loader.LoadAssetAsync(Address.Data.PlatformPositionGenerator),
             loader.LoadAssetAsync(Address.Data.CherryPositionGenerator),
-            loader.InstantiateAsync(Address.UI.GameUI),
-            loader.InstantiateAsync(Address.UI.RedPointHitNotification));
+            loader.InstantiateNoInjectAsync(Address.UI.GameUI),
+            loader.InstantiateNoInjectAsync(Address.UI.RedPointHitNotification));
 
         Address<Hero> hero = Parent.Container.Resolve<HeroSelector>()
             .GetSelectedHero();

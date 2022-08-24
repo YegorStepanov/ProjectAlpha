@@ -27,11 +27,11 @@ public sealed class RootScope : Scope
     protected override async UniTask PreloadAsync(IAddressablesLoader loader)
     {
         (_camera, _cameraBackground, _settingsFacade, _loadingScreen, _) = await (
-            loader.InstantiateAsync(Address.Infrastructure.CameraController),
-            loader.InstantiateAsync(Address.Infrastructure.CameraBackground),
+            loader.InstantiateNoInjectAsync(Address.Infrastructure.CameraController),
+            loader.InstantiateNoInjectAsync(Address.Infrastructure.CameraBackground),
             loader.LoadAssetAsync(Address.Infrastructure.Settings),
-            loader.InstantiateAsync(Address.UI.TransitionLoadingScreen),
-            loader.InstantiateAsync(Address.Infrastructure.EventSystem));
+            loader.InstantiateNoInjectAsync(Address.UI.TransitionLoadingScreen),
+            loader.InstantiateNoInjectAsync(Address.Infrastructure.EventSystem));
 
         await LoadDevelopmentAssets(loader, _settingsFacade);
     }
@@ -39,10 +39,10 @@ public sealed class RootScope : Scope
     private async UniTask LoadDevelopmentAssets(IAddressablesLoader loader, SettingsFacade settings)
     {
         if (PlatformInfo.IsDevelopment && settings.Development.GraphyInDebug)
-            loader.InstantiateAsync(Address.Development.Graphy).Forget();
+            loader.InstantiateNoInjectAsync(Address.Development.Graphy).Forget();
 
         if (PlatformInfo.IsDevelopment)
-            _developmentPanel = await loader.InstantiateAsync(Address.Development.Panel);
+            _developmentPanel = await loader.InstantiateNoInjectAsync(Address.Development.Panel);
     }
 
     protected override void ConfigureServices(IContainerBuilder builder)
