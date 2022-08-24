@@ -19,7 +19,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     [UnityTest]
     public IEnumerator Loader_loads_and_releases_the_assets() => UniTask.ToCoroutine(async () =>
     {
-        using var loader = new AddressablesLoader(new FakeCreator());
+        using var loader = new AddressablesLoader(new FakeObjectCreator());
 
         var prefab = await loader.LoadAssetAsync(GameObjectAddress);
 
@@ -37,7 +37,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     [UnityTest]
     public IEnumerator Loader_instantiate_and_release_the_assets() => UniTask.ToCoroutine(async () =>
     {
-        using var loader = new AddressablesLoader(new FakeCreator());
+        using var loader = new AddressablesLoader(new FakeObjectCreator());
 
         var prefab = await loader.InstantiateNoInjectAsync(GameObjectAddress);
 
@@ -55,7 +55,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     [UnityTest]
     public IEnumerator Loader_is_disposed() => UniTask.ToCoroutine(async () =>
     {
-        using var loader = new AddressablesLoader(new FakeCreator());
+        using var loader = new AddressablesLoader(new FakeObjectCreator());
 
         var prefab = await loader.InstantiateNoInjectAsync(GameObjectAddress);
 
@@ -67,7 +67,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     [UnityTest]
     public IEnumerator Loader_returns_null_after_dispose() => UniTask.ToCoroutine(async () =>
     {
-        using var loader = new AddressablesLoader(new FakeCreator());
+        using var loader = new AddressablesLoader(new FakeObjectCreator());
         loader.Dispose();
 
         Assert.That(await loader.InstantiateNoInjectAsync(GameObjectAddress), Is.Null);
@@ -78,7 +78,7 @@ public sealed class AddressablesLoaderTests : AddressableTestFixture
     });
 }
 
-public sealed class FakeCreator : ICreator
+public sealed class FakeObjectCreator : IObjectCreator
 {
     public GameObject Instantiate(string name) => new(name);
 

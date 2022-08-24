@@ -4,14 +4,14 @@ namespace Code.AddressableAssets;
 
 public abstract class BehaviourFactory<TValue> : IFactory<TValue> where TValue : Object
 {
-    private readonly ICreator _creator;
+    private readonly IObjectCreator _creator;
     private readonly TValue _prefab;
     private readonly string _name;
     private readonly string _containerName;
 
     private Transform _container;
 
-    protected BehaviourFactory(ICreator creator, TValue prefab, string name, string parentName)
+    protected BehaviourFactory(IObjectCreator creator, TValue prefab, string name, string parentName)
     {
         _creator = creator;
         _prefab = prefab;

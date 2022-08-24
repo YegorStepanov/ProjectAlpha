@@ -14,14 +14,14 @@ public class AddressablesLoader : IScopedAddressablesLoader
     private readonly Dictionary<GameObject, GameObject> _instanceToPrefab;
     private bool _isDisposed;
 
-    public ICreator Creator { get; }
+    public IObjectCreator Creator { get; }
 
     [Inject]
-    public AddressablesLoader(ICreator creator) :
+    public AddressablesLoader(IObjectCreator creator) :
         this(creator, new(), new()) { }
 
     private protected AddressablesLoader(
-        ICreator creator,
+        IObjectCreator creator,
         Dictionary<Type, object> typeToHandleStorage,
         Dictionary<GameObject, GameObject> instanceToPrefab)
     {

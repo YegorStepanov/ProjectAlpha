@@ -4,7 +4,7 @@ using VContainer.Unity;
 
 namespace Code.AddressableAssets;
 
-public sealed class CreatorWithLazyResolver : ICreator
+public sealed class CreatorWithLazyResolver : IObjectCreator
 {
     private readonly Creator _creator;
 
@@ -81,7 +81,7 @@ public sealed class CreatorWithLazyResolver : ICreator
     }
 }
 
-public sealed class Creator : ICreator
+public sealed class Creator : IObjectCreator
 {
     private readonly LifetimeScope _scope;
     private readonly Transform _scopeTransform;

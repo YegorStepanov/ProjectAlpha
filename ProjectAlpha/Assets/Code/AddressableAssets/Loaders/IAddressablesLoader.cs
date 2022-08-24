@@ -6,7 +6,7 @@ namespace Code.AddressableAssets;
 
 public interface IAddressablesLoader : IDisposable
 {
-    ICreator Creator { get; }
+    IObjectCreator Creator { get; }
     UniTask<T> InstantiateNoInjectAsync<T>(Address<T> address) where T : Object;
     UniTask<T> InstantiateAsync<T>(Address<T> address) where T : Object;
     UniTask<T> LoadAssetAsync<T>(Address<T> address) where T : Object;

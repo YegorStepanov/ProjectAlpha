@@ -2,7 +2,7 @@
 
 namespace Code.AddressableAssets
 {
-    public interface ICreator
+    public interface IObjectCreator
     {
         GameObject InstantiateEmpty(string name);
 

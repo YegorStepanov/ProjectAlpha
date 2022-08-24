@@ -102,7 +102,7 @@ public sealed class RootScope : Scope
 
     private static void RegisterAddressableLoaders(IContainerBuilder builder)
     {
-        builder.Register<ICreator, Creator>(Lifetime.Scoped);
+        builder.Register<IObjectCreator, Creator>(Lifetime.Scoped);
         builder.Register<IAddressablesCache, AddressablesCache>(Lifetime.Scoped);
         builder.Register<IScopedAddressablesLoader, AddressablesLoader>(Lifetime.Scoped);
         builder.Register<IGlobalAddressablesLoader, GlobalAddressablesLoader>(Lifetime.Scoped);
