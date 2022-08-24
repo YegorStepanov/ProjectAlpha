@@ -5,7 +5,6 @@ using Code.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
@@ -100,11 +99,11 @@ public abstract class Scope : LifetimeScope
         if (!PlatformInfo.IsDevelopment) return;
 
         bool autoRun = GetPrivateInstanceField(typeof(LifetimeScope), this, "autoRun");
-        Assert.IsFalse(autoRun);
+        Debug.Assert(!autoRun);
 
         static bool GetPrivateInstanceField(Type type, object instance, string fieldName)
         {
-            FieldInfo field = type.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo field = type.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             return (bool)field!.GetValue(instance);
         }
     }
