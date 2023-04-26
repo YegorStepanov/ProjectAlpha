@@ -1,19 +1,20 @@
 ﻿using Code.Services;
 using Cysharp.Threading.Tasks;
 
-namespace Code.States;
-
-public sealed class HeroMovementToStartPlatformState : IState<GameData>
+namespace Code.States
 {
-    private readonly HeroMovement _heroMovement;
-
-    public HeroMovementToStartPlatformState(HeroMovement heroMovement) =>
-        _heroMovement = heroMovement;
-
-    public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
+    public sealed class HeroMovementToStartPlatformState : IState<GameData>
     {
-        await _heroMovement.MoveHeroToNextPlatformAsync(data, false);
+        private readonly HeroMovement _heroMovement;
 
-        stateMachine.Enter<NextRoundState, GameData>(data);
+        public HeroMovementToStartPlatformState(HeroMovement heroMovement) =>
+            _heroMovement = heroMovement;
+
+        public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
+        {
+            await _heroMovement.MoveHeroToNextPlatformAsync(data, false);
+
+            stateMachine.Enter<NextRoundState, GameData>(data);
+        }
     }
 }

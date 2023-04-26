@@ -1,7 +1,8 @@
-﻿namespace Code.Services.Data;
-
-public interface IProgress
+﻿namespace Code.Services.Data
 {
-    public ISessionProgress Session { get; }
-    public IPersistentProgress Persistant { get; }
+    public interface IProgress
+    {
+        public ISessionProgress Session { get; }
+        public IPersistentProgress Persistant { get; }
+    }
 }

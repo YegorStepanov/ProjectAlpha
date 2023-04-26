@@ -3,71 +3,72 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Advertisements;
 
-namespace Code.Services.Monetization;
-
-public class BannerAd : IDisposable
+namespace Code.Services.Monetization
 {
-    private const BannerPosition Position = BannerPosition.BOTTOM_CENTER;
-
-    private readonly string _adUnitAd;
-    private readonly BannerOptions _bannerOptions;
-
-    public bool IsShowing { get; private set; }
-
-    public BannerAd(AdsSettings settings)
+    public class BannerAd : IDisposable
     {
-        _adUnitAd = settings.BannerId;
+        private const BannerPosition Position = BannerPosition.BOTTOM_CENTER;
 
-        _bannerOptions = new BannerOptions
+        private readonly string _adUnitAd;
+        private readonly BannerOptions _bannerOptions;
+
+        public bool IsShowing { get; private set; }
+
+        public BannerAd(AdsSettings settings)
         {
-            showCallback = () => IsShowing = true,
-            hideCallback = () => IsShowing = false,
-        };
-    }
+            _adUnitAd = settings.BannerId;
 
-    public void Dispose() =>
-        DestroyBanner();
+            _bannerOptions = new BannerOptions
+            {
+                showCallback = () => IsShowing = true,
+                hideCallback = () => IsShowing = false,
+            };
+        }
 
-    public UniTask ShowAsync(CancellationToken token)
-    {
-        if (IsShowing || token.IsCancellationRequested)
-            return UniTask.CompletedTask;
+        public void Dispose() =>
+            DestroyBanner();
 
-        Advertisement.Banner.SetPosition(Position);
-        Advertisement.Banner.Show(_adUnitAd, _bannerOptions);
+        public UniTask ShowAsync(CancellationToken token)
+        {
+            if (IsShowing || token.IsCancellationRequested)
+                return UniTask.CompletedTask;
 
-        return WaitForShowingAsync(token);
-    }
+            Advertisement.Banner.SetPosition(Position);
+            Advertisement.Banner.Show(_adUnitAd, _bannerOptions);
 
-    public UniTask HideAsync(CancellationToken token)
-    {
-        if (!IsShowing || token.IsCancellationRequested)
-            return UniTask.CompletedTask;
+            return WaitForShowingAsync(token);
+        }
 
-        Advertisement.Banner.Hide();
-        return WaitForHidingAsync(token);
-    }
+        public UniTask HideAsync(CancellationToken token)
+        {
+            if (!IsShowing || token.IsCancellationRequested)
+                return UniTask.CompletedTask;
 
-    private void DestroyBanner()
-    {
-        if (!IsShowing) return;
-
-        //it's a bug or Hide(true) does nothing in editor
-        if (PlatformInfo.IsEditor)
             Advertisement.Banner.Hide();
+            return WaitForHidingAsync(token);
+        }
 
-        Advertisement.Banner.Hide(true);
-    }
+        private void DestroyBanner()
+        {
+            if (!IsShowing) return;
 
-    private async UniTask WaitForShowingAsync(CancellationToken token)
-    {
-        while (!IsShowing && !token.IsCancellationRequested)
-            await UniTask.Yield(token);
-    }
+            //it's a bug or Hide(true) does nothing in editor
+            if (PlatformInfo.IsEditor)
+                Advertisement.Banner.Hide();
 
-    private async UniTask WaitForHidingAsync(CancellationToken token)
-    {
-        while (IsShowing && !token.IsCancellationRequested)
-            await UniTask.Yield(token);
+            Advertisement.Banner.Hide(true);
+        }
+
+        private async UniTask WaitForShowingAsync(CancellationToken token)
+        {
+            while (!IsShowing && !token.IsCancellationRequested)
+                await UniTask.Yield(token);
+        }
+
+        private async UniTask WaitForHidingAsync(CancellationToken token)
+        {
+            while (IsShowing && !token.IsCancellationRequested)
+                await UniTask.Yield(token);
+        }
     }
 }

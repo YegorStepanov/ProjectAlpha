@@ -4,28 +4,29 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
-namespace Code.Animations.Game;
-
-public sealed class ShowStartHelpAnimation : MonoBehaviour
+namespace Code.Animations.Game
 {
-    [SerializeField] private Canvas _canvas;
-    [SerializeField] private TextMeshProUGUI _text;
-
-    private void Awake() =>
-        _canvas.enabled = false;
-
-    public void Play()
+    public sealed class ShowStartHelpAnimation : MonoBehaviour
     {
-        _canvas.enabled = true;
-        _text.DOFade(1f, 1f);
-    }
+        [SerializeField] private Canvas _canvas;
+        [SerializeField] private TextMeshProUGUI _text;
 
-    public async UniTask HideAsync(CancellationToken token)
-    {
-        if (_text.color.a == 0f) return;
+        private void Awake() =>
+            _canvas.enabled = false;
 
-        await _text.DOFade(0f, 1f).WithCancellation(token);
+        public void Play()
+        {
+            _canvas.enabled = true;
+            _text.DOFade(1f, 1f);
+        }
 
-        _canvas.enabled = false;
+        public async UniTask HideAsync(CancellationToken token)
+        {
+            if (_text.color.a == 0f) return;
+
+            await _text.DOFade(0f, 1f).WithCancellation(token);
+
+            _canvas.enabled = false;
+        }
     }
 }

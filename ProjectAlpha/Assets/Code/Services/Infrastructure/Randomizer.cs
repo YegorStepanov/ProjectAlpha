@@ -1,28 +1,29 @@
 ﻿using UnityEngine;
 
-namespace Code.Services.Infrastructure;
-
-public sealed class Randomizer : IRandomizer
+namespace Code.Services.Infrastructure
 {
-    public int Next(int maxExclusive) =>
-        Next(0, maxExclusive);
-
-    public int Next(int minInclusive, int maxExclusive) =>
-        Random.Range(minInclusive, maxExclusive);
-
-    public int NextExcept(int maxExclusive, int exclude) =>
-        NextExcept(0, maxExclusive, exclude);
-
-    public int NextExcept(int minInclusive, int maxExclusive, int exclude)
+    public sealed class Randomizer : IRandomizer
     {
-        int value = Random.Range(minInclusive, maxExclusive - 1);
+        public int Next(int maxExclusive) =>
+            Next(0, maxExclusive);
 
-        if (exclude >= 0 && value >= exclude)
-            value++;
+        public int Next(int minInclusive, int maxExclusive) =>
+            Random.Range(minInclusive, maxExclusive);
 
-        return value;
+        public int NextExcept(int maxExclusive, int exclude) =>
+            NextExcept(0, maxExclusive, exclude);
+
+        public int NextExcept(int minInclusive, int maxExclusive, int exclude)
+        {
+            int value = Random.Range(minInclusive, maxExclusive - 1);
+
+            if (exclude >= 0 && value >= exclude)
+                value++;
+
+            return value;
+        }
+
+        public float NextProbability() =>
+            Random.Range(0f, 1f);
     }
-
-    public float NextProbability() =>
-        Random.Range(0f, 1f);
 }

@@ -1,10 +1,11 @@
-﻿namespace Code.Services.Infrastructure;
-
-public interface IRandomizer
+﻿namespace Code.Services.Infrastructure
 {
-    int Next(int maxExclusive);
-    int Next(int minInclusive, int maxExclusive);
-    int NextExcept(int maxExclusive, int exclude);
-    int NextExcept(int minInclusive, int maxExclusive, int exclude);
-    float NextProbability();
+    public interface IRandomizer
+    {
+        int Next(int maxExclusive);
+        int Next(int minInclusive, int maxExclusive);
+        int NextExcept(int maxExclusive, int exclude);
+        int NextExcept(int minInclusive, int maxExclusive, int exclude);
+        float NextProbability();
+    }
 }

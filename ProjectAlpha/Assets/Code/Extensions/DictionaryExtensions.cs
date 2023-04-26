@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace Code.Extensions;
-
-public static class DictionaryExtensions
+namespace Code.Extensions
 {
-    public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> tuple, out TKey key, out TValue value)
+    public static class DictionaryExtensions
     {
-        key = tuple.Key;
-        value = tuple.Value;
+        public static void Deconstruct<TKey, TValue>(this KeyValuePair<TKey, TValue> tuple, out TKey key, out TValue value)
+        {
+            key = tuple.Key;
+            value = tuple.Value;
+        }
     }
 }

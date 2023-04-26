@@ -1,17 +1,18 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Code.Common;
-
-public readonly struct UniTaskDisposable
+namespace Code.Common
 {
-    public readonly UniTask UniTask;
+    public readonly struct UniTaskDisposable
+    {
+        public readonly UniTask UniTask;
 
-    private UniTaskDisposable(UniTask uniTask) =>
-        UniTask = uniTask;
+        private UniTaskDisposable(UniTask uniTask) =>
+            UniTask = uniTask;
 
-    public UniTask DisposeAsync() =>
-        UniTask;
+        public UniTask DisposeAsync() =>
+            UniTask;
 
-    public static implicit operator UniTaskDisposable(UniTask uniTask) =>
-        new(uniTask);
+        public static implicit operator UniTaskDisposable(UniTask uniTask) =>
+            new(uniTask);
+    }
 }

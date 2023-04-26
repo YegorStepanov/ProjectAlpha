@@ -1,8 +1,9 @@
-﻿namespace Code.Services;
-
-public interface ICameraRestorer
+﻿namespace Code.Services
 {
-    void RestorePosition();
-    void RestorePositionX();
-    void RestorePositionY();
+    public interface ICameraRestorer
+    {
+        void RestorePosition();
+        void RestorePositionX();
+        void RestorePositionY();
+    }
 }

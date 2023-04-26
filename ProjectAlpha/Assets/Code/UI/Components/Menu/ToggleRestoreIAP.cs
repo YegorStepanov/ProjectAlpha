@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 
-namespace Code.UI.Components;
-
-public sealed class ToggleRestoreIAP : MonoBehaviour
+namespace Code.UI.Components
 {
-    private void Awake() =>
-        gameObject.SetActive(PlatformInfo.IsIAPButtonSupported);
+    public sealed class ToggleRestoreIAP : MonoBehaviour
+    {
+        private void Awake() =>
+            gameObject.SetActive(PlatformInfo.IsIAPButtonSupported);
+    }
 }

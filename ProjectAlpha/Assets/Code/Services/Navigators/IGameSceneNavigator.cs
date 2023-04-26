@@ -1,7 +1,8 @@
-﻿namespace Code.Services.Navigators;
-
-public interface IGameSceneNavigator
+﻿namespace Code.Services.Navigators
 {
-    void NavigateToMenuScene();
-    void RestartGameScene();
+    public interface IGameSceneNavigator
+    {
+        void NavigateToMenuScene();
+        void RestartGameScene();
+    }
 }

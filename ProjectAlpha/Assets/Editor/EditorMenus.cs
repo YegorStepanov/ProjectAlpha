@@ -1,12 +1,13 @@
 ﻿using UnityEditor;
 
-namespace Code.Editor;
-
-public static class EditorMenus
+namespace Code.Editor
 {
-    [MenuItem("Tools/Clear addressables cache", false, 50)]
-    public static void ClearAddressablesCache()
+    public static class EditorMenus
     {
-        UnityEngine.Caching.ClearCache();
+        [MenuItem("Tools/Clear addressables cache", false, 50)]
+        public static void ClearAddressablesCache()
+        {
+            UnityEngine.Caching.ClearCache();
+        }
     }
 }

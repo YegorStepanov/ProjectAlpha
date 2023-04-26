@@ -2,10 +2,11 @@
 using JetBrains.Annotations;
 
 // ReSharper disable once CheckNamespace
-namespace System;
-
-[UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public interface IAsyncDisposable
+namespace System
 {
-    public UniTask DisposeAsync();
+    [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
+    public interface IAsyncDisposable
+    {
+        public UniTask DisposeAsync();
+    }
 }

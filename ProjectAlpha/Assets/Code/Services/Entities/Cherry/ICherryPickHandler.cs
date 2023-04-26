@@ -1,6 +1,7 @@
-﻿namespace Code.Services.Entities;
-
-public interface ICherryPickHandler
+﻿namespace Code.Services.Entities
 {
-    void OnCherryPicked(Cherry cherry);
+    public interface ICherryPickHandler
+    {
+        void OnCherryPicked(Cherry cherry);
+    }
 }

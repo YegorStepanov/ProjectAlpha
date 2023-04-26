@@ -1,7 +1,8 @@
-﻿namespace Code.AddressableAssets;
-
-//check performance of covariance modifier
-public interface IFactory<out TValue>
+﻿namespace Code.AddressableAssets
 {
-    TValue Create();
+//check performance of covariance modifier
+    public interface IFactory<out TValue>
+    {
+        TValue Create();
+    }
 }

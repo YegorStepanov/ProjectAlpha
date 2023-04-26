@@ -3,29 +3,30 @@ using TMPro;
 using UnityEngine;
 using VContainer;
 
-namespace Code.UI.Components;
-
-[RequireComponent(typeof(TextMeshProUGUI))]
-public sealed class CherriesText : MonoBehaviour
+namespace Code.UI.Components
 {
-    [Inject] private IProgress _progress;
-    private TextMeshProUGUI _text;
-
-    private void Awake() =>
-        _text = GetComponent<TextMeshProUGUI>();
-
-    private void Start()
+    [RequireComponent(typeof(TextMeshProUGUI))]
+    public sealed class CherriesText : MonoBehaviour
     {
-        _progress.Persistant.Cherries.Changed += OnCherriesChanged;
-        OnCherriesChanged();
-    }
+        [Inject] private IProgress _progress;
+        private TextMeshProUGUI _text;
 
-    private void OnDestroy() =>
-        _progress.Persistant.Cherries.Changed -= OnCherriesChanged;
+        private void Awake() =>
+            _text = GetComponent<TextMeshProUGUI>();
 
-    private void OnCherriesChanged()
-    {
-        int cherries = _progress.Persistant.Cherries;
-        _text.text = cherries.ToString();
+        private void Start()
+        {
+            _progress.Persistant.Cherries.Changed += OnCherriesChanged;
+            OnCherriesChanged();
+        }
+
+        private void OnDestroy() =>
+            _progress.Persistant.Cherries.Changed -= OnCherriesChanged;
+
+        private void OnCherriesChanged()
+        {
+            int cherries = _progress.Persistant.Cherries;
+            _text.text = cherries.ToString();
+        }
     }
 }

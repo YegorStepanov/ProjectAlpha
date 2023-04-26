@@ -1,13 +1,14 @@
-﻿namespace Code.Services.Data;
-
-public class Progress : IProgress
+﻿namespace Code.Services.Data
 {
-    public ISessionProgress Session { get; }
-    public IPersistentProgress Persistant { get; }
-
-    public Progress(ISessionProgress sessionProgress, IPersistentProgress persistantProgress)
+    public class Progress : IProgress
     {
-        Session = sessionProgress;
-        Persistant = persistantProgress;
+        public ISessionProgress Session { get; }
+        public IPersistentProgress Persistant { get; }
+
+        public Progress(ISessionProgress sessionProgress, IPersistentProgress persistantProgress)
+        {
+            Session = sessionProgress;
+            Persistant = persistantProgress;
+        }
     }
 }

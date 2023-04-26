@@ -1,9 +1,10 @@
-﻿namespace Code.Services.Monetization;
-
-public enum AdsShowResult
+﻿namespace Code.Services.Monetization
 {
-    Skipped,
-    Completed,
-    Unknown,
-    NotShown
+    public enum AdsShowResult
+    {
+        Skipped,
+        Completed,
+        Unknown,
+        NotShown
+    }
 }

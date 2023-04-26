@@ -4,55 +4,56 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Code.UI;
-
-public sealed class LoadingScreen : MonoBehaviour, ILoadingScreen
+namespace Code.UI
 {
-    [SerializeField] private CanvasGroup _loadingScreen;
-
-    [SerializeField, DisableIf("_inEasingTime", 0)]
-    private Ease _inEasing = Ease.InOutQuad;
-    [SerializeField, Min(0)]
-    private float _inEasingTime = 0.1f;
-
-    [SerializeField, DisableIf("_outEasingTime", 0)]
-    private Ease _outEasing = Ease.InOutQuad;
-    [SerializeField, Min(0)]
-    private float _outEasingTime = 0.25f;
-
-    private Tween _fadeIn;
-    private CancellationToken _token;
-
-    private void Awake() =>
-        _token = this.GetCancellationTokenOnDestroy();
-
-    public async UniTask FadeInAsync()
+    public sealed class LoadingScreen : MonoBehaviour, ILoadingScreen
     {
-        gameObject.SetActive(true);
-        _loadingScreen.blocksRaycasts = true;
+        [SerializeField] private CanvasGroup _loadingScreen;
 
-        _fadeIn = _loadingScreen
-            .DOFade(1f, _inEasingTime)
-            .From(0)
-            .SetEase(_inEasing);
+        [SerializeField, DisableIf("_inEasingTime", 0)]
+        private Ease _inEasing = Ease.InOutQuad;
+        [SerializeField, Min(0)]
+        private float _inEasingTime = 0.1f;
 
-        await _fadeIn.WithCancellation(_token);
-    }
+        [SerializeField, DisableIf("_outEasingTime", 0)]
+        private Ease _outEasing = Ease.InOutQuad;
+        [SerializeField, Min(0)]
+        private float _outEasingTime = 0.25f;
 
-    public async UniTask FadeOutAsync()
-    {
-        if (_fadeIn != null)
+        private Tween _fadeIn;
+        private CancellationToken _token;
+
+        private void Awake() =>
+            _token = this.GetCancellationTokenOnDestroy();
+
+        public async UniTask FadeInAsync()
+        {
+            gameObject.SetActive(true);
+            _loadingScreen.blocksRaycasts = true;
+
+            _fadeIn = _loadingScreen
+                .DOFade(1f, _inEasingTime)
+                .From(0)
+                .SetEase(_inEasing);
+
             await _fadeIn.WithCancellation(_token);
+        }
 
-        _fadeIn = null;
+        public async UniTask FadeOutAsync()
+        {
+            if (_fadeIn != null)
+                await _fadeIn.WithCancellation(_token);
 
-        _loadingScreen.blocksRaycasts = false;
+            _fadeIn = null;
 
-        await _loadingScreen
-            .DOFade(0f, _outEasingTime)
-            .SetEase(_outEasing)
-            .WithCancellation(_token);
+            _loadingScreen.blocksRaycasts = false;
 
-        gameObject.SetActive(false);
+            await _loadingScreen
+                .DOFade(0f, _outEasingTime)
+                .SetEase(_outEasing)
+                .WithCancellation(_token);
+
+            gameObject.SetActive(false);
+        }
     }
 }

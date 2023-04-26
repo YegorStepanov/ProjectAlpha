@@ -1,9 +1,10 @@
 ﻿using System;
 
-namespace Code.Services.Data;
-
-public interface IObservedValueWriter<T>
+namespace Code.Services.Data
 {
-    public event Action Changed;
-    public T Value { get; set; }
+    public interface IObservedValueWriter<T>
+    {
+        public event Action Changed;
+        public T Value { get; set; }
+    }
 }

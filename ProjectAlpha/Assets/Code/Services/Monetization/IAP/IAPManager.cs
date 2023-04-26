@@ -2,43 +2,44 @@
 using UnityEngine;
 using UnityEngine.Purchasing;
 
-namespace Code.Services.Monetization;
-
-public class IAPManager : IIAPManager
+namespace Code.Services.Monetization
 {
-    private readonly IProgress _progress;
-    private readonly Settings _settings;
-
-    public IAPManager(IProgress progress, Settings settings)
+    public class IAPManager : IIAPManager
     {
-        _progress = progress;
-        _settings = settings;
-    }
+        private readonly IProgress _progress;
+        private readonly Settings _settings;
 
-    public void PurchaseComplete(Product product)
-    {
-        if (product.definition.payout.type == _settings.CherryPayoutType)
+        public IAPManager(IProgress progress, Settings settings)
         {
-            int cherries = (int)product.definition.payout.quantity;
-            _progress.Persistant.AddCherries(cherries);
+            _progress = progress;
+            _settings = settings;
         }
 
-        if (product.definition.id == _settings.NoAdsId)
+        public void PurchaseComplete(Product product)
         {
-            _progress.Persistant.DisableAds();
+            if (product.definition.payout.type == _settings.CherryPayoutType)
+            {
+                int cherries = (int)product.definition.payout.quantity;
+                _progress.Persistant.AddCherries(cherries);
+            }
+
+            if (product.definition.id == _settings.NoAdsId)
+            {
+                _progress.Persistant.DisableAds();
+            }
         }
-    }
 
-    public void PurchaseFailed(Product product, PurchaseFailureReason failureReason)
-    {
-        if (failureReason == PurchaseFailureReason.UserCancelled) return;
-        Debug.Log($"Purchase failed - Product: '{product.definition.id}', PurchaseFailureReason: {failureReason}");
-    }
+        public void PurchaseFailed(Product product, PurchaseFailureReason failureReason)
+        {
+            if (failureReason == PurchaseFailureReason.UserCancelled) return;
+            Debug.Log($"Purchase failed - Product: '{product.definition.id}', PurchaseFailureReason: {failureReason}");
+        }
 
-    [System.Serializable]
-    public class Settings
-    {
-        public PayoutType CherryPayoutType = PayoutType.Currency;
-        public string NoAdsId = "com.code.disable_ads";
+        [System.Serializable]
+        public class Settings
+        {
+            public PayoutType CherryPayoutType = PayoutType.Currency;
+            public string NoAdsId = "com.code.disable_ads";
+        }
     }
 }

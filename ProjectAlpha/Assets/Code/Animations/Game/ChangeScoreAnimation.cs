@@ -2,17 +2,18 @@
 using TMPro;
 using UnityEngine;
 
-namespace Code.Animations.Game;
-
-public sealed class ChangeScoreAnimation : MonoBehaviour
+namespace Code.Animations.Game
 {
-    [SerializeField] private TextMeshProUGUI _text;
-
-    public void Play(int score, bool animate = true)
+    public sealed class ChangeScoreAnimation : MonoBehaviour
     {
-        _text.text = score.ToString();
+        [SerializeField] private TextMeshProUGUI _text;
 
-        if (animate)
-            _text.transform.DOPunchScale(new Vector2(0.3f, 0.3f), 0.3f, 0, 0f);
+        public void Play(int score, bool animate = true)
+        {
+            _text.text = score.ToString();
+
+            if (animate)
+                _text.transform.DOPunchScale(new Vector2(0.3f, 0.3f), 0.3f, 0, 0f);
+        }
     }
 }

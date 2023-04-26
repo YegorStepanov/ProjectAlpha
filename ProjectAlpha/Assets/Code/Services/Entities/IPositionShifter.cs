@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Code.Services.Entities;
-
-public interface IPositionShifter
+namespace Code.Services.Entities
 {
-    public void ShiftPosition(Vector2 distance);
+    public interface IPositionShifter
+    {
+        public void ShiftPosition(Vector2 distance);
+    }
 }

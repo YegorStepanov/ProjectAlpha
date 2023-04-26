@@ -2,32 +2,33 @@
 using Code.UI;
 using Cysharp.Threading.Tasks;
 
-namespace Code.Services.Navigators;
-
-public sealed class BootstrapSceneNavigator : IBootstrapSceneNavigator
+namespace Code.Services.Navigators
 {
-    private readonly ISceneLoader _sceneLoader;
-    private readonly ILoadingScreen _loadingScreen;
-
-    public BootstrapSceneNavigator(ISceneLoader sceneLoader, ILoadingScreen loadingScreen)
+    public sealed class BootstrapSceneNavigator : IBootstrapSceneNavigator
     {
-        _sceneLoader = sceneLoader;
-        _loadingScreen = loadingScreen;
-    }
+        private readonly ISceneLoader _sceneLoader;
+        private readonly ILoadingScreen _loadingScreen;
 
-    public void NavigateToMenuAndGameScenes()
-    {
-        Impl().Forget();
-
-        async UniTaskVoid Impl()
+        public BootstrapSceneNavigator(ISceneLoader sceneLoader, ILoadingScreen loadingScreen)
         {
-            await _loadingScreen.FadeInAsync();
+            _sceneLoader = sceneLoader;
+            _loadingScreen = loadingScreen;
+        }
 
-            await _sceneLoader.LoadAsync<MenuScene>();
-            await _sceneLoader.LoadAsync<GameScene>();
+        public void NavigateToMenuAndGameScenes()
+        {
+            Impl().Forget();
 
-            await _loadingScreen.FadeOutAsync();
-            await _sceneLoader.UnloadAsync<BootstrapScene>();
+            async UniTaskVoid Impl()
+            {
+                await _loadingScreen.FadeInAsync();
+
+                await _sceneLoader.LoadAsync<MenuScene>();
+                await _sceneLoader.LoadAsync<GameScene>();
+
+                await _loadingScreen.FadeOutAsync();
+                await _sceneLoader.UnloadAsync<BootstrapScene>();
+            }
         }
     }
 }

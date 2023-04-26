@@ -3,31 +3,32 @@ using Code.Services.Spawners;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.States;
-
-public sealed class EntitiesMovementState : IState<GameData>
+namespace Code.States
 {
-    private readonly ICamera _camera;
-    private readonly ICameraRestorer _cameraRestorer;
-    private readonly SpawnersItemsMover _spawnersItemsMover;
-
-    public EntitiesMovementState(ICamera camera, ICameraRestorer cameraRestorer, SpawnersItemsMover spawnersItemsMover)
+    public sealed class EntitiesMovementState : IState<GameData>
     {
-        _camera = camera;
-        _cameraRestorer = cameraRestorer;
-        _spawnersItemsMover = spawnersItemsMover;
-    }
+        private readonly ICamera _camera;
+        private readonly ICameraRestorer _cameraRestorer;
+        private readonly SpawnersItemsMover _spawnersItemsMover;
 
-    public UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
-    {
-        Vector2 oldPosition = _camera.Borders.Center;
-        _cameraRestorer.RestorePositionX();
-        Vector2 newPosition = _camera.Borders.Center;
+        public EntitiesMovementState(ICamera camera, ICameraRestorer cameraRestorer, SpawnersItemsMover spawnersItemsMover)
+        {
+            _camera = camera;
+            _cameraRestorer = cameraRestorer;
+            _spawnersItemsMover = spawnersItemsMover;
+        }
 
-        Vector2 delta = newPosition - oldPosition;
-        _spawnersItemsMover.ShiftPosition(delta);
+        public UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
+        {
+            Vector2 oldPosition = _camera.Borders.Center;
+            _cameraRestorer.RestorePositionX();
+            Vector2 newPosition = _camera.Borders.Center;
 
-        stateMachine.Enter<StickControlState, GameData>(data);
-        return new UniTaskVoid();
+            Vector2 delta = newPosition - oldPosition;
+            _spawnersItemsMover.ShiftPosition(delta);
+
+            stateMachine.Enter<StickControlState, GameData>(data);
+            return new UniTaskVoid();
+        }
     }
 }

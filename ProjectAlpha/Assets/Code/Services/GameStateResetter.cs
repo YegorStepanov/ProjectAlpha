@@ -1,22 +1,23 @@
 ﻿using Code.Services.Data;
 using Code.Services.Spawners;
 
-namespace Code.Services;
-
-public sealed class GameStateResetter
+namespace Code.Services
 {
-    private readonly SpawnersResetter _spawnersResetter;
-    private readonly IProgress _progress;
-
-    public GameStateResetter(SpawnersResetter spawnersResetter, IProgress progress)
+    public sealed class GameStateResetter
     {
-        _spawnersResetter = spawnersResetter;
-        _progress = progress;
-    }
+        private readonly SpawnersResetter _spawnersResetter;
+        private readonly IProgress _progress;
 
-    public void ResetState()
-    {
-        _spawnersResetter.DespawnAll();
-        _progress.Session.ResetScore();
+        public GameStateResetter(SpawnersResetter spawnersResetter, IProgress progress)
+        {
+            _spawnersResetter = spawnersResetter;
+            _progress = progress;
+        }
+
+        public void ResetState()
+        {
+            _spawnersResetter.DespawnAll();
+            _progress.Session.ResetScore();
+        }
     }
 }

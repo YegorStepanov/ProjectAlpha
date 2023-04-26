@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
 
-namespace Code.IntegrationTests;
-
-public interface ITestComponentLoader<T>: IDisposable where T : Object
+namespace Code.IntegrationTests
 {
-    UniTask<GameObject> Instantiate();
-    UniTask<AsyncOperationHandle<GameObject>> InstantiateHandle();
+    public interface ITestComponentLoader<T>: IDisposable where T : Object
+    {
+        UniTask<GameObject> Instantiate();
+        UniTask<AsyncOperationHandle<GameObject>> InstantiateHandle();
+    }
 }

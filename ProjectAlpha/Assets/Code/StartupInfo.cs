@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Code;
-
-public static class StartupInfo
+namespace Code
 {
-    public static string StartupSceneName { get; private set; }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void Init()
+    public static class StartupInfo
     {
-        StartupSceneName = SceneManager.GetActiveScene().name;
+        public static string StartupSceneName { get; private set; }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void Init()
+        {
+            StartupSceneName = SceneManager.GetActiveScene().name;
+        }
     }
 }

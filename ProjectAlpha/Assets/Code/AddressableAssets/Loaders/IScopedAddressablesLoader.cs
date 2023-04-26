@@ -1,3 +1,4 @@
-﻿namespace Code.AddressableAssets;
-
-public interface IScopedAddressablesLoader : IAddressablesLoader { }
+﻿namespace Code.AddressableAssets
+{
+    public interface IScopedAddressablesLoader : IAddressablesLoader { }
+}

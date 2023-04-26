@@ -1,7 +1,8 @@
-namespace Code.Common;
-
-public readonly record struct Ratio(float Min, float Max)
+namespace Code.Common
 {
-    public static Ratio operator *(Ratio ratio, float value) =>
-        new(ratio.Min * value, ratio.Max * value);
+    public readonly record struct Ratio(float Min, float Max)
+    {
+        public static Ratio operator *(Ratio ratio, float value) =>
+            new(ratio.Min * value, ratio.Max * value);
+    }
 }

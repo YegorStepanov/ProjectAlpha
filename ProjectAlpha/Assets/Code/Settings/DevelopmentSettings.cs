@@ -1,7 +1,8 @@
-﻿namespace Code;
-
-[System.Serializable]
-public class DevelopmentSettings
+﻿namespace Code
 {
-    public bool GraphyInDebug = true;
+    [System.Serializable]
+    public class DevelopmentSettings
+    {
+        public bool GraphyInDebug = true;
+    }
 }

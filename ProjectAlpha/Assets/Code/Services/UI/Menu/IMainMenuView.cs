@@ -1,6 +1,7 @@
-﻿namespace Code.Services.UI;
-
-public interface IMainMenuView
+﻿namespace Code.Services.UI
 {
-    void ToggleSound();
+    public interface IMainMenuView
+    {
+        void ToggleSound();
+    }
 }

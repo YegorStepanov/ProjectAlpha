@@ -1,6 +1,7 @@
-﻿namespace Code.Common;
-
-public static class Event
+﻿namespace Code.Common
 {
-    public struct GameStart { }
+    public static class Event
+    {
+        public struct GameStart { }
+    }
 }

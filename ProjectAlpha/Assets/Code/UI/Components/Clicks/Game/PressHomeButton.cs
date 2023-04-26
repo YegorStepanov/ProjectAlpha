@@ -3,14 +3,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer;
 
-namespace Code.UI.Components;
-
-public sealed class PressHomeButton : MonoBehaviour, IPointerClickHandler
+namespace Code.UI.Components
 {
-    [Inject] private IGameUIFacade _gameUIFacade;
-
-    public void OnPointerClick(PointerEventData eventData)
+    public sealed class PressHomeButton : MonoBehaviour, IPointerClickHandler
     {
-        _gameUIFacade.LoadMenu();
+        [Inject] private IGameUIFacade _gameUIFacade;
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            _gameUIFacade.LoadMenu();
+        }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Code.Data;
-
-public abstract class PlatformWidthGeneratorData : ScriptableObject
+namespace Code.Data
 {
-    public abstract IPlatformWidthGenerator Create();
+    public abstract class PlatformWidthGeneratorData : ScriptableObject
+    {
+        public abstract IPlatformWidthGenerator Create();
+    }
 }

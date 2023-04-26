@@ -1,35 +1,36 @@
 ﻿using System.ComponentModel;
 using UnityEngine;
 
-namespace Code.Data;
-
-public abstract class PositionGenerator : ScriptableObject
+namespace Code.Data
 {
-    [SerializeField] private Mode _mode;
-
-    [SerializeField] private float _leftOffset;
-    [SerializeField] private float _rightOffset;
-
-    public float NextPosition(float minPosX, float maxPosX, float width)
+    public abstract class PositionGenerator : ScriptableObject
     {
-        float halfWidth = width / 2f;
+        [SerializeField] private Mode _mode;
 
-        return _mode switch
+        [SerializeField] private float _leftOffset;
+        [SerializeField] private float _rightOffset;
+
+        public float NextPosition(float minPosX, float maxPosX, float width)
         {
-            Mode.Leftmost => Leftmost(),
-            Mode.Rightmost => Rightmost(),
-            Mode.Between => Random.Range(Leftmost(), Rightmost()),
-            _ => throw new InvalidEnumArgumentException(nameof(_mode), (int)_mode, typeof(Mode))
-        };
+            float halfWidth = width / 2f;
 
-        float Leftmost() => minPosX + halfWidth + _leftOffset;
-        float Rightmost() => maxPosX - halfWidth - _rightOffset;
-    }
+            return _mode switch
+            {
+                Mode.Leftmost => Leftmost(),
+                Mode.Rightmost => Rightmost(),
+                Mode.Between => Random.Range(Leftmost(), Rightmost()),
+                _ => throw new InvalidEnumArgumentException(nameof(_mode), (int)_mode, typeof(Mode))
+                };
 
-    private enum Mode
-    {
-        Between,
-        Leftmost,
-        Rightmost,
+            float Leftmost() => minPosX + halfWidth + _leftOffset;
+            float Rightmost() => maxPosX - halfWidth - _rightOffset;
+        }
+
+        private enum Mode
+        {
+            Between,
+            Leftmost,
+            Rightmost,
+        }
     }
 }

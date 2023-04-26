@@ -10,49 +10,50 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace Code.Services;
-
-public sealed class CameraBackground : MonoBehaviour
+namespace Code.Services
 {
-    [SerializeField] private RawImage _rawImage;
-
-    private IReadOnlyList<Address<Texture2D>> _backgroundAddresses;
-    private IScopedAddressablesLoader _loader;
-    private IRandomizer _randomizer;
-
-    private Texture2D _currentTexture;
-    private int _lastIndex = -1;
-
-    [Inject, UsedImplicitly]
-    public void Construct(
-        IReadOnlyList<Address<Texture2D>> addresses,
-        IScopedAddressablesLoader loader,
-        IRandomizer randomizer)
+    public sealed class CameraBackground : MonoBehaviour
     {
-        _backgroundAddresses = addresses;
-        _loader = loader;
-        _randomizer = randomizer;
-    }
+        [SerializeField] private RawImage _rawImage;
 
-    public async UniTask ChangeBackgroundAsync()
-    {
-        if (_rawImage != null)
-            _loader.Release(_currentTexture);
+        private IReadOnlyList<Address<Texture2D>> _backgroundAddresses;
+        private IScopedAddressablesLoader _loader;
+        private IRandomizer _randomizer;
 
-        Address<Texture2D> address = GetRandomBackground();
-        _currentTexture = await _loader.LoadAssetAsync(address);
-        _rawImage.texture = _currentTexture;
-    }
+        private Texture2D _currentTexture;
+        private int _lastIndex = -1;
 
-    public UniTask MoveBackgroundAsync(CancellationToken stopToken) => _rawImage
-        .DOMoveUVX(1f, 0.05f)
-        .SetRelative()
-        .SetSpeedBased()
-        .WithCancellation(stopToken);
+        [Inject, UsedImplicitly]
+        public void Construct(
+            IReadOnlyList<Address<Texture2D>> addresses,
+            IScopedAddressablesLoader loader,
+            IRandomizer randomizer)
+        {
+            _backgroundAddresses = addresses;
+            _loader = loader;
+            _randomizer = randomizer;
+        }
 
-    private Address<Texture2D> GetRandomBackground()
-    {
-        _lastIndex = _randomizer.NextExcept(_backgroundAddresses.Count, _lastIndex);
-        return _backgroundAddresses[_lastIndex];
+        public async UniTask ChangeBackgroundAsync()
+        {
+            if (_rawImage != null)
+                _loader.Release(_currentTexture);
+
+            Address<Texture2D> address = GetRandomBackground();
+            _currentTexture = await _loader.LoadAssetAsync(address);
+            _rawImage.texture = _currentTexture;
+        }
+
+        public UniTask MoveBackgroundAsync(CancellationToken stopToken) => _rawImage
+            .DOMoveUVX(1f, 0.05f)
+            .SetRelative()
+            .SetSpeedBased()
+            .WithCancellation(stopToken);
+
+        private Address<Texture2D> GetRandomBackground()
+        {
+            _lastIndex = _randomizer.NextExcept(_backgroundAddresses.Count, _lastIndex);
+            return _backgroundAddresses[_lastIndex];
+        }
     }
 }

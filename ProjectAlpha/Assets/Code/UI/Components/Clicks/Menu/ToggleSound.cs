@@ -3,12 +3,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer;
 
-namespace Code.UI.Components;
-
-public sealed class ToggleSound : MonoBehaviour, IPointerClickHandler
+namespace Code.UI.Components
 {
-    [Inject] private IMenuUIFacade _menu;
+    public sealed class ToggleSound : MonoBehaviour, IPointerClickHandler
+    {
+        [Inject] private IMenuUIFacade _menu;
 
-    public void OnPointerClick(PointerEventData eventData) =>
-        _menu.ToggleSound();
+        public void OnPointerClick(PointerEventData eventData) =>
+            _menu.ToggleSound();
+    }
 }

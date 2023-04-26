@@ -1,18 +1,19 @@
 ﻿using System;
 using Code.Scopes;
 
-namespace Code.Services.Development;
-
-public abstract class DevelopmentPanelPart<T> : IDisposable where T : Scope
+namespace Code.Services.Development
 {
-    private readonly DevelopmentPanel _panel;
-
-    protected DevelopmentPanelPart(DevelopmentPanel panel)
+    public abstract class DevelopmentPanelPart<T> : IDisposable where T : Scope
     {
-        _panel = panel;
-        _panel.Bind(this);
-    }
+        private readonly DevelopmentPanel _panel;
 
-    void IDisposable.Dispose() =>
-        _panel.Unbind(this);
+        protected DevelopmentPanelPart(DevelopmentPanel panel)
+        {
+            _panel = panel;
+            _panel.Bind(this);
+        }
+
+        void IDisposable.Dispose() =>
+            _panel.Unbind(this);
+    }
 }

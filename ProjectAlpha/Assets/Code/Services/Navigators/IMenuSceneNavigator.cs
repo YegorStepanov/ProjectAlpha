@@ -1,6 +1,7 @@
-﻿namespace Code.Services.Navigators;
-
-public interface IMenuSceneNavigator
+﻿namespace Code.Services.Navigators
 {
-    void RestartMenuScene();
+    public interface IMenuSceneNavigator
+    {
+        void RestartMenuScene();
+    }
 }

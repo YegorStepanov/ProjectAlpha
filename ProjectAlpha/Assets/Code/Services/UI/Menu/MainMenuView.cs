@@ -1,24 +1,25 @@
 ﻿using UnityEngine;
 
-namespace Code.Services.UI;
-
-public sealed class MainMenuView : MonoBehaviour, IMainMenuView
+namespace Code.Services.UI
 {
-    [SerializeField] private GameObject _soundOn;
-    [SerializeField] private GameObject _soundOff;
-
-    private void Awake() =>
-        EnableSound();
-
-    public void ToggleSound()
+    public sealed class MainMenuView : MonoBehaviour, IMainMenuView
     {
-        _soundOn.SetActive(!_soundOn.activeSelf);
-        _soundOff.SetActive(!_soundOff.activeSelf);
-    }
+        [SerializeField] private GameObject _soundOn;
+        [SerializeField] private GameObject _soundOff;
 
-    private void EnableSound()
-    {
-        _soundOn.SetActive(true);
-        _soundOff.SetActive(false);
+        private void Awake() =>
+            EnableSound();
+
+        public void ToggleSound()
+        {
+            _soundOn.SetActive(!_soundOn.activeSelf);
+            _soundOff.SetActive(!_soundOff.activeSelf);
+        }
+
+        private void EnableSound()
+        {
+            _soundOn.SetActive(true);
+            _soundOff.SetActive(false);
+        }
     }
 }

@@ -3,41 +3,42 @@ using Code.States;
 using Code.UI;
 using Cysharp.Threading.Tasks;
 
-namespace Code.Services.Navigators;
-
-public sealed class GameSceneNavigator : IGameSceneNavigator
+namespace Code.Services.Navigators
 {
-    private readonly IGameStateMachine _gameStateMachine;
-    private readonly ISceneLoader _sceneLoader;
-    private readonly ILoadingScreen _loadingScreen;
-
-    public GameSceneNavigator(
-        IGameStateMachine gameStateMachine,
-        ISceneLoader sceneLoader,
-        ILoadingScreen loadingScreen)
+    public sealed class GameSceneNavigator : IGameSceneNavigator
     {
-        _gameStateMachine = gameStateMachine;
-        _sceneLoader = sceneLoader;
-        _loadingScreen = loadingScreen;
-    }
+        private readonly IGameStateMachine _gameStateMachine;
+        private readonly ISceneLoader _sceneLoader;
+        private readonly ILoadingScreen _loadingScreen;
 
-    public void NavigateToMenuScene()
-    {
-        Impl().Forget();
-
-        async UniTaskVoid Impl()
+        public GameSceneNavigator(
+            IGameStateMachine gameStateMachine,
+            ISceneLoader sceneLoader,
+            ILoadingScreen loadingScreen)
         {
-            await _loadingScreen.FadeInAsync();
-
-            await _sceneLoader.LoadAsync<MenuScene>();
-            _gameStateMachine.Enter<StartState>();
-
-            await _loadingScreen.FadeOutAsync();
+            _gameStateMachine = gameStateMachine;
+            _sceneLoader = sceneLoader;
+            _loadingScreen = loadingScreen;
         }
-    }
 
-    public void RestartGameScene()
-    {
-        _gameStateMachine.Enter<RestartState>();
+        public void NavigateToMenuScene()
+        {
+            Impl().Forget();
+
+            async UniTaskVoid Impl()
+            {
+                await _loadingScreen.FadeInAsync();
+
+                await _sceneLoader.LoadAsync<MenuScene>();
+                _gameStateMachine.Enter<StartState>();
+
+                await _loadingScreen.FadeOutAsync();
+            }
+        }
+
+        public void RestartGameScene()
+        {
+            _gameStateMachine.Enter<RestartState>();
+        }
     }
 }

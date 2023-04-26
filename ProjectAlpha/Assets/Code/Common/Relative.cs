@@ -1,14 +1,15 @@
-﻿namespace Code.Common;
-
-public enum Relative
+﻿namespace Code.Common
 {
-    Center,
-    Top,
-    Bot,
-    Left,
-    Right,
-    LeftTop,
-    RightTop,
-    LeftBot,
-    RightBot,
+    public enum Relative
+    {
+        Center,
+        Top,
+        Bot,
+        Left,
+        Right,
+        LeftTop,
+        RightTop,
+        LeftBot,
+        RightBot,
+    }
 }

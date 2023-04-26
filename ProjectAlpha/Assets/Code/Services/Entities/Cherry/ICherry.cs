@@ -1,9 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Code.Services.Entities;
-
-public interface ICherry : IEntity
+namespace Code.Services.Entities
 {
-    UniTask MoveAsync(float destinationX);
-    void PickUp();
+    public interface ICherry : IEntity
+    {
+        UniTask MoveAsync(float destinationX);
+        void PickUp();
+    }
 }

@@ -1,9 +1,10 @@
-namespace Code.Services.Entities;
-
-public enum HeroAnimatorState
+namespace Code.Services.Entities
 {
-    None,
-    Kick,
-    Move,
-    Stay
+    public enum HeroAnimatorState
+    {
+        None,
+        Kick,
+        Move,
+        Stay
+    }
 }

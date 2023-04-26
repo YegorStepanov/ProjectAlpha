@@ -2,109 +2,110 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.AddressableAssets;
-
-public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
+namespace Code.AddressableAssets
 {
-    private readonly int _initialSize;
-    private TValue[] _pool;
-    private int _activeCount;
-
-    public int Capacity { get; }
-    public bool CanBeSpawned => _pool is null || IsIndexCorrectForSpawn();
-
-    protected AsyncPool(int initialSize, int capacity)
+    public abstract class AsyncPool<TValue> : IAsyncPool<TValue>
     {
-        _initialSize = initialSize;
-        Capacity = capacity;
-    }
+        private readonly int _initialSize;
+        private TValue[] _pool;
+        private int _activeCount;
 
-    public async UniTask<TValue> SpawnAsync()
-    {
-        _pool ??= await CreatePoolAsync();
+        public int Capacity { get; }
+        public bool CanBeSpawned => _pool is null || IsIndexCorrectForSpawn();
 
-        if (!CanBeSpawned)
+        protected AsyncPool(int initialSize, int capacity)
         {
-            Debug.LogWarning($"Incorrect spawn index: {_activeCount}");
-            return default;
+            _initialSize = initialSize;
+            Capacity = capacity;
         }
 
-        TValue value = await Pop();
-        OnSpawned(value);
-
-        return value;
-    }
-
-    public void Despawn(TValue value)
-    {
-        if (_pool is null)
+        public async UniTask<TValue> SpawnAsync()
         {
-            Debug.LogWarning("Pool is not initialized");
-            return;
+            _pool ??= await CreatePoolAsync();
+
+            if (!CanBeSpawned)
+            {
+                Debug.LogWarning($"Incorrect spawn index: {_activeCount}");
+                return default;
+            }
+
+            TValue value = await Pop();
+            OnSpawned(value);
+
+            return value;
         }
 
-        if (!IsIndexCorrectForDespawn())
+        public void Despawn(TValue value)
         {
-            Debug.LogWarning($"Incorrect despawn index: {_activeCount}");
-            return;
+            if (_pool is null)
+            {
+                Debug.LogWarning("Pool is not initialized");
+                return;
+            }
+
+            if (!IsIndexCorrectForDespawn())
+            {
+                Debug.LogWarning($"Incorrect despawn index: {_activeCount}");
+                return;
+            }
+
+            Push(value);
+            OnDespawned(value);
         }
 
-        Push(value);
-        OnDespawned(value);
-    }
-
-    public void DespawnAll()
-    {
-        for (int i = 0; i < _activeCount; i++)
+        public void DespawnAll()
         {
-            TValue instance = _pool[i];
-            Despawn(instance);
+            for (int i = 0; i < _activeCount; i++)
+            {
+                TValue instance = _pool[i];
+                Despawn(instance);
+            }
         }
-    }
 
-    protected abstract UniTask<TValue> CreateAsync();
+        protected abstract UniTask<TValue> CreateAsync();
 
-    protected abstract void OnSpawned(TValue instance);
+        protected abstract void OnSpawned(TValue instance);
 
-    protected abstract void OnDespawned(TValue instance);
+        protected abstract void OnDespawned(TValue instance);
 
-    private async UniTask<TValue[]> CreatePoolAsync()
-    {
-        var pool = new TValue[Capacity];
+        private async UniTask<TValue[]> CreatePoolAsync()
+        {
+            var pool = new TValue[Capacity];
 
-        if (_initialSize == 0)
+            if (_initialSize == 0)
+                return pool;
+
+            for (int i = 0; i < _initialSize; i++)
+            {
+                pool[i] = await CreateAsync();
+                OnDespawned(pool[i]);
+            }
+
+            OnSpawned(pool[0]);
+
             return pool;
-
-        for (int i = 0; i < _initialSize; i++)
-        {
-            pool[i] = await CreateAsync();
-            OnDespawned(pool[i]);
         }
 
-        OnSpawned(pool[0]);
+        private async UniTask<TValue> Pop()
+        {
+            if (_pool[_activeCount].IsUnityNull())
+                _pool[_activeCount] = await CreateAsync();
 
-        return pool;
+            TValue value = _pool[_activeCount];
+            _activeCount++;
+            return value;
+        }
+
+        private void Push(TValue value)
+        {
+            _activeCount--;
+            _pool[_activeCount] = value;
+        }
+
+        private bool IsIndexCorrectForSpawn() =>
+            _activeCount >= 0 && _activeCount < _pool.Length;
+
+        private bool IsIndexCorrectForDespawn() =>
+            _activeCount > 0 && _activeCount <= _pool.Length;
     }
-
-    private async UniTask<TValue> Pop()
-    {
-        if (_pool[_activeCount].IsUnityNull())
-            _pool[_activeCount] = await CreateAsync();
-
-        TValue value = _pool[_activeCount];
-        _activeCount++;
-        return value;
-    }
-
-    private void Push(TValue value)
-    {
-        _activeCount--;
-        _pool[_activeCount] = value;
-    }
-
-    private bool IsIndexCorrectForSpawn() =>
-        _activeCount >= 0 && _activeCount < _pool.Length;
-
-    private bool IsIndexCorrectForDespawn() =>
-        _activeCount > 0 && _activeCount <= _pool.Length;
 }

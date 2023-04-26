@@ -5,48 +5,49 @@ using Code.Services.Monetization;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace Code.Scopes;
-
-public class RootEntryPoint : IInitializable, IDisposable, IStartable
+namespace Code.Scopes
 {
-    private readonly IProgress _progress;
-    private readonly AdsManager _adsManager;
-    private readonly ICamera _camera;
-    private readonly CameraBackground _cameraBackground;
-
-    public RootEntryPoint(IProgress progress, AdsManager adsManager, ICamera camera, CameraBackground cameraBackground)
+    public class RootEntryPoint : IInitializable, IDisposable, IStartable
     {
-        _progress = progress;
-        _adsManager = adsManager;
-        _camera = camera;
-        _cameraBackground = cameraBackground;
-    }
+        private readonly IProgress _progress;
+        private readonly AdsManager _adsManager;
+        private readonly ICamera _camera;
+        private readonly CameraBackground _cameraBackground;
 
-    void IInitializable.Initialize()
-    {
-        _progress.Persistant.IsAdsEnabled.Changed += _adsManager.ShowBannerIfNeeded;
-        _progress.Session.RestartNumber.Changed += _adsManager.ShowInterstitialAdIfNeeded;
-    }
+        public RootEntryPoint(IProgress progress, AdsManager adsManager, ICamera camera, CameraBackground cameraBackground)
+        {
+            _progress = progress;
+            _adsManager = adsManager;
+            _camera = camera;
+            _cameraBackground = cameraBackground;
+        }
 
-    void IDisposable.Dispose()
-    {
-        _progress.Persistant.IsAdsEnabled.Changed -= _adsManager.ShowBannerIfNeeded;
-        _progress.Session.RestartNumber.Changed -= _adsManager.ShowInterstitialAdIfNeeded;
-    }
+        void IInitializable.Initialize()
+        {
+            _progress.Persistant.IsAdsEnabled.Changed += _adsManager.ShowBannerIfNeeded;
+            _progress.Session.RestartNumber.Changed += _adsManager.ShowInterstitialAdIfNeeded;
+        }
 
-    void IStartable.Start()
-    {
-        _adsManager.ShowBannerIfNeeded();
+        void IDisposable.Dispose()
+        {
+            _progress.Persistant.IsAdsEnabled.Changed -= _adsManager.ShowBannerIfNeeded;
+            _progress.Session.RestartNumber.Changed -= _adsManager.ShowInterstitialAdIfNeeded;
+        }
 
-        BindBackgroundToCamera();
-    }
+        void IStartable.Start()
+        {
+            _adsManager.ShowBannerIfNeeded();
 
-    private void BindBackgroundToCamera()
-    {
-        var camera = (MonoBehaviour)_camera;
-        var background = (MonoBehaviour)_cameraBackground;
+            BindBackgroundToCamera();
+        }
 
-        background.transform.SetParent(camera.transform, true);
-        background.GetComponent<Canvas>().worldCamera = camera.GetComponent<Camera>();
+        private void BindBackgroundToCamera()
+        {
+            var camera = (MonoBehaviour)_camera;
+            var background = (MonoBehaviour)_cameraBackground;
+
+            background.transform.SetParent(camera.transform, true);
+            background.GetComponent<Canvas>().worldCamera = camera.GetComponent<Camera>();
+        }
     }
 }

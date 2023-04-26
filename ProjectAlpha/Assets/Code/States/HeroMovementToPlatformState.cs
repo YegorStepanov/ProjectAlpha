@@ -2,44 +2,45 @@
 using Code.Services.Data;
 using Cysharp.Threading.Tasks;
 
-namespace Code.States;
-
-public sealed class HeroMovementToPlatformState : IState<GameData>
+namespace Code.States
 {
-    private readonly HeroMovement _heroMovement;
-    private readonly IProgress _progress;
-    private readonly GameSettings _settings;
-
-    public HeroMovementToPlatformState(HeroMovement heroMovement, IProgress progress, GameSettings settings)
+    public sealed class HeroMovementToPlatformState : IState<GameData>
     {
-        _heroMovement = heroMovement;
-        _progress = progress;
-        _settings = settings;
-    }
+        private readonly HeroMovement _heroMovement;
+        private readonly IProgress _progress;
+        private readonly GameSettings _settings;
 
-    public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
-    {
-        var result = await _heroMovement.MoveHeroToNextPlatformAsync(data, false);
-        await UniTask.Delay(_settings.DelayAfterHeroMovementToPlatform);
-
-        if (result.IsHeroCollided)
+        public HeroMovementToPlatformState(HeroMovement heroMovement, IProgress progress, GameSettings settings)
         {
-            stateMachine.Enter<EndGameState, GameData>(data);
-            return;
+            _heroMovement = heroMovement;
+            _progress = progress;
+            _settings = settings;
         }
 
-        //collect cherry only if successful
-        if (result.IsCherryCollected)
-            CollectCherry();
+        public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
+        {
+            var result = await _heroMovement.MoveHeroToNextPlatformAsync(data, false);
+            await UniTask.Delay(_settings.DelayAfterHeroMovementToPlatform);
 
-        IncreaseScore();
+            if (result.IsHeroCollided)
+            {
+                stateMachine.Enter<EndGameState, GameData>(data);
+                return;
+            }
 
-        stateMachine.Enter<NextRoundState, GameData>(data);
+            //collect cherry only if successful
+            if (result.IsCherryCollected)
+                CollectCherry();
+
+            IncreaseScore();
+
+            stateMachine.Enter<NextRoundState, GameData>(data);
+        }
+
+        private void CollectCherry() =>
+            _progress.Persistant.AddCherries(1);
+
+        private void IncreaseScore() =>
+            _progress.Session.IncreaseScore();
     }
-
-    private void CollectCherry() =>
-        _progress.Persistant.AddCherries(1);
-
-    private void IncreaseScore() =>
-        _progress.Session.IncreaseScore();
 }

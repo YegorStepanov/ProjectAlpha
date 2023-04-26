@@ -1,9 +1,10 @@
 ﻿using Code.States;
 
-namespace Code.Services;
-
-public interface IGameStateMachine
+namespace Code.Services
 {
-    void Enter<TState>() where TState : class, IState;
-    void Enter<TState, TArg>(TArg argument) where TState : class, IState<TArg>;
+    public interface IGameStateMachine
+    {
+        void Enter<TState>() where TState : class, IState;
+        void Enter<TState, TArg>(TArg argument) where TState : class, IState<TArg>;
+    }
 }

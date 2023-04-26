@@ -2,69 +2,70 @@
 using Code.Services.Data;
 using Cysharp.Threading.Tasks;
 
-namespace Code.Services.Monetization;
-
-public sealed class AdsManager
+namespace Code.Services.Monetization
 {
-    private readonly IAds _ads;
-    private readonly IProgress _progress;
-    private readonly Settings _settings;
-    private readonly CancellationToken _token;
-
-    private bool IsAdsEnabled => _progress.Persistant.IsAdsEnabled;
-
-    public AdsManager(IAds ads, IProgress progress, Settings settings, CancellationToken token)
+    public sealed class AdsManager
     {
-        _ads = ads;
-        _progress = progress;
-        _settings = settings;
-        _token = token;
-    }
+        private readonly IAds _ads;
+        private readonly IProgress _progress;
+        private readonly Settings _settings;
+        private readonly CancellationToken _token;
 
-    public void ShowBannerIfNeeded()
-    {
-        Impl().Forget();
+        private bool IsAdsEnabled => _progress.Persistant.IsAdsEnabled;
 
-        async UniTaskVoid Impl()
+        public AdsManager(IAds ads, IProgress progress, Settings settings, CancellationToken token)
         {
-            if (IsAdsEnabled)
-                await _ads.ShowBannerAsync(_token);
-            else
-                await _ads.HideBannerAsync(_token);
+            _ads = ads;
+            _progress = progress;
+            _settings = settings;
+            _token = token;
         }
-    }
 
-    public void ShowInterstitialAdIfNeeded()
-    {
-        Impl().Forget();
-
-        async UniTaskVoid Impl()
+        public void ShowBannerIfNeeded()
         {
-            if (!IsAdsEnabled) return;
+            Impl().Forget();
 
-            int restartNumber = _progress.Session.RestartNumber;
-            if (restartNumber % _settings.ShowAdsAfterRestartNumber == 0)
-                await _ads.ShowInterstitialAsync(_token);
+            async UniTaskVoid Impl()
+            {
+                if (IsAdsEnabled)
+                    await _ads.ShowBannerAsync(_token);
+                else
+                    await _ads.HideBannerAsync(_token);
+            }
         }
-    }
 
-    public void ShowRewardedAd()
-    {
-        Impl().Forget();
-
-        async UniTaskVoid Impl()
+        public void ShowInterstitialAdIfNeeded()
         {
-            AdsShowResult result = await _ads.ShowRewardedAsync(_token);
+            Impl().Forget();
 
-            if (result == AdsShowResult.Completed)
-                _progress.Persistant.AddCherries(_settings.CherriesForWatchingRewardedAds);
+            async UniTaskVoid Impl()
+            {
+                if (!IsAdsEnabled) return;
+
+                int restartNumber = _progress.Session.RestartNumber;
+                if (restartNumber % _settings.ShowAdsAfterRestartNumber == 0)
+                    await _ads.ShowInterstitialAsync(_token);
+            }
         }
-    }
 
-    [System.Serializable]
-    public class Settings
-    {
-        public int ShowAdsAfterRestartNumber = 3;
-        public int CherriesForWatchingRewardedAds = 5;
+        public void ShowRewardedAd()
+        {
+            Impl().Forget();
+
+            async UniTaskVoid Impl()
+            {
+                AdsShowResult result = await _ads.ShowRewardedAsync(_token);
+
+                if (result == AdsShowResult.Completed)
+                    _progress.Persistant.AddCherries(_settings.CherriesForWatchingRewardedAds);
+            }
+        }
+
+        [System.Serializable]
+        public class Settings
+        {
+            public int ShowAdsAfterRestartNumber = 3;
+            public int CherriesForWatchingRewardedAds = 5;
+        }
     }
 }

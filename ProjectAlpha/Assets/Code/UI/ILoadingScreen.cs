@@ -1,9 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Code.UI;
-
-public interface ILoadingScreen
+namespace Code.UI
 {
-    UniTask FadeInAsync();
-    UniTask FadeOutAsync();
+    public interface ILoadingScreen
+    {
+        UniTask FadeInAsync();
+        UniTask FadeOutAsync();
+    }
 }

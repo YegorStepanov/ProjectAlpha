@@ -1,11 +1,12 @@
-﻿namespace Code.Services.Data;
-
-public interface ISessionProgress
+﻿namespace Code.Services.Data
 {
-    ObservedValue<int> Score { get; }
-    ObservedValue<int> RestartNumber { get; }
+    public interface ISessionProgress
+    {
+        ObservedValue<int> Score { get; }
+        ObservedValue<int> RestartNumber { get; }
 
-    void IncreaseScore();
-    void IncreaseRestartNumber();
-    void ResetScore();
+        void IncreaseScore();
+        void IncreaseRestartNumber();
+        void ResetScore();
+    }
 }

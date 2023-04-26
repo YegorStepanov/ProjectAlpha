@@ -5,60 +5,61 @@ using Code.Services.UI;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 
-namespace Code.States;
-
-public sealed class StickControlState : IState<GameData>
+namespace Code.States
 {
-    private readonly StickSpawner _stickSpawner;
-    private readonly IInputManager _inputManager;
-    private readonly GameUIController _gameUIController;
-
-    public StickControlState(
-        StickSpawner stickSpawner,
-        IInputManager inputManager,
-        GameUIController gameUIController)
+    public sealed class StickControlState : IState<GameData>
     {
-        _stickSpawner = stickSpawner;
-        _inputManager = inputManager;
-        _gameUIController = gameUIController;
-    }
+        private readonly StickSpawner _stickSpawner;
+        private readonly IInputManager _inputManager;
+        private readonly GameUIController _gameUIController;
 
-    public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
-    {
-        IStick nextStick = await _stickSpawner.CreateAsync(data.CurrentPlatform.Borders.RightTop);
-        await ControlStick(nextStick, data.Hero, data.NextPlatform);
+        public StickControlState(
+            StickSpawner stickSpawner,
+            IInputManager inputManager,
+            GameUIController gameUIController)
+        {
+            _stickSpawner = stickSpawner;
+            _inputManager = inputManager;
+            _gameUIController = gameUIController;
+        }
 
-        GameData nextData = data with { Stick = nextStick };
+        public async UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
+        {
+            IStick nextStick = await _stickSpawner.CreateAsync(data.CurrentPlatform.Borders.RightTop);
+            await ControlStick(nextStick, data.Hero, data.NextPlatform);
 
-        if (nextStick.IsStickArrowOn(data.NextPlatform))
-            stateMachine.Enter<HeroMovementToPlatformState, GameData>(nextData);
-        else
-            stateMachine.Enter<HeroMovementToEndGameState, GameData>(nextData);
-    }
+            GameData nextData = data with { Stick = nextStick };
 
-    private async UniTask<IStick> ControlStick(IStick stick, IHero hero, IPlatform nextPlatform)
-    {
-        await IncreaseStick(stick, hero);
-        await hero.KickAsync();
-        await stick.RotateAsync();
-        HandleRedPointHit(stick, nextPlatform);
-        return stick;
-    }
+            if (nextStick.IsStickArrowOn(data.NextPlatform))
+                stateMachine.Enter<HeroMovementToPlatformState, GameData>(nextData);
+            else
+                stateMachine.Enter<HeroMovementToEndGameState, GameData>(nextData);
+        }
 
-    private async UniTask IncreaseStick(IStick stick, IHero hero)
-    {
-        await _inputManager.WaitClick();
-        using CancellationTokenDisposable cts = new();
+        private async UniTask<IStick> ControlStick(IStick stick, IHero hero, IPlatform nextPlatform)
+        {
+            await IncreaseStick(stick, hero);
+            await hero.KickAsync();
+            await stick.RotateAsync();
+            HandleRedPointHit(stick, nextPlatform);
+            return stick;
+        }
 
-        hero.Squatting(cts.Token);
-        stick.Increasing(cts.Token);
+        private async UniTask IncreaseStick(IStick stick, IHero hero)
+        {
+            await _inputManager.WaitClick();
+            using CancellationTokenDisposable cts = new();
 
-        await _inputManager.WaitClickRelease();
-    }
+            hero.Squatting(cts.Token);
+            stick.Increasing(cts.Token);
 
-    private void HandleRedPointHit(IStick stick, IPlatform platform)
-    {
-        if (stick.IsStickArrowOn(platform.PlatformRedPoint))
-            _gameUIController.HitRedPoint(platform.PlatformRedPoint.Borders.Center);
+            await _inputManager.WaitClickRelease();
+        }
+
+        private void HandleRedPointHit(IStick stick, IPlatform platform)
+        {
+            if (stick.IsStickArrowOn(platform.PlatformRedPoint))
+                _gameUIController.HitRedPoint(platform.PlatformRedPoint.Borders.Center);
+        }
     }
 }

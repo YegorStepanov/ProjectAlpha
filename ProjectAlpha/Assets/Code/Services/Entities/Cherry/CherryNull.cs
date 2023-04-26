@@ -1,16 +1,17 @@
 ﻿using Code.Common;
 using Cysharp.Threading.Tasks;
 
-namespace Code.Services.Entities;
-
-public sealed class CherryNull : ICherry
+namespace Code.Services.Entities
 {
-    public static CherryNull Default => new();
+    public sealed class CherryNull : ICherry
+    {
+        public static CherryNull Default => new();
 
-    private CherryNull() { }
+        private CherryNull() { }
 
-    public Borders Borders => Borders.Infinity;
+        public Borders Borders => Borders.Infinity;
 
-    public UniTask MoveAsync(float destinationX) => UniTask.CompletedTask;
-    public void PickUp() { }
+        public UniTask MoveAsync(float destinationX) => UniTask.CompletedTask;
+        public void PickUp() { }
+    }
 }

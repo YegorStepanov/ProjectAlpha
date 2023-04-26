@@ -4,23 +4,24 @@ using Code.Services.Entities;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Spawners;
-
-public sealed class HeroSpawner : Spawner<Hero>
+namespace Code.Services.Spawners
 {
-    public HeroSpawner(IAsyncPool<Hero> pool) : base(pool) { }
-
-    public async UniTask<IHero> CreateAsync(Vector2 position, Relative relative)
+    public sealed class HeroSpawner : Spawner<Hero>
     {
-        Hero hero = await SpawnAsync();
-        FlipUp(hero);
-        hero.SetPosition(position, relative);
-        return hero;
-    }
+        public HeroSpawner(IAsyncPool<Hero> pool) : base(pool) { }
 
-    private static void FlipUp(Hero hero)
-    {
-        if (hero.IsFlipped)
-            hero.Flip();
+        public async UniTask<IHero> CreateAsync(Vector2 position, Relative relative)
+        {
+            Hero hero = await SpawnAsync();
+            FlipUp(hero);
+            hero.SetPosition(position, relative);
+            return hero;
+        }
+
+        private static void FlipUp(Hero hero)
+        {
+            if (hero.IsFlipped)
+                hero.Flip();
+        }
     }
 }

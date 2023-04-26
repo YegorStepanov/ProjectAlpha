@@ -2,11 +2,12 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Entities;
-
-public interface IHeroAnimations
+namespace Code.Services.Entities
 {
-    UniTask Move(Transform transform, float destinationX, float speed, CancellationToken token);
-    UniTask Fall(Transform transform, float destinationY, float speed, CancellationToken token);
-    UniTaskVoid Squatting(Transform transform, float squatOffset, float squatSpeed, CancellationToken token);
+    public interface IHeroAnimations
+    {
+        UniTask Move(Transform transform, float destinationX, float speed, CancellationToken token);
+        UniTask Fall(Transform transform, float destinationY, float speed, CancellationToken token);
+        UniTaskVoid Squatting(Transform transform, float squatOffset, float squatSpeed, CancellationToken token);
+    }
 }

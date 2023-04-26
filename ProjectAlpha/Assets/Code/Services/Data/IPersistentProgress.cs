@@ -1,16 +1,17 @@
-﻿namespace Code.Services.Data;
-
-public interface IPersistentProgress
+﻿namespace Code.Services.Data
 {
-    ObservedValue<int> Cherries { get; }
-    ObservedValue<bool> IsAdsEnabled { get; }
-    ObservedValue<int> SelectedHeroIndex { get; }
+    public interface IPersistentProgress
+    {
+        ObservedValue<int> Cherries { get; }
+        ObservedValue<bool> IsAdsEnabled { get; }
+        ObservedValue<int> SelectedHeroIndex { get; }
 
-    void AddCherries(int count);
-    void EnableAds();
-    void DisableAds();
+        void AddCherries(int count);
+        void EnableAds();
+        void DisableAds();
 
-    void UnlockHero(int heroIndex);
-    bool IsHeroLocked(int heroIndex);
-    void SetSelectedHero(int heroIndex);
+        void UnlockHero(int heroIndex);
+        bool IsHeroLocked(int heroIndex);
+        void SetSelectedHero(int heroIndex);
+    }
 }

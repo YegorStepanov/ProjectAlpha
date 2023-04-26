@@ -1,8 +1,9 @@
-﻿namespace Code.Services.UI;
-
-public interface IGameUIFacade
+﻿namespace Code.Services.UI
 {
-    void RequestStoreReview();
-    void LoadMenu();
-    void Restart();
+    public interface IGameUIFacade
+    {
+        void RequestStoreReview();
+        void LoadMenu();
+        void Restart();
+    }
 }

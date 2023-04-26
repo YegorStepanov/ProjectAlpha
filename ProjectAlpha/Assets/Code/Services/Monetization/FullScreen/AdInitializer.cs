@@ -3,39 +3,40 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-namespace Code.Services.Monetization;
-
-public class AdInitializer : IUnityAdsInitializationListener
+namespace Code.Services.Monetization
 {
-    private readonly string _gameId;
-
-    public bool IsInitialized { get; private set; }
-
-    public AdInitializer(AdsSettings settings)
+    public class AdInitializer : IUnityAdsInitializationListener
     {
-        _gameId = settings.GameId;
-    }
+        private readonly string _gameId;
 
-    public UniTask InitializeAsync(CancellationToken token)
-    {
-        if (IsInitialized || token.IsCancellationRequested)
-            return UniTask.CompletedTask;
+        public bool IsInitialized { get; private set; }
 
-        Advertisement.Initialize(_gameId, true, this);
+        public AdInitializer(AdsSettings settings)
+        {
+            _gameId = settings.GameId;
+        }
 
-        return WaitForInitializationAsync(token);
-    }
+        public UniTask InitializeAsync(CancellationToken token)
+        {
+            if (IsInitialized || token.IsCancellationRequested)
+                return UniTask.CompletedTask;
 
-    private async UniTask WaitForInitializationAsync(CancellationToken token)
-    {
-        while (!IsInitialized && !token.IsCancellationRequested)
-            await UniTask.Yield(token);
-    }
+            Advertisement.Initialize(_gameId, true, this);
 
-    void IUnityAdsInitializationListener.OnInitializationComplete() => IsInitialized = true;
+            return WaitForInitializationAsync(token);
+        }
 
-    void IUnityAdsInitializationListener.OnInitializationFailed(UnityAdsInitializationError error, string message)
-    {
-        Debug.LogError($"Initialization failed: error={error}, message={message}");
+        private async UniTask WaitForInitializationAsync(CancellationToken token)
+        {
+            while (!IsInitialized && !token.IsCancellationRequested)
+                await UniTask.Yield(token);
+        }
+
+        void IUnityAdsInitializationListener.OnInitializationComplete() => IsInitialized = true;
+
+        void IUnityAdsInitializationListener.OnInitializationFailed(UnityAdsInitializationError error, string message)
+        {
+            Debug.LogError($"Initialization failed: error={error}, message={message}");
+        }
     }
 }

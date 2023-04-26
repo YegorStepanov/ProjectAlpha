@@ -5,80 +5,81 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Code.IntegrationTests;
-
-public sealed class TestAssetLoader<T> : ITestGameObjectLoader<T> where T : Object
+namespace Code.IntegrationTests
 {
-    private readonly Address<T> _address;
-
-    private readonly List<AsyncOperationHandle<T>> _loadGameObjectAsset = new();
-    private readonly List<AsyncOperationHandle<T>> _loadGameObjectAssetHandle = new();
-    private readonly List<GameObject> _instantiateGameObject = new();
-    private readonly List<AsyncOperationHandle<GameObject>> _instantiateGameObjectHandle = new();
-
-    public TestAssetLoader(Address<T> address) =>
-        _address = address;
-
-    public void Dispose()
+    public sealed class TestAssetLoader<T> : ITestGameObjectLoader<T> where T : Object
     {
-        //remove additional checks?
+        private readonly Address<T> _address;
 
-        foreach (var asset in _loadGameObjectAsset)
+        private readonly List<AsyncOperationHandle<T>> _loadGameObjectAsset = new();
+        private readonly List<AsyncOperationHandle<T>> _loadGameObjectAssetHandle = new();
+        private readonly List<GameObject> _instantiateGameObject = new();
+        private readonly List<AsyncOperationHandle<GameObject>> _instantiateGameObjectHandle = new();
+
+        public TestAssetLoader(Address<T> address) =>
+            _address = address;
+
+        public void Dispose()
         {
-            if (asset.IsValid())
-                Addressables.Release(asset);
+            //remove additional checks?
+
+            foreach (var asset in _loadGameObjectAsset)
+            {
+                if (asset.IsValid())
+                    Addressables.Release(asset);
+            }
+
+            foreach (var handle in _loadGameObjectAssetHandle)
+            {
+                if (handle.IsValid())
+                    Addressables.Release(handle);
+            }
+
+            foreach (var go in _instantiateGameObject)
+            {
+                if (go != null)
+                    Addressables.Release(go);
+            }
+
+            foreach (var handle in _instantiateGameObjectHandle)
+            {
+                if (handle.IsValid())
+                    Addressables.Release(handle);
+            }
         }
 
-        foreach (var handle in _loadGameObjectAssetHandle)
+        public async UniTask<T> LoadAsset()
         {
-            if (handle.IsValid())
-                Addressables.Release(handle);
+            var asset = Addressables.LoadAssetAsync<T>(_address.Key);
+            _loadGameObjectAsset.Add(asset);
+
+            return await asset;
         }
 
-        foreach (var go in _instantiateGameObject)
+        public async UniTask<AsyncOperationHandle<T>> LoadAssetHandle()
         {
-            if (go != null)
-                Addressables.Release(go);
+            var handle = Addressables.LoadAssetAsync<T>(_address.Key);
+            _loadGameObjectAssetHandle.Add(handle);
+
+            await handle;
+            return handle;
         }
 
-        foreach (var handle in _instantiateGameObjectHandle)
+        public async UniTask<GameObject> Instantiate()
         {
-            if (handle.IsValid())
-                Addressables.Release(handle);
+            var go = await Addressables.InstantiateAsync(_address.Key);
+            _instantiateGameObject.Add(go);
+
+            return go;
         }
-    }
 
-    public async UniTask<T> LoadAsset()
-    {
-        var asset = Addressables.LoadAssetAsync<T>(_address.Key);
-        _loadGameObjectAsset.Add(asset);
+        public async UniTask<AsyncOperationHandle<GameObject>> InstantiateHandle()
+        {
+            var handle = Addressables.InstantiateAsync(_address.Key, trackHandle: false);
+            _instantiateGameObjectHandle.Add(handle);
 
-        return await asset;
-    }
-
-    public async UniTask<AsyncOperationHandle<T>> LoadAssetHandle()
-    {
-        var handle = Addressables.LoadAssetAsync<T>(_address.Key);
-        _loadGameObjectAssetHandle.Add(handle);
-
-        await handle;
-        return handle;
-    }
-
-    public async UniTask<GameObject> Instantiate()
-    {
-        var go = await Addressables.InstantiateAsync(_address.Key);
-        _instantiateGameObject.Add(go);
-
-        return go;
-    }
-
-    public async UniTask<AsyncOperationHandle<GameObject>> InstantiateHandle()
-    {
-        var handle = Addressables.InstantiateAsync(_address.Key, trackHandle: false);
-        _instantiateGameObjectHandle.Add(handle);
-
-        await handle;
-        return handle;
+            await handle;
+            return handle;
+        }
     }
 }

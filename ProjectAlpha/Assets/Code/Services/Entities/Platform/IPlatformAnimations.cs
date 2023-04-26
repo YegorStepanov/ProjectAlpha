@@ -2,10 +2,11 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Entities;
-
-public interface IPlatformAnimations
+namespace Code.Services.Entities
 {
-    UniTask Move(Transform transform, float destinationX, float speed, CancellationToken token);
-    UniTask FadeOut(SpriteRenderer sprite, float speed, CancellationToken token);
+    public interface IPlatformAnimations
+    {
+        UniTask Move(Transform transform, float destinationX, float speed, CancellationToken token);
+        UniTask FadeOut(SpriteRenderer sprite, float speed, CancellationToken token);
+    }
 }

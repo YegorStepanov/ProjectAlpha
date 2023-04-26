@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Threading;
 
-namespace Code.Common;
-
-public sealed class LinkedCancellationTokenSourceDisposable : IDisposable
+namespace Code.Common
 {
-    private readonly CancellationTokenSource _cts;
-    private readonly CancellationTokenSource _linkedCts;
-
-    public CancellationToken Token => _linkedCts.Token;
-
-    public LinkedCancellationTokenSourceDisposable(CancellationToken externalToken)
+    public sealed class LinkedCancellationTokenSourceDisposable : IDisposable
     {
-        _cts = new CancellationTokenSource();
-        _linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, externalToken);
-    }
+        private readonly CancellationTokenSource _cts;
+        private readonly CancellationTokenSource _linkedCts;
 
-    public void Dispose()
-    {
-        _cts.Cancel();
-        _cts.Dispose();
+        public CancellationToken Token => _linkedCts.Token;
+
+        public LinkedCancellationTokenSourceDisposable(CancellationToken externalToken)
+        {
+            _cts = new CancellationTokenSource();
+            _linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, externalToken);
+        }
+
+        public void Dispose()
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+        }
     }
 }

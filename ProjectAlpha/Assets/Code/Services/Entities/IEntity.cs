@@ -1,8 +1,9 @@
 ﻿using Code.Common;
 
-namespace Code.Services.Entities;
-
-public interface IEntity
+namespace Code.Services.Entities
 {
-    Borders Borders { get; }
+    public interface IEntity
+    {
+        Borders Borders { get; }
+    }
 }

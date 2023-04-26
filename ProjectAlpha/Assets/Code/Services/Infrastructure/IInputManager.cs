@@ -1,10 +1,11 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Code.Services.Infrastructure;
-
-public interface IInputManager
+namespace Code.Services.Infrastructure
 {
-    UniTask WaitClick();
-    UniTask WaitClickRelease();
-    IUniTaskAsyncEnumerable<AsyncUnit> OnClickAsAsyncEnumerable();
+    public interface IInputManager
+    {
+        UniTask WaitClick();
+        UniTask WaitClickRelease();
+        IUniTaskAsyncEnumerable<AsyncUnit> OnClickAsAsyncEnumerable();
+    }
 }

@@ -5,32 +5,33 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Code.IntegrationTests;
-
-public sealed class AddressableAssetLoaderTests : AddressableTestFixture
+namespace Code.IntegrationTests
 {
-    [UnityTest]
-    public IEnumerator Loader_loads_and_releases_an_asset() => UniTask.ToCoroutine(async () =>
+    public sealed class AddressableAssetLoaderTests : AddressableTestFixture
     {
-        using var loader = new HandleStorage<GameObject>();
+        [UnityTest]
+        public IEnumerator Loader_loads_and_releases_an_asset() => UniTask.ToCoroutine(async () =>
+        {
+            using var loader = new HandleStorage<GameObject>();
 
-        var asset = await loader.AddAssetAsync("Platform");
+            var asset = await loader.AddAssetAsync("Platform");
 
-        Assert.That(loader.ContainsAsset(await GameObject.LoadAsset()), Is.True);
+            Assert.That(loader.ContainsAsset(await GameObject.LoadAsset()), Is.True);
 
-        loader.RemoveAsset(asset);
+            loader.RemoveAsset(asset);
 
-        Assert.That(loader.ContainsAsset(await GameObject.LoadAsset()), Is.False);
-    });
+            Assert.That(loader.ContainsAsset(await GameObject.LoadAsset()), Is.False);
+        });
 
-    [UnityTest]
-    public IEnumerator Loader_is_disposed() => UniTask.ToCoroutine(async () =>
-    {
-        var loader = new HandleStorage<GameObject>();
-        await loader.AddAssetAsync("Platform");
+        [UnityTest]
+        public IEnumerator Loader_is_disposed() => UniTask.ToCoroutine(async () =>
+        {
+            var loader = new HandleStorage<GameObject>();
+            await loader.AddAssetAsync("Platform");
 
-        loader.Dispose();
+            loader.Dispose();
 
-        Assert.That(loader.ContainsAsset(await GameObject.LoadAsset()), Is.False);
-    });
+            Assert.That(loader.ContainsAsset(await GameObject.LoadAsset()), Is.False);
+        });
+    }
 }

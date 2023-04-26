@@ -1,6 +1,7 @@
-﻿namespace Code.Data;
-
-public interface IPlatformWidthGenerator
+﻿namespace Code.Data
 {
-    float NextWidth();
+    public interface IPlatformWidthGenerator
+    {
+        float NextWidth();
+    }
 }

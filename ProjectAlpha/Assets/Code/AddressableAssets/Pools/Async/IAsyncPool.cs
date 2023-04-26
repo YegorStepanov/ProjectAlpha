@@ -1,13 +1,14 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Code.AddressableAssets;
-
-public interface IAsyncPool<T>
+namespace Code.AddressableAssets
 {
-    int Capacity { get; }
-    bool CanBeSpawned { get; }
-    UniTask<T> SpawnAsync();
-    void Despawn(T value);
-    //todo: void WarmUp(int count);
-    void DespawnAll();
+    public interface IAsyncPool<T>
+    {
+        int Capacity { get; }
+        bool CanBeSpawned { get; }
+        UniTask<T> SpawnAsync();
+        void Despawn(T value);
+        //todo: void WarmUp(int count);
+        void DespawnAll();
+    }
 }

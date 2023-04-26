@@ -6,20 +6,21 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Code.Scopes;
-
-public sealed class BootstrapScope : Scope
+namespace Code.Scopes
 {
-    [SerializeField] private LoadingScreen _bootLoadingScreen;
-
-    protected override UniTask PreloadAsync(IAddressablesLoader loader) =>
-        UniTask.CompletedTask;
-
-    protected override void ConfigureServices(IContainerBuilder builder)
+    public sealed class BootstrapScope : Scope
     {
-        builder.RegisterInstance<ILoadingScreen>(_bootLoadingScreen);
+        [SerializeField] private LoadingScreen _bootLoadingScreen;
 
-        builder.Register<IBootstrapSceneNavigator, BootstrapSceneNavigator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<BootstrapEntryPoint>();
+        protected override UniTask PreloadAsync(IAddressablesLoader loader) =>
+            UniTask.CompletedTask;
+
+        protected override void ConfigureServices(IContainerBuilder builder)
+        {
+            builder.RegisterInstance<ILoadingScreen>(_bootLoadingScreen);
+
+            builder.Register<IBootstrapSceneNavigator, BootstrapSceneNavigator>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<BootstrapEntryPoint>();
+        }
     }
 }

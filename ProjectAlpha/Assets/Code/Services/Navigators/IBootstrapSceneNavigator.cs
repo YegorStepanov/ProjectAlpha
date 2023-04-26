@@ -1,6 +1,7 @@
-﻿namespace Code.Services.Navigators;
-
-public interface IBootstrapSceneNavigator
+﻿namespace Code.Services.Navigators
 {
-    void NavigateToMenuAndGameScenes();
+    public interface IBootstrapSceneNavigator
+    {
+        void NavigateToMenuAndGameScenes();
+    }
 }

@@ -6,38 +6,39 @@ using Code.Services.UI;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
-namespace Code.Scopes;
-
-public sealed class MenuScope : Scope
+namespace Code.Scopes
 {
-    private IMenuUIFacade _menuUIFacade;
-    private IMainMenuView _mainMenuView;
-
-    protected override async UniTask PreloadAsync(IAddressablesLoader loader)
+    public sealed class MenuScope : Scope
     {
-        (_menuUIFacade, _mainMenuView) = await (
-            loader.InstantiateNoInjectAsync(Address.UI.MenuUIActions),
-            loader.InstantiateNoInjectAsync(Address.UI.MainMenuView));
-    }
+        private IMenuUIFacade _menuUIFacade;
+        private IMainMenuView _mainMenuView;
 
-    protected override void ConfigureServices(IContainerBuilder builder)
-    {
-        builder.RegisterComponentAndInjectGameObject(_menuUIFacade);
-        builder.RegisterComponentAndInjectGameObject(_mainMenuView);
+        protected override async UniTask PreloadAsync(IAddressablesLoader loader)
+        {
+            (_menuUIFacade, _mainMenuView) = await (
+                loader.InstantiateNoInjectAsync(Address.UI.MenuUIActions),
+                    loader.InstantiateNoInjectAsync(Address.UI.MainMenuView));
+        }
 
-        builder.Register<PanelManager>(Lifetime.Singleton);
-        RegisterDevelopment(builder);
-        RegisterNavigator(builder);
-    }
+        protected override void ConfigureServices(IContainerBuilder builder)
+        {
+            builder.RegisterComponentAndInjectGameObject(_menuUIFacade);
+            builder.RegisterComponentAndInjectGameObject(_mainMenuView);
 
-    private static void RegisterDevelopment(IContainerBuilder builder)
-    {
-        if (PlatformInfo.IsDevelopment)
-            builder.RegisterNonLazy<DevelopmentMenuPanel>(Lifetime.Singleton);
-    }
+            builder.Register<PanelManager>(Lifetime.Singleton);
+            RegisterDevelopment(builder);
+            RegisterNavigator(builder);
+        }
 
-    private static void RegisterNavigator(IContainerBuilder builder)
-    {
-        builder.Register<IMenuSceneNavigator, MenuSceneNavigator>(Lifetime.Singleton);
+        private static void RegisterDevelopment(IContainerBuilder builder)
+        {
+            if (PlatformInfo.IsDevelopment)
+                builder.RegisterNonLazy<DevelopmentMenuPanel>(Lifetime.Singleton);
+        }
+
+        private static void RegisterNavigator(IContainerBuilder builder)
+        {
+            builder.Register<IMenuSceneNavigator, MenuSceneNavigator>(Lifetime.Singleton);
+        }
     }
 }

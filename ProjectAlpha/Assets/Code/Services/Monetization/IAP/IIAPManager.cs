@@ -1,9 +1,10 @@
 ﻿using UnityEngine.Purchasing;
 
-namespace Code.Services.Monetization;
-
-public interface IIAPManager
+namespace Code.Services.Monetization
 {
-    void PurchaseComplete(Product product);
-    void PurchaseFailed(Product product, PurchaseFailureReason failureReason);
+    public interface IIAPManager
+    {
+        void PurchaseComplete(Product product);
+        void PurchaseFailed(Product product, PurchaseFailureReason failureReason);
+    }
 }

@@ -2,18 +2,19 @@
 using Code.Common;
 using Cysharp.Threading.Tasks;
 
-namespace Code.Services.Entities;
-
-public sealed class StickNull : IStick
+namespace Code.Services.Entities
 {
-    public static StickNull Default => new();
+    public sealed class StickNull : IStick
+    {
+        public static StickNull Default => new();
 
-    private StickNull() { }
+        private StickNull() { }
 
-    public Borders Borders => Borders.Infinity;
+        public Borders Borders => Borders.Infinity;
 
-    public bool IsStickArrowOn(IEntity entity) => true;
-    public void Increasing(CancellationToken stopToken) { }
-    public UniTask RotateAsync() => UniTask.CompletedTask;
-    public UniTask RotateDownAsync() => UniTask.CompletedTask;
+        public bool IsStickArrowOn(IEntity entity) => true;
+        public void Increasing(CancellationToken stopToken) { }
+        public UniTask RotateAsync() => UniTask.CompletedTask;
+        public UniTask RotateDownAsync() => UniTask.CompletedTask;
+    }
 }
