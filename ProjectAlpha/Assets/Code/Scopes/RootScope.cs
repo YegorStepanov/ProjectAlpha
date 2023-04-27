@@ -10,6 +10,7 @@ using Code.Services.Monetization;
 using Code.UI;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
+using Unity.Services.Core;
 using VContainer;
 using VContainer.Unity;
 using Progress = Code.Services.Data.Progress;
@@ -33,6 +34,7 @@ namespace Code.Scopes
                     loader.InstantiateNoInjectAsync(Address.UI.TransitionLoadingScreen),
                     loader.InstantiateNoInjectAsync(Address.Infrastructure.EventSystem));
 
+            await UnityServices.InitializeAsync(); //todo rework it
             await LoadDevelopmentAssets(loader, _settingsFacade);
         }
 
