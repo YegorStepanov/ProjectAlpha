@@ -85,14 +85,13 @@ namespace Code.AddressableAssets
     {
         private readonly LifetimeScope _scope;
         private readonly Transform _scopeTransform;
-        private readonly IObjectResolver _resolver;
+        // We cannot set the value immediately in the constructor because the current scope is not fully created, so the Container property is null
+        private IObjectResolver Resolver => _scope.Container;
 
         public Creator(LifetimeScope scope)
         {
             _scope = scope;
             _scopeTransform = scope.transform;
-            _resolver = scope.Container;
-            // Debug.Log("scope=" + (_scope != null) + " resolver=" + (_resolver != null) + " transform=" + (_scope.transform != null));
         }
 
         public GameObject InstantiateEmpty(string name)
@@ -110,28 +109,28 @@ namespace Code.AddressableAssets
         public T Instantiate<T>(T prefab) where T : Object
         {
             T instance = InstantiateNoInject(prefab);
-            InjectUnityEngineObject(_resolver, instance);
+            InjectUnityEngineObject(Resolver, instance);
             return instance;
         }
 
         public T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation) where T : Object
         {
             T instance = InstantiateNoInject(prefab, position, rotation);
-            InjectUnityEngineObject(_resolver, instance);
+            InjectUnityEngineObject(Resolver, instance);
             return instance;
         }
 
         public T Instantiate<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent) where T : Object
         {
             T instance = InstantiateNoInject(prefab, position, rotation, parent);
-            InjectUnityEngineObject(_resolver, instance);
+            InjectUnityEngineObject(Resolver, instance);
             return instance;
         }
 
         public T Instantiate<T>(T prefab, Transform parent, bool worldPositionStays = false) where T : Object
         {
             T instance = InstantiateNoInject(prefab, parent, worldPositionStays);
-            InjectUnityEngineObject(_resolver, instance);
+            InjectUnityEngineObject(Resolver, instance);
             return instance;
         }
 
