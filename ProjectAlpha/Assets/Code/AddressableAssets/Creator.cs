@@ -97,10 +97,11 @@ namespace Code.AddressableAssets
 
         public GameObject InstantiateEmpty(string name)
         {
-            var instance = new GameObject();
+            var instance = new GameObject(name);
 
-            var t = instance.transform;
+            Transform t = instance.transform;
             t.parent = _scopeTransform;
+            // ReSharper disable once Unity.InefficientPropertyAccess
             t.parent = null;
 
             return instance;
