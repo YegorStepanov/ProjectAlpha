@@ -1,6 +1,7 @@
 ﻿using Code.Services.Data;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Extension;
 
 namespace Code.Services.Monetization
 {
@@ -29,10 +30,10 @@ namespace Code.Services.Monetization
             }
         }
 
-        public void PurchaseFailed(Product product, PurchaseFailureReason failureReason)
+        public void PurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
         {
-            if (failureReason == PurchaseFailureReason.UserCancelled) return;
-            Debug.Log($"Purchase failed - Product: '{product.definition.id}', PurchaseFailureReason: {failureReason}");
+            if (failureDescription.reason == PurchaseFailureReason.UserCancelled) return;
+            Debug.Log($"Purchase failed - productId: '{product.definition.id}', reason: '{failureDescription.reason}', message: '{failureDescription.message}'");
         }
 
         [System.Serializable]

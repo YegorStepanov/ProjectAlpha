@@ -1,4 +1,5 @@
 ﻿using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Extension;
 
 namespace Code.Services.UI
 {
@@ -15,6 +16,6 @@ namespace Code.Services.UI
         void RaiseGameStartEvent();
 
         void PurchaseComplete(Product product);
-        void PurchaseFailed(Product product, PurchaseFailureReason failureReason);
+        void PurchaseFailed(Product product, PurchaseFailureDescription failureDescription);
     }
 }

@@ -4,6 +4,7 @@ using Code.Services.Monetization;
 using MessagePipe;
 using UnityEngine;
 using UnityEngine.Purchasing;
+using UnityEngine.Purchasing.Extension;
 using VContainer;
 using Event = Code.Common.Event;
 
@@ -32,7 +33,7 @@ namespace Code.Services.UI
         public void PurchaseComplete(Product product) =>
             _iapManager.PurchaseComplete(product);
 
-        public void PurchaseFailed(Product product, PurchaseFailureReason failureReason) =>
-            _iapManager.PurchaseFailed(product, failureReason);
+        public void PurchaseFailed(Product product, PurchaseFailureDescription failureDescription) =>
+            _iapManager.PurchaseFailed(product, failureDescription);
     }
 }

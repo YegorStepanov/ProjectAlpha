@@ -695,7 +695,7 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6298028180729759328}
     m_Modifications:
-    - target: {fileID: 471835148417318205, guid: 1dfdf67798f0f5a408d434b4103bcc32,
+    - target: {fileID: -3989611887664850601, guid: 1dfdf67798f0f5a408d434b4103bcc32,
         type: 3}
       propertyPath: productId
       value: com.code.small_cherry_amount
@@ -815,22 +815,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Small Cherries Purchase Panel
       objectReference: {fileID: 0}
-    - target: {fileID: 5246241998939480154, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5246241999105017204, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_text
-      value: +400
-      objectReference: {fileID: 0}
-    - target: {fileID: 5246241999105017205, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4076386826807818621, guid: 1dfdf67798f0f5a408d434b4103bcc32, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1dfdf67798f0f5a408d434b4103bcc32, type: 3}
 --- !u!224 &6058748246289811896 stripped
 RectTransform:
@@ -851,6 +837,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6298028180729759328}
     m_Modifications:
+    - target: {fileID: -3989611887664850601, guid: 1dfdf67798f0f5a408d434b4103bcc32,
+        type: 3}
+      propertyPath: productId
+      value: com.code.normal_cherry_amount
+      objectReference: {fileID: 0}
     - target: {fileID: 471835148417318205, guid: 1dfdf67798f0f5a408d434b4103bcc32,
         type: 3}
       propertyPath: productId
@@ -971,32 +962,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Normal Cherries Purchase Panel
       objectReference: {fileID: 0}
-    - target: {fileID: 5246241998939480154, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5246241999105017204, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_text
-      value: +1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5246241999105017205, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dfdf67798f0f5a408d434b4103bcc32, type: 3}
---- !u!224 &3290778573347711026 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3562817404833693194, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-    type: 3}
-  m_PrefabInstance: {fileID: 2079143643644139064}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6058748245237986912 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5246241998939480152, guid: 1dfdf67798f0f5a408d434b4103bcc32,
+    type: 3}
+  m_PrefabInstance: {fileID: 2079143643644139064}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &3290778573347711026 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3562817404833693194, guid: 1dfdf67798f0f5a408d434b4103bcc32,
     type: 3}
   m_PrefabInstance: {fileID: 2079143643644139064}
   m_PrefabAsset: {fileID: 0}
@@ -1007,6 +983,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6298028180729759328}
     m_Modifications:
+    - target: {fileID: -3989611887664850601, guid: 1dfdf67798f0f5a408d434b4103bcc32,
+        type: 3}
+      propertyPath: productId
+      value: com.code.huge_cherry_amount
+      objectReference: {fileID: 0}
     - target: {fileID: 471835148417318205, guid: 1dfdf67798f0f5a408d434b4103bcc32,
         type: 3}
       propertyPath: productId
@@ -1127,26 +1108,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Huge Cherries Purchase Panel
       objectReference: {fileID: 0}
-    - target: {fileID: 5246241998939480154, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5246241999105017204, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_text
-      value: +5000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5246241999105017204, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_fontStyle
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5246241999105017205, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dfdf67798f0f5a408d434b4103bcc32, type: 3}
 --- !u!224 &6058748245249250897 stripped
@@ -1168,6 +1129,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6298028180729759328}
     m_Modifications:
+    - target: {fileID: -3989611887664850601, guid: 1dfdf67798f0f5a408d434b4103bcc32,
+        type: 3}
+      propertyPath: productId
+      value: com.code.large_cherry_amount
+      objectReference: {fileID: 0}
     - target: {fileID: 471835148417318205, guid: 1dfdf67798f0f5a408d434b4103bcc32,
         type: 3}
       propertyPath: productId
@@ -1288,32 +1254,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Large Cherries Purchase Panel
       objectReference: {fileID: 0}
-    - target: {fileID: 5246241998939480154, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5246241999105017204, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_text
-      value: +3000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5246241999105017205, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dfdf67798f0f5a408d434b4103bcc32, type: 3}
---- !u!224 &6058748244535230473 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5246241998939480152, guid: 1dfdf67798f0f5a408d434b4103bcc32,
-    type: 3}
-  m_PrefabInstance: {fileID: 2079143644032311377}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3290778573790404187 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3562817404833693194, guid: 1dfdf67798f0f5a408d434b4103bcc32,
+    type: 3}
+  m_PrefabInstance: {fileID: 2079143644032311377}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &6058748244535230473 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5246241998939480152, guid: 1dfdf67798f0f5a408d434b4103bcc32,
     type: 3}
   m_PrefabInstance: {fileID: 2079143644032311377}
   m_PrefabAsset: {fileID: 0}
@@ -1952,7 +1903,19 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5738547881658435096}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7088875868727035018
+--- !u!114 &195587823816847175 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5554544666976512351, guid: 544026286eda80e49bf1635af93ceb41,
+    type: 3}
+  m_PrefabInstance: {fileID: 5738547881658435096}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238382308976117604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2835105882728939690
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1961,21 +1924,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 2238382308976117604}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36a5f511b0d8142cba0aeb92d0b264c9, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productId: 
+  productId: com.code.disable_ads
   buttonType: 1
   consumePurchase: 1
+  onTransactionsRestored:
+    m_PersistentCalls:
+      m_Calls: []
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls: []
   onPurchaseFailed:
     m_PersistentCalls:
       m_Calls: []
-  titleText: {fileID: 0}
-  descriptionText: {fileID: 0}
-  priceText: {fileID: 0}
+  onProductFetched:
+    m_PersistentCalls:
+      m_Calls: []
+  button: {fileID: 195587823816847175}
 --- !u!1001 &7719701186985771547
 PrefabInstance:
   m_ObjectHideFlags: 0
