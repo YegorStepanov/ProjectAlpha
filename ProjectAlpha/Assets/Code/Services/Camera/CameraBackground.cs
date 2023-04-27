@@ -41,6 +41,8 @@ namespace Code.Services
 
             Address<Texture2D> address = GetRandomBackground();
             _currentTexture = await _loader.LoadAssetAsync(address);
+
+            Debug.Assert(_rawImage);
             _rawImage.texture = _currentTexture;
         }
 
