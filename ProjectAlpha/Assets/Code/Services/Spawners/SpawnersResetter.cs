@@ -1,6 +1,4 @@
-﻿using Code.Services.Entities;
-
-namespace Code.Services.Spawners
+﻿namespace Code.Services.Spawners
 {
     public class SpawnersResetter
     {

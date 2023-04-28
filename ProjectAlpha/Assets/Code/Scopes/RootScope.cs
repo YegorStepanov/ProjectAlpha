@@ -64,6 +64,7 @@ namespace Code.Scopes
             RegisterIAP(builder);
 
             RegisterMessagePipe(builder);
+            RegisterEvents(builder);
 
             builder.RegisterEntryPoint<RootEntryPoint>();
         }
@@ -144,6 +145,13 @@ namespace Code.Scopes
             //Setup GlobalMessagePipe to enable diagnostics window and global function
             builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
             builder.RegisterMessageBroker<Event.GameStart>(options);
+            builder.RegisterMessageBroker<Event.GameResourcesLoaded>(options);
+        }
+
+        private void RegisterEvents(IContainerBuilder builder)
+        {
+            //todo
+            builder.Register<GameResourcesLoadedEventAwaiter>(Lifetime.Transient).WithParameter(this.GetCancellationTokenOnDestroy());
         }
     }
 }

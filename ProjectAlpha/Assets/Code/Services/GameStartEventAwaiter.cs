@@ -8,13 +8,13 @@ namespace Code.Services
 {
     public sealed class GameStartEventAwaiter
     {
-        private readonly ISubscriber<Event.GameStart> _gameStartEvent;
+        private readonly ISubscriber<Event.GameStart> _event;
         private readonly ISceneLoader _sceneLoader;
         private readonly CancellationToken _token;
 
-        public GameStartEventAwaiter(ISubscriber<Event.GameStart> gameStartEvent, ISceneLoader sceneLoader, CancellationToken token)
+        public GameStartEventAwaiter(ISubscriber<Event.GameStart> @event, ISceneLoader sceneLoader, CancellationToken token)
         {
-            _gameStartEvent = gameStartEvent;
+            _event = @event;
             _sceneLoader = sceneLoader;
             _token = token;
         }
@@ -24,7 +24,7 @@ namespace Code.Services
             //Skip awaiting when menu/bootstrap is not loaded,
             //a workaround for Editor, when the game is started from GameScene:
             if (_sceneLoader.IsLoaded<MenuScene>() || _sceneLoader.IsLoaded<BootstrapScene>())
-                await _gameStartEvent.FirstAsync(_token);
+                await _event.FirstAsync(_token);
         }
     }
 }
