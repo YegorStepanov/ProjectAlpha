@@ -1,10 +1,10 @@
 ﻿using Code.AddressableAssets;
 using Code.Common;
-using Code.Services.Spawners;
+using Code.Services.Entities;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Code.Services.Entities
+namespace Code.Services.Spawners
 {
     public sealed class StickSpawner : Spawner<Stick>
     {
