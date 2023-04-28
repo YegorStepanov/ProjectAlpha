@@ -38,13 +38,17 @@ namespace Code.States
         public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
         {
             await _cameraBackground.ChangeBackgroundAsync();
+            _gameStateResetter.ResetState();
             _cameraResetter.ResetPositionX();
             _gameUIController.HideGameOver();
-            _gameStateResetter.ResetState();
 
             GameHeight gameHeight = _gameHeightFactory.CreateRestartHeight();
-            IPlatform platform = await _platformSpawner.CreateRestartPlatformAsync(gameHeight.PositionY, gameHeight.Height);
-            IHero hero = await _heroSpawner.CreateAsync(platform.Borders.LeftTop, Relative.Bot);
+
+            (IHero hero, IPlatform platform) = await (
+                _heroSpawner.CreateAsync(default, default),
+                _platformSpawner.CreateRestartPlatformAsync(gameHeight.PositionY, gameHeight.Height));
+
+            hero.SetPosition(platform.Borders.LeftTop, Relative.Bot);
 
             stateMachine.Enter<HeroMovementToPlatformState, GameData>(
                 new GameData(hero, platform, platform, CherryNull.Default, StickNull.Default, gameHeight));

@@ -1,5 +1,7 @@
 ﻿using System.Threading;
+using Code.Common;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Code.Services.Entities
 {
@@ -11,5 +13,6 @@ namespace Code.Services.Entities
         UniTask KickAsync();
         void Squatting(CancellationToken stopToken);
         void Flip();
+        void SetPosition(Vector2 position, Relative relative);
     }
 }
