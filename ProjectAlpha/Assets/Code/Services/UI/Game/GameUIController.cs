@@ -54,7 +54,6 @@ namespace Code.Services.UI
 
         public void ShowGameOver()
         {
-            //earthshake screen
             _progress.Session.IncreaseRestartNumber();
             _gameUIView.ShowGameOver();
         }
