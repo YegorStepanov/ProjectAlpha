@@ -138,7 +138,7 @@ namespace Code.Scopes
             builder.Register<SpawnersResetter>(Lifetime.Singleton);
             builder.Register<SpawnersItemsMover>(Lifetime.Singleton);
             builder.Register<HeroMovement>(Lifetime.Singleton);
-            builder.Register<ICameraRestorer, CameraRestorer>(Lifetime.Singleton).As<IStartable>();
+            builder.Register<ICameraResetter, CameraResetter>(Lifetime.Singleton).As<IStartable>();
             builder.Register<IGameSceneNavigator, GameSceneNavigator>(Lifetime.Singleton);
         }
     }

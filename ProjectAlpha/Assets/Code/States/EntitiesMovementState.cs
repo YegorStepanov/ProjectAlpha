@@ -8,20 +8,20 @@ namespace Code.States
     public sealed class EntitiesMovementState : IState<GameData>
     {
         private readonly ICamera _camera;
-        private readonly ICameraRestorer _cameraRestorer;
+        private readonly ICameraResetter _cameraResetter;
         private readonly SpawnersItemsMover _spawnersItemsMover;
 
-        public EntitiesMovementState(ICamera camera, ICameraRestorer cameraRestorer, SpawnersItemsMover spawnersItemsMover)
+        public EntitiesMovementState(ICamera camera, ICameraResetter cameraResetter, SpawnersItemsMover spawnersItemsMover)
         {
             _camera = camera;
-            _cameraRestorer = cameraRestorer;
+            _cameraResetter = cameraResetter;
             _spawnersItemsMover = spawnersItemsMover;
         }
 
         public UniTaskVoid EnterAsync(GameData data, IGameStateMachine stateMachine)
         {
             Vector2 oldPosition = _camera.Borders.Center;
-            _cameraRestorer.RestorePositionX();
+            _cameraResetter.ResetPositionX();
             Vector2 newPosition = _camera.Borders.Center;
 
             Vector2 delta = newPosition - oldPosition;
