@@ -4,6 +4,7 @@ using Code.Services.Entities;
 using Code.Services.Spawners;
 using Code.Services.UI;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 
 namespace Code.States
 {
@@ -16,6 +17,7 @@ namespace Code.States
         private readonly GameUIController _gameUIController;
         private readonly GameHeightFactory _gameHeightFactory;
         private readonly PlatformSpawner _platformSpawner;
+        private readonly IPublisher<Event.GameSceneLoaded> _gameSceneLoadedEvent;
 
         public RestartState(
             ICameraResetter cameraResetter,
@@ -24,7 +26,8 @@ namespace Code.States
             HeroSpawner heroSpawner,
             GameUIController gameUIController,
             GameHeightFactory gameHeightFactory,
-            PlatformSpawner platformSpawner)
+            PlatformSpawner platformSpawner,
+            IPublisher<Event.GameSceneLoaded> gameSceneLoadedEvent)
         {
             _cameraResetter = cameraResetter;
             _cameraBackground = cameraBackground;
@@ -33,6 +36,7 @@ namespace Code.States
             _gameUIController = gameUIController;
             _gameHeightFactory = gameHeightFactory;
             _platformSpawner = platformSpawner;
+            _gameSceneLoadedEvent = gameSceneLoadedEvent;
         }
 
         public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
@@ -49,6 +53,8 @@ namespace Code.States
                 _platformSpawner.CreateRestartPlatformAsync(gameHeight.PositionY, gameHeight.Height));
 
             hero.SetPosition(platform.Borders.LeftTop, Relative.Bot);
+
+            _gameSceneLoadedEvent.Publish(new());
 
             stateMachine.Enter<HeroMovementToPlatformState, GameData>(
                 new GameData(hero, platform, platform, CherryNull.Default, StickNull.Default, gameHeight));
