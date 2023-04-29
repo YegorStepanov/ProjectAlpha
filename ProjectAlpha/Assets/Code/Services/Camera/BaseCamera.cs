@@ -2,7 +2,6 @@
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
@@ -18,7 +17,7 @@ namespace Code.Services
 
         public Borders Borders { get; private set; }
 
-        [Inject, UsedImplicitly]
+        [Inject]
         private void Construct(Settings settings) =>
             _settings = settings;
 

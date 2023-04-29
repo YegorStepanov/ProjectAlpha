@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using Code.Animations.Game;
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
@@ -21,7 +20,7 @@ namespace Code.Services.UI
         private RedPointHitGameAnimation _redPointHitGameAnimation;
         private CancellationToken _token;
 
-        [Inject, UsedImplicitly]
+        [Inject]
         private void Construct(RedPointHitGameAnimation redPointHitGameAnimation, CancellationToken token)
         {
             _redPointHitGameAnimation = redPointHitGameAnimation;

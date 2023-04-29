@@ -1,6 +1,5 @@
 using Code.Common;
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using UnityEngine;
 using VContainer;
 
@@ -14,7 +13,7 @@ namespace Code.Services.Entities
 
         public IPlatformRedPoint PlatformRedPoint => _platformRedPoint;
 
-        [Inject, UsedImplicitly]
+        [Inject]
         private void Construct(IPlatformAnimations animations, Settings settings)
         {
             _animations = animations;

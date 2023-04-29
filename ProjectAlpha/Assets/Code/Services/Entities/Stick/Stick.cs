@@ -1,7 +1,6 @@
 using System.Threading;
 using Code.Extensions;
 using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using VContainer;
@@ -15,7 +14,7 @@ namespace Code.Services.Entities
         private Settings _settings;
         private IStickAnimations _animations;
 
-        [Inject, UsedImplicitly]
+        [Inject]
         private void Construct(IStickAnimations animations, Settings settings)
         {
             _animations = animations;

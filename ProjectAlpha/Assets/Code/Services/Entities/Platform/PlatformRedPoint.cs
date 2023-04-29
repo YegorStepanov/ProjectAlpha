@@ -1,5 +1,4 @@
 ﻿using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using VContainer;
 
 namespace Code.Services.Entities
@@ -9,7 +8,7 @@ namespace Code.Services.Entities
         private IPlatformAnimations _animations;
         private Platform.Settings _settings;
 
-        [Inject, UsedImplicitly]
+        [Inject]
         private void Construct(IPlatformAnimations animations, Platform.Settings settings)
         {
             _animations = animations;

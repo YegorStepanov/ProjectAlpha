@@ -5,7 +5,6 @@ using Code.Extensions;
 using Code.Services.Infrastructure;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -23,7 +22,7 @@ namespace Code.Services
         private Texture2D _currentTexture;
         private int _lastIndex = -1;
 
-        [Inject, UsedImplicitly]
+        [Inject]
         public void Construct(
             IReadOnlyList<Address<Texture2D>> addresses,
             IScopedAddressablesLoader loader,

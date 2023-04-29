@@ -1,5 +1,4 @@
 ﻿using Cysharp.Threading.Tasks;
-using JetBrains.Annotations;
 using VContainer;
 
 namespace Code.Services.Entities
@@ -10,7 +9,7 @@ namespace Code.Services.Entities
         private ICherryPickHandler _pickHandler;
         private Settings _settings;
 
-        [Inject, UsedImplicitly]
+        [Inject]
         private void Construct(ICherryAnimations animations, ICherryPickHandler pickHandler, Settings settings)
         {
             _animations = animations;
