@@ -17,7 +17,7 @@ namespace Code.States
         private readonly GameStateResetter _gameStateResetter;
         private readonly GameStartEventAwaiter _gameStartEventAwaiter;
         private readonly GameHeightFactory _gameHeightFactory;
-        private readonly IPublisher<Event.GameResourcesLoaded> _gameResourcesLoadedEvent;
+        private readonly IPublisher<Event.GameSceneLoaded> _gameSceneLoadedEvent;
 
         public StartState(
             ICameraResetter cameraResetter,
@@ -27,7 +27,7 @@ namespace Code.States
             GameStateResetter gameStateResetter,
             GameStartEventAwaiter gameStartEventAwaiter,
             GameHeightFactory gameHeightFactory,
-            IPublisher<Event.GameResourcesLoaded> gameResourcesLoadedEvent)
+            IPublisher<Event.GameSceneLoaded> gameSceneLoadedEvent)
         {
             _cameraResetter = cameraResetter;
             _gameUIController = gameUIController;
@@ -36,7 +36,7 @@ namespace Code.States
             _gameStateResetter = gameStateResetter;
             _gameStartEventAwaiter = gameStartEventAwaiter;
             _gameHeightFactory = gameHeightFactory;
-            _gameResourcesLoadedEvent = gameResourcesLoadedEvent;
+            _gameSceneLoadedEvent = gameSceneLoadedEvent;
         }
 
         public async UniTaskVoid EnterAsync(IGameStateMachine stateMachine)
@@ -54,7 +54,7 @@ namespace Code.States
 
             hero.SetPosition(platform.Borders.CenterTop, Relative.Bot);
 
-            _gameResourcesLoadedEvent.Publish(new Event.GameResourcesLoaded());
+            _gameSceneLoadedEvent.Publish(new());
 
             await _gameStartEventAwaiter.Wait();
             _gameUIController.ShowUI();

@@ -4,6 +4,6 @@
     {
         public struct GameStart { }
 
-        public struct GameResourcesLoaded { }
+        public struct GameSceneLoaded { }
     }
 }

@@ -145,7 +145,7 @@ namespace Code.Scopes
             //Setup GlobalMessagePipe to enable diagnostics window and global function
             builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
             builder.RegisterMessageBroker<Event.GameStart>(options);
-            builder.RegisterMessageBroker<Event.GameResourcesLoaded>(options);
+            builder.RegisterMessageBroker<Event.GameSceneLoaded>(options);
         }
 
         private void RegisterEvents(IContainerBuilder builder)

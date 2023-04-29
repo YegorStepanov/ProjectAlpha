@@ -3,14 +3,14 @@ using Code.Common;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
 
-namespace Code.Services ;
-
+namespace Code.Services
+{
     public sealed class GameResourcesLoadedEventAwaiter
     {
-        private readonly ISubscriber<Event.GameResourcesLoaded> _event;
+        private readonly ISubscriber<Event.GameSceneLoaded> _event;
         private readonly CancellationToken _token;
 
-        public GameResourcesLoadedEventAwaiter(ISubscriber<Event.GameResourcesLoaded> @event, CancellationToken token)
+        public GameResourcesLoadedEventAwaiter(ISubscriber<Event.GameSceneLoaded> @event, CancellationToken token)
         {
             _event = @event;
             _token = token;
@@ -21,3 +21,4 @@ namespace Code.Services ;
             await _event.FirstAsync(_token);
         }
     }
+}
