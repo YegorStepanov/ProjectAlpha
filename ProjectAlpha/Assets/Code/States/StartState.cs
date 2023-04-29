@@ -43,8 +43,7 @@ namespace Code.States
         {
             _gameStateResetter.ResetState();
             _cameraResetter.ResetPosition();
-            _gameUIController.HideGameOver();
-            _gameUIController.HideScore();
+            _gameUIController.HideUI();
 
             GameHeight gameHeight = _gameHeightFactory.CreateStartHeight();
 

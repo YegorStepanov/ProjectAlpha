@@ -15,6 +15,8 @@ namespace Code.Services.UI
         [SerializeField] private ShowStartHelpAnimation _showStartHelpAnimation;
         [SerializeField] private RedPointHitAnimation _redPointHitAnimation;
         [SerializeField] private Canvas _gameOverCanvas;
+        [SerializeField] private Canvas _cherryNumberCanvas;
+        [SerializeField] private Canvas _redPointHitCanvas;
 
         private RedPointHitGameAnimation _redPointHitGameAnimation;
         private CancellationToken _token;
@@ -24,12 +26,6 @@ namespace Code.Services.UI
         {
             _redPointHitGameAnimation = redPointHitGameAnimation;
             _token = token;
-        }
-
-        private void Awake()
-        {
-            HideGameOver();
-            ShowHelp();
         }
 
         public void ShowScore()
@@ -61,13 +57,27 @@ namespace Code.Services.UI
         public void ShowHelp() =>
             _showStartHelpAnimation.Play();
 
-        public void HideHelp() =>
+        public void HideHelp()
+        {
             _showStartHelpAnimation.HideAsync(_token).Forget();
+        }
 
         public void ShowGameOver() =>
             _gameOverCanvas.enabled = true;
 
         public void HideGameOver() =>
             _gameOverCanvas.enabled = false;
+
+        public void ShowCherryNumber() =>
+            _cherryNumberCanvas.enabled = true;
+
+        public void HideCherryNumber() =>
+            _cherryNumberCanvas.enabled = false;
+
+        public void ShowRedPointHit() =>
+            _redPointHitCanvas.enabled = true;
+
+        public void HideRedPointHit() =>
+            _redPointHitCanvas.enabled = false;
     }
 }

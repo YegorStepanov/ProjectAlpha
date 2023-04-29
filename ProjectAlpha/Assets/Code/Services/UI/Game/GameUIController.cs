@@ -22,14 +22,21 @@ namespace Code.Services.UI
             async UniTaskVoid Impl()
             {
                 _gameUIView.ShowScore();
+                _gameUIView.ShowCherryNumber();
 
                 await UniTask.Delay(1000);
                 _gameUIView.ShowHelp();
             }
         }
 
-        public void HideScore() =>
+        public void HideUI()
+        {
+            _gameUIView.HideGameOver();
             _gameUIView.HideScore();
+            _gameUIView.HideCherryNumber();
+            _gameUIView.HideHelp();
+            _gameUIView.HideRedPointHit();
+        }
 
         public void UpdateScore()
         {
@@ -56,11 +63,6 @@ namespace Code.Services.UI
         {
             _progress.Session.IncreaseRestartNumber();
             _gameUIView.ShowGameOver();
-        }
-
-        public void HideGameOver()
-        {
-            _gameUIView.HideGameOver();
         }
     }
 }

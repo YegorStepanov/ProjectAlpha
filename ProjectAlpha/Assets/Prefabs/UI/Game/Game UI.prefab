@@ -409,7 +409,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 55
 --- !u!1 &575670836708916553
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,7 +555,7 @@ GameObject:
   - component: {fileID: 8000101914601584243}
   - component: {fileID: 1254382814018028996}
   m_Layer: 5
-  m_Name: Cherry Canvas
+  m_Name: Cherry Number Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2825,7 +2825,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1409443742922243808
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3341,6 +3341,8 @@ MonoBehaviour:
   _showStartHelpAnimation: {fileID: 5793693781013400221}
   _redPointHitAnimation: {fileID: 7076933975625103776}
   _gameOverCanvas: {fileID: 7462775058340480753}
+  _cherryNumberCanvas: {fileID: 8000101914601584243}
+  _redPointHitCanvas: {fileID: 8660035386544332453}
 --- !u!114 &5793693781013400221
 MonoBehaviour:
   m_ObjectHideFlags: 0

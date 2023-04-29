@@ -44,7 +44,8 @@ namespace Code.States
             await _cameraBackground.ChangeBackgroundAsync();
             _gameStateResetter.ResetState();
             _cameraResetter.ResetPositionX();
-            _gameUIController.HideGameOver();
+            _gameUIController.HideUI();
+            _gameUIController.ShowUI();
 
             GameHeight gameHeight = _gameHeightFactory.CreateRestartHeight();
 
