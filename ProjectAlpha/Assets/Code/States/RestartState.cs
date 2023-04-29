@@ -56,7 +56,7 @@ namespace Code.States
 
             _gameSceneLoadedEvent.Publish(new());
 
-            stateMachine.Enter<HeroMovementToPlatformState, GameData>(
+            stateMachine.Enter<HeroMovementToStartPlatformState, GameData>(
                 new GameData(hero, platform, platform, CherryNull.Default, StickNull.Default, gameHeight));
         }
     }
