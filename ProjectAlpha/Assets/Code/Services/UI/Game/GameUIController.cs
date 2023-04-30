@@ -34,7 +34,7 @@ namespace Code.Services.UI
             _gameUIView.HideGameOver();
             _gameUIView.HideScore();
             _gameUIView.HideCherryNumber();
-            _gameUIView.HideHelp();
+            _gameUIView.HideHelp(); // todo: remove from here or call cts.Cancel
             _gameUIView.HideRedPointHit();
         }
 
@@ -42,9 +42,11 @@ namespace Code.Services.UI
         {
             int score = _progress.Session.Score;
             _gameUIView.UpdateScore(score);
+        }
 
-            if (score == 1)
-                _gameUIView.HideHelp();
+        public void HideHelp()
+        {
+            _gameUIView.HideHelp();
         }
 
         public void UpdateCherries()

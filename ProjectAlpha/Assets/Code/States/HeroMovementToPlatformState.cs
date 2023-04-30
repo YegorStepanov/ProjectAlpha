@@ -1,5 +1,6 @@
 ﻿using Code.Services;
 using Code.Services.Data;
+using Code.Services.UI;
 using Cysharp.Threading.Tasks;
 
 namespace Code.States
@@ -7,12 +8,14 @@ namespace Code.States
     public sealed class HeroMovementToPlatformState : IState<GameData>
     {
         private readonly HeroMovement _heroMovement;
+        private readonly GameUIController _gameUIController;
         private readonly IProgress _progress;
         private readonly GameSettings _settings;
 
-        public HeroMovementToPlatformState(HeroMovement heroMovement, IProgress progress, GameSettings settings)
+        public HeroMovementToPlatformState(HeroMovement heroMovement, GameUIController gameUIController, IProgress progress, GameSettings settings)
         {
             _heroMovement = heroMovement;
+            _gameUIController = gameUIController;
             _progress = progress;
             _settings = settings;
         }
@@ -33,6 +36,7 @@ namespace Code.States
                 CollectCherry();
 
             IncreaseScore();
+            _gameUIController.HideHelp();
 
             stateMachine.Enter<NextRoundState, GameData>(data);
         }
