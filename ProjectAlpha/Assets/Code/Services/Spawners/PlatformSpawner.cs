@@ -43,6 +43,9 @@ namespace Code.Services.Spawners
             return CreateAsync(position, size, Relative.LeftTop, true);
         }
 
+        public void ResetWidthGeneration() =>
+            _widthGenerator.Reset();
+
         private async UniTask<IPlatform> CreateAsync(Vector2 position, Vector2 size, Relative relative, bool isRedPointEnable)
         {
             Platform platform = await SpawnAsync();

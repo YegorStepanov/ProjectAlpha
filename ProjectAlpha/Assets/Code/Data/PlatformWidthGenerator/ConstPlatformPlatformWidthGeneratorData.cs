@@ -20,5 +20,10 @@ namespace Code.Data
 
         public float NextWidth() =>
             _data.Width;
+
+        public void Reset()
+        {
+            // Empty
+        }
     }
 }

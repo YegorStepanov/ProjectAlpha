@@ -40,6 +40,9 @@ namespace Code.Data
             return width;
         }
 
+        public void Reset() =>
+            _currentRatio = new(1f, 1f);
+
         private float NextWidth(Ratio ratio) =>
             Random.Range(_data.MinWidth * ratio.Min, _data.MaxWidth * ratio.Max);
 

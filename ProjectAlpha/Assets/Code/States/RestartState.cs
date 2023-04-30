@@ -46,6 +46,7 @@ namespace Code.States
             _cameraResetter.ResetPositionX();
             _gameUIController.HideUI();
             _gameUIController.ShowUI();
+            _platformSpawner.ResetWidthGeneration();
 
             GameHeight gameHeight = _gameHeightFactory.CreateRestartHeight();
 

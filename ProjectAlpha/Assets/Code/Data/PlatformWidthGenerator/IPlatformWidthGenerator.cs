@@ -3,5 +3,6 @@
     public interface IPlatformWidthGenerator
     {
         float NextWidth();
+        void Reset();
     }
 }
