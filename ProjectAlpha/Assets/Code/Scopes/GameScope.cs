@@ -30,8 +30,9 @@ namespace Code.Scopes
 
         protected override async UniTask PreloadAsync(IAddressablesLoader loader)
         {
-            await using UniTaskDisposable _ = Parent.Container.Resolve<CameraBackground>()
-                .ChangeBackgroundAsync();
+            await using var _ = Parent.Container.Resolve<CameraBackground>()
+                .ChangeBackgroundAsync()
+                .ToUniTaskDisposable();
 
             var tasks = UniTask.WhenAll(
                 loader.LoadAssetAsync(Address.Data.WidthGenerator),
