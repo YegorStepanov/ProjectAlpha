@@ -34,7 +34,7 @@ namespace Code.Scopes
                     loader.InstantiateNoInjectAsync(Address.UI.TransitionLoadingScreen),
                     loader.InstantiateNoInjectAsync(Address.Infrastructure.EventSystem));
 
-            await UnityServices.InitializeAsync(); //todo rework it
+            await UnityServices.InitializeAsync();
             await LoadDevelopmentAssets(loader, _settingsFacade);
         }
 
