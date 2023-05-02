@@ -14,19 +14,27 @@ namespace Code.Animations.Game
         private void Awake() =>
             _canvas.enabled = false;
 
-        public void Play()
+        private CancellationTokenSource _cts = new CancellationTokenSource();
+
+        public async UniTaskVoid PlayAsync()
         {
+            _cts.Cancel();
+            _cts = new CancellationTokenSource();
+            _text.color = _text.color with { a = 0f };
             _canvas.enabled = true;
-            _text.DOFade(1f, 1f);
+            await _text.DOFade(1f, 1f).WithCancellation(_cts.Token);
         }
 
         public async UniTask HideAsync(CancellationToken token)
         {
-            if (_text.color.a == 0f) return;
-
-            await _text.DOFade(0f, 1f).WithCancellation(token);
-
+            _cts.Cancel();
+            _cts = new CancellationTokenSource();
+            _text.color = _text.color with { a = 1f };
+            await _text.DOFade(0f, 1f).WithCancellation(_cts.Token);
             _canvas.enabled = false;
         }
+
+        public void Hide() =>
+            _canvas.enabled = false;
     }
 }

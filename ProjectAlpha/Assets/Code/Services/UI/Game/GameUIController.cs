@@ -25,7 +25,7 @@ namespace Code.Services.UI
                 _gameUIView.ShowCherryNumber();
 
                 await UniTask.Delay(1000);
-                _gameUIView.ShowHelp();
+                _gameUIView.ShowHelpAsync();
             }
         }
 
@@ -34,25 +34,25 @@ namespace Code.Services.UI
             _gameUIView.HideGameOver();
             _gameUIView.HideScore();
             _gameUIView.HideCherryNumber();
-            _gameUIView.HideHelp(); // todo: remove from here or call cts.Cancel
+            _gameUIView.HideHelp();
             _gameUIView.HideRedPointHit();
         }
 
         public void UpdateScore()
         {
             int score = _progress.Session.Score;
-            _gameUIView.UpdateScore(score);
+            _gameUIView.UpdateScoreAsync(score);
         }
 
         public void HideHelp()
         {
-            _gameUIView.HideHelp();
+            _gameUIView.HideHelpAsync();
         }
 
         public void UpdateCherries()
         {
             int cherries = _progress.Persistant.Cherries;
-            _gameUIView.UpdateCherries(cherries);
+            _gameUIView.UpdateCherriesAsync(cherries);
         }
 
         public void HitRedPoint(Vector2 notificationPosition)

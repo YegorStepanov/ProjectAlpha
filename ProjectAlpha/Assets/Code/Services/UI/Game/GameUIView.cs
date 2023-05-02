@@ -37,12 +37,12 @@ namespace Code.Services.UI
             _changeScoreCanvas.enabled = false;
         }
 
-        public void UpdateScore(int score)
+        public void UpdateScoreAsync(int score)
         {
             _changeScoreAnimation.Play(score, animate: score != 0);
         }
 
-        public void UpdateCherries(int cherries)
+        public void UpdateCherriesAsync(int cherries)
         {
             _changeCherriesAnimation.Play(cherries);
         }
@@ -53,13 +53,14 @@ namespace Code.Services.UI
             _redPointHitGameAnimation.PlayAsync(notificationPosition, _token).Forget();
         }
 
-        public void ShowHelp() =>
-            _showStartHelpAnimation.Play();
+        public void ShowHelpAsync() =>
+            _showStartHelpAnimation.PlayAsync().Forget();
 
-        public void HideHelp()
-        {
+        public void HideHelpAsync() =>
             _showStartHelpAnimation.HideAsync(_token).Forget();
-        }
+
+        public void HideHelp() =>
+            _showStartHelpAnimation.Hide();
 
         public void ShowGameOver() =>
             _gameOverCanvas.enabled = true;
